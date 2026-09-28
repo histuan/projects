@@ -1,12 +1,12 @@
 # Lorax: Deforestationders
 
-A Space Invaders–style arcade shooter built with **Godot 4** and **GDScript**, themed around *The Lorax*: defend the last trees from waves of invaders.
+A Space Invaders-style arcade shooter built with Godot 4 and GDScript, themed around *The Lorax*: defend the last trees from waves of invaders.
 
 Developed as a course project for the Computer Science program at Universidade de Fortaleza (Unifor). It started from a base project provided in class and was expanded with original gameplay systems, pixel art and sound.
 
 ## Features
 
-- 4×8 alien formation that sweeps side to side and descends over time
+- 4x8 alien formation that sweeps side to side and descends over time
 - Wave system with progressive difficulty
 - Armored aliens (2 hits) and corner snipers in later waves
 - Boss fight against the Lorax, who throws explosive trees
@@ -42,10 +42,10 @@ Folder names are in Portuguese.
 
 ```
 lorax-space-invaders/
-├── cenas/          → scenes (alien, player, geral)
-├── scripts/        → GDScript files, mirroring cenas/
-├── meus sprites/   → pixel art
-├── fonts/          → pixel fonts
+├── cenas/          # scenes (alien, player, geral)
+├── scripts/        # GDScript files, mirroring cenas/
+├── meus sprites/   # pixel art
+├── fonts/          # pixel fonts
 └── project.godot
 ```
 
