@@ -13,3 +13,13 @@ a{
   color: black;
   text-decoration: none;
 }
+footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  background:#222;color:#fff;text-align:center;
+  font-size:14px;
+  padding:8px;
+}
