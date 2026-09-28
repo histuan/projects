@@ -1,4 +1,3 @@
-[projects-README.md](https://github.com/user-attachments/files/32731001/projects-README.md)
 # Projects
 
 Things I've built during my Computer Science degree and on my own.
