@@ -137,14 +137,14 @@ func mostrar_wave(n):
 		tween_wave.tween_property(w, "modulate:a", 0.0, 0.8)
 
 # Texto "+N" que sobe e some. Cor por valor: 200 forte, 300 sniper, 500 boss
-func mostrar_pontos(valor, pos):
+func mostrar_pontos(valor, pos, tamanho = 8):
 	var l = Label.new()
 	l.text = "+" + str(valor)
 	l.add_theme_font_override("font", FONTE)
-	l.add_theme_font_size_override("font_size", 8)
+	l.add_theme_font_size_override("font_size", tamanho)
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	l.size = Vector2(40, 8)
-	l.position = pos - Vector2(20, 4)
+	l.size = Vector2(tamanho * 6, tamanho)
+	l.position = pos - l.size / 2
 	if(valor == 200):
 		l.add_theme_color_override("font_color", Color.from_rgba8(253, 208, 23, 220))
 	elif(valor == 300):
@@ -154,6 +154,17 @@ func mostrar_pontos(valor, pos):
 	else:
 		l.add_theme_color_override("font_color", Color.from_rgba8(255, 255, 255))
 	add_child(l)
+	# Estilização pra deixar os pontos do lorax diferentes
+	if valor == 500:
+		l.pivot_offset = l.size / 2
+		var tb = create_tween()
+		tb.tween_property(l, "position:y", l.position.y - 12, 0.4)
+		for i in range(4):
+			tb.tween_property(l, "scale", Vector2(1.25, 1.25), 0.15)
+			tb.tween_property(l, "scale", Vector2(1.0, 1.0), 0.15)
+		tb.tween_property(l, "modulate:a", 0.0, 0.4)
+		tb.tween_callback(l.queue_free)
+		return
 	# Sobe 12 px e desaparece ao mesmo tempo; no fim o Label é apagado
 	var t = create_tween()
 	t.set_parallel(true)

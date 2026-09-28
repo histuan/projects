@@ -45,17 +45,14 @@ func _process(delta):
 # Fim da animação de morte: "+500", avisa main e groupAlien e some
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "destruido":
-		get_tree().current_scene.mostrar_pontos(500, global_position)
+		get_tree().current_scene.mostrar_pontos(500, global_position, 16)
 		emit_signal("bonus_eliminado")
 		queue_free()
 
 # Chamada pela animação destruido: cai em diagonal enquanto explode
 func descida():
-	self.position.x -= 3
-	if dir_lado == 1:
-		self.position.y += 5
-	else:
-		self.position.y -= 5
+	self.position.x += 3 * dir_lado
+	self.position.y += 5
 
 # Levou tiro: perde 1 vida e avisa a main; morre no zero
 func explosion():

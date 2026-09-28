@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5w147wfht3u7"
-path.s3tc="res://.godot/imported/spritesheet.png-4d80f95597d30116a1507f18b4f427b6.s3tc.ctex"
+uid="uid://bbfcmxvg6jyt4"
+path.s3tc="res://.godot/imported/the-lorax-ezgif.com-gif-to-sprite-converter22222.png-0e0192c32ecd47a10b7822f067ac8ad7.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://lorax/spritesheet.png"
-dest_files=["res://.godot/imported/spritesheet.png-4d80f95597d30116a1507f18b4f427b6.s3tc.ctex"]
+source_file="res://lorax/the-lorax-ezgif.com-gif-to-sprite-converter22222.png"
+dest_files=["res://.godot/imported/the-lorax-ezgif.com-gif-to-sprite-converter22222.png-0e0192c32ecd47a10b7822f067ac8ad7.s3tc.ctex"]
 
 [params]
 
