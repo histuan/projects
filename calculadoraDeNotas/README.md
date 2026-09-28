@@ -1,26 +1,26 @@
-# 📊 Grade Calculator
+# Grade Calculator
 
-A terminal program in **JavaScript (Node.js)** that calculates a class's grade averages.
+Terminal program in JavaScript (Node.js) that calculates grade averages for a class.
 
-## ✨ Features
+## Features
 
-- Choose the number of students and grades per student
-- Each student's average, linked to their name
+- Choose how many students and how many grades per student
+- Average for each student, linked to their name
 - Class average
 - Highest and lowest averages, with the student's name
 
-## ▶️ How to run
+## How to run
 
-The program uses the `prompt-sync` library to read input from the terminal. From the `calculadoraDeNotas` folder:
+The program reads input with the `prompt-sync` library. From the `calculadoraDeNotas` folder:
 
 ```bash
 npm install prompt-sync
 node calculadora.js
 ```
 
-## 💻 Example
+## Example
 
-> The program's interface is in Portuguese, so the example below shows exactly what it prints.
+The interface is in Portuguese, so this is exactly what the program prints.
 
 Input:
 
