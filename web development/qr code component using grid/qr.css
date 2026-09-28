@@ -1,0 +1,46 @@
+body{
+  margin: 0;
+  background-color: hsl(212, 45%, 89%);
+  font-size: 15px;
+  font-family: outfit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+p{
+  margin: 8px;
+}
+.container{
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+  height: auto;
+  width: 230px;
+  background-color: hsl(0, 0%, 100%);
+  border-radius: 12px;
+  gap: 6px;
+  padding: 10px;
+}
+
+.qr-code{
+  width: 230px;
+  border-radius: 8px;
+}
+
+.description{
+  font-size: 18px;
+  color: hsl(218, 44%, 22%);
+  font-weight: 700;
+}
+.instructions{
+  font-size: 13px;
+  color: hsl(216, 15%, 48%);
+  font-weight: 400;
+}
+.text{
+  margin-bottom: 10px;
+}
+
+
