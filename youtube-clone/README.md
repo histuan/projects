@@ -1,15 +1,32 @@
-# Youtube Clone
+# ▶️ YouTube Clone
 
-Um clone básico da homepage do YouTube
+A replica of the YouTube home page built with **plain HTML and CSS**, no frameworks.
 
-## Link do site:
-[Acesse aqui](https://histuan.github.io/youtube-clone/)
+🔗 **[See it live](https://histuan.github.io/projects/youtube-clone/)**
 
-## Tecnologias usadas
+## ✨ Features
 
-- HTML
-- CSS
+- Responsive layout that adapts to different screen sizes
+- Sidebar, search bar and video grid
+- Tooltips on buttons
+- Clickable cards that open the original video on YouTube
 
-## Sobre
+## 🛠️ Tech
 
-Projeto de estudo para desenvolvimento web com HTML e CSS responsivo. Os cards dos vídeos são clicáveis e redirecionam o usuário ao vídeo hospedado no Youtube.
+- HTML5
+- CSS3
+
+## 📁 Structure
+
+```
+youtube-clone/
+├── index.html
+├── styles/            → CSS files split by page section
+├── icons/             → SVG icons
+├── thumbnails/        → video thumbnails
+└── channel-pictures/  → channel pictures
+```
+
+## ▶️ How to run
+
+Open `index.html` in your browser.
