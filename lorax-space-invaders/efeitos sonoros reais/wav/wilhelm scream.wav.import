@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dvda7f8nftb4e"
+path="res://.godot/imported/wilhelm scream.wav-ad4165b561ff69559bbd27f40764b08f.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/wilhelm scream.wav"
+dest_files=["res://.godot/imported/wilhelm scream.wav-ad4165b561ff69559bbd27f40764b08f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

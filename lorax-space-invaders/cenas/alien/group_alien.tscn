@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://b1psoyw08u2lj"]
+
+[ext_resource type="Script" uid="uid://dmofqmjloifif" path="res://scripts/aliens/group_alien.gd" id="1_0sjtq"]
+[ext_resource type="AudioStream" uid="uid://bjm4b67hvai7o" path="res://efeitos sonoros reais/wav/lorax chegada.wav" id="2_pms08"]
+
+[node name="groupAlien" type="Node" unique_id=667949184]
+script = ExtResource("1_0sjtq")
+
+[node name="timers" type="Node" parent="." unique_id=406911153]
+
+[node name="TimerDesce" type="Timer" parent="timers" unique_id=991229832]
+wait_time = 3.0
+autostart = true
+
+[node name="TimerTiro" type="Timer" parent="timers" unique_id=1864001832]
+wait_time = 2.0
+autostart = true
+
+[node name="TimerBonus" type="Timer" parent="timers" unique_id=1402741810]
+wait_time = 10.0
+one_shot = true
+
+[node name="TimerWave" type="Timer" parent="timers" unique_id=1444394213]
+wait_time = 21.0
+autostart = true
+
+[node name="TimerDificuldade" type="Timer" parent="timers" unique_id=1029277898]
+wait_time = 15.0
+autostart = true
+
+[node name="TimerProximaWave" type="Timer" parent="timers" unique_id=2042523870]
+one_shot = true
+
+[node name="TimerSniper" type="Timer" parent="timers" unique_id=1516174034]
+wait_time = 4.5
+one_shot = true
+
+[node name="loraxChegada" type="AudioStreamPlayer" parent="." unique_id=714268824]
+stream = ExtResource("2_pms08")
+volume_db = 16.0
+
+[connection signal="timeout" from="timers/TimerDesce" to="." method="_on_timer_desce_timeout"]
+[connection signal="timeout" from="timers/TimerTiro" to="." method="_on_timer_tiro_timeout"]
+[connection signal="timeout" from="timers/TimerBonus" to="." method="_on_timer_bonus_timeout"]
+[connection signal="timeout" from="timers/TimerWave" to="." method="_on_timer_wave_timeout"]
+[connection signal="timeout" from="timers/TimerDificuldade" to="." method="_on_timer_dificuldade_timeout"]
+[connection signal="timeout" from="timers/TimerProximaWave" to="." method="_on_timer_proxima_wave_timeout"]
+[connection signal="timeout" from="timers/TimerSniper" to="." method="_on_timer_sniper_timeout"]

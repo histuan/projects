@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://bkurbnyfjyot5"]
+
+[ext_resource type="Script" uid="uid://kyat3usw0f38" path="res://scripts/geral/start.gd" id="1_c5w71"]
+[ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="1_u8cxm"]
+[ext_resource type="Texture2D" uid="uid://c88n8rh1ov5d8" path="res://meus sprites/fundo.png" id="2_qki0g"]
+[ext_resource type="Texture2D" uid="uid://cy327bhc5yxbr" path="res://lorax/Evil lorax.png" id="3_t8h8b"]
+[ext_resource type="Texture2D" uid="uid://bkgidymr6kg1r" path="res://lorax/truffula_evil_64.png" id="5_3q64y"]
+[ext_resource type="Texture2D" uid="uid://gdtow7mlt07p" path="res://lorax/truffula_pink_32.png" id="6_a2fa8"]
+[ext_resource type="Texture2D" uid="uid://tnsm1smm65sv" path="res://lorax/truffula_yellow_32.png" id="9_gdrgb"]
+[ext_resource type="Texture2D" uid="uid://caagb0yu686og" path="res://lorax/truffula_teal_32.png" id="10_2mntt"]
+[ext_resource type="Texture2D" uid="uid://56bipyeqdn35" path="res://lorax/truffula_purple_64.png" id="11_t8853"]
+[ext_resource type="Texture2D" uid="uid://dgeym7nxug3vm" path="res://lorax/truffula_purple_32.png" id="12_cgsrw"]
+[ext_resource type="Texture2D" uid="uid://dtm1fehd7urud" path="res://lorax/truffula_bushy_64.png" id="12_qki0g"]
+[ext_resource type="Texture2D" uid="uid://nxe08xjdro05" path="res://lorax/truffula_teal_64.png" id="14_0yq6o"]
+[ext_resource type="Texture2D" uid="uid://bbtec6f3xyiy0" path="res://lorax/truffula_orange_32.png" id="15_gdrgb"]
+[ext_resource type="AudioStream" uid="uid://cgndavc84bvgx" path="res://efeitos sonoros reais/Beneath_the_Weight.mp3" id="16_0yq6o"]
+[ext_resource type="AudioStream" uid="uid://bjm4b67hvai7o" path="res://efeitos sonoros reais/wav/lorax chegada.wav" id="17_gdrgb"]
+
+[node name="Start" type="Node2D" unique_id=1031013868]
+script = ExtResource("1_c5w71")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=676594929]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=374813530]
+offset_right = 254.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/ColorRect" unique_id=911010209]
+position = Vector2(127, 128)
+texture = ExtResource("2_qki0g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=2053929512]
+offset_top = 25.0
+offset_right = 254.0
+offset_bottom = 88.0
+
+[node name="LabelTitulo" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1078981335]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8235294, 0.24705882, 1)
+theme_override_colors/font_shadow_color = Color(0.3529412, 0.11764706, 0.23529412, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("1_u8cxm")
+theme_override_font_sizes/font_size = 20
+text = "L O R A X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelTitulo2" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=776572532]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5058824, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.7703173, 0.580273, 0.0485707, 0.52156866)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("1_u8cxm")
+theme_override_font_sizes/font_size = 9
+text = "DEFORESTATIONDERS
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelEnter" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=227368239]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_u8cxm")
+theme_override_font_sizes/font_size = 16
+text = "PRESS ENTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sprites" type="Node2D" parent="CanvasLayer" unique_id=27011059]
+
+[node name="Lorax" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1676051267]
+position = Vector2(126, 192.99998)
+scale = Vector2(0.311086, 0.22265626)
+texture = ExtResource("3_t8h8b")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1723331320]
+position = Vector2(215, 182.99998)
+scale = Vector2(1.34375, 1.53125)
+texture = ExtResource("5_3q64y")
+
+[node name="Sprite2D4" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=116682142]
+position = Vector2(75, 222)
+texture = ExtResource("6_a2fa8")
+
+[node name="Sprite2D7" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=576412576]
+position = Vector2(20, 239.99998)
+scale = Vector2(1, 0.93749976)
+texture = ExtResource("9_gdrgb")
+flip_h = true
+
+[node name="Sprite2D8" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1572986266]
+position = Vector2(110, 235)
+texture = ExtResource("10_2mntt")
+
+[node name="Sprite2D9" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1866592898]
+position = Vector2(243, 227)
+texture = ExtResource("11_t8853")
+
+[node name="Sprite2D10" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1375656826]
+position = Vector2(83, 121)
+scale = Vector2(0.93749934, 1)
+texture = ExtResource("12_qki0g")
+flip_h = true
+
+[node name="Sprite2D11" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=760468078]
+position = Vector2(190.00002, 137)
+scale = Vector2(0.93749934, 1)
+texture = ExtResource("12_cgsrw")
+flip_h = true
+
+[node name="Sprite2D12" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=1168161074]
+position = Vector2(154, 159)
+scale = Vector2(0.93749934, 1)
+texture = ExtResource("14_0yq6o")
+flip_h = true
+
+[node name="Sprite2D13" type="Sprite2D" parent="CanvasLayer/sprites" unique_id=975448605]
+position = Vector2(182, 222)
+scale = Vector2(0.93749934, 1)
+texture = ExtResource("15_gdrgb")
+flip_h = true
+
+[node name="Splash" type="Label" parent="CanvasLayer" unique_id=347488371]
+offset_left = 124.0
+offset_top = 17.0
+offset_right = 254.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+offset_transform_rotation = 0.17453292
+theme_override_colors/font_color = Color(1, 0.8235294, 0.5803922, 1)
+theme_override_colors/font_shadow_color = Color(0.2784314, 0.14509805, 0, 1)
+theme_override_fonts/font = ExtResource("1_u8cxm")
+theme_override_font_sizes/font_size = 4
+text = "i have no mouth and i must talk!"
+horizontal_alignment = 1
+
+[node name="Flash" type="ColorRect" parent="CanvasLayer" unique_id=224273522]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.5194127, 0.5194127, 0.5194127, 0)
+
+[node name="sons" type="Node" parent="." unique_id=257443294]
+
+[node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=1627709389]
+stream = ExtResource("16_0yq6o")
+volume_db = 11.0
+autoplay = true
+
+[node name="start" type="AudioStreamPlayer" parent="sons" unique_id=495107538]
+stream = ExtResource("17_gdrgb")

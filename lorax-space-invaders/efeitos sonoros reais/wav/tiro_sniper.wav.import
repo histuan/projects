@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://deem0caldprqq"
+path="res://.godot/imported/tiro_sniper.wav-a524b5b1bcda87651a209c8da75459ee.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/tiro_sniper.wav"
+dest_files=["res://.godot/imported/tiro_sniper.wav-a524b5b1bcda87651a209c8da75459ee.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

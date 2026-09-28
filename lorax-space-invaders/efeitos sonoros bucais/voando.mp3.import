@@ -1,0 +1,18 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b552c6ap50e2u"
+valid=false
+
+[deps]
+
+source_file="res://efeitos sonoros bucais/voando.mp3"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

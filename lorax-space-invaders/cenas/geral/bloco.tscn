@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://detgjjfoaoylp"]
+
+[ext_resource type="Script" uid="uid://dcjlh27d46q7t" path="res://scripts/geral/bloco.gd" id="1_8ve0v"]
+[ext_resource type="Texture2D" uid="uid://bu2qly3mny1sv" path="res://meus sprites/bloque.png" id="2_7r8a5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l8342"]
+size = Vector2(4, 4)
+
+[sub_resource type="Animation" id="Animation_6rmkm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_vtd78"]
+resource_name = "danificado"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_hu25q"]
+resource_name = "normal"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ihbo"]
+_data = {
+&"RESET": SubResource("Animation_6rmkm"),
+&"danificado": SubResource("Animation_vtd78"),
+&"normal": SubResource("Animation_hu25q")
+}
+
+[node name="bloco" type="StaticBody2D" unique_id=406914486 groups=["blocos"]]
+script = ExtResource("1_8ve0v")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=756930096]
+texture = ExtResource("2_7r8a5")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=884135158]
+shape = SubResource("RectangleShape2D_l8342")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=428519903]
+libraries/ = SubResource("AnimationLibrary_8ihbo")

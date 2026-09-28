@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ereood1bvklm"
+path="res://.godot/imported/player dano.wav-c19cfe04f17c0f1e4bdce79ed905f76e.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/player dano.wav"
+dest_files=["res://.godot/imported/player dano.wav-c19cfe04f17c0f1e4bdce79ed905f76e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

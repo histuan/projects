@@ -1,0 +1,796 @@
+[gd_scene format=3 uid="uid://csa27xq7oepkt"]
+
+[ext_resource type="Script" uid="uid://dkn4jvnwrna7d" path="res://scripts/geral/estrelas.gd" id="1_4fhxt"]
+[ext_resource type="Script" uid="uid://dtdx28yvtpiar" path="res://scripts/geral/main.gd" id="1_5wwvk"]
+[ext_resource type="PackedScene" uid="uid://bqrm3a4ijesfp" path="res://cenas/player/player.tscn" id="1_t4ukd"]
+[ext_resource type="PackedScene" uid="uid://b1psoyw08u2lj" path="res://cenas/alien/group_alien.tscn" id="3_4fhxt"]
+[ext_resource type="Texture2D" uid="uid://cya266vipgupb" path="res://meus sprites/points.png" id="5_2juca"]
+[ext_resource type="FontFile" uid="uid://eo0ndfp5g245" path="res://meus sprites/numeros16_molde.png" id="6_b12mh"]
+[ext_resource type="PackedScene" uid="uid://detgjjfoaoylp" path="res://cenas/geral/bloco.tscn" id="6_bhvw8"]
+[ext_resource type="PackedScene" uid="uid://ctndc5uc7tov8" path="res://cenas/geral/folha.tscn" id="7_d07vn"]
+[ext_resource type="Script" uid="uid://bec0lr8nt3j8g" path="res://scripts/geral/chao.gd" id="7_l8342"]
+[ext_resource type="Script" uid="uid://55ewa8tqyb0" path="res://scripts/geral/area_game_over.gd" id="8_v1d1r"]
+[ext_resource type="Script" uid="uid://ctpbcjvlke5mh" path="res://scripts/geral/coracoes.gd" id="9_jdavq"]
+[ext_resource type="Texture2D" uid="uid://cihlw42wnof5f" path="res://meus sprites/coracao.png" id="10_vhipe"]
+[ext_resource type="Texture2D" uid="uid://ckv36dabqven0" path="res://meus sprites/coracao_boss.png" id="11_vhipe"]
+[ext_resource type="Texture2D" uid="uid://cbx05e3wwx551" path="res://meus sprites/coracao_boss_vazio.png" id="12_iwfo7"]
+[ext_resource type="AudioStream" uid="uid://dape3rcq3pbip" path="res://efeitos sonoros reais/The_Green_Frontier.mp3" id="13_p4x86"]
+[ext_resource type="Texture2D" uid="uid://bymfmq2cxt71b" path="res://meus sprites/wave.png" id="16_b12mh"]
+[ext_resource type="AudioStream" uid="uid://c57vp1aknu07h" path="res://efeitos sonoros reais/wav/coletar_coracao.wav" id="17_n3rig"]
+[ext_resource type="PackedScene" uid="uid://c00wpsfa85tbq" path="res://cenas/geral/pause_menu.tscn" id="18_8o0l5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksdio"]
+size = Vector2(20, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l8342"]
+size = Vector2(254, 20)
+
+[node name="main" type="Node" unique_id=605077840]
+script = ExtResource("1_5wwvk")
+metadata/_edit_horizontal_guides_ = [174.0]
+
+[node name="fundo" type="Node" parent="." unique_id=166569821]
+
+[node name="estrelas" type="Node2D" parent="fundo" unique_id=807948674]
+script = ExtResource("1_4fhxt")
+
+[node name="player" parent="." unique_id=423818522 instance=ExtResource("1_t4ukd")]
+position = Vector2(127, 233)
+
+[node name="groupAlien" parent="." unique_id=667949184 instance=ExtResource("3_4fhxt")]
+
+[node name="cenario" type="Node" parent="." unique_id=109596299]
+
+[node name="bases" type="Node" parent="cenario" unique_id=382070805]
+
+[node name="base" type="Node2D" parent="cenario/bases" unique_id=1746642036]
+position = Vector2(107, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base" unique_id=406914486 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base" unique_id=1005579885 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base" unique_id=341193085 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base" unique_id=184718644 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base" unique_id=193418733 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base" unique_id=203225457 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="cenario/bases/base" unique_id=1052742631 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base" unique_id=1168791330 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base" unique_id=1564265749 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 6)
+
+[node name="bloco10" parent="cenario/bases/base" unique_id=1370896668 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base" unique_id=2037707651 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base" unique_id=1631120964 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base" unique_id=1914437283 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base" unique_id=1347470824 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base" unique_id=1055572463 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base" unique_id=787177748 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base" unique_id=518827899 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base" unique_id=1647044630 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base" unique_id=1406115667 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base" unique_id=1774725603 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base" unique_id=1321285186 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base" unique_id=708930407 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base" unique_id=1281761149 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base" unique_id=16307838 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="cenario/bases/base" unique_id=2118567267 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="cenario/bases/base" unique_id=1883879633 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="cenario/bases/base" unique_id=1316285427 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha13" parent="cenario/bases/base" unique_id=1172360713 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha22" parent="cenario/bases/base" unique_id=1084956562 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="folha21" parent="cenario/bases/base" unique_id=1368653856 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha20" parent="cenario/bases/base" unique_id=1131577773 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha8" parent="cenario/bases/base" unique_id=1211455522 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="base2" type="Node2D" parent="cenario/bases" unique_id=522181815]
+position = Vector2(147, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base2" unique_id=1695138168 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base2" unique_id=916818618 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base2" unique_id=2003705581 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base2" unique_id=1135653994 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base2" unique_id=2040743276 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base2" unique_id=846587759 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="cenario/bases/base2" unique_id=46901910 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base2" unique_id=587217452 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base2" unique_id=700754155 instance=ExtResource("6_bhvw8")]
+position = Vector2(-5, 6)
+
+[node name="bloco10" parent="cenario/bases/base2" unique_id=2031875609 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base2" unique_id=1562863818 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base2" unique_id=1424483520 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base2" unique_id=59411512 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base2" unique_id=1441206268 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base2" unique_id=851200730 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base2" unique_id=1445943255 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base2" unique_id=1582998577 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base2" unique_id=1980525051 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base2" unique_id=2095487426 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base2" unique_id=1248136301 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base2" unique_id=999088094 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base2" unique_id=1494303775 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base2" unique_id=1451596590 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base2" unique_id=220161277 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="cenario/bases/base2" unique_id=748688499 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="cenario/bases/base2" unique_id=1373490609 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="cenario/bases/base2" unique_id=709758909 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha21" parent="cenario/bases/base2" unique_id=525197081 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha20" parent="cenario/bases/base2" unique_id=78702689 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha13" parent="cenario/bases/base2" unique_id=792999886 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha8" parent="cenario/bases/base2" unique_id=576923439 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="folha12" parent="cenario/bases/base2" unique_id=1157138284 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="base3" type="Node2D" parent="cenario/bases" unique_id=1251190811]
+position = Vector2(67, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base3" unique_id=1440327906 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base3" unique_id=2129079804 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base3" unique_id=981711244 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base3" unique_id=1016878567 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base3" unique_id=1595505875 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base3" unique_id=647043797 instance=ExtResource("6_bhvw8")]
+position = Vector2(5, 5)
+
+[node name="bloco7" parent="cenario/bases/base3" unique_id=782823664 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base3" unique_id=1946289838 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base3" unique_id=479443415 instance=ExtResource("6_bhvw8")]
+position = Vector2(-5, 5)
+
+[node name="bloco10" parent="cenario/bases/base3" unique_id=779088629 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base3" unique_id=1069992463 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base3" unique_id=1941053923 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base3" unique_id=289406164 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base3" unique_id=1087397254 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base3" unique_id=1945552201 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base3" unique_id=367856999 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base3" unique_id=1690601940 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base3" unique_id=31861113 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base3" unique_id=1212996489 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base3" unique_id=906773160 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base3" unique_id=1226156196 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base3" unique_id=1100289514 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base3" unique_id=1524987556 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base3" unique_id=973656807 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="cenario/bases/base3" unique_id=356928432 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="cenario/bases/base3" unique_id=880071541 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="cenario/bases/base3" unique_id=490231667 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha13" parent="cenario/bases/base3" unique_id=1128633829 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha21" parent="cenario/bases/base3" unique_id=2117470847 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="folha20" parent="cenario/bases/base3" unique_id=71041191 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha12" parent="cenario/bases/base3" unique_id=1582874150 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha8" parent="cenario/bases/base3" unique_id=1918872238 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="base4" type="Node2D" parent="cenario/bases" unique_id=439666557]
+position = Vector2(187, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base4" unique_id=1562694648 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base4" unique_id=894393983 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base4" unique_id=1650387212 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base4" unique_id=375469747 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base4" unique_id=842987438 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base4" unique_id=332886956 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="cenario/bases/base4" unique_id=798125547 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base4" unique_id=1762203240 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base4" unique_id=922551025 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 6)
+
+[node name="bloco10" parent="cenario/bases/base4" unique_id=290857361 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base4" unique_id=48871861 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base4" unique_id=273484590 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base4" unique_id=394706512 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base4" unique_id=848403303 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base4" unique_id=338243271 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base4" unique_id=1152986751 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base4" unique_id=332846194 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base4" unique_id=889907478 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base4" unique_id=1963375285 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base4" unique_id=1437499062 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base4" unique_id=2068770654 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base4" unique_id=1069798498 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base4" unique_id=1441950152 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base4" unique_id=1271557319 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="cenario/bases/base4" unique_id=54895794 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha21" parent="cenario/bases/base4" unique_id=391292071 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="folha14" parent="cenario/bases/base4" unique_id=111112698 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="cenario/bases/base4" unique_id=1343285786 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha13" parent="cenario/bases/base4" unique_id=901413178 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha20" parent="cenario/bases/base4" unique_id=1095082535 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha12" parent="cenario/bases/base4" unique_id=761052214 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha8" parent="cenario/bases/base4" unique_id=1059579900 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="base5" type="Node2D" parent="cenario/bases" unique_id=562042305]
+position = Vector2(27, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base5" unique_id=937587633 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base5" unique_id=1880912281 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base5" unique_id=535802442 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base5" unique_id=1010722366 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base5" unique_id=1659612181 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base5" unique_id=1884939463 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="cenario/bases/base5" unique_id=1154871126 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base5" unique_id=586690700 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base5" unique_id=1774632464 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 6)
+
+[node name="bloco10" parent="cenario/bases/base5" unique_id=383263838 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base5" unique_id=552231664 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base5" unique_id=1057258080 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base5" unique_id=1800247049 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base5" unique_id=1448643446 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base5" unique_id=505499028 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base5" unique_id=1026290805 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base5" unique_id=1313484444 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base5" unique_id=2029515425 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base5" unique_id=1961031130 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base5" unique_id=1089152782 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base5" unique_id=2122672083 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base5" unique_id=2093360310 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base5" unique_id=55095042 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base5" unique_id=1125455125 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha20" parent="cenario/bases/base5" unique_id=1499816156 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha21" parent="cenario/bases/base5" unique_id=1070300926 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha15" parent="cenario/bases/base5" unique_id=314774141 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="cenario/bases/base5" unique_id=246361728 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="cenario/bases/base5" unique_id=2138923808 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha22" parent="cenario/bases/base5" unique_id=982975795 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="folha13" parent="cenario/bases/base5" unique_id=620546442 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha8" parent="cenario/bases/base5" unique_id=1113989588 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="base6" type="Node2D" parent="cenario/bases" unique_id=206132008]
+position = Vector2(227, 196)
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="cenario/bases/base6" unique_id=1011552289 instance=ExtResource("6_bhvw8")]
+
+[node name="bloco2" parent="cenario/bases/base6" unique_id=1651542331 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="cenario/bases/base6" unique_id=1404538267 instance=ExtResource("6_bhvw8")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="cenario/bases/base6" unique_id=2131299032 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="cenario/bases/base6" unique_id=693551816 instance=ExtResource("6_bhvw8")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="cenario/bases/base6" unique_id=1457785556 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="cenario/bases/base6" unique_id=1545369215 instance=ExtResource("6_bhvw8")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="cenario/bases/base6" unique_id=1808192137 instance=ExtResource("6_bhvw8")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="cenario/bases/base6" unique_id=102117996 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 6)
+
+[node name="bloco10" parent="cenario/bases/base6" unique_id=760373833 instance=ExtResource("6_bhvw8")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="cenario/bases/base6" unique_id=473434938 instance=ExtResource("6_bhvw8")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="cenario/bases/base6" unique_id=1058259168 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="cenario/bases/base6" unique_id=1737646300 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="cenario/bases/base6" unique_id=71290105 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="cenario/bases/base6" unique_id=275852843 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="cenario/bases/base6" unique_id=1649845290 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="cenario/bases/base6" unique_id=1873781683 instance=ExtResource("7_d07vn")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="cenario/bases/base6" unique_id=1261205801 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="cenario/bases/base6" unique_id=1355205730 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="cenario/bases/base6" unique_id=1943780682 instance=ExtResource("7_d07vn")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="cenario/bases/base6" unique_id=1280693309 instance=ExtResource("7_d07vn")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="cenario/bases/base6" unique_id=1979535851 instance=ExtResource("7_d07vn")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="cenario/bases/base6" unique_id=1703355037 instance=ExtResource("7_d07vn")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="cenario/bases/base6" unique_id=1886702380 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="cenario/bases/base6" unique_id=1752672479 instance=ExtResource("7_d07vn")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="cenario/bases/base6" unique_id=1803053749 instance=ExtResource("7_d07vn")]
+position = Vector2(-5, -5)
+
+[node name="folha21" parent="cenario/bases/base6" unique_id=994865566 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -7)
+
+[node name="folha11" parent="cenario/bases/base6" unique_id=2091370319 instance=ExtResource("7_d07vn")]
+position = Vector2(0, -12)
+
+[node name="folha13" parent="cenario/bases/base6" unique_id=1441719641 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -8)
+
+[node name="folha20" parent="cenario/bases/base6" unique_id=755986147 instance=ExtResource("7_d07vn")]
+position = Vector2(7, -9)
+
+[node name="folha12" parent="cenario/bases/base6" unique_id=675101310 instance=ExtResource("7_d07vn")]
+position = Vector2(-7, -9)
+
+[node name="folha8" parent="cenario/bases/base6" unique_id=43884893 instance=ExtResource("7_d07vn")]
+position = Vector2(-6, -11)
+
+[node name="chao" type="Node" parent="cenario" unique_id=1462998061]
+script = ExtResource("7_l8342")
+
+[node name="paredes" type="Node" parent="cenario" unique_id=1714165687]
+
+[node name="paredeEsq" type="StaticBody2D" parent="cenario/paredes" unique_id=1744160880]
+position = Vector2(-10, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cenario/paredes/paredeEsq" unique_id=2004408150]
+shape = SubResource("RectangleShape2D_ksdio")
+
+[node name="paredeDir" type="StaticBody2D" parent="cenario/paredes" unique_id=1709757749]
+position = Vector2(264, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cenario/paredes/paredeDir" unique_id=2051210967]
+shape = SubResource("RectangleShape2D_ksdio")
+
+[node name="AreaGameOver" type="Area2D" parent="cenario" unique_id=391124661]
+position = Vector2(127, 266)
+script = ExtResource("8_v1d1r")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cenario/AreaGameOver" unique_id=588478576]
+shape = SubResource("RectangleShape2D_l8342")
+
+[node name="hud" type="Node" parent="." unique_id=43960586]
+
+[node name="Sprite2D2" type="Sprite2D" parent="hud" unique_id=360500444]
+position = Vector2(124, 8)
+texture = ExtResource("5_2juca")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="hud" unique_id=95023561]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -2.0
+offset_top = 21.0
+offset_right = -2.0
+offset_bottom = 45.0
+grow_horizontal = 2
+
+[node name="LabelP" type="Label" parent="hud/VBoxContainer" unique_id=1467334961]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_b12mh")
+theme_override_font_sizes/font_size = 14
+text = "0"
+horizontal_alignment = 1
+
+[node name="coracoes" type="Node2D" parent="hud" unique_id=653081069]
+script = ExtResource("9_jdavq")
+
+[node name="coracao1" type="Node2D" parent="hud/coracoes" unique_id=204877667]
+position = Vector2(12, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoes/coracao1" unique_id=93181591]
+texture = ExtResource("10_vhipe")
+
+[node name="coracao2" type="Node2D" parent="hud/coracoes" unique_id=1867337048]
+position = Vector2(21, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoes/coracao2" unique_id=1716747306]
+texture = ExtResource("10_vhipe")
+
+[node name="coracao3" type="Node2D" parent="hud/coracoes" unique_id=2025577997]
+position = Vector2(30, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoes/coracao3" unique_id=1549259255]
+texture = ExtResource("10_vhipe")
+
+[node name="coracoesBoss" type="Node2D" parent="hud" unique_id=1362335676]
+position = Vector2(193, 1)
+script = ExtResource("9_jdavq")
+cheio = ExtResource("11_vhipe")
+vazio = ExtResource("12_iwfo7")
+
+[node name="coracao1" type="Node2D" parent="hud/coracoesBoss" unique_id=1534353568]
+position = Vector2(51, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoesBoss/coracao1" unique_id=1547779713]
+texture = ExtResource("11_vhipe")
+
+[node name="coracao2" type="Node2D" parent="hud/coracoesBoss" unique_id=560738660]
+position = Vector2(42, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoesBoss/coracao2" unique_id=1249376661]
+texture = ExtResource("11_vhipe")
+
+[node name="coracao3" type="Node2D" parent="hud/coracoesBoss" unique_id=948302467]
+position = Vector2(33, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoesBoss/coracao3" unique_id=978913992]
+texture = ExtResource("11_vhipe")
+
+[node name="coracao4" type="Node2D" parent="hud/coracoesBoss" unique_id=1485240445]
+position = Vector2(24, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoesBoss/coracao4" unique_id=1883551416]
+texture = ExtResource("11_vhipe")
+
+[node name="coracao5" type="Node2D" parent="hud/coracoesBoss" unique_id=471307400]
+position = Vector2(15, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/coracoesBoss/coracao5" unique_id=1354011688]
+texture = ExtResource("11_vhipe")
+
+[node name="wave" type="Sprite2D" parent="hud" unique_id=1178234222]
+position = Vector2(40, 28)
+texture = ExtResource("16_b12mh")
+
+[node name="LabelWave" type="Label" parent="hud/wave" unique_id=592878031]
+offset_left = 43.0
+offset_top = -7.0
+offset_right = 83.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_b12mh")
+text = "0"
+
+[node name="timers" type="Node" parent="." unique_id=1269043745]
+
+[node name="TimerSpawnMoto" type="Timer" parent="timers" unique_id=1295530984]
+one_shot = true
+
+[node name="TimerPlaneta" type="Timer" parent="timers" unique_id=795895466]
+one_shot = true
+
+[node name="TimerSpawnCoracao" type="Timer" parent="timers" unique_id=912202059]
+one_shot = true
+
+[node name="sons" type="Node" parent="." unique_id=501850141]
+
+[node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=341250108]
+stream = ExtResource("13_p4x86")
+autoplay = true
+
+[node name="coletarCoracao" type="AudioStreamPlayer" parent="sons" unique_id=735013477]
+stream = ExtResource("17_n3rig")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1158279175]
+anchor_mode = 0
+
+[node name="PauseMenu" parent="." unique_id=1052343631 instance=ExtResource("18_8o0l5")]
+
+[connection signal="area_entered" from="cenario/AreaGameOver" to="cenario/AreaGameOver" method="_on_area_entered"]
+[connection signal="timeout" from="timers/TimerSpawnMoto" to="." method="_on_timer_spawn_moto_timeout"]
+[connection signal="timeout" from="timers/TimerPlaneta" to="." method="_on_timer_planeta_timeout"]
+[connection signal="timeout" from="timers/TimerSpawnCoracao" to="." method="_on_timer_spawn_coracao_timeout"]

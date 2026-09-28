@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://hiotir6wyfit"]
+
+[ext_resource type="Script" uid="uid://3ceknns2t421" path="res://scripts/player/coracao_item.gd" id="1_05drp"]
+[ext_resource type="Texture2D" uid="uid://d7mghrngtbvb" path="res://meus sprites/coracao_item.png" id="2_05drp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+size = Vector2(12, 12)
+
+[node name="coracao_item" type="Area2D" unique_id=485126390]
+script = ExtResource("1_05drp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=241214714]
+texture = ExtResource("2_05drp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2128381472]
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

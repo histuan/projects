@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://46abfjp0kdaq"
+path="res://.godot/imported/lorax-morte.wav-1fa8cf7aae15fbf2cc78a6d932123ea0.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/lorax-morte.wav"
+dest_files=["res://.godot/imported/lorax-morte.wav-1fa8cf7aae15fbf2cc78a6d932123ea0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

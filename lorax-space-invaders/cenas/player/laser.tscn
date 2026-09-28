@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c83dr6paoj4gq"]
+
+[ext_resource type="Script" uid="uid://bwfugxgjwki88" path="res://scripts/player/laser.gd" id="1_2o7xn"]
+[ext_resource type="Texture2D" uid="uid://ci4es8mfy74an" path="res://meus sprites/missil_player.png" id="2_2o7xn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+size = Vector2(2, 8)
+
+[node name="Area2D" type="Area2D" unique_id=799398915]
+script = ExtResource("1_2o7xn")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=727873407]
+texture = ExtResource("2_2o7xn")
+
+[node name="laser" type="CollisionShape2D" parent="." unique_id=980699781]
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

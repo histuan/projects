@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ctndc5uc7tov8"]
+
+[ext_resource type="Script" uid="uid://bubei40klpswn" path="res://scripts/geral/folha.gd" id="1_eriik"]
+[ext_resource type="Texture2D" uid="uid://c6slfrgo7heyv" path="res://meus sprites/folha.png" id="2_gewv3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eriik"]
+size = Vector2(4, 4)
+
+[node name="folha" type="StaticBody2D" unique_id=1631120964 groups=["blocos"]]
+script = ExtResource("1_eriik")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1513333651]
+texture = ExtResource("2_gewv3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2083130415]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=205294121]
+shape = SubResource("RectangleShape2D_eriik")

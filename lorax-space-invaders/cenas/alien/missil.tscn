@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c57ck7f4ox7um"]
+
+[ext_resource type="Script" uid="uid://df8o1rbhfnusa" path="res://scripts/aliens/missil.gd" id="1_5i7qq"]
+[ext_resource type="Texture2D" uid="uid://dua5hch5vadd1" path="res://meus sprites/TiroAlien.png" id="2_tda1t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+size = Vector2(2.9921875, 7)
+
+[node name="missil" type="Area2D" unique_id=875395868 groups=["misseis"]]
+script = ExtResource("1_5i7qq")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=638968738]
+texture = ExtResource("2_tda1t")
+hframes = 2
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2091151928]
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

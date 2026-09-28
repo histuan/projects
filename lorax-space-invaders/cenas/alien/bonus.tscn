@@ -1,0 +1,192 @@
+[gd_scene format=3 uid="uid://d08yfc8snmw8m"]
+
+[ext_resource type="Script" uid="uid://bnm55al7vuwi" path="res://scripts/aliens/bonus.gd" id="1_x2snv"]
+[ext_resource type="Texture2D" uid="uid://45wi8gcq2b6t" path="res://meus sprites/Lorax.png" id="2_x2snv"]
+[ext_resource type="AudioStream" uid="uid://dk0gff7tj262b" path="res://efeitos sonoros reais/wav/arvere.wav" id="3_xcwva"]
+[ext_resource type="AudioStream" uid="uid://b87kwk2br8g73" path="res://efeitos sonoros reais/wav/lorax-dano.wav" id="4_f5qju"]
+[ext_resource type="AudioStream" uid="uid://46abfjp0kdaq" path="res://efeitos sonoros reais/wav/lorax-morte.wav" id="5_susyg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+size = Vector2(22, 9)
+
+[sub_resource type="Animation" id="Animation_fix7m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_x2snv"]
+resource_name = "atacando"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 2, 3, 2]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"idle"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rilvo"]
+resource_name = "dano"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 4, 5, 4]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"idle"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_t8jp8"]
+resource_name = "destruido"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 0.9982991),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.40075088, 0.6, 0.8, 1.0333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [],
+"method": &"descida"
+}, {
+"args": [],
+"method": &"descida"
+}, {
+"args": [],
+"method": &"descida"
+}, {
+"args": [],
+"method": &"descida"
+}, {
+"args": [],
+"method": &"descida"
+}, {
+"args": [],
+"method": &"descida"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_0idmp"]
+resource_name = "normal"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pqir0"]
+_data = {
+&"RESET": SubResource("Animation_fix7m"),
+&"atacando": SubResource("Animation_x2snv"),
+&"dano": SubResource("Animation_rilvo"),
+&"destruido": SubResource("Animation_t8jp8"),
+&"normal": SubResource("Animation_0idmp")
+}
+
+[node name="bonus" type="CharacterBody2D" unique_id=1579589686 groups=["aliens"]]
+script = ExtResource("1_x2snv")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1217823765]
+texture = ExtResource("2_x2snv")
+hframes = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1301250694]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=264344077]
+libraries/ = SubResource("AnimationLibrary_pqir0")
+autoplay = &"normal"
+
+[node name="TimerArremesso" type="Timer" parent="." unique_id=1009372611]
+wait_time = 2.0
+
+[node name="sons" type="Node2D" parent="." unique_id=1356842749]
+
+[node name="arvere" type="AudioStreamPlayer2D" parent="sons" unique_id=199368519]
+stream = ExtResource("3_xcwva")
+volume_db = 13.58
+
+[node name="dano" type="AudioStreamPlayer2D" parent="sons" unique_id=562136073]
+stream = ExtResource("4_f5qju")
+volume_db = 12.0
+
+[node name="morte" type="AudioStreamPlayer2D" parent="sons" unique_id=387758961]
+stream = ExtResource("5_susyg")
+volume_db = 24.0
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="TimerArremesso" to="." method="_on_timer_arremesso_timeout"]

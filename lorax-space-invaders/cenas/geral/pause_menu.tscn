@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://c00wpsfa85tbq"]
+
+[ext_resource type="Script" uid="uid://c4c2b2kfisf4w" path="res://scripts/geral/pause_menu.gd" id="1_wrx2f"]
+[ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="2_rq5ii"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1052343631]
+process_mode = 3
+layer = 10
+script = ExtResource("1_wrx2f")
+
+[node name="Fundo" type="ColorRect" parent="." unique_id=620444953]
+offset_right = 254.0
+offset_bottom = 256.0
+color = Color(1.1488971e-05, 1.1488971e-05, 1.1488971e-05, 0.56078434)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2035358394]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -127.0
+offset_top = -82.0
+offset_right = 127.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Titulo" type="Label" parent="VBoxContainer" unique_id=1374215083]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rq5ii")
+text = "PAUSADO"
+horizontal_alignment = 1
+
+[node name="Continuar" type="Button" parent="VBoxContainer" unique_id=1782545726]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rq5ii")
+theme_override_font_sizes/font_size = 8
+text = "CONTINUAR"
+
+[node name="Reiniciar" type="Button" parent="VBoxContainer" unique_id=1742309242]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rq5ii")
+theme_override_font_sizes/font_size = 8
+text = "REINICIAR"
+
+[node name="Menu" type="Button" parent="VBoxContainer" unique_id=461783972]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rq5ii")
+theme_override_font_sizes/font_size = 8
+text = "MENU"
+
+[node name="Sair" type="Button" parent="VBoxContainer" unique_id=235844257]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rq5ii")
+theme_override_font_sizes/font_size = 8
+text = "SAIR"
+
+[connection signal="pressed" from="VBoxContainer/Continuar" to="." method="_on_continuar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Reiniciar" to="." method="_on_reiniciar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sair" to="." method="_on_sair_pressed"]

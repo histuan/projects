@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c57vp1aknu07h"
+path="res://.godot/imported/coletar_coracao.wav-9b8f4b7bd0559ce5ffdbae1a1280ec03.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/coletar_coracao.wav"
+dest_files=["res://.godot/imported/coletar_coracao.wav-9b8f4b7bd0559ce5ffdbae1a1280ec03.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

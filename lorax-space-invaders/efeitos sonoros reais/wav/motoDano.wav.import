@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cdskigtv6bv6y"
+path="res://.godot/imported/motoDano.wav-41ae583bca4164aaf99e612fa41f06c3.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/wav/motoDano.wav"
+dest_files=["res://.godot/imported/motoDano.wav-41ae583bca4164aaf99e612fa41f06c3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

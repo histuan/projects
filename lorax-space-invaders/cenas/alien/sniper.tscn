@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://dynn17yvsb6mk"]
+
+[ext_resource type="Script" uid="uid://cerqb0jq8kn3w" path="res://scripts/aliens/sniper.gd" id="1_30265"]
+[ext_resource type="Texture2D" uid="uid://bvhhgc57vq1sj" path="res://meus sprites/alien_sniper.png" id="2_6qbuk"]
+[ext_resource type="AudioStream" uid="uid://deem0caldprqq" path="res://efeitos sonoros reais/wav/tiro_sniper.wav" id="2_kmrgq"]
+[ext_resource type="AudioStream" uid="uid://b0jo81rb8p6m2" path="res://efeitos sonoros reais/wav/dano_sniper.wav" id="3_6qbuk"]
+[ext_resource type="AudioStream" uid="uid://dvda7f8nftb4e" path="res://efeitos sonoros reais/wav/wilhelm scream.wav" id="4_ttrdm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+size = Vector2(20, 18)
+
+[sub_resource type="Animation" id="Animation_ttrdm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_nd57e"]
+resource_name = "atirando"
+length = 0.19999999999999998
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_0kp2j"]
+resource_name = "destroy"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_ovj6i"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v5dda"]
+_data = {
+&"RESET": SubResource("Animation_ttrdm"),
+&"atirando": SubResource("Animation_nd57e"),
+&"destroy": SubResource("Animation_0kp2j"),
+&"idle": SubResource("Animation_ovj6i")
+}
+
+[node name="Sniper" type="CharacterBody2D" unique_id=522840091 groups=["aliens"]]
+script = ExtResource("1_30265")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=474338769]
+texture = ExtResource("2_6qbuk")
+hframes = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1316873029]
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=1049534899]
+position = Vector2(0, 8)
+
+[node name="TimerTiro" type="Timer" parent="." unique_id=1692201165]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1267774155]
+libraries/ = SubResource("AnimationLibrary_v5dda")
+autoplay = &"idle"
+
+[node name="sons" type="Node2D" parent="." unique_id=87593188]
+
+[node name="tiro" type="AudioStreamPlayer2D" parent="sons" unique_id=809962096]
+stream = ExtResource("2_kmrgq")
+
+[node name="dano" type="AudioStreamPlayer2D" parent="sons" unique_id=998670329]
+stream = ExtResource("3_6qbuk")
+
+[node name="morte" type="AudioStreamPlayer2D" parent="sons" unique_id=563824477]
+stream = ExtResource("4_ttrdm")
+
+[connection signal="timeout" from="TimerTiro" to="." method="_on_timer_tiro_timeout"]
