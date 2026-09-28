@@ -1,30 +1,28 @@
-# 🧮 Matrix and Linear Systems Calculator
+# Matrix and Linear Systems Calculator
 
-A **Java** program that performs linear algebra operations with matrices and vectors from the terminal.
+Java program that runs linear algebra operations on matrices and vectors from the terminal.
 
-## ✨ Features
+## Features
 
 - Matrix and vector addition and multiplication
 - Transposition
 - Gaussian elimination
 - Solving linear systems
-- Interactive menu with free navigation between operations
-- Error handling
+- Interactive menu to move between operations
+- Error handling for invalid input
 
-## 🏗️ Code organization
-
-The project is split into 5 classes:
+## Code organization
 
 ```
 src/trabalhoMatriz/
-├── Main.java            → entry point
-├── Menu.java            → user interaction
-├── Matrix.java          → matrix representation
-├── Vector.java          → vector representation
-└── LinearAlgebra.java   → linear algebra operations
+├── Main.java            # entry point
+├── Menu.java            # user interaction
+├── Matrix.java          # matrix representation
+├── Vector.java          # vector representation
+└── LinearAlgebra.java   # the operations
 ```
 
-## ▶️ How to run
+## How to run
 
 From the `Calculadora-De-Matriz` folder:
 
@@ -33,4 +31,4 @@ javac -d out src/trabalhoMatriz/*.java
 java -cp out trabalhoMatriz.Main
 ```
 
-> The program's interface is in Portuguese.
+The program's interface is in Portuguese.
