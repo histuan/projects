@@ -81,7 +81,7 @@ func morrer():
 	vivo = false
 	$TimerTiro.stop()
 	$CollisionShape2D.set_deferred("disabled", true)
-	get_tree().current_scene.Somar_pontos_alien(self)
+	Partida.somar_pontos(valor_pontos, global_position)
 	if has_node("sons/morte"):
 		var som = $sons/morte
 		som.reparent(get_tree().current_scene)

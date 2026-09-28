@@ -62,7 +62,7 @@ func estourar(atingido = null):
 # Chamada pela animação explosao: tremor (se ainda estiver na tela) e som
 func explosao():
 	if global_position.y < 256:
-		get_tree().current_scene.tremer(6,0.8)
+		get_viewport().get_camera_2d().tremer(6, 0.8)
 	if has_node("explosao"):
 		var som = $explosao
 		som.reparent(get_tree().current_scene)

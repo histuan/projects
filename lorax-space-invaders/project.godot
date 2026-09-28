@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0.011764706, 0, 0.101960786, 1)
 config/icon="res://icon.svg"
 
+[autoload]
+
+Partida="*uid://bn51j2nmmof5t"
+
 [display]
 
 window/size/viewport_width=254

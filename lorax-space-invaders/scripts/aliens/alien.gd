@@ -72,6 +72,7 @@ func piscar():
 	
 # Chamada pela animação destroy: avisa quem está ouvindo e remove o alien
 func elimination():
+	Partida.somar_pontos(valor_pontos, global_position)
 	emit_signal("alien_eliminado",self)
 	get_parent().remove_child(self)
 	queue_free()

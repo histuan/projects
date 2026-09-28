@@ -3,21 +3,21 @@
 extends CharacterBody2D
 
 @export var laser = preload("res://cenas/player/laser.tscn")
-@export var motoArma = preload("res://cenas/player/moto_arma.tscn")
 
 @onready var ptolaser = $LaserSpawn
 @onready var timer_tiro = $timers/TimerTiro
 @onready var anim = $AnimationPlayer
-@onready var timer_moto = $timers/TimerMotosserra
+@onready var timer_power = $timers/TimerPowerUp
 
 const GAME_OVER = preload("res://cenas/geral/game_over.tscn")
 
 const SPEED = 100.0
 var direction = Vector2()
-# podisp: pode atirar (volta a true no fim do TimerTiro) · com_moto: power-up ativo
+# podisp: pode atirar (volta a true no fim do TimerTiro)
 var podisp = true
 var vivo = true
-var com_moto = false
+# powerup_ativo: power-up ligado ou null
+var powerup_ativo: PowerUp = null
 
 # Movimento, animação e tiro, a cada frame de física
 func _physics_process(delta):
@@ -43,17 +43,16 @@ func _physics_process(delta):
 		$Sprite2Didle.show()
 		anim.play("idle")
 		
-	# Tiro: motosserra se o power-up estiver ativo; depois espera o cooldown (TimerTiro)
+	# Tiro: o power-up ativo decide o que sai; sem power-up, laser. Depois o cooldown (TimerTiro)
 	if Input.is_action_just_pressed("shoot") and podisp == true:
-		var l
-		if com_moto:
-			l = motoArma.instantiate()
-			$sons/motoSFX.play()    
+		if powerup_ativo != null:
+			powerup_ativo.atirar(ptolaser.global_position, get_parent())
+			tocar_som($sons/powerTiro, powerup_ativo.som_tiro, powerup_ativo.volume_tiro)
 		else:
-			l = laser.instantiate()
+			var l = laser.instantiate()
+			l.global_position = ptolaser.global_position
+			get_parent().add_child(l)
 			$sons/shootSFX.play()
-		l.global_position = ptolaser.global_position
-		get_parent().add_child(l)
 		podisp = false
 		timer_tiro.start()
 	
@@ -63,10 +62,12 @@ func _physics_process(delta):
 func _on_timer_tiro_timeout():
 	podisp = true
 	
-# A main desconta a vida e decide se o player pisca ou morre
+# Perde 1 vida na Partida (a main reage com tremor ou morte); pisca se sobreviveu
 func dano():
-	get_parent().perder_vida(true)
+	Partida.perder_vida()
 	$sons/dano.play()
+	if vivo:
+		piscar()
 	
 func piscar():
 	var tween = create_tween()
@@ -95,14 +96,30 @@ func eliminado():
 	if !self.is_queued_for_deletion():
 		get_tree().change_scene_to_packed(GAME_OVER)
 
-# Chamada pelo item da motosserra: power-up por 8 s (TimerMotosserra)
-func ativar_moto():
-	com_moto = true
-	$sons/motoColeta.play()
-	timer_moto.start()
+# Chamada pelo item que cai: liga o power-up por pu.duracao segundos.
+# Pegar outro com um ativo substitui o antigo e reinicia o tempo.
+func ativar_powerup(pu):
+	if powerup_ativo != null:
+		powerup_ativo.ao_acabar(self)
+	powerup_ativo = pu
+	pu.ao_ativar(self)
+	tocar_som($sons/powerColeta, pu.som_coleta, pu.volume_coleta)
+	timer_power.start(pu.duracao)
 	
-func _on_timer_motosserra_timeout():
-	com_moto = false
+# Fim do tempo: desliga o power-up (a barra some sozinha)
+func _on_timer_power_up_timeout():
+	if powerup_ativo == null:
+		return
+	powerup_ativo.ao_acabar(self)
+	powerup_ativo = null
+	
+# Toca um som vindo do PowerUp num AudioStreamPlayer genérico (ignora se não houver som)
+func tocar_som(no, stream, volume):
+	if stream == null:
+		return
+	no.stream = stream
+	no.volume_db = volume
+	no.play()
 
 # Encostar num inimigo destrói o inimigo e tira vida do player
 func _on_sensor_alien_body_entered(body):

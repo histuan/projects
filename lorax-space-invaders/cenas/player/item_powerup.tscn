@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ctdswnd4hj846"]
+
+[ext_resource type="Script" uid="uid://dkxotclo7qocc" path="res://scripts/player/item_powerup.gd" id="1_nq2fv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
+
+[node name="ItemPowerup" type="Area2D" unique_id=1003250222]
+script = ExtResource("1_nq2fv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1835162013]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1290516051]
+shape = SubResource("RectangleShape2D_cdpwx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

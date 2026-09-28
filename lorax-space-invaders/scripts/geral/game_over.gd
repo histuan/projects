@@ -1,16 +1,13 @@
 # Game over: mostra a pontuação e reinicia pelo botão ou pelo teclado.
 extends Node2D
 
-# Script da main, só para ler a variável static pontuacao_final
-const main = preload("res://scripts/geral/main.gd")
-
 # Espera mínima antes de aceitar o reinício: quem estava apertando Espaço
 # ao morrer não pula esta tela sem querer
 const ESPERA_MINIMA = 0.8
 var pode_reiniciar = false
 
 func _ready():
-	$VBoxContainer/LabelScore.text = "SCORE: " + str(main.pontuacao_final)
+	$VBoxContainer/LabelScore.text = "SCORE: " + str(Partida.pontos)
 	await get_tree().create_timer(ESPERA_MINIMA).timeout
 	pode_reiniciar = true
 	

@@ -45,7 +45,7 @@ func _process(delta):
 # Fim da animação de morte: "+500", avisa main e groupAlien e some
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "destruido":
-		get_tree().current_scene.mostrar_pontos(500, global_position, 16)
+		Partida.somar_pontos(500, global_position, 16)
 		emit_signal("bonus_eliminado")
 		queue_free()
 
@@ -76,9 +76,9 @@ func morrer():
 	som.play()
 	som.finished.connect(som.queue_free)
 	$TimerArremesso.stop()
-	var main = get_tree().current_scene
-	main.tremer(8)
-	main.congelar(0.12)
+	var camera = get_viewport().get_camera_2d()
+	camera.tremer(8)
+	camera.congelar(0.12)
 	
 func _on_timer_arremesso_timeout():
 	arremessar()

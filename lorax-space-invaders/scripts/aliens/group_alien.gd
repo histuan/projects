@@ -21,7 +21,6 @@ const WAVES_FORTE = 3
 const WAVE_SNIPER = 4
 const MAX_SNIPERS = 2
 const SLOTS_SNIPER = [Vector2(13, 49), Vector2(241, 49)]
-var wave = 0
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
@@ -60,8 +59,7 @@ func _on_timer_dificuldade_timeout():
 
 # Cria uma horda 4x8; as filas de cima viram aliens fortes conforme a wave
 func criar_horda():
-	wave += 1
-	get_parent().mostrar_wave(wave)
+	var wave = Partida.avancar_wave()
 	var linhas_fortes = mini(floori(wave / float(WAVES_FORTE)), 4)
 	for i in range(4):
 		var fila = []
@@ -78,7 +76,6 @@ func criar_horda():
 			fila.append(alien)
 			# Sai da lista ao morrer ou ao bater num bloco; a main soma os pontos
 			alien.connect("alien_eliminado", Callable(self, "eliminar_alien"))
-			alien.connect("alien_eliminado", Callable(get_parent(),"Somar_pontos_alien"))
 			alien.connect("alien_atingiu_base", Callable(self, "eliminar_alien"))
 		lista_aliens.append(fila)
 	# Snipers entram depois que o letreiro WAVE some (TimerSniper = 4,5 s)
@@ -126,11 +123,11 @@ func _on_timer_tiro_timeout():
 # Cria o boss e liga os sinais dele à main (pontos, corações) e a este nó (próxima wave)
 func _on_timer_bonus_timeout():
 	var bonus = Bonus.instantiate()
-	bonus.connect("bonus_eliminado", Callable(get_parent(), "somar_bonus"))
-	bonus.connect("boss_dano", Callable(get_parent(), "perder_vida_boss"))
-	bonus.connect("boss_apareceu", Callable(get_parent(), "mostrar_vida_boss"))
-	bonus.connect("boss_desceu", Callable(get_parent(), "parar_piscada_boss"))
-	bonus.connect("bonus_eliminado", Callable(self, "_on_boss_morreu"))
+	var hud = get_parent().get_node("hud")
+	bonus.boss_dano.connect(hud.perder_vida_boss)
+	bonus.boss_apareceu.connect(hud.mostrar_vida_boss)
+	bonus.boss_desceu.connect(hud.parar_piscada_boss)
+	bonus.bonus_eliminado.connect(_on_boss_morreu)
 	self.add_child(bonus)
 	$loraxChegada.play()
 
@@ -157,7 +154,7 @@ func _on_timer_proxima_wave_timeout():
 # Cria os snipers que faltam: 1 nas waves 4–6, 2 a partir da 7.
 # Cada um nasce 30 px fora da tela e desliza até o canto livre
 func _on_timer_sniper_timeout():
-	var desejados = mini(1 + floori((wave - WAVE_SNIPER) / 3.0), MAX_SNIPERS)
+	var desejados = mini(1 + floori((Partida.wave - WAVE_SNIPER) / 3.0), MAX_SNIPERS)
 	var vivos = get_tree().get_nodes_in_group("snipers").size()
 	for slot in SLOTS_SNIPER:
 		if vivos >= desejados:

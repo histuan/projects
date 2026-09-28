@@ -11,13 +11,17 @@
 [ext_resource type="Script" uid="uid://bec0lr8nt3j8g" path="res://scripts/geral/chao.gd" id="7_l8342"]
 [ext_resource type="Script" uid="uid://55ewa8tqyb0" path="res://scripts/geral/area_game_over.gd" id="8_v1d1r"]
 [ext_resource type="Script" uid="uid://ctpbcjvlke5mh" path="res://scripts/geral/coracoes.gd" id="9_jdavq"]
+[ext_resource type="Script" uid="uid://13rj6lp8f6l8" path="res://scripts/geral/hud.gd" id="9_pwmi0"]
 [ext_resource type="Texture2D" uid="uid://cihlw42wnof5f" path="res://meus sprites/coracao.png" id="10_vhipe"]
 [ext_resource type="Texture2D" uid="uid://ckv36dabqven0" path="res://meus sprites/coracao_boss.png" id="11_vhipe"]
 [ext_resource type="Texture2D" uid="uid://cbx05e3wwx551" path="res://meus sprites/coracao_boss_vazio.png" id="12_iwfo7"]
 [ext_resource type="AudioStream" uid="uid://dape3rcq3pbip" path="res://efeitos sonoros reais/The_Green_Frontier.mp3" id="13_p4x86"]
 [ext_resource type="Texture2D" uid="uid://bymfmq2cxt71b" path="res://meus sprites/wave.png" id="16_b12mh"]
+[ext_resource type="Script" uid="uid://c4siruc773wvm" path="res://scripts/geral/spawner.gd" id="16_mxjhq"]
 [ext_resource type="AudioStream" uid="uid://c57vp1aknu07h" path="res://efeitos sonoros reais/wav/coletar_coracao.wav" id="17_n3rig"]
+[ext_resource type="Script" uid="uid://2f6o0lk48p4a" path="res://scripts/geral/barra_power.gd" id="17_qyhsy"]
 [ext_resource type="PackedScene" uid="uid://c00wpsfa85tbq" path="res://cenas/geral/pause_menu.tscn" id="18_8o0l5"]
+[ext_resource type="Script" uid="uid://cw5fjg77bn5gf" path="res://scripts/geral/camera.gd" id="20_qyhsy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ksdio"]
 size = Vector2(20, 256)
@@ -665,6 +669,7 @@ metadata/_edit_group_ = true
 shape = SubResource("RectangleShape2D_l8342")
 
 [node name="hud" type="Node" parent="." unique_id=43960586]
+script = ExtResource("9_pwmi0")
 
 [node name="Sprite2D2" type="Sprite2D" parent="hud" unique_id=360500444]
 position = Vector2(124, 8)
@@ -765,15 +770,20 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_b12mh")
 text = "0"
 
-[node name="timers" type="Node" parent="." unique_id=1269043745]
+[node name="barraPower" type="Node2D" parent="hud" unique_id=751807571]
+position = Vector2(187, 229)
+script = ExtResource("17_qyhsy")
 
-[node name="TimerSpawnMoto" type="Timer" parent="timers" unique_id=1295530984]
+[node name="spawner" type="Node" parent="." unique_id=1269043745]
+script = ExtResource("16_mxjhq")
+
+[node name="TimerSpawnPowerUp" type="Timer" parent="spawner" unique_id=1295530984]
 one_shot = true
 
-[node name="TimerPlaneta" type="Timer" parent="timers" unique_id=795895466]
+[node name="TimerPlaneta" type="Timer" parent="spawner" unique_id=795895466]
 one_shot = true
 
-[node name="TimerSpawnCoracao" type="Timer" parent="timers" unique_id=912202059]
+[node name="TimerSpawnCoracao" type="Timer" parent="spawner" unique_id=912202059]
 one_shot = true
 
 [node name="sons" type="Node" parent="." unique_id=501850141]
@@ -787,10 +797,11 @@ stream = ExtResource("17_n3rig")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1158279175]
 anchor_mode = 0
+script = ExtResource("20_qyhsy")
 
 [node name="PauseMenu" parent="." unique_id=1052343631 instance=ExtResource("18_8o0l5")]
 
 [connection signal="area_entered" from="cenario/AreaGameOver" to="cenario/AreaGameOver" method="_on_area_entered"]
-[connection signal="timeout" from="timers/TimerSpawnMoto" to="." method="_on_timer_spawn_moto_timeout"]
-[connection signal="timeout" from="timers/TimerPlaneta" to="." method="_on_timer_planeta_timeout"]
-[connection signal="timeout" from="timers/TimerSpawnCoracao" to="." method="_on_timer_spawn_coracao_timeout"]
+[connection signal="timeout" from="spawner/TimerSpawnPowerUp" to="spawner" method="_on_timer_spawn_power_up_timeout"]
+[connection signal="timeout" from="spawner/TimerPlaneta" to="spawner" method="_on_timer_planeta_timeout"]
+[connection signal="timeout" from="spawner/TimerSpawnCoracao" to="spawner" method="_on_timer_spawn_coracao_timeout"]
