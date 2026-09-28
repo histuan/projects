@@ -1,13 +1,10 @@
-# Cena principal da partida. Zera o estado (autoload Partida) ao entrar e liga as
-# reações da cena aos avisos dela: tremor, hit-stop, morte do player e som de vida.
-# Números: partida.gd · itens: spawner · tela: hud · tremor: Camera2D
+# Cena principal da partida. Zera o estado (autoload Partida)
 extends Node
 
 @onready var camera = $Camera2D
 @onready var player = $player
 
-# _enter_tree roda ANTES do _ready de qualquer filho: o estado já está zerado
-# quando o groupAlien cria a wave 1
+# _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
 	Partida.nova_partida()
 
