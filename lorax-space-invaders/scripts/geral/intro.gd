@@ -23,6 +23,8 @@ func ir_menu():
 	if saindo:
 		return
 	saindo = true
+	video.stop()
+	await get_tree().process_frame
 
 	var cena_pronta = ResourceLoader.load_threaded_get(CENA_MENU)
 
