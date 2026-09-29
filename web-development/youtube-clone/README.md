@@ -2,7 +2,7 @@
 
 Copy of the YouTube home page made with plain HTML and CSS, no frameworks.
 
-Live version: https://histuan.github.io/projects/youtube-clone/
+Live version: https://histuan.github.io/projects/web-development/youtube-clone/
 
 ## Features
 

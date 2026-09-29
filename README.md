@@ -6,7 +6,7 @@ Things I've built during my Computer Science degree and on my own.
 |---|---|---|
 | [Lorax: Deforestationders](./lorax-space-invaders) | Space Invaders-style arcade game with waves, progressive difficulty, a boss fight and power-ups. | ![Godot](https://img.shields.io/badge/Godot-478CBF?logo=godotengine&logoColor=white) |
 | [Matrix Calculator](./Calculadora-De-Matriz) | Linear algebra with matrices and vectors: addition, multiplication, transposition, Gaussian elimination and linear systems, through an interactive menu. | ![Java](https://img.shields.io/badge/Java-ED8B00?logo=openjdk&logoColor=white) |
-| [YouTube Clone](./youtube-clone) | Responsive copy of the YouTube home page, with tooltips and cards that link to the videos. | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) |
+| [Web development](./web-development) | Front-end projects and Frontend Mentor challenges, such as a YouTube home page clone and a QR code component. Each one is live on GitHub Pages. | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) |
 | [Grade Calculator](./calculadoraDeNotas) | Terminal program that calculates each student's average, the class average, and the highest and lowest averages. | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) |
 
 Each folder has its own README with details and instructions to run it.
