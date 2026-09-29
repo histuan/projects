@@ -1,6 +1,7 @@
 # Lorax: Deforestationders
 
 A Space Invaders-style arcade shooter built with Godot 4 and GDScript, themed around *The Lorax*.
+
 *you are an unpaid intern and must destroy the last trees from the universe to ensure freedom to all.*
 
 Developed as a course project for the Computer Science program at Universidade de Fortaleza (Unifor). It started from a base project provided in class and was expanded with original gameplay systems, pixel art and sound.
