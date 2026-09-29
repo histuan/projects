@@ -1208,7 +1208,7 @@ script = ExtResource("1_wj75e")
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1998193796]
 offset_top = 14.0
 offset_right = 254.0
-offset_bottom = 124.0
+offset_bottom = 149.0
 
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=1523079529]
 layout_mode = 2
@@ -1224,6 +1224,8 @@ vertical_alignment = 1
 
 [node name="LabelScore" type="Label" parent="VBoxContainer" unique_id=83917277]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -5)
 theme_override_colors/font_color = Color(1, 0.8235294, 0.24705882, 1)
 theme_override_colors/font_shadow_color = Color(0.3529412, 0.11764706, 0.23529412, 1)
 theme_override_constants/shadow_offset_x = 2
@@ -1231,6 +1233,17 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("2_c0pxm")
 theme_override_font_sizes/font_size = 12
 text = "SCORE:"
+horizontal_alignment = 1
+
+[node name="LabelWave" type="Label" parent="VBoxContainer" unique_id=965563153]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8235294, 0.24705882, 1)
+theme_override_colors/font_shadow_color = Color(0.3529412, 0.11764706, 0.23529412, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("2_c0pxm")
+theme_override_font_sizes/font_size = 12
+text = "WAVE:	"
 horizontal_alignment = 1
 
 [node name="reiniciar" type="Button" parent="VBoxContainer" unique_id=112610578]

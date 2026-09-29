@@ -8,6 +8,7 @@ var pode_reiniciar = false
 
 func _ready():
 	$VBoxContainer/LabelScore.text = "SCORE: " + str(Partida.pontos)
+	$VBoxContainer/LabelWave.text = "WAVE: " + str(Partida.wave)
 	await get_tree().create_timer(ESPERA_MINIMA).timeout
 	pode_reiniciar = true
 	
