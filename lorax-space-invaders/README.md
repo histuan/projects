@@ -54,7 +54,6 @@ lorax-space-invaders/
 
 ## Credits
 
-- Code, pixel art and most sound effects: Thiago Uchoa Gomes
-- Base project: provided by the course instructor
+- Code, pixel art and sound effects(minus motosserra.wav): Thiago Uchoa Gomes
 
 *The Lorax* is a creation of Dr. Seuss. This is a non-commercial student project with no affiliation with the rights holders.
