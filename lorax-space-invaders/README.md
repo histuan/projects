@@ -42,10 +42,13 @@ Folder names are in Portuguese.
 
 ```
 lorax-space-invaders/
-├── cenas/          # scenes (alien, player, geral)
-├── scripts/        # GDScript files, mirroring cenas/
-├── meus sprites/   # pixel art
-├── fonts/          # pixel fonts
+├── cenas/                   # scenes (alien, player, geral)
+├── scripts/                 # GDScript files, mirroring cenas/
+├── recursos/                # custom resources (power-up data)
+├── meus sprites/            # pixel art
+├── lorax/                   # boss art, title screen and intro video
+├── efeitos sonoros reais/   # music and sound effects
+├── fonts/                   # pixel fonts
 └── project.godot
 ```
 

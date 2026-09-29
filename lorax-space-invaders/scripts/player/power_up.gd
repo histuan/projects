@@ -1,5 +1,3 @@
-# Molde de dados de um power-up. Cada power-up é um arquivo .tres com estes campos;
-# o item que cai, o player e a barra da HUD leem tudo daqui.
 class_name PowerUp
 extends Resource
 

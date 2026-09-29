@@ -1,5 +1,3 @@
-# Player: movimento, animação por direção, tiro (laser ou motosserra), dano, morte
-# e o power-up da motosserra.
 extends CharacterBody2D
 
 @export var laser = preload("res://cenas/player/laser.tscn")
@@ -13,10 +11,8 @@ const GAME_OVER = preload("res://cenas/geral/game_over.tscn")
 
 const SPEED = 100.0
 var direction = Vector2()
-# podisp: pode atirar (volta a true no fim do TimerTiro)
 var podisp = true
 var vivo = true
-# powerup_ativo: power-up ligado ou null
 var powerup_ativo: PowerUp = null
 
 # Movimento, animação e tiro, a cada frame de física
@@ -81,7 +77,6 @@ func morrer():
 	$Sprite2Dmov.hide()
 	$Sprite2Didle.show()
 	anim.play("destroy")
-	# O som vai para a raiz da árvore para continuar tocando depois da troca de cena
 	var som = $sons/morte
 	som.reparent(get_tree().root)
 	som.play()
@@ -113,7 +108,7 @@ func _on_timer_power_up_timeout():
 	powerup_ativo.ao_acabar(self)
 	powerup_ativo = null
 	
-# Toca um som vindo do PowerUp num AudioStreamPlayer genérico (ignora se não houver som)
+# Toca um som vindo do PowerUp
 func tocar_som(no, stream, volume):
 	if stream == null:
 		return

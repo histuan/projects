@@ -12,15 +12,14 @@ var chegou = false
 
 # Valores próprios do sniper (vidas, pontos e sons de dano/morte vêm do Inimigo)
 func _init():
-	vidas = 2
+	vidas = 3
 	valor_pontos = 300
 
-# "aliens": leva tiro e fere ao encostar · "snipers": o groupAlien conta quantos existem
 func _ready():
 	add_to_group("aliens")
 	add_to_group("snipers")
 
-# Desliza até o canto; ao chegar, agenda o primeiro tiro
+# Desliza até o canto; ao chegar, começa o primeiro tiro
 func _process(delta):
 	if chegou or not vivo:
 		return
@@ -57,7 +56,7 @@ func atirar():
 	get_tree().current_scene.add_child(tiro)
 	$sons/tiro.play()
 
-# Morte: para de atirar, desliga a colisão, dá os pontos, grita e some em 0,5 s
+# Morte
 func morrer(_fonte):
 	$TimerTiro.stop()
 	$CollisionShape2D.set_deferred("disabled", true)

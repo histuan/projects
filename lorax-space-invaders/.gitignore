@@ -1,3 +1,13 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# Raw working files kept only on my PC (Godot can't import these formats)
+*.m4a
+*.mp4
+*.aseprite
+lorax/the-lorax.gif
