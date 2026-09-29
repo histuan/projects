@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://d2uoxjeyd1qjq"]
+
+[ext_resource type="PackedScene" uid="uid://detgjjfoaoylp" path="res://cenas/geral/bloco.tscn" id="1_rfqtl"]
+[ext_resource type="PackedScene" uid="uid://ctndc5uc7tov8" path="res://cenas/geral/folha.tscn" id="2_ubddv"]
+
+[node name="base" type="Node2D" unique_id=970903096]
+metadata/_edit_group_ = true
+
+[node name="bloco" parent="." unique_id=406914486 instance=ExtResource("1_rfqtl")]
+
+[node name="bloco2" parent="." unique_id=376813621 instance=ExtResource("1_rfqtl")]
+position = Vector2(8, 12)
+
+[node name="bloco3" parent="." unique_id=1045689738 instance=ExtResource("1_rfqtl")]
+position = Vector2(8, 8)
+
+[node name="bloco4" parent="." unique_id=1830653985 instance=ExtResource("1_rfqtl")]
+position = Vector2(-8, 12)
+
+[node name="bloco5" parent="." unique_id=939085257 instance=ExtResource("1_rfqtl")]
+position = Vector2(-8, 8)
+
+[node name="bloco6" parent="." unique_id=956039872 instance=ExtResource("1_rfqtl")]
+position = Vector2(4, 6)
+
+[node name="bloco7" parent="." unique_id=1150870406 instance=ExtResource("1_rfqtl")]
+position = Vector2(2, 4)
+
+[node name="bloco8" parent="." unique_id=1244501666 instance=ExtResource("1_rfqtl")]
+position = Vector2(-2, 4)
+
+[node name="bloco9" parent="." unique_id=1653904038 instance=ExtResource("1_rfqtl")]
+position = Vector2(-4, 6)
+
+[node name="bloco10" parent="." unique_id=532067342 instance=ExtResource("1_rfqtl")]
+position = Vector2(4, 8)
+
+[node name="bloco11" parent="." unique_id=2036902611 instance=ExtResource("1_rfqtl")]
+position = Vector2(-4, 8)
+
+[node name="folha2" parent="." unique_id=1631120964 instance=ExtResource("2_ubddv")]
+position = Vector2(-4, -4)
+
+[node name="folha4" parent="." unique_id=116398825 instance=ExtResource("2_ubddv")]
+position = Vector2(4, -12)
+
+[node name="folha9" parent="." unique_id=626066508 instance=ExtResource("2_ubddv")]
+position = Vector2(0, -14)
+
+[node name="folha5" parent="." unique_id=571155379 instance=ExtResource("2_ubddv")]
+position = Vector2(-4, -8)
+
+[node name="folha6" parent="." unique_id=10535382 instance=ExtResource("2_ubddv")]
+position = Vector2(4, -8)
+
+[node name="folha7" parent="." unique_id=323086731 instance=ExtResource("2_ubddv")]
+position = Vector2(4, -4)
+
+[node name="folha3" parent="." unique_id=326085279 instance=ExtResource("2_ubddv")]
+position = Vector2(0, -8)
+
+[node name="folha" parent="." unique_id=1809601263 instance=ExtResource("2_ubddv")]
+position = Vector2(0, -4)
+
+[node name="folha19" parent="." unique_id=1408391727 instance=ExtResource("2_ubddv")]
+position = Vector2(3, -13)
+
+[node name="folha18" parent="." unique_id=1879834835 instance=ExtResource("2_ubddv")]
+position = Vector2(-3, -13)
+
+[node name="folha10" parent="." unique_id=1721862937 instance=ExtResource("2_ubddv")]
+position = Vector2(-4, -12)
+
+[node name="folha17" parent="." unique_id=657924695 instance=ExtResource("2_ubddv")]
+position = Vector2(5, -5)
+
+[node name="folha16" parent="." unique_id=1388344460 instance=ExtResource("2_ubddv")]
+position = Vector2(6, -7)
+
+[node name="folha15" parent="." unique_id=1313864402 instance=ExtResource("2_ubddv")]
+position = Vector2(6, -11)
+
+[node name="folha14" parent="." unique_id=1141530864 instance=ExtResource("2_ubddv")]
+position = Vector2(-5, -5)
+
+[node name="folha11" parent="." unique_id=1817811783 instance=ExtResource("2_ubddv")]
+position = Vector2(0, -12)
+
+[node name="folha13" parent="." unique_id=1910108128 instance=ExtResource("2_ubddv")]
+position = Vector2(-6, -8)
+
+[node name="folha22" parent="." unique_id=1751154201 instance=ExtResource("2_ubddv")]
+position = Vector2(-6, -7)
+
+[node name="folha21" parent="." unique_id=1674704465 instance=ExtResource("2_ubddv")]
+position = Vector2(7, -9)
+
+[node name="folha20" parent="." unique_id=8988485 instance=ExtResource("2_ubddv")]
+position = Vector2(-7, -9)
+
+[node name="folha8" parent="." unique_id=1801818916 instance=ExtResource("2_ubddv")]
+position = Vector2(-6, -11)

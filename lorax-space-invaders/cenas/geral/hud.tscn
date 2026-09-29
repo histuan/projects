@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://cjgv16kk7h21"]
+
+[ext_resource type="Script" uid="uid://13rj6lp8f6l8" path="res://scripts/geral/hud.gd" id="1_tk4hp"]
+[ext_resource type="Texture2D" uid="uid://cya266vipgupb" path="res://meus sprites/points.png" id="2_3lyjj"]
+[ext_resource type="FontFile" uid="uid://eo0ndfp5g245" path="res://meus sprites/numeros16_molde.png" id="3_k18o7"]
+[ext_resource type="Script" uid="uid://ctpbcjvlke5mh" path="res://scripts/geral/coracoes.gd" id="4_ukkbo"]
+[ext_resource type="Texture2D" uid="uid://cihlw42wnof5f" path="res://meus sprites/coracao.png" id="5_dbpy8"]
+[ext_resource type="Texture2D" uid="uid://ckv36dabqven0" path="res://meus sprites/coracao_boss.png" id="6_5nysr"]
+[ext_resource type="Texture2D" uid="uid://cbx05e3wwx551" path="res://meus sprites/coracao_boss_vazio.png" id="7_f40o5"]
+[ext_resource type="Texture2D" uid="uid://bymfmq2cxt71b" path="res://meus sprites/wave.png" id="8_8u7ch"]
+[ext_resource type="Script" uid="uid://2f6o0lk48p4a" path="res://scripts/geral/barra_power.gd" id="9_0nt2n"]
+
+[node name="hud" type="Node" unique_id=823700872]
+script = ExtResource("1_tk4hp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1361363879]
+position = Vector2(124, 8)
+texture = ExtResource("2_3lyjj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=39490966]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -2.0
+offset_top = 21.0
+offset_right = -2.0
+offset_bottom = 45.0
+grow_horizontal = 2
+
+[node name="LabelP" type="Label" parent="VBoxContainer" unique_id=1077417503]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_k18o7")
+theme_override_font_sizes/font_size = 14
+text = "0"
+horizontal_alignment = 1
+
+[node name="coracoes" type="Node2D" parent="." unique_id=1759686165]
+script = ExtResource("4_ukkbo")
+
+[node name="coracao1" type="Node2D" parent="coracoes" unique_id=1516217718]
+position = Vector2(12, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoes/coracao1" unique_id=1667213943]
+texture = ExtResource("5_dbpy8")
+
+[node name="coracao2" type="Node2D" parent="coracoes" unique_id=450062180]
+position = Vector2(21, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoes/coracao2" unique_id=1422158634]
+texture = ExtResource("5_dbpy8")
+
+[node name="coracao3" type="Node2D" parent="coracoes" unique_id=865364502]
+position = Vector2(30, 9)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoes/coracao3" unique_id=949997509]
+texture = ExtResource("5_dbpy8")
+
+[node name="coracoesBoss" type="Node2D" parent="." unique_id=1033107558]
+position = Vector2(193, 1)
+script = ExtResource("4_ukkbo")
+cheio = ExtResource("6_5nysr")
+vazio = ExtResource("7_f40o5")
+
+[node name="coracao1" type="Node2D" parent="coracoesBoss" unique_id=1886366631]
+position = Vector2(51, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoesBoss/coracao1" unique_id=1124137195]
+texture = ExtResource("6_5nysr")
+
+[node name="coracao2" type="Node2D" parent="coracoesBoss" unique_id=580611438]
+position = Vector2(42, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoesBoss/coracao2" unique_id=1861561006]
+texture = ExtResource("6_5nysr")
+
+[node name="coracao3" type="Node2D" parent="coracoesBoss" unique_id=89678228]
+position = Vector2(33, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoesBoss/coracao3" unique_id=1820043691]
+texture = ExtResource("6_5nysr")
+
+[node name="coracao4" type="Node2D" parent="coracoesBoss" unique_id=1679602622]
+position = Vector2(24, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoesBoss/coracao4" unique_id=1299626818]
+texture = ExtResource("6_5nysr")
+
+[node name="coracao5" type="Node2D" parent="coracoesBoss" unique_id=360053039]
+position = Vector2(15, 10)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="coracoesBoss/coracao5" unique_id=1987226868]
+texture = ExtResource("6_5nysr")
+
+[node name="wave" type="Sprite2D" parent="." unique_id=630275857]
+position = Vector2(40, 28)
+texture = ExtResource("8_8u7ch")
+
+[node name="LabelWave" type="Label" parent="wave" unique_id=165035598]
+offset_left = 43.0
+offset_top = -7.0
+offset_right = 83.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_k18o7")
+text = "0"
+
+[node name="barraPower" type="Node2D" parent="." unique_id=1892409506]
+position = Vector2(187, 229)
+script = ExtResource("9_0nt2n")

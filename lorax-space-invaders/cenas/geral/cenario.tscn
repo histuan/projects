@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://b1wr24v86jxa0"]
+
+[ext_resource type="PackedScene" uid="uid://d2uoxjeyd1qjq" path="res://cenas/geral/base.tscn" id="1_f7ix0"]
+[ext_resource type="Script" uid="uid://bec0lr8nt3j8g" path="res://scripts/geral/chao.gd" id="3_hc3j3"]
+[ext_resource type="Script" uid="uid://55ewa8tqyb0" path="res://scripts/geral/area_game_over.gd" id="4_pd42p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksdio"]
+size = Vector2(20, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l8342"]
+size = Vector2(254, 20)
+
+[node name="cenario" type="Node" unique_id=776526308]
+
+[node name="bases" type="Node" parent="." unique_id=1255455807]
+
+[node name="base" parent="bases" unique_id=970903096 instance=ExtResource("1_f7ix0")]
+position = Vector2(107, 196)
+
+[node name="base2" parent="bases" unique_id=1732274205 instance=ExtResource("1_f7ix0")]
+position = Vector2(147, 196)
+
+[node name="base3" parent="bases" unique_id=217677759 instance=ExtResource("1_f7ix0")]
+position = Vector2(67, 196)
+
+[node name="base4" parent="bases" unique_id=149034091 instance=ExtResource("1_f7ix0")]
+position = Vector2(187, 196)
+
+[node name="base5" parent="bases" unique_id=447008496 instance=ExtResource("1_f7ix0")]
+position = Vector2(27, 196)
+
+[node name="base6" parent="bases" unique_id=1754791149 instance=ExtResource("1_f7ix0")]
+position = Vector2(227, 196)
+
+[node name="chao" type="Node" parent="." unique_id=1233280631]
+script = ExtResource("3_hc3j3")
+
+[node name="paredes" type="Node" parent="." unique_id=1010616850]
+
+[node name="paredeEsq" type="StaticBody2D" parent="paredes" unique_id=946653204]
+position = Vector2(-10, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="paredes/paredeEsq" unique_id=557226784]
+shape = SubResource("RectangleShape2D_ksdio")
+
+[node name="paredeDir" type="StaticBody2D" parent="paredes" unique_id=1065043631]
+position = Vector2(264, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="paredes/paredeDir" unique_id=1917726717]
+shape = SubResource("RectangleShape2D_ksdio")
+
+[node name="AreaGameOver" type="Area2D" parent="." unique_id=402710421]
+position = Vector2(127, 266)
+script = ExtResource("4_pd42p")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaGameOver" unique_id=173130958]
+shape = SubResource("RectangleShape2D_l8342")
+
+[connection signal="area_entered" from="AreaGameOver" to="AreaGameOver" method="_on_area_entered"]
