@@ -6,14 +6,11 @@ var golpes = 0
 func _ready():
 	comprovar_golpes()
 	
-# Some na hora (explosão da árvore)
-func quebrar():
-	queue_free()
-	
-func destruir():
-	golpes +=1
+# Chamada por míssil, árvore e alien que encosta
+func receber_dano(quantidade = 1, _fonte = ""):
+	golpes += quantidade
 	comprovar_golpes()
 
 func comprovar_golpes():
-	if golpes == 1:
+	if golpes >= 1:
 		queue_free()

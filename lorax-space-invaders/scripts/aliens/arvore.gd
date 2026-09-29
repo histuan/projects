@@ -39,11 +39,11 @@ func estourar(atingido = null):
 	var centro = global_position
 	for bloco in get_tree().get_nodes_in_group("blocos"):
 		if bloco.global_position.distance_to(centro) <= raio:
-			bloco.destruir()
+			bloco.receber_dano()
 	var player = get_tree().get_first_node_in_group("tanque")
 	
 	if player != null and (player == atingido or player.global_position.distance_to(centro) <= raio):
-		player.dano()
+		player.receber_dano()
 		
 	# Sem colisão: fogo por 0,1 s → troca para a spritesheet da explosão → some
 	$CollisionShape2D.set_deferred("disabled", true)

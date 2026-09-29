@@ -16,6 +16,5 @@ func _on_body_entered(body):
 		return
 	if body.is_in_group("aliens"):
 		acertou = true
-		body.explosion()
-		get_parent().remove_child(self)
+		body.receber_dano()
 		queue_free()

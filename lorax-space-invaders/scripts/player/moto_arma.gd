@@ -19,15 +19,12 @@ func _on_body_entered(body):
 	if body.is_in_group("aliens"):
 		estourar()
 
-# Dano em área: explosion_moto() nos aliens (som próprio); explosion() no boss e no sniper
+# Dano em área: todo inimigo no raio leva receber_dano com fonte "moto" (o alien usa o som próprio)
 func estourar():
 	estourou = true
 	var centro = global_position
 	for alien in get_tree().get_nodes_in_group("aliens"):
 		if is_instance_valid(alien) and alien.global_position.distance_to(centro) <= raio:
-			if alien.has_method("explosion_moto"):
-				alien.explosion_moto()
-			else:
-				alien.explosion()
+			alien.receber_dano(1, "moto")
 	hide()
 	queue_free()

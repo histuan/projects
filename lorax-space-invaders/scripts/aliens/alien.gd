@@ -21,7 +21,7 @@ var atingiu_base = false
 
 
 
-# Ouvidos pelo groupAlien (tirar da lista) e pela main (somar pontos)
+# Ouvidos pelo groupAlien (tirar da lista)
 signal alien_eliminado(alien)
 signal alien_atingiu_base(alien);
 
@@ -34,25 +34,31 @@ func _on_timer_mov_timeout():
 	if self.position.x >= origin + distancia or self.position.x <= origin - distancia:
 		direction *= -1
 
-# Tiro de laser: se ainda tem vida, só leva dano; senão toca "destroy" (que chama elimination())
-func explosion():
-	vidas -= 1
+# Levou dano (tiro, motosserra, encostar no player). Com vida sobrando só pisca;
+# no zero toca "destroy" (que chama elimination()). fonte "moto" troca o som de morte
+func receber_dano(quantidade = 1, fonte = "tiro"):
+	if vidas <= 0:
+		return
+	vidas -= quantidade
 	if vidas > 0:
 		levar_dano()
 		return
 	animation_alien.play("destroy")
-	# Os sons de morte vão para a cena principal para terminarem depois que o alien sumir.
-	if has_node("sons/explosionsfx"):
-		var som = $sons/explosionsfx
-		som.reparent(get_tree().current_scene)
-		som.play()
-		som.finished.connect(som.queue_free)
+	if fonte == "moto":
+		soltar_som("sons/motoHitSFX")
+	else:
+		soltar_som("sons/explosionsfx")
 	# forte_morte só existe no alien_forte
-	if has_node("sons/forte_morte"):
-		var som2 = $sons/forte_morte
-		som2.reparent(get_tree().current_scene)
-		som2.play()
-		som2.finished.connect(som2.queue_free)
+	soltar_som("sons/forte_morte")
+
+# Som que precisa continuar depois que o alien sumir: sai dele e vai para a cena principal
+func soltar_som(caminho):
+	if not has_node(caminho):
+		return
+	var som = get_node(caminho)
+	som.reparent(get_tree().current_scene)
+	som.play()
+	som.finished.connect(som.queue_free)
 
 # Dano sem morrer (só o forte chega aqui): som de dano, se existir, + piscada
 func levar_dano():
@@ -92,29 +98,10 @@ func _on_area_base_body_entered(body):
 	if body.is_in_group("blocos"):
 		hide()
 		atingiu_base = true
-		body.destruir()
+		body.receber_dano()
 		emit_signal("alien_atingiu_base",self)
 		queue_free()
 		
 # Chamada pelo sistema de dificuldade do groupAlien
 func acelerar_movimento(novo_tempo):
 	time_movimento.wait_time = novo_tempo
-	
-# Igual à explosion(), mas para o golpe da motosserra (som de morte diferente)
-func explosion_moto():
-	vidas -= 1
-	if vidas > 0:
-		levar_dano()
-		return
-	animation_alien.play("destroy")
-	if has_node("sons/motoHitSFX"):
-		var som = $sons/motoHitSFX
-		som.reparent(get_tree().current_scene)
-		som.play()
-		som.finished.connect(som.queue_free)
-	if has_node("sons/forte_morte"):
-		var som2 = $sons/forte_morte
-		som2.reparent(get_tree().current_scene)
-		som2.play()
-		som2.finished.connect(som2.queue_free)
-	

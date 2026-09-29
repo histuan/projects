@@ -54,11 +54,11 @@ func descida():
 	self.position.x += 3 * dir_lado
 	self.position.y += 5
 
-# Levou tiro: perde 1 vida e avisa a main; morre no zero
-func explosion():
+# Levou dano: perde vida e avisa a hud (corações); morre no zero
+func receber_dano(quantidade = 1, _fonte = "tiro"):
 	if not vivo:
 		return
-	vidas -=1
+	vidas -= quantidade
 	$AnimationPlayer.play("dano")
 	emit_signal("boss_dano",vidas)
 	if vidas <=0:

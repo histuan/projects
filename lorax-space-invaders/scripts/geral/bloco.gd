@@ -13,12 +13,9 @@ var eh_ferro = false
 func _ready():
 	comprovar_golpes()
 	
-# Some na hora, sem contar golpes
-func quebrar():
-	queue_free()
-	
-func destruir():
-	golpes +=1
+# Chamada por míssil, árvore e alien que encosta
+func receber_dano(quantidade = 1, _fonte = ""):
+	golpes += quantidade
 	comprovar_golpes()
 
 # Atualiza o visual pelos golpes recebidos (2 = some)
@@ -27,7 +24,7 @@ func comprovar_golpes():
 		anim.play("normal")
 	elif golpes == 1:
 		anim.play("danificado")
-	elif golpes == 2:
+	elif golpes >= 2:
 		queue_free()
 
 # Usada pelo chão antes do add_child (funciona: o Sprite2D já existe após o instantiate)

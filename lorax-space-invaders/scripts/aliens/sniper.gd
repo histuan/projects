@@ -56,10 +56,11 @@ func atirar():
 	get_tree().current_scene.add_child(tiro)
 	$sons/tiro.play()
 
-func explosion():
+# Levou dano: pisca com som enquanto tiver vida; no zero, morre
+func receber_dano(quantidade = 1, _fonte = "tiro"):
 	if not vivo:
 		return
-	vidas -= 1
+	vidas -= quantidade
 	if vidas > 0:
 		$sons/dano.play()
 		piscar()
@@ -76,7 +77,7 @@ func piscar():
 		tween_piscar.tween_property(self, "modulate:a", 0.2, 0.08)
 		tween_piscar.tween_property(self, "modulate:a", 1.0, 0.08)
 
-# Desliga a colisão, soma os pontos direto na main, grita e some em 0,5 s
+# Desliga a colisão, soma os pontos na Partida, grita e some em 0,5 s
 func morrer():
 	vivo = false
 	$TimerTiro.stop()

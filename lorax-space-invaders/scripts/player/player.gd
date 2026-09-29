@@ -63,7 +63,7 @@ func _on_timer_tiro_timeout():
 	podisp = true
 	
 # Perde 1 vida na Partida (a main reage com tremor ou morte); pisca se sobreviveu
-func dano():
+func receber_dano(_quantidade = 1, _fonte = ""):
 	Partida.perder_vida()
 	$sons/dano.play()
 	if vivo:
@@ -124,5 +124,5 @@ func tocar_som(no, stream, volume):
 # Encostar num inimigo destrói o inimigo e tira vida do player
 func _on_sensor_alien_body_entered(body):
 	if body.is_in_group("aliens"):
-		body.explosion()
-		dano()  
+		body.receber_dano()
+		receber_dano()
