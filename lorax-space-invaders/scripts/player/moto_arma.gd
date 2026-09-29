@@ -1,30 +1,21 @@
 # Projétil da motosserra: sobe e, ao encostar num inimigo, acerta todos num raio de 40 px.
-extends Area2D
+extends Projetil
 
-var velocity = 200
-var estourou = false
 @export var raio := 40.0
+
+# Anda como o laser; só a fonte do dano e a folga de saída mudam
+func _init():
+	fonte = "moto"
+	margem_tela = 20.0
 
 func _ready():
 	$AnimationPlayer.play("moto")
 
-func _process(delta):
-	position.y -= velocity * delta
-	if global_position.y < -20:
-		queue_free()
-
-func _on_body_entered(body):
-	if estourou:
-		return
-	if body.is_in_group("aliens"):
-		estourar()
-
-# Dano em área: todo inimigo no raio leva receber_dano com fonte "moto" (o alien usa o som próprio)
-func estourar():
-	estourou = true
+# Em vez de ferir só o alvo: dano em área em todo inimigo no raio
+func ao_acertar(_body):
 	var centro = global_position
 	for alien in get_tree().get_nodes_in_group("aliens"):
 		if is_instance_valid(alien) and alien.global_position.distance_to(centro) <= raio:
-			alien.receber_dano(1, "moto")
+			alien.receber_dano(dano, fonte)
 	hide()
 	queue_free()

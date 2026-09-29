@@ -1,13 +1,10 @@
 # Míssil dos aliens: desce reto; fere o player ou danifica o bloco que acertar.
-# Se passar do chão, a AreaGameOver cuida dele (grupo "misseis").
-extends Area2D
+# Se passar do chão, a AreaGameOver cuida dele (grupo "misseis" na cena).
+extends Projetil
 
-var speed = 150
-
-func _process(delta):
-	position.y += speed*delta
-
-func _on_body_entered(body):
-	if body.is_in_group("tanque") or body.is_in_group("blocos"):
-		body.receber_dano()
-		queue_free()
+func _init():
+	velocidade = 150.0
+	direcao = Vector2.DOWN
+	grupos_alvo = ["tanque", "blocos"]
+	# Folga maior: a AreaGameOver, logo abaixo do chão, precisa pegá-lo antes dele sumir
+	margem_tela = 40.0

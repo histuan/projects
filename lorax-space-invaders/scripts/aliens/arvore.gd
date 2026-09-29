@@ -1,12 +1,15 @@
 # Árvore arremessada pelo boss: vai na direção do player e explode em área.
-extends Area2D
-
-var velocidade = 90
-var direcao = Vector2.DOWN
-var estourou = false
+extends Projetil
 
 @export var sheet_explosao: Texture2D
 @export var raio = 26.0
+
+# Alvos: blocos e player. Margem pequena: explode logo depois de passar do fim da tela
+func _init():
+	velocidade = 90.0
+	direcao = Vector2.DOWN
+	grupos_alvo = ["blocos", "tanque"]
+	margem_tela = 4.0
 
 func _ready():
 	# Mira no player no momento do lançamento
@@ -20,21 +23,17 @@ func _on_animation_player_animation_finished(anim):
 	if anim == "lancamento":
 		$AnimationPlayer.play("voando")
 		
-# Explode sozinha se passar do fim da tela
-func _process(delta):
-	position += direcao * velocidade * delta
-	if global_position.y > 260 and not estourou:
-		estourar()
-	
-func _on_body_entered(body):
-	if estourou:
-		return
-	if body.is_in_group("blocos") or body.is_in_group("tanque"):
-		estourar(body)
-		
+# Acertou um bloco ou o player: explode em área (o atingido é ferido mesmo fora do raio)
+func ao_acertar(body):
+	estourar(body)
+
+# Passou da borda da tela sem acertar nada: explode lá mesmo
+func ao_sair_da_tela():
+	acertou = true
+	estourar()
+
 # Explosão: danifica os blocos no raio e fere o player se foi atingido ou está no raio
 func estourar(atingido = null):
-	estourou = true
 	velocidade = 0
 	var centro = global_position
 	for bloco in get_tree().get_nodes_in_group("blocos"):
