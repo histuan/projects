@@ -1,18 +1,19 @@
 # Sniper: entra deslizando até um canto, carrega (pisca vermelho) e atira mirando
 # no player. Não faz parte da lista da horda (não trava a troca de wave).
-extends CharacterBody2D
+extends Inimigo
 
 var TiroSniper = preload("res://cenas/alien/tiro_sniper.tscn")
 
-@export var vidas = 2
-@export var valor_pontos = 300
 @export var vel_entrada = 30.0
 # Canto de destino, definido pelo groupAlien antes do add_child
 var alvo = Vector2.ZERO
 
 var chegou = false
-var vivo = true
-var tween_piscar: Tween
+
+# Valores próprios do sniper (vidas, pontos e sons de dano/morte vêm do Inimigo)
+func _init():
+	vidas = 2
+	valor_pontos = 300
 
 # "aliens": leva tiro e fere ao encostar · "snipers": o groupAlien conta quantos existem
 func _ready():
@@ -56,40 +57,14 @@ func atirar():
 	get_tree().current_scene.add_child(tiro)
 	$sons/tiro.play()
 
-# Levou dano: pisca com som enquanto tiver vida; no zero, morre
-func receber_dano(quantidade = 1, _fonte = "tiro"):
-	if not vivo:
-		return
-	vidas -= quantidade
-	if vidas > 0:
-		$sons/dano.play()
-		piscar()
-		return
-	morrer()
-
-# Piscada de dano (modulate do nó inteiro; o aviso vermelho usa o do Sprite2D)
-func piscar():
-	if tween_piscar:
-		tween_piscar.kill()
-	modulate.a = 1.0
-	tween_piscar = create_tween()
-	for i in 3:
-		tween_piscar.tween_property(self, "modulate:a", 0.2, 0.08)
-		tween_piscar.tween_property(self, "modulate:a", 1.0, 0.08)
-
-# Desliga a colisão, soma os pontos na Partida, grita e some em 0,5 s
-func morrer():
-	vivo = false
+# Morte: para de atirar, desliga a colisão, dá os pontos, grita e some em 0,5 s
+func morrer(_fonte):
 	$TimerTiro.stop()
 	$CollisionShape2D.set_deferred("disabled", true)
-	Partida.somar_pontos(valor_pontos, global_position)
-	if has_node("sons/morte"):
-		var som = $sons/morte
-		som.reparent(get_tree().current_scene)
-		som.play()
-		som.finished.connect(som.queue_free)
-	if tween_piscar:
-		tween_piscar.kill()
+	dar_pontos()
+	soltar_som(som_morte)
+	if tween_pisca:
+		tween_pisca.kill()
 	$AnimationPlayer.play("destroy")
 	var sumir = create_tween()
 	sumir.tween_property(self, "modulate:a", 0.0, 0.5)

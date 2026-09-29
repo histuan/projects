@@ -1,12 +1,10 @@
-# Boss (Lorax): desce até a altura alvo, anda de um lado pro outro
-extends CharacterBody2D
+# Boss (Lorax): desce até a altura alvo, anda de um lado pro outro e arremessa árvores.
+# Vida, dano, piscada e sons vêm do Inimigo.
+extends Inimigo
 
 signal bonus_eliminado
 
 var arvore = preload("res://cenas/alien/arvore.tscn")
-
-var vivo = true
-var vidas = 5
 
 # Entrada e movimentacao: desce até altura_alvo e depois anda entre os limites
 @export var altura_alvo := 48.0
@@ -17,10 +15,15 @@ var vidas = 5
 var dir_lado := 1
 var chegou = false
 
-# Ouvidos pela main (corações do boss)
+# Ouvidos pela hud (corações do boss)
 signal boss_dano(vidas)
 signal boss_desceu
 signal boss_apareceu
+
+# Valores próprios do Lorax (sons de dano/morte: os padrões do Inimigo)
+func _init():
+	vidas = 5
+	valor_pontos = 500
 
 # Começa acima da tela, no centro
 func _ready():
@@ -42,10 +45,10 @@ func _process(delta):
 		if position.x <= limite_esq or position.x >= limite_dir:
 			dir_lado *= -1 
 
-# Fim da animação de morte: "+500", avisa main e groupAlien e some
+# Fim da animação de morte: "+500" grande, avisa o groupAlien e some
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "destruido":
-		Partida.somar_pontos(500, global_position, 16)
+		dar_pontos(16)
 		emit_signal("bonus_eliminado")
 		queue_free()
 
@@ -54,32 +57,28 @@ func descida():
 	self.position.x += 3 * dir_lado
 	self.position.y += 5
 
-# Levou dano: perde vida e avisa a hud (corações); morre no zero
-func receber_dano(quantidade = 1, _fonte = "tiro"):
+# Além do dano normal, avisa a hud para atualizar os corações do boss
+func receber_dano(quantidade = 1, fonte = "tiro"):
 	if not vivo:
 		return
-	vidas -= quantidade
+	super(quantidade, fonte)
+	boss_dano.emit(max(vidas, 0))
+
+# Sobreviveu ao golpe: animação de dano + o padrão (som e piscada)
+func ao_ferir(fonte):
 	$AnimationPlayer.play("dano")
-	emit_signal("boss_dano",vidas)
-	if vidas <=0:
-		morrer()
-	else:
-		$sons/dano.play()
-		piscar()
+	super(fonte)
 
 # Para de atacar, toca a animação de morte e treme a tela + hit-stop
-func morrer():
-	vivo = false
+# (os pontos saem no fim da animação "destruido")
+func morrer(_fonte):
 	$AnimationPlayer.play("destruido")
-	var som = $sons/morte
-	som.reparent(get_tree().current_scene)
-	som.play()
-	som.finished.connect(som.queue_free)
+	soltar_som(som_morte)
 	$TimerArremesso.stop()
 	var camera = get_viewport().get_camera_2d()
 	camera.tremer(8)
 	camera.congelar(0.12)
-	
+
 func _on_timer_arremesso_timeout():
 	arremessar()
 
@@ -94,13 +93,3 @@ func arremessar():
 # Chamada no fim de atacando/dano: volta à animação normal
 func idle():
 	$AnimationPlayer.play("normal")
-	
-var tween_pisca: Tween = null
-# Pisca 3 vezes; mata a piscada anterior para não acumular
-func piscar():
-	if tween_pisca != null:
-		tween_pisca.kill()
-	tween_pisca = create_tween()
-	for i in range(3):
-		tween_pisca.tween_property(self, "modulate:a", 0.2, 0.08)
-		tween_pisca.tween_property(self, "modulate:a", 1.0, 0.08)

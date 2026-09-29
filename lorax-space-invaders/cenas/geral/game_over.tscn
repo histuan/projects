@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3b6nptoxelg8" path="res://scripts/geral/game_over.gd" id="1_wj75e"]
 [ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="2_c0pxm"]
-[ext_resource type="Texture2D" uid="uid://berogxwbl5los" path="res://lorax/spritesheet.png" id="3_c0pxm"]
+[ext_resource type="Texture2D" uid="uid://b5w147wfht3u7" path="res://lorax/spritesheet.png" id="3_c0pxm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5sd4j"]
 atlas = ExtResource("3_c0pxm")

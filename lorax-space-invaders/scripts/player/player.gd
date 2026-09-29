@@ -20,7 +20,7 @@ var vivo = true
 var powerup_ativo: PowerUp = null
 
 # Movimento, animação e tiro, a cada frame de física
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not vivo:
 		return
 	# -1 esquerda, 0 parado, 1 direita
