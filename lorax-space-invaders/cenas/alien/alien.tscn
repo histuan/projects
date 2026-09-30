@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://6xdcd1xh77y7"]
 
 [ext_resource type="Script" uid="uid://b12ixbt8htj70" path="res://scripts/aliens/alien.gd" id="1_nhxo2"]
-[ext_resource type="Texture2D" uid="uid://5ygx6evpdpl6" path="res://meus sprites/alien.png" id="2_r2oxq"]
+[ext_resource type="Texture2D" uid="uid://igwuxe3elunv" path="res://meus sprites/inimigos/alien.png" id="2_r2oxq"]
 [ext_resource type="AudioStream" uid="uid://sku82p7fkpk8" path="res://efeitos sonoros reais/wav/alien-explosao.wav" id="3_nhxo2"]
 [ext_resource type="AudioStream" uid="uid://cdskigtv6bv6y" path="res://efeitos sonoros reais/wav/motoDano.wav" id="4_r2oxq"]
 [ext_resource type="AudioStream" uid="uid://cc085qacux301" path="res://efeitos sonoros reais/wav/alien tiro.wav" id="5_vx35m"]

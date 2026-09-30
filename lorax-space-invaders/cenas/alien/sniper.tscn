@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dynn17yvsb6mk"]
 
 [ext_resource type="Script" uid="uid://cerqb0jq8kn3w" path="res://scripts/aliens/sniper.gd" id="1_30265"]
-[ext_resource type="Texture2D" uid="uid://bvhhgc57vq1sj" path="res://meus sprites/alien_sniper.png" id="2_6qbuk"]
+[ext_resource type="Texture2D" uid="uid://ckdvvbqltcr3" path="res://meus sprites/inimigos/alien_sniper.png" id="2_6qbuk"]
 [ext_resource type="AudioStream" uid="uid://deem0caldprqq" path="res://efeitos sonoros reais/wav/tiro_sniper.wav" id="2_kmrgq"]
 [ext_resource type="AudioStream" uid="uid://b0jo81rb8p6m2" path="res://efeitos sonoros reais/wav/dano_sniper.wav" id="3_6qbuk"]
 [ext_resource type="AudioStream" uid="uid://dvda7f8nftb4e" path="res://efeitos sonoros reais/wav/wilhelm scream.wav" id="4_ttrdm"]
@@ -26,7 +26,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_nd57e"]
 resource_name = "atirando"
-length = 0.19999999999999998
+length = 0.2
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false

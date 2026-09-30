@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c5bind5uwekid"]
 
 [ext_resource type="PackedScene" uid="uid://6xdcd1xh77y7" path="res://cenas/alien/alien.tscn" id="1_vfo55"]
-[ext_resource type="Texture2D" uid="uid://d0x4flcn05fmc" path="res://meus sprites/alien_forte.png" id="2_s46lv"]
+[ext_resource type="Texture2D" uid="uid://g7683pe3fwrd" path="res://meus sprites/inimigos/alien_forte.png" id="2_klx2x"]
 [ext_resource type="AudioStream" uid="uid://cdyrmdyakm80v" path="res://efeitos sonoros reais/wav/alien_forte.wav" id="4_7gwqx"]
 [ext_resource type="AudioStream" uid="uid://bluixwln0turj" path="res://efeitos sonoros reais/wav/alien_forte_morte.wav" id="5_klx2x"]
 [ext_resource type="AudioStream" uid="uid://c1ghx0hq4rcji" path="res://efeitos sonoros reais/wav/alien_forte_dano.wav" id="5_n732w"]
@@ -11,17 +11,17 @@ vidas = 2
 valor_pontos = 200
 
 [node name="Sprite2D" parent="." index="0" unique_id=1376603795]
-texture = ExtResource("2_s46lv")
+texture = ExtResource("2_klx2x")
 
-[node name="explosionsfx" parent="sons" index="0" unique_id=1669721402]
+[node name="explosionsfx" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="0" unique_id=1669721402]
 volume_db = 3.541
 
-[node name="tiro" parent="sons" index="2" unique_id=502430671]
+[node name="tiro" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="2" unique_id=502430671]
 stream = ExtResource("4_7gwqx")
 volume_db = 3.667
 
-[node name="danoSFX" type="AudioStreamPlayer2D" parent="sons" index="3" unique_id=663392461]
+[node name="danoSFX" type="AudioStreamPlayer2D" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="3" unique_id=663392461]
 stream = ExtResource("5_n732w")
 
-[node name="forte_morte" type="AudioStreamPlayer2D" parent="sons" index="4" unique_id=948144164]
+[node name="forte_morte" type="AudioStreamPlayer2D" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="4" unique_id=948144164]
 stream = ExtResource("5_klx2x")

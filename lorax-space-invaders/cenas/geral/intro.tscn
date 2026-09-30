@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://koxph30tks83" path="res://scripts/geral/intro.gd" id="1_mb1u0"]
 [ext_resource type="VideoStream" uid="uid://bhm47y84haidu" path="res://lorax/intro.ogv" id="2_bsu5c"]
+[ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="3_mb1u0"]
 
 [node name="intro" type="Node2D" unique_id=1794404003]
 script = ExtResource("1_mb1u0")
@@ -13,3 +14,12 @@ offset_bottom = 256.0
 stream = ExtResource("2_bsu5c")
 autoplay = true
 expand = true
+
+[node name="dicaPular" type="Label" parent="." unique_id=1823998824]
+offset_top = 217.0
+offset_right = 254.0
+offset_bottom = 225.0
+theme_override_fonts/font = ExtResource("3_mb1u0")
+theme_override_font_sizes/font_size = 8
+text = "press enter to skip."
+horizontal_alignment = 1

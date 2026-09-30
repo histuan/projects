@@ -2,8 +2,8 @@
 # O ferro é só visual.
 extends StaticBody2D
 
-@export var madeira: Texture2D = preload("res://meus sprites/bloque.png")
-@export var ferro: Texture2D = preload("res://meus sprites/ferro.png")
+@export var madeira: Texture2D = preload("res://meus sprites/geral/bloque.png")
+@export var ferro: Texture2D = preload("res://meus sprites/geral/ferro.png")
 
 var golpes = 0
 var eh_ferro = false

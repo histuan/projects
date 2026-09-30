@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d08yfc8snmw8m"]
 
 [ext_resource type="Script" uid="uid://bnm55al7vuwi" path="res://scripts/aliens/bonus.gd" id="1_x2snv"]
-[ext_resource type="Texture2D" uid="uid://45wi8gcq2b6t" path="res://meus sprites/Lorax.png" id="2_x2snv"]
+[ext_resource type="Texture2D" uid="uid://45wi8gcq2b6t" path="res://meus sprites/inimigos/Lorax.png" id="2_xcwva"]
 [ext_resource type="AudioStream" uid="uid://dk0gff7tj262b" path="res://efeitos sonoros reais/wav/arvere.wav" id="3_xcwva"]
 [ext_resource type="AudioStream" uid="uid://b87kwk2br8g73" path="res://efeitos sonoros reais/wav/lorax-dano.wav" id="4_f5qju"]
 [ext_resource type="AudioStream" uid="uid://46abfjp0kdaq" path="res://efeitos sonoros reais/wav/lorax-morte.wav" id="5_susyg"]
@@ -160,7 +160,7 @@ script = ExtResource("1_x2snv")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1217823765]
-texture = ExtResource("2_x2snv")
+texture = ExtResource("2_xcwva")
 hframes = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1301250694]

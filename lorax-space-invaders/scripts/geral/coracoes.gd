@@ -1,8 +1,8 @@
 # Corações na tela (do player e do boss): cheio/vazio e efeitos de piscar.
 extends Node2D
 
-@export var cheio: Texture2D = preload("res://meus sprites/coracao.png")
-@export var vazio: Texture2D = preload("res://meus sprites/coracao_vazio.png")
+@export var cheio: Texture2D = preload("res://meus sprites/geral/coracao.png")
+@export var vazio: Texture2D = preload("res://meus sprites/geral/coracao_vazio.png")
 
 @onready var coracoes = []
 

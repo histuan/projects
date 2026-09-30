@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://5gvk3dkxlywi"]
 
 [ext_resource type="Script" uid="uid://bc2yb4aowihbq" path="res://scripts/aliens/tiro_sniper.gd" id="1_8mwut"]
-[ext_resource type="Texture2D" uid="uid://be4l4l270r0c4" path="res://meus sprites/tiroSniper.png" id="2_nbgjt"]
+[ext_resource type="Texture2D" uid="uid://be4l4l270r0c4" path="res://meus sprites/inimigos/tiroSniper.png" id="2_nbgjt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mrwo7"]
 size = Vector2(6, 6)

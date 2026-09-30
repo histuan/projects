@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c57ck7f4ox7um"]
 
 [ext_resource type="Script" uid="uid://df8o1rbhfnusa" path="res://scripts/aliens/missil.gd" id="1_5i7qq"]
-[ext_resource type="Texture2D" uid="uid://dua5hch5vadd1" path="res://meus sprites/TiroAlien.png" id="2_tda1t"]
+[ext_resource type="Texture2D" uid="uid://dua5hch5vadd1" path="res://meus sprites/inimigos/TiroAlien.png" id="2_tda1t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
 size = Vector2(2.9921875, 7)
