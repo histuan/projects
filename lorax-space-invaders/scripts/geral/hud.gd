@@ -18,7 +18,7 @@ func _ready():
 
 # Número do placar
 func mostrar_pontuacao(p):
-	$VBoxContainer/LabelP.text = str(p)
+	$placar/LabelP.text = str(p)
 
 # Corações do player (cheios = vidas)
 func mostrar_vidas(v):

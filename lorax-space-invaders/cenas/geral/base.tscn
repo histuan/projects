@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ctndc5uc7tov8" path="res://cenas/geral/folha.tscn" id="2_ubddv"]
 
 [node name="base" type="Node2D" unique_id=970903096]
+metadata/_edit_group_ = true
 
 [node name="bloco" parent="." unique_id=406914486 instance=ExtResource("1_rfqtl")]
 
@@ -11,13 +12,13 @@
 position = Vector2(8, 12)
 
 [node name="bloco3" parent="." unique_id=1045689738 instance=ExtResource("1_rfqtl")]
-position = Vector2(8, 8)
+position = Vector2(6, 9)
 
 [node name="bloco4" parent="." unique_id=1830653985 instance=ExtResource("1_rfqtl")]
 position = Vector2(-8, 12)
 
 [node name="bloco5" parent="." unique_id=939085257 instance=ExtResource("1_rfqtl")]
-position = Vector2(-8, 8)
+position = Vector2(-6, 9)
 
 [node name="bloco6" parent="." unique_id=956039872 instance=ExtResource("1_rfqtl")]
 position = Vector2(4, 6)
@@ -55,8 +56,11 @@ position = Vector2(4, -8)
 [node name="folha7" parent="." unique_id=323086731 instance=ExtResource("2_ubddv")]
 position = Vector2(4, -4)
 
-[node name="folha3" parent="." unique_id=326085279 instance=ExtResource("2_ubddv")]
+[node name="folha12" parent="." unique_id=197641724 instance=ExtResource("2_ubddv")]
 position = Vector2(0, -8)
+
+[node name="folha3" parent="." unique_id=326085279 instance=ExtResource("2_ubddv")]
+position = Vector2(-2, -2)
 
 [node name="folha" parent="." unique_id=1809601263 instance=ExtResource("2_ubddv")]
 position = Vector2(0, -4)
@@ -100,8 +104,26 @@ position = Vector2(-7, -9)
 [node name="folha8" parent="." unique_id=1801818916 instance=ExtResource("2_ubddv")]
 position = Vector2(-6, -11)
 
-[node name="bloco12" parent="." unique_id=1323562241 instance=ExtResource("1_rfqtl")]
-position = Vector2(-6, 10)
+[node name="bloco14" parent="." unique_id=1072304519 instance=ExtResource("1_rfqtl")]
+position = Vector2(2, 6)
 
-[node name="bloco13" parent="." unique_id=791476185 instance=ExtResource("1_rfqtl")]
-position = Vector2(6, 10)
+[node name="bloco15" parent="." unique_id=1230414746 instance=ExtResource("1_rfqtl")]
+position = Vector2(-2, 6)
+
+[node name="folha23" parent="." unique_id=753812572 instance=ExtResource("2_ubddv")]
+position = Vector2(2, -2)
+
+[node name="bloco16" parent="." unique_id=499543285 instance=ExtResource("1_rfqtl")]
+position = Vector2(7, 10)
+
+[node name="bloco17" parent="." unique_id=889593872 instance=ExtResource("1_rfqtl")]
+position = Vector2(-7, 10)
+
+[node name="bloco18" parent="." unique_id=56123474 instance=ExtResource("1_rfqtl")]
+position = Vector2(-5, 12)
+
+[node name="bloco19" parent="." unique_id=944520830 instance=ExtResource("1_rfqtl")]
+position = Vector2(5, 12)
+
+[node name="bloco20" parent="." unique_id=2032620012 instance=ExtResource("1_rfqtl")]
+position = Vector2(-7, 10)

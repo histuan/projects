@@ -13,26 +13,25 @@
 [node name="hud" type="Node" unique_id=823700872]
 script = ExtResource("1_tk4hp")
 
-[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1361363879]
-position = Vector2(124, 8)
-texture = ExtResource("2_3lyjj")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=39490966]
+[node name="placar" type="HBoxContainer" parent="." unique_id=282110837]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = -2.0
-offset_top = 21.0
-offset_right = -2.0
-offset_bottom = 45.0
+offset_top = 2.0
+offset_bottom = 20.0
 grow_horizontal = 2
+theme_override_constants/separation = 6
+alignment = 1
 
-[node name="LabelP" type="Label" parent="VBoxContainer" unique_id=1077417503]
+[node name="points" type="TextureRect" parent="placar" unique_id=1338822230]
+layout_mode = 2
+texture = ExtResource("2_3lyjj")
+
+[node name="LabelP" type="Label" parent="placar" unique_id=1077417503]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_3lyjj")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "0"
-horizontal_alignment = 1
 
 [node name="coracoes" type="Node2D" parent="." unique_id=1759686165]
 script = ExtResource("4_ukkbo")
@@ -100,7 +99,7 @@ metadata/_edit_group_ = true
 texture = ExtResource("8_k18o7")
 
 [node name="wave" type="Sprite2D" parent="." unique_id=630275857]
-position = Vector2(40, 28)
+position = Vector2(118, 160)
 texture = ExtResource("9_k18o7")
 
 [node name="LabelWave" type="Label" parent="wave" unique_id=165035598]
