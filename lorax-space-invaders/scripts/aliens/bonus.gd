@@ -15,6 +15,11 @@ var arvore = preload("res://cenas/alien/arvore.tscn")
 var dir_lado := 1
 var chegou = false
 
+const TRUFULA_INTERVALO = 400
+const TRUFULA_RAJADAS_POR_VIDA = 2
+var ultimo_trufula = -TRUFULA_INTERVALO
+var rajadas_trufula = 0
+
 # Ouvidos pela hud (corações do boss)
 signal boss_dano(vidas)
 signal boss_desceu
@@ -61,6 +66,16 @@ func descida():
 func receber_dano(quantidade = 1, fonte = "tiro"):
 	if not vivo:
 		return
+	if fonte == "trufula":
+		var agora = Time.get_ticks_msec()
+		if agora - ultimo_trufula < TRUFULA_INTERVALO:
+			return
+		ultimo_trufula = agora
+		rajadas_trufula += 1
+		if rajadas_trufula < TRUFULA_RAJADAS_POR_VIDA:
+			piscar()
+			return
+		rajadas_trufula = 0
 	super(quantidade, fonte)
 	boss_dano.emit(max(vidas, 0))
 
