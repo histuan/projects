@@ -8,7 +8,7 @@ const CENA_MENU = "res://cenas/geral/start.tscn"
 
 var saindo: bool = false
 const ESPERA_PULAR = 3
-const DICA_ESPERA = 3.0
+const DICA_ESPERA = 1.0
 const DICA_VISIVEL = 3.0
 const DICA_FADE = 0.5
 var pode_pular: bool = false

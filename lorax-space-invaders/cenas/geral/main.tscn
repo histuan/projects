@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://dtdx28yvtpiar" path="res://scripts/geral/main.gd" id="1_5wwvk"]
 [ext_resource type="PackedScene" uid="uid://bqrm3a4ijesfp" path="res://cenas/player/player.tscn" id="1_t4ukd"]
 [ext_resource type="PackedScene" uid="uid://b1psoyw08u2lj" path="res://cenas/alien/group_alien.tscn" id="3_4fhxt"]
+[ext_resource type="Texture2D" uid="uid://7a7mqdwmd51x" path="res://meus sprites/geral/fundo_gradiente.png" id="3_d07vn"]
+[ext_resource type="Texture2D" uid="uid://cr4xwbb0amwhk" path="res://meus sprites/geral/fundo_poluicao.png" id="4_2juca"]
+[ext_resource type="Script" uid="uid://b8mlsrqs4qq48" path="res://scripts/geral/poluicao.gd" id="5_b12mh"]
 [ext_resource type="PackedScene" uid="uid://b1wr24v86jxa0" path="res://cenas/geral/cenario.tscn" id="5_rni58"]
 [ext_resource type="PackedScene" uid="uid://cjgv16kk7h21" path="res://cenas/geral/hud.tscn" id="6_1ue6m"]
 [ext_resource type="AudioStream" uid="uid://dape3rcq3pbip" path="res://efeitos sonoros reais/The_Green_Frontier.mp3" id="13_p4x86"]
@@ -17,6 +20,17 @@ script = ExtResource("1_5wwvk")
 metadata/_edit_horizontal_guides_ = [174.0]
 
 [node name="fundo" type="Node" parent="." unique_id=166569821]
+
+[node name="gradiente" type="Sprite2D" parent="fundo" unique_id=1794340611]
+position = Vector2(-4, -4)
+texture = ExtResource("3_d07vn")
+centered = false
+
+[node name="poluicao" type="Sprite2D" parent="fundo" unique_id=1117287205]
+position = Vector2(-4, -4)
+texture = ExtResource("4_2juca")
+centered = false
+script = ExtResource("5_b12mh")
 
 [node name="estrelas" type="Node2D" parent="fundo" unique_id=807948674]
 script = ExtResource("1_4fhxt")
