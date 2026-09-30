@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c4c2b2kfisf4w" path="res://scripts/geral/pause_menu.gd" id="1_wrx2f"]
 [ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="2_rq5ii"]
+[ext_resource type="PackedScene" uid="uid://cxrq47s4iu0ke" path="res://cenas/geral/controles.tscn" id="3_b1p36"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1052343631]
 process_mode = 3
@@ -57,6 +58,9 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rq5ii")
 theme_override_font_sizes/font_size = 8
 text = "SAIR"
+
+[node name="controles" parent="." unique_id=1740048659 instance=ExtResource("3_b1p36")]
+position = Vector2(0, -60)
 
 [connection signal="pressed" from="VBoxContainer/Continuar" to="." method="_on_continuar_pressed"]
 [connection signal="pressed" from="VBoxContainer/Reiniciar" to="." method="_on_reiniciar_pressed"]

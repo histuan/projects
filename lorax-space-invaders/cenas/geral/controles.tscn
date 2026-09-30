@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://cxrq47s4iu0ke"]
+
+[ext_resource type="Script" uid="uid://8ofkw811a460" path="res://scripts/geral/controles.gd" id="1_u4t43"]
+[ext_resource type="Texture2D" uid="uid://bekuixj5moeds" path="res://meus sprites/teclas/tecla_a_esquerda.png" id="2_gymx4"]
+[ext_resource type="Texture2D" uid="uid://dua1x6dbwfat0" path="res://meus sprites/teclas/tecla_d_direita.png" id="3_5asup"]
+[ext_resource type="Texture2D" uid="uid://dawjliu1owuse" path="res://meus sprites/teclas/tecla_espaco.png" id="4_0sfps"]
+[ext_resource type="Texture2D" uid="uid://d3fut7k47vr2w" path="res://meus sprites/teclas/tecla_p.png" id="5_1k3q8"]
+[ext_resource type="Texture2D" uid="uid://bqddhjl0qgig6" path="res://meus sprites/teclas/tecla_esc.png" id="6_ixc4y"]
+[ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="7_rxbit"]
+
+[node name="controles" type="Node2D" unique_id=1740048659]
+script = ExtResource("1_u4t43")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=506036569]
+offset_top = 238.0
+offset_right = 254.0
+offset_bottom = 256.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5803922)
+
+[node name="teclaA" type="Sprite2D" parent="." unique_id=1786494062]
+position = Vector2(17, 241)
+texture = ExtResource("2_gymx4")
+centered = false
+hframes = 2
+
+[node name="teclaD" type="Sprite2D" parent="." unique_id=1271857167]
+position = Vector2(35, 241)
+texture = ExtResource("3_5asup")
+centered = false
+hframes = 2
+
+[node name="teclaEspaco" type="Sprite2D" parent="." unique_id=939472590]
+position = Vector2(95, 241)
+texture = ExtResource("4_0sfps")
+centered = false
+hframes = 2
+
+[node name="teclaP" type="Sprite2D" parent="." unique_id=1497499076]
+position = Vector2(165, 241)
+texture = ExtResource("5_1k3q8")
+centered = false
+hframes = 2
+
+[node name="teclaEsc" type="Sprite2D" parent="." unique_id=162408636]
+position = Vector2(177, 241)
+texture = ExtResource("6_ixc4y")
+centered = false
+hframes = 2
+
+[node name="LabelMove" type="Label" parent="." unique_id=1972067181]
+offset_left = 55.0
+offset_top = 243.0
+offset_right = 95.0
+offset_bottom = 266.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_rxbit")
+theme_override_font_sizes/font_size = 8
+text = "MOVE
+"
+
+[node name="LabelFire" type="Label" parent="." unique_id=1422872063]
+offset_left = 125.0
+offset_top = 243.0
+offset_right = 165.0
+offset_bottom = 266.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_rxbit")
+theme_override_font_sizes/font_size = 8
+text = "FIRE"
+
+[node name="LabelPause" type="Label" parent="." unique_id=1810407954]
+offset_left = 197.0
+offset_top = 243.0
+offset_right = 237.0
+offset_bottom = 266.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_rxbit")
+theme_override_font_sizes/font_size = 8
+text = "PAUSE"

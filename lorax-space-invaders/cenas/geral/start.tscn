@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dgeym7nxug3vm" path="res://lorax/truffula_purple_32.png" id="12_cgsrw"]
 [ext_resource type="Texture2D" uid="uid://dtm1fehd7urud" path="res://lorax/truffula_bushy_64.png" id="12_qki0g"]
 [ext_resource type="Texture2D" uid="uid://nxe08xjdro05" path="res://lorax/truffula_teal_64.png" id="14_0yq6o"]
+[ext_resource type="PackedScene" uid="uid://cxrq47s4iu0ke" path="res://cenas/geral/controles.tscn" id="14_gdrgb"]
 [ext_resource type="Texture2D" uid="uid://bbtec6f3xyiy0" path="res://lorax/truffula_orange_32.png" id="15_gdrgb"]
 [ext_resource type="AudioStream" uid="uid://cgndavc84bvgx" path="res://efeitos sonoros reais/Beneath_the_Weight.mp3" id="16_0yq6o"]
 [ext_resource type="AudioStream" uid="uid://bjm4b67hvai7o" path="res://efeitos sonoros reais/wav/lorax chegada.wav" id="17_gdrgb"]
@@ -136,6 +137,8 @@ theme_override_fonts/font = ExtResource("1_u8cxm")
 theme_override_font_sizes/font_size = 4
 text = "i have no mouth and i must talk!"
 horizontal_alignment = 1
+
+[node name="controles" parent="CanvasLayer" unique_id=1740048659 instance=ExtResource("14_gdrgb")]
 
 [node name="Flash" type="ColorRect" parent="CanvasLayer" unique_id=224273522]
 anchors_preset = 15

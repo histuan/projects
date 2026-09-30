@@ -69,6 +69,7 @@ func _process(delta):
 # música abaixa e, no fim, troca para o jogo
 func comecar():
 	saindo = true
+	$CanvasLayer/controles.set_process(false)
 	label_enter.modulate.a = 1.0
 	var t = create_tween().set_parallel()
 	var som = $sons/start
