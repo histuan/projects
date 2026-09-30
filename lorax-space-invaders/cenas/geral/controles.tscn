@@ -56,8 +56,7 @@ offset_bottom = 266.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("7_rxbit")
 theme_override_font_sizes/font_size = 8
-text = "MOVE
-"
+text = "MOVE"
 
 [node name="LabelFire" type="Label" parent="." unique_id=1422872063]
 offset_left = 125.0
