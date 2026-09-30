@@ -10,11 +10,12 @@ config_version=5
 
 [application]
 
-config/name="space invaders"
+config/name="Lorax Deforestationders"
 run/main_scene="uid://c3ssou8s5q3mc"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0.011764706, 0, 0.101960786, 1)
-config/icon="res://icon.svg"
+boot_splash/image="uid://bfwisjbieqs0h"
+config/icon="uid://bfwisjbieqs0h"
 
 [autoload]
 

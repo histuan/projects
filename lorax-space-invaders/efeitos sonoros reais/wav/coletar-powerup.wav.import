@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dxsviltypxbw4"
-path="res://.godot/imported/coletar-motossera2.wav-765dc678876ad7dbd00274cb45a0d7a0.sample"
+path="res://.godot/imported/coletar-powerup.wav-5fd187061bf39e1cd886c71b430724d0.sample"
 
 [deps]
 
-source_file="res://efeitos sonoros reais/wav/coletar-motossera2.wav"
-dest_files=["res://.godot/imported/coletar-motossera2.wav-765dc678876ad7dbd00274cb45a0d7a0.sample"]
+source_file="res://efeitos sonoros reais/wav/coletar-powerup.wav"
+dest_files=["res://.godot/imported/coletar-powerup.wav-5fd187061bf39e1cd886c71b430724d0.sample"]
 
 [params]
 

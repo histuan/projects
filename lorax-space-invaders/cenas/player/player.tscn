@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bxnjc2r6hyh6q" path="res://meus sprites/player_esq_dir.png" id="3_bmch6"]
 [ext_resource type="AudioStream" uid="uid://dd7qu4uxfpyu7" path="res://efeitos sonoros reais/wav/tiro-foguete.wav" id="4_bmch6"]
 [ext_resource type="AudioStream" uid="uid://gt8h2aihtubt" path="res://efeitos sonoros reais/wav/motosserra.wav" id="5_4bqwr"]
-[ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-motossera2.wav" id="5_l50kp"]
+[ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-powerup.wav" id="5_l50kp"]
 [ext_resource type="AudioStream" uid="uid://ereood1bvklm" path="res://efeitos sonoros reais/wav/player dano.wav" id="7_wneci"]
 [ext_resource type="AudioStream" uid="uid://dko5xb1ve2uls" path="res://efeitos sonoros reais/wav/player-morte.wav" id="8_wneci"]
 

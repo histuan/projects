@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://uboq1m7b04uo" path="res://scripts/player/power_up.gd" id="1_3g8lr"]
 [ext_resource type="PackedScene" uid="uid://cr15ikw4omssw" path="res://cenas/player/moto_arma.tscn" id="1_s1mnb"]
-[ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-motossera2.wav" id="3_mcyvl"]
+[ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-powerup.wav" id="3_mcyvl"]
 [ext_resource type="AudioStream" uid="uid://gt8h2aihtubt" path="res://efeitos sonoros reais/wav/motosserra.wav" id="4_rx508"]
 [ext_resource type="Texture2D" uid="uid://c1c1uhcxdchxc" path="res://meus sprites/motosserra.png" id="5_f78gt"]
 

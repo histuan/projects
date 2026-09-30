@@ -8,6 +8,7 @@ var Coracao = preload("res://cenas/player/coracao_item.tscn")
 # Power-ups que podem cair (para um novo: criar o .tres e pôr aqui)
 const POWERUPS = [
 	preload("res://recursos/powerups/motosserra.tres"),
+	preload("res://recursos/powerups/trufula.tres"),
 ]
 
 @onready var main = get_parent()

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PowerUp" format=3 uid="uid://rtjxgyv1dk0n"]
+
+[ext_resource type="PackedScene" uid="uid://b1va245hgcuef" path="res://cenas/player/semente_tiro.tscn" id="1_nsgsn"]
+[ext_resource type="Script" uid="uid://uboq1m7b04uo" path="res://scripts/player/power_up.gd" id="2_y5x2j"]
+[ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-powerup.wav" id="3_nsgsn"]
+[ext_resource type="AudioStream" uid="uid://e8owsb7uamfi" path="res://efeitos sonoros reais/wav/trufula_tiro.wav" id="4_nsgsn"]
+[ext_resource type="Texture2D" uid="uid://dahhmenaqyi3q" path="res://meus sprites/semente_de_trufulla.png" id="5_y5x2j"]
+
+[resource]
+script = ExtResource("2_y5x2j")
+nome = "motosserra"
+sprite = ExtResource("5_y5x2j")
+cor_barra = Color(1, 0.43529412, 0.70980394, 1)
+projetil = ExtResource("1_nsgsn")
+quantidade = 5
+angulo_leque = 10.0
+som_coleta = ExtResource("3_nsgsn")
+volume_coleta = 24.0
+som_tiro = ExtResource("4_nsgsn")
+volume_tiro = 12.0
+metadata/_custom_type_script = "uid://uboq1m7b04uo"
