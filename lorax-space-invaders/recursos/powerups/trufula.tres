@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource("2_y5x2j")
-nome = "motosserra"
+nome = "trufula"
 sprite = ExtResource("5_y5x2j")
 cor_barra = Color(1, 0.43529412, 0.70980394, 1)
 projetil = ExtResource("1_nsgsn")
