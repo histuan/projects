@@ -84,15 +84,27 @@ func ao_ferir(fonte):
 	$AnimationPlayer.play("dano")
 	super(fonte)
 
-# Para de atacar, toca a animação de morte e treme a tela + hit-stop
-# (os pontos saem no fim da animação "destruido")
+# Para de atacar, dá os pontos, treme a tela + hit-stop e foge pelo topo
 func morrer(_fonte):
-	$AnimationPlayer.play("destruido")
 	soltar_som(som_morte)
 	$TimerArremesso.stop()
+	dar_pontos(16)
 	var camera = get_viewport().get_camera_2d()
 	camera.tremer(8)
 	camera.congelar(0.12)
+	fugir()
+
+# Recua um pouco, sobe até sair da tela e só então avisa o groupAlien e some
+func fugir():
+	$AnimationPlayer.play("dano")
+	$CollisionShape2D.set_deferred("disabled", true)
+	var tween = create_tween()
+	tween.tween_property(self, "position:y", position.y + 4, 0.15)
+	tween.tween_interval(0.25)
+	tween.tween_property(self, "position:y", -40.0, 1.3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func():
+		emit_signal("bonus_eliminado")
+		queue_free())
 
 func _on_timer_arremesso_timeout():
 	arremessar()
