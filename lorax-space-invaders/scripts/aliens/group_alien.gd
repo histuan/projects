@@ -18,9 +18,15 @@ var boss_morto = false
 # A cada 3 waves, uma fila a mais de aliens fortes (máx. 4)
 const WAVES_FORTE = 3
 # Snipers: a partir da wave 4, no máximo 2, um em cada canto
-const WAVE_SNIPER = 4
+const WAVE_SNIPER = 5
 const MAX_SNIPERS = 2
 const SLOTS_SNIPER = [Vector2(13, 49), Vector2(241, 49)]
+# Na wave do boss não nasce horda nova; a main reage a este sinal (hud, spawner)
+const WAVE_BOSS = 2
+signal wave_boss_chegou
+var em_boss = false
+var lorax_antigo = null
+var timer_boss_limpo: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
@@ -60,6 +66,9 @@ func _on_timer_dificuldade_timeout():
 # Cria uma horda 4x8; as filas de cima viram aliens fortes conforme a wave
 func criar_horda():
 	var wave = Partida.avancar_wave()
+	if wave >= WAVE_BOSS:
+		comecar_wave_boss()
+		return
 	var linhas_fortes = mini(floori(wave / float(WAVES_FORTE)), 4)
 	for i in range(4):
 		var fila = []
@@ -128,11 +137,14 @@ func _on_timer_bonus_timeout():
 	bonus.boss_apareceu.connect(hud.mostrar_vida_boss)
 	bonus.boss_desceu.connect(hud.parar_piscada_boss)
 	bonus.bonus_eliminado.connect(_on_boss_morreu)
+	lorax_antigo = bonus
 	self.add_child(bonus)
 	$loraxChegada.play()
 
 # Adianta a wave só depois que o boss morreu E a horda foi toda destruída
 func checar_proxima_wave():
+	if em_boss:
+		return
 	if boss_morto and horda_vazia() and $timers/TimerProximaWave.is_stopped():
 		$timers/TimerProximaWave.start()
 
@@ -140,6 +152,32 @@ func _on_boss_morreu():
 	boss_morto = true
 	checar_proxima_wave()
 	
+# Wave do boss: para de criar hordas e snipers, tira o Lorax antigo de cena e
+# começa a vigiar a tela até ela ficar limpa
+func comecar_wave_boss():
+	em_boss = true
+	$timers/TimerWave.stop()
+	$timers/TimerProximaWave.stop()
+	$timers/TimerSniper.stop()
+	if is_instance_valid(lorax_antigo) and lorax_antigo.vivo:
+		lorax_antigo.retirar()
+	wave_boss_chegou.emit()
+	timer_boss_limpo = Timer.new()
+	timer_boss_limpo.wait_time = 0.5
+	timer_boss_limpo.timeout.connect(_on_timer_boss_limpo_timeout)
+	add_child(timer_boss_limpo)
+	timer_boss_limpo.start()
+
+# Com a tela limpa, o boss final pode entrar (por enquanto só imprime)
+func _on_timer_boss_limpo_timeout():
+	if tela_limpa():
+		timer_boss_limpo.stop()
+		print("BOSS FINAL ENTRARIA AQUI")
+
+# true sem nenhum alien, sniper ou Lorax antigo na tela
+func tela_limpa():
+	return horda_vazia() and get_tree().get_nodes_in_group("aliens").is_empty()
+
 # Wave por tempo: inverte a direção e cria outra horda (a anterior continua em jogo)
 func _on_timer_wave_timeout():
 	direcao_wave *= -1
@@ -147,6 +185,8 @@ func _on_timer_wave_timeout():
 	
 # Wave adiantada: cria a horda e reinicia a contagem do TimerWave
 func _on_timer_proxima_wave_timeout():
+	if em_boss:
+		return
 	if horda_vazia():
 		_on_timer_wave_timeout()
 		$timers/TimerWave.start()
@@ -154,6 +194,8 @@ func _on_timer_proxima_wave_timeout():
 # Cria os snipers que faltam: 1 nas waves 4–6, 2 a partir da 7.
 # Cada um nasce 30 px fora da tela e desliza até o canto livre
 func _on_timer_sniper_timeout():
+	if em_boss:
+		return
 	var desejados = mini(1 + floori((Partida.wave - WAVE_SNIPER) / 3.0), MAX_SNIPERS)
 	var vivos = get_tree().get_nodes_in_group("snipers").size()
 	for slot in SLOTS_SNIPER:

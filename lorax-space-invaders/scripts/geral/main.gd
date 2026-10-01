@@ -14,6 +14,8 @@ func _ready():
 	Partida.vida_perdida.connect(_on_vida_perdida)
 	Partida.vida_ganha.connect($sons/coletarCoracao.play)
 	Partida.morreu.connect(_on_morreu)
+	$groupAlien.wave_boss_chegou.connect($hud.esconder_placar)
+	$groupAlien.wave_boss_chegou.connect($spawner.parar_planeta)
 
 # Qualquer vida perdida: tremor leve
 func _on_vida_perdida():

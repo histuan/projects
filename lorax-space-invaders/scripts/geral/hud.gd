@@ -4,6 +4,7 @@ extends Node
 
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 var tween_wave: Tween = null
+var pontos_visiveis = true
 
 # Esconde os corações do boss e passa a escutar a Partida
 func _ready():
@@ -19,6 +20,11 @@ func _ready():
 # Número do placar
 func mostrar_pontuacao(p):
 	$placar/LabelP.text = str(p)
+
+# Esconde o placar e os "+N" (a Partida continua somando os pontos)
+func esconder_placar():
+	$placar.hide()
+	pontos_visiveis = false
 
 # Corações do player (cheios = vidas)
 func mostrar_vidas(v):
@@ -53,6 +59,8 @@ func mostrar_wave(n):
 
 # Texto "+N" que sobe e some. Cor por valor: 200 forte, 300 sniper, 500 boss
 func mostrar_pontos(valor, pos, tamanho = 8):
+	if not pontos_visiveis:
+		return
 	var l = Label.new()
 	l.text = "+" + str(valor)
 	l.add_theme_font_override("font", FONTE)
