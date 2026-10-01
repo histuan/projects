@@ -100,7 +100,7 @@ func fugir():
 		$AnimationPlayer.play("fugindo")
 	else:
 		$AnimationPlayer.play("dano")
-		$CollisionShape2D.set_deferred("disabled", true)
+	$CollisionShape2D.set_deferred("disabled", true)
 	var tween = create_tween()
 	tween.tween_property(self, "position:y", position.y + 4, 0.15)
 	tween.tween_interval(0.25)

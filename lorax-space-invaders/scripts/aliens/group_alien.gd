@@ -22,7 +22,7 @@ const WAVE_SNIPER = 5
 const MAX_SNIPERS = 2
 const SLOTS_SNIPER = [Vector2(13, 49), Vector2(241, 49)]
 # Na wave do boss não nasce horda nova; a main reage a este sinal (hud, spawner)
-const WAVE_BOSS = 2
+const WAVE_BOSS = 10
 signal wave_boss_chegou
 var em_boss = false
 var lorax_antigo = null
