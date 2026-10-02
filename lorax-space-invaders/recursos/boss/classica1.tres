@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="FaseClassicaDados" format=3 uid="uid://cksvvdbtwxak7"]
+
+[ext_resource type="Script" uid="uid://conbfdo68vx6j" path="res://scripts/boss/dados/fase_classica_dados.gd" id="1_fase"]
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="2_anim"]
+[ext_resource type="PackedScene" uid="uid://cril6suuycagh" path="res://cenas/boss/folha_boss.tscn" id="3_folha"]
+[ext_resource type="Texture2D" uid="uid://bfcjgsqvhllxb" path="res://meus sprites/lorax boss battle/fase1/fase1 idle.png" id="4_idle"]
+[ext_resource type="Texture2D" uid="uid://con16pmrhcb8e" path="res://meus sprites/lorax boss battle/fase1/fase1 hit.png" id="5_hit"]
+[ext_resource type="Texture2D" uid="uid://bgf2cmafntdlj" path="res://meus sprites/lorax boss battle/fase1/fase1 ataque.png" id="6_ataque"]
+
+[sub_resource type="Resource" id="Resource_parado"]
+script = ExtResource("2_anim")
+nome = "parado"
+folha = ExtResource("4_idle")
+repetir = true
+
+[sub_resource type="Resource" id="Resource_dano"]
+script = ExtResource("2_anim")
+nome = "dano"
+folha = ExtResource("5_hit")
+
+[sub_resource type="Resource" id="Resource_ataque"]
+script = ExtResource("2_anim")
+nome = "ataque"
+folha = ExtResource("6_ataque")
+tempo_por_quadro = 0.1
+quadro_evento = 3
+
+[resource]
+script = ExtResource("1_fase")
+intervalo_ataque = 1.6
+intervalo_minimo = 1.0
+projetil = ExtResource("3_folha")
+quantidade = 5
+angulo_leque = 15.0
+animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque")])

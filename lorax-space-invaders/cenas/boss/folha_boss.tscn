@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cril6suuycagh"]
+
+[ext_resource type="Script" uid="uid://dong454ualjfi" path="res://scripts/boss/folha_boss.gd" id="1_folha"]
+[ext_resource type="Texture2D" uid="uid://1i7wswxmdanq" path="res://meus sprites/lorax boss battle/lorax_ui_final/ataques/folha.png" id="2_folha"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_folha"]
+size = Vector2(6, 6)
+
+[node name="folhaBoss" type="Area2D" unique_id=854872930]
+script = ExtResource("1_folha")
+velocidade = 160.0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=863586082]
+texture = ExtResource("2_folha")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=863861994]
+shape = SubResource("RectangleShape2D_folha")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

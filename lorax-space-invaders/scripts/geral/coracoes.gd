@@ -22,6 +22,9 @@ var tween_piscada: Tween = null
 
 # Pisca sem parar (enquanto o boss desce)
 func piscar_ate_parar():
+	# Mata o tween anterior: o sumir_piscando() termina num hide() que esconderia tudo
+	if tween_piscada != null:
+		tween_piscada.kill()
 	tween_piscada = create_tween().set_loops()
 	tween_piscada.tween_property(self, "modulate:a", 0.2, 0.15)
 	tween_piscada.tween_property(self, "modulate:a", 1.0, 0.15)

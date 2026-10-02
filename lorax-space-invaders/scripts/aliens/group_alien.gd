@@ -24,6 +24,8 @@ const SLOTS_SNIPER = [Vector2(13, 49), Vector2(241, 49)]
 # Na wave do boss não nasce horda nova; a main reage a este sinal (hud, spawner)
 const WAVE_BOSS = 10
 signal wave_boss_chegou
+# Emitido uma vez, quando não sobra alien, sniper nem Lorax antigo na tela
+signal boss_pode_entrar
 var em_boss = false
 var lorax_antigo = null
 var timer_boss_limpo: Timer
@@ -176,11 +178,11 @@ func comecar_wave_boss():
 	add_child(timer_boss_limpo)
 	timer_boss_limpo.start()
 
-# Com a tela limpa, o boss final pode entrar (por enquanto só imprime)
+# Com a tela limpa, avisa a main que o boss final pode entrar
 func _on_timer_boss_limpo_timeout():
 	if tela_limpa():
 		timer_boss_limpo.stop()
-		print("BOSS FINAL ENTRARIA AQUI")
+		boss_pode_entrar.emit()
 
 # true sem nenhum alien, sniper ou Lorax antigo na tela
 func tela_limpa():

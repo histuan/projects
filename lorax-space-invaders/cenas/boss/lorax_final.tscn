@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://s6nnxmmrfey2"]
+
+[ext_resource type="Script" uid="uid://dbgejjxaqxgt1" path="res://scripts/boss/lorax_final.gd" id="1_corpo"]
+[ext_resource type="Texture2D" uid="uid://bfcjgsqvhllxb" path="res://meus sprites/lorax boss battle/fase1/fase1 idle.png" id="2_idle"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_corpo"]
+size = Vector2(28, 18)
+
+[node name="LoraxFinal" type="CharacterBody2D" unique_id=496171438 groups=["aliens"]]
+script = ExtResource("1_corpo")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=105643288]
+texture = ExtResource("2_idle")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1530319922]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_corpo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1190795043]

@@ -4,6 +4,13 @@ extends Node
 @onready var camera = $Camera2D
 @onready var player = $player
 
+const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
+
+# Boss perdeu um coração: tremor leve (força, segundos) e hit-stop curto (segundos)
+const TREMOR_CORACAO_BOSS = 4
+const DURACAO_TREMOR_CORACAO_BOSS = 0.25
+const HITSTOP_CORACAO_BOSS = 0.05
+
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
 	Partida.nova_partida()
@@ -16,6 +23,28 @@ func _ready():
 	Partida.morreu.connect(_on_morreu)
 	$groupAlien.wave_boss_chegou.connect($hud.esconder_placar)
 	$groupAlien.wave_boss_chegou.connect($spawner.parar_planeta)
+	$groupAlien.boss_pode_entrar.connect(_on_boss_pode_entrar)
+	$hud.coracao_boss_perdido.connect(_on_coracao_boss_perdido)
+
+# Tela limpa na wave do boss: cria a batalha final logo depois do groupAlien na árvore
+# (desenha atrás do cenário e da hud), liga os sinais dela à hud e manda começar
+func _on_boss_pode_entrar():
+	var batalha = BATALHA_FINAL.instantiate()
+	batalha.vida_boss_mudou.connect($hud.mostrar_vida_boss_final)
+	batalha.boss_invulneravel.connect($hud.piscar_vida_boss)
+	batalha.terminou.connect(_on_batalha_terminou)
+	add_child(batalha)
+	move_child(batalha, $groupAlien.get_index() + 1)
+	batalha.comecar(player)
+
+# Acabaram as fases que existem (por enquanto só imprime)
+func _on_batalha_terminou():
+	print("FASE 2 ENTRARIA AQUI")
+
+# Um coração do boss esvaziou (não vale para o último): tremor leve + hit-stop curto
+func _on_coracao_boss_perdido():
+	camera.tremer(TREMOR_CORACAO_BOSS, DURACAO_TREMOR_CORACAO_BOSS)
+	camera.congelar(HITSTOP_CORACAO_BOSS)
 
 # Qualquer vida perdida: tremor leve
 func _on_vida_perdida():

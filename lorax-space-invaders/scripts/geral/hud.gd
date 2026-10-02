@@ -6,6 +6,10 @@ const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 var tween_wave: Tween = null
 var pontos_visiveis = true
 
+# Boss final: um coração cheio esvaziou (a main reage com a câmera)
+signal coracao_boss_perdido
+var coracoes_boss_cheios = 0
+
 # Esconde os corações do boss e passa a escutar a Partida
 func _ready():
 	$coracoesBoss.hide()
@@ -43,6 +47,26 @@ func mostrar_vida_boss():
 
 func parar_piscada_boss():
 	$coracoesBoss.parar_piscada()
+
+# Boss final: os corações cheios acompanham a proporção vida / vida_max
+# (no zero ficam vazios na tela, sem sumir)
+func mostrar_vida_boss_final(vida, vida_max):
+	var total = $coracoesBoss.coracoes.size()
+	var cheios = ceili(vida * float(total) / vida_max)
+	$coracoesBoss.show()
+	$coracoesBoss.set_vidas(cheios)
+	# Só avisa quando um coração esvazia e ainda sobra algum (o zero é o fim da fase)
+	if cheios < coracoes_boss_cheios and cheios > 0:
+		coracao_boss_perdido.emit()
+	coracoes_boss_cheios = cheios
+
+# Boss final: corações piscando = ele está invulnerável
+func piscar_vida_boss(ligado):
+	if ligado:
+		$coracoesBoss.show()
+		$coracoesBoss.piscar_ate_parar()
+	else:
+		$coracoesBoss.parar_piscada()
 
 # Letreiro "WAVE N" piscando 2 vezes (~4,2 s)
 func mostrar_wave(n):
