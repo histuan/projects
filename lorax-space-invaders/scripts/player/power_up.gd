@@ -25,11 +25,7 @@ extends Resource
 
 # Cria os projéteis saindo de 'origem'; com quantidade > 1 eles abrem em leque
 func atirar(origem: Vector2, pai: Node):
-	for i in range(quantidade):
-		var p = projetil.instantiate()
-		p.global_position = origem
-		p.rotation = deg_to_rad((i - (quantidade - 1) / 2.0) * angulo_leque)
-		pai.add_child(p)
+	Projetil.criar_leque(projetil, quantidade, angulo_leque, origem, pai)
 
 # Ganchos vazios para power-ups que não são "tipo de tiro" (escudo, velocidade...):
 # um script que faça "extends PowerUp" pode sobrescrever estas duas

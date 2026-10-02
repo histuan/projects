@@ -21,6 +21,15 @@ const ALTURA_TELA = 256
 # 'acertou' trava tudo depois do primeiro acerto (dois alvos no mesmo frame, saída da tela)
 var acertou := false
 
+# Cria 'quantidade' projéteis da 'cena' saindo de 'origem', filhos de 'pai'.
+# Com mais de um, abrem em leque: 'angulo' graus entre dois vizinhos
+static func criar_leque(cena: PackedScene, quantidade: int, angulo: float, origem: Vector2, pai: Node):
+	for i in range(quantidade):
+		var p = cena.instantiate()
+		p.global_position = origem
+		p.rotation = deg_to_rad((i - (quantidade - 1) / 2.0) * angulo)
+		pai.add_child(p)
+
 # Anda e, se saiu da tela sem acertar nada, avisa ao_sair_da_tela()
 func _process(delta):
 	position += direcao.rotated(rotation) * velocidade * delta
