@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://kyat3usw0f38" path="res://scripts/geral/start.gd" id="1_c5w71"]
 [ext_resource type="FontFile" uid="uid://cox7xc0ufl2ov" path="res://fonts/atari-classic-font/AtariClassic-gry3.ttf" id="1_u8cxm"]
-[ext_resource type="Texture2D" uid="uid://c88n8rh1ov5d8" path="res://meus sprites/fundo.png" id="2_qki0g"]
+[ext_resource type="Texture2D" uid="uid://c88n8rh1ov5d8" path="res://meus sprites/geral/fundo.png" id="2_qki0g"]
 [ext_resource type="Texture2D" uid="uid://cy327bhc5yxbr" path="res://lorax/Evil lorax.png" id="3_t8h8b"]
 [ext_resource type="Texture2D" uid="uid://bkgidymr6kg1r" path="res://lorax/truffula_evil_64.png" id="5_3q64y"]
 [ext_resource type="Texture2D" uid="uid://gdtow7mlt07p" path="res://lorax/truffula_pink_32.png" id="6_a2fa8"]
@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://dtm1fehd7urud" path="res://lorax/truffula_bushy_64.png" id="12_qki0g"]
 [ext_resource type="Texture2D" uid="uid://nxe08xjdro05" path="res://lorax/truffula_teal_64.png" id="14_0yq6o"]
 [ext_resource type="PackedScene" uid="uid://cxrq47s4iu0ke" path="res://cenas/geral/controles.tscn" id="14_gdrgb"]
+[ext_resource type="AudioStream" uid="uid://do3nmrmm882la" path="res://efeitos sonoros reais/musicas/musica_menu.mp3" id="15_0yq6o"]
 [ext_resource type="Texture2D" uid="uid://bbtec6f3xyiy0" path="res://lorax/truffula_orange_32.png" id="15_gdrgb"]
-[ext_resource type="AudioStream" uid="uid://cgndavc84bvgx" path="res://efeitos sonoros reais/Beneath_the_Weight.mp3" id="16_0yq6o"]
 [ext_resource type="AudioStream" uid="uid://bjm4b67hvai7o" path="res://efeitos sonoros reais/wav/lorax chegada.wav" id="17_gdrgb"]
 
 [node name="Start" type="Node2D" unique_id=1031013868]
@@ -152,7 +152,7 @@ color = Color(0.5194127, 0.5194127, 0.5194127, 0)
 [node name="sons" type="Node" parent="." unique_id=257443294]
 
 [node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=1627709389]
-stream = ExtResource("16_0yq6o")
+stream = ExtResource("15_0yq6o")
 volume_db = 11.0
 autoplay = true
 

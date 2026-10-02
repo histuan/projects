@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://b8mlsrqs4qq48" path="res://scripts/geral/poluicao.gd" id="5_b12mh"]
 [ext_resource type="PackedScene" uid="uid://b1wr24v86jxa0" path="res://cenas/geral/cenario.tscn" id="5_rni58"]
 [ext_resource type="PackedScene" uid="uid://cjgv16kk7h21" path="res://cenas/geral/hud.tscn" id="6_1ue6m"]
-[ext_resource type="AudioStream" uid="uid://dape3rcq3pbip" path="res://efeitos sonoros reais/The_Green_Frontier.mp3" id="13_p4x86"]
+[ext_resource type="AudioStream" uid="uid://hlybdr43ywh6" path="res://efeitos sonoros reais/musicas/musica_espaco.mp3" id="11_d07vn"]
 [ext_resource type="Script" uid="uid://c4siruc773wvm" path="res://scripts/geral/spawner.gd" id="16_mxjhq"]
 [ext_resource type="AudioStream" uid="uid://c57vp1aknu07h" path="res://efeitos sonoros reais/wav/coletar_coracao.wav" id="17_n3rig"]
 [ext_resource type="PackedScene" uid="uid://c00wpsfa85tbq" path="res://cenas/geral/pause_menu.tscn" id="18_8o0l5"]
@@ -59,7 +59,7 @@ one_shot = true
 [node name="sons" type="Node" parent="." unique_id=501850141]
 
 [node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=341250108]
-stream = ExtResource("13_p4x86")
+stream = ExtResource("11_d07vn")
 autoplay = true
 
 [node name="coletarCoracao" type="AudioStreamPlayer" parent="sons" unique_id=735013477]
