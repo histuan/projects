@@ -49,13 +49,11 @@ func parar_piscada_boss():
 	$coracoesBoss.parar_piscada()
 
 # Boss final: os corações cheios acompanham a proporção vida / vida_max
-# (no zero ficam vazios na tela, sem sumir)
 func mostrar_vida_boss_final(vida, vida_max):
 	var total = $coracoesBoss.coracoes.size()
 	var cheios = ceili(vida * float(total) / vida_max)
 	$coracoesBoss.show()
 	$coracoesBoss.set_vidas(cheios)
-	# Só avisa quando um coração esvazia e ainda sobra algum (o zero é o fim da fase)
 	if cheios < coracoes_boss_cheios and cheios > 0:
 		coracao_boss_perdido.emit()
 	coracoes_boss_cheios = cheios
