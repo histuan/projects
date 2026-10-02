@@ -42,4 +42,4 @@ func _on_timer_spawn_coracao_timeout():
 		var c = Coracao.instantiate()
 		c.global_position = Vector2(randf_range(20, 234), 0)
 		main.add_child(c)
-	$TimerSpawnCoracao.start(randf_range(10, 15))
+	$TimerSpawnCoracao.start(randf_range(20, 25))
