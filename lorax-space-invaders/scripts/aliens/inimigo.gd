@@ -13,9 +13,19 @@ extends CharacterBody2D
 var vivo := true
 var tween_pisca: Tween = null
 
+# Regra opcional de fontes "fracas": fonte → quantas rajadas valem 1 golpe.
+# Vazio = todo golpe conta. Quem quer a regra preenche no _init (ex.: {"trufula": 2})
+var rajadas_por_dano := {}
+# Golpes da mesma fonte a menos disso (ms) um do outro são a mesma rajada
+const INTERVALO_RAJADA = 400
+var ultima_rajada = -INTERVALO_RAJADA
+var rajadas_contadas = 0
+
 # Interface única de dano. Com vida sobrando chama ao_ferir(); no zero, morrer()
 func receber_dano(quantidade = 1, fonte = "tiro"):
 	if not vivo:
+		return
+	if not golpe_conta(fonte):
 		return
 	vidas -= quantidade
 	if vidas > 0:
@@ -23,6 +33,22 @@ func receber_dano(quantidade = 1, fonte = "tiro"):
 	else:
 		vivo = false
 		morrer(fonte)
+
+# false se o golpe veio de uma fonte fraca e a rajada ainda não completou a conta
+# (nesse caso o inimigo só pisca). Fontes fora de rajadas_por_dano sempre contam
+func golpe_conta(fonte):
+	if not rajadas_por_dano.has(fonte):
+		return true
+	var agora = Time.get_ticks_msec()
+	if agora - ultima_rajada < INTERVALO_RAJADA:
+		return false
+	ultima_rajada = agora
+	rajadas_contadas += 1
+	if rajadas_contadas < rajadas_por_dano[fonte]:
+		piscar()
+		return false
+	rajadas_contadas = 0
+	return true
 
 # Padrão ao levar dano sem morrer: som de dano + piscada.
 # Quem sobrescreve e quer manter isso chama super(fonte)
