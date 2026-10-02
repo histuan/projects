@@ -26,8 +26,18 @@ var saindo = false
 var escala_lorax: Vector2
 var base_y = {}
 
+const DetectorCodigo = preload("res://scripts/geral/detector_codigo.gd")
+const SeletorEtapa = preload("res://scripts/geral/seletor_etapa.gd")
+
+var detector
+var seletor
+# Com o seletor aberto, o Enter é dele e não inicia o jogo normal
+var seletor_aberto = false
+
 # Guarda os valores originais para animar a partir deles
 func _ready():
+	Partida.limpar_etapa()
+	criar_cheat()
 	escala_lorax = lorax.scale
 	splash.text = FRASES.pick_random()
 	for s in $CanvasLayer/sprites.get_children():
@@ -62,8 +72,39 @@ func _process(delta):
 		s.position.y = base_y[s] + round(sin(tempo * 2.0 + i) * 1.5)
 		i += 1
 
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and not seletor_aberto:
 		comecar()
+
+# Cria o detector do código Konami e o seletor de etapa e liga os sinais
+func criar_cheat():
+	detector = DetectorCodigo.new()
+	seletor = SeletorEtapa.new()
+	add_child(detector)
+	add_child(seletor)
+	detector.codigo_digitado.connect(_abrir_seletor)
+	seletor.etapa_escolhida.connect(_on_etapa_escolhida)
+	seletor.cancelado.connect(_fechar_seletor)
+
+# Código certo: abre a lista com as etapas de Partida.NOMES_ETAPAS
+func _abrir_seletor():
+	if saindo or seletor_aberto:
+		return
+	var opcoes = []
+	for etapa in Partida.NOMES_ETAPAS:
+		opcoes.append({"nome": Partida.NOMES_ETAPAS[etapa], "etapa": etapa})
+	seletor_aberto = true
+	detector.ativo = false
+	seletor.abrir(opcoes)
+
+# Esc no seletor: volta à tela inicial normal
+func _fechar_seletor():
+	seletor_aberto = false
+	detector.ativo = true
+
+# Etapa escolhida: grava na Partida e começa o jogo com a transição de sempre
+func _on_etapa_escolhida(etapa):
+	Partida.escolher_etapa(etapa)
+	comecar()
 
 # Som de start (continua tocando na troca de cena), zoom no Lorax, flash,
 # música abaixa e, no fim, troca para o jogo

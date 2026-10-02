@@ -30,6 +30,13 @@ var timer_boss_limpo: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
+	# Cheat "WAVE DO BOSS": sem Lorax antigo; espera a main conectar os sinais
+	# (o _ready dela roda depois do meu) e pula direto para a wave anterior ao boss
+	if Partida.etapa_inicial == Partida.Etapa.WAVE_BOSS:
+		await get_parent().ready
+		Partida.definir_wave(WAVE_BOSS - 1)
+		criar_horda()
+		return
 	$timers/TimerBonus.wait_time = randf_range(5.0, 10.0)
 	$timers/TimerBonus.one_shot = true
 	$timers/TimerBonus.start()
@@ -159,6 +166,7 @@ func comecar_wave_boss():
 	$timers/TimerWave.stop()
 	$timers/TimerProximaWave.stop()
 	$timers/TimerSniper.stop()
+	$timers/TimerBonus.stop()
 	if is_instance_valid(lorax_antigo) and lorax_antigo.vivo:
 		lorax_antigo.retirar()
 	wave_boss_chegou.emit()

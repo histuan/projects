@@ -14,6 +14,26 @@ var pontos = 0
 var vidas = MAX_VIDAS
 var wave = 0
 
+# Etapas do cheat code (o seletor da tela inicial lista NOMES_ETAPAS).
+# etapa_inicial sobrevive ao nova_partida(): é ela que o "Reiniciar" mantém
+enum Etapa { NENHUMA, WAVE_BOSS }
+const NOMES_ETAPAS = {
+	Etapa.WAVE_BOSS: "WAVE DO BOSS",
+}
+var etapa_inicial = Etapa.NENHUMA
+
+# Guarda a etapa em que a próxima partida deve começar
+func escolher_etapa(etapa):
+	etapa_inicial = etapa
+
+# Volta ao normal (chamada pela tela inicial)
+func limpar_etapa():
+	etapa_inicial = Etapa.NENHUMA
+
+# Pula direto para uma wave (sem emitir sinal; o avancar_wave() seguinte emite)
+func definir_wave(valor):
+	wave = valor
+
 # Zera tudo para uma partida nova
 func nova_partida():
 	pontos = 0
