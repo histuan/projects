@@ -10,7 +10,8 @@
 [ext_resource type="Script" uid="uid://2f6o0lk48p4a" path="res://scripts/geral/barra_power.gd" id="9_0nt2n"]
 [ext_resource type="Texture2D" uid="uid://bymfmq2cxt71b" path="res://meus sprites/geral/wave.png" id="9_k18o7"]
 
-[node name="hud" type="Node" unique_id=823700872]
+[node name="hud" type="CanvasLayer" unique_id=823700872]
+layer = 5
 script = ExtResource("1_tk4hp")
 
 [node name="placar" type="HBoxContainer" parent="." unique_id=282110837]

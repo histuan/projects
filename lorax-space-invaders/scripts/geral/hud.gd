@@ -1,6 +1,6 @@
 # HUD: placar, corações do player e do boss, letreiro da wave e os "+N" flutuantes.
 # Só desenha; quem decide pontos e vidas é a Partida.
-extends Node
+extends CanvasLayer
 
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 var tween_wave: Tween = null
