@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bqrm3a4ijesfp"]
 
 [ext_resource type="Script" uid="uid://d4mdehg0vb3vg" path="res://scripts/player/player.gd" id="1_unwft"]
-[ext_resource type="Texture2D" uid="uid://bbdu1y3mgscj8" path="res://meus sprites/player.png" id="2_a8ubr"]
-[ext_resource type="Texture2D" uid="uid://bxnjc2r6hyh6q" path="res://meus sprites/player_esq_dir.png" id="3_bmch6"]
+[ext_resource type="Texture2D" uid="uid://bbdu1y3mgscj8" path="res://meus sprites/player/player.png" id="2_a8ubr"]
+[ext_resource type="Texture2D" uid="uid://bxnjc2r6hyh6q" path="res://meus sprites/player/player_esq_dir.png" id="3_bmch6"]
 [ext_resource type="AudioStream" uid="uid://dd7qu4uxfpyu7" path="res://efeitos sonoros reais/wav/tiro-foguete.wav" id="4_bmch6"]
 [ext_resource type="AudioStream" uid="uid://gt8h2aihtubt" path="res://efeitos sonoros reais/wav/motosserra.wav" id="5_4bqwr"]
 [ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-powerup.wav" id="5_l50kp"]
@@ -189,6 +189,7 @@ one_shot = true
 
 [node name="shootSFX" type="AudioStreamPlayer2D" parent="sons" unique_id=5106065]
 stream = ExtResource("4_bmch6")
+volume_db = 11.86
 
 [node name="powerTiro" type="AudioStreamPlayer2D" parent="sons" unique_id=1188717130]
 stream = ExtResource("5_4bqwr")

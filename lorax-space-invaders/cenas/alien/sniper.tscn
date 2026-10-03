@@ -112,5 +112,6 @@ stream = ExtResource("3_6qbuk")
 
 [node name="morte" type="AudioStreamPlayer2D" parent="sons" unique_id=563824477]
 stream = ExtResource("4_ttrdm")
+volume_db = 10.475
 
 [connection signal="timeout" from="TimerTiro" to="." method="_on_timer_tiro_timeout"]
