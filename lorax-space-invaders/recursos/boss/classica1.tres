@@ -23,7 +23,7 @@ script = ExtResource("2_anim")
 nome = "ataque"
 folha = ExtResource("6_ataque")
 tempo_por_quadro = 0.1
-quadro_evento = 3
+quadro_evento = 4
 
 [resource]
 script = ExtResource("1_fase")
