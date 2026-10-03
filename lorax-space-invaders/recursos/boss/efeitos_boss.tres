@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EfeitosDados" format=3]
+
+[ext_resource type="Script" path="res://scripts/boss/dados/efeitos_dados.gd" id="1_efeitos"]
+
+[resource]
+script = ExtResource("1_efeitos")
+zoom_ligado = true
+fator_tremor_reduzido = 0.3
+coracao_boss_tremor = Vector2(4, 0.25)
+coracao_boss_hitstop = 0.05

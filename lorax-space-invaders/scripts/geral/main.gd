@@ -6,18 +6,22 @@ extends Node
 
 const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
 
-# Boss perdeu um coração: tremor leve (força, segundos) e hit-stop curto (segundos)
-const TREMOR_CORACAO_BOSS = 4
-const DURACAO_TREMOR_CORACAO_BOSS = 0.25
-const HITSTOP_CORACAO_BOSS = 0.05
+# Números dos efeitos da boss fight (afinados no Inspector)
+const EFEITOS = preload("res://recursos/boss/efeitos_boss.tres")
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
 	Partida.nova_partida()
 
-# Música e reações aos sinais da Partida
+# Saindo da partida (game over, Reiniciar, Menu): o tempo do jogo volta ao normal
+func _exit_tree():
+	TempoJogo.limpar()
+
+# Música, ajustes da câmera e reações aos sinais da Partida
 func _ready():
 	$sons/musga.play()
+	camera.zoom_ligado = EFEITOS.zoom_ligado
+	camera.fator_tremor_reduzido = EFEITOS.fator_tremor_reduzido
 	Partida.vida_perdida.connect(_on_vida_perdida)
 	Partida.vida_ganha.connect($sons/coletarCoracao.play)
 	Partida.morreu.connect(_on_morreu)
@@ -43,8 +47,8 @@ func _on_batalha_terminou():
 
 # Um coração do boss esvaziou (não vale para o último): tremor leve + hit-stop curto
 func _on_coracao_boss_perdido():
-	camera.tremer(TREMOR_CORACAO_BOSS, DURACAO_TREMOR_CORACAO_BOSS)
-	camera.congelar(HITSTOP_CORACAO_BOSS)
+	camera.tremer(EFEITOS.coracao_boss_tremor.x, EFEITOS.coracao_boss_tremor.y)
+	TempoJogo.congelar(EFEITOS.coracao_boss_hitstop)
 
 # Qualquer vida perdida: tremor leve
 func _on_vida_perdida():
@@ -54,4 +58,4 @@ func _on_vida_perdida():
 func _on_morreu():
 	player.morrer()
 	camera.tremer(21, 1.2)
-	camera.congelar(0.15)
+	TempoJogo.congelar(0.15)

@@ -20,6 +20,8 @@ config/icon="uid://bfwisjbieqs0h"
 [autoload]
 
 Partida="*uid://bn51j2nmmof5t"
+TempoJogo="*uid://dgk3xojjxg0gi"
+Configuracoes="*uid://clvq84e2or8mg"
 
 [display]
 

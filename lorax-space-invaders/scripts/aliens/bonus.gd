@@ -78,7 +78,7 @@ func morrer(_fonte):
 	dar_pontos(16)
 	var camera = get_viewport().get_camera_2d()
 	camera.tremer(8)
-	camera.congelar(0.12)
+	TempoJogo.congelar(0.12)
 	fugir()
 
 # Recua um pouco, sobe até sair da tela e só então avisa o groupAlien e some
