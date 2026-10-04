@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ccux3mwuuw8o1"
+path="res://.godot/imported/musica trasnformacao.mp3-aae9cf34cd08c54ec3e8f95797128227.mp3str"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/musicas/musica trasnformacao.mp3"
+dest_files=["res://.godot/imported/musica trasnformacao.mp3-aae9cf34cd08c54ec3e8f95797128227.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

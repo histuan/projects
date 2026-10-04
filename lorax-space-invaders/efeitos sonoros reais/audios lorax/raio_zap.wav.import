@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b8xe71n8cvgmw"
+path="res://.godot/imported/raio_zap.wav-f4da38b0a7ee98ed80525d4d1ec083b6.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/raio_zap.wav"
+dest_files=["res://.godot/imported/raio_zap.wav-f4da38b0a7ee98ed80525d4d1ec083b6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

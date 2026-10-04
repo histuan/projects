@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ovl8l2trnlbm"
+path="res://.godot/imported/recuperar_vida_lorax.wav-d6cf539853ed7f37971867b11c098bcb.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/recuperar_vida_lorax.wav"
+dest_files=["res://.godot/imported/recuperar_vida_lorax.wav-d6cf539853ed7f37971867b11c098bcb.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

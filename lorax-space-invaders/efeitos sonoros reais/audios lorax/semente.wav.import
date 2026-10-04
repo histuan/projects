@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d3rougxuwjgbu"
+path="res://.godot/imported/semente.wav-906e0441491b79262d322f266bbd6a0e.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/semente.wav"
+dest_files=["res://.godot/imported/semente.wav-906e0441491b79262d322f266bbd6a0e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://0phi32rj42rx"
+path="res://.godot/imported/puxao.wav-77718985440bd5c9f08b6ef185a2efa6.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/puxao.wav"
+dest_files=["res://.godot/imported/puxao.wav-77718985440bd5c9f08b6ef185a2efa6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

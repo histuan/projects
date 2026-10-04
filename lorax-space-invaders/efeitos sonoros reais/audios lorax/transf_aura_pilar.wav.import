@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dladwypch3uf1"
+path="res://.godot/imported/transf_aura_pilar.wav-b829e240f3b417ad6a1027f9a9ef6e1b.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/transf_aura_pilar.wav"
+dest_files=["res://.godot/imported/transf_aura_pilar.wav-b829e240f3b417ad6a1027f9a9ef6e1b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

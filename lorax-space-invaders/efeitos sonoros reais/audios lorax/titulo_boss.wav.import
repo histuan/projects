@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c7kmj8d2nywxh"
+path="res://.godot/imported/titulo_boss.wav-81d9ee6940f0d607c30540b481a2522c.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/titulo_boss.wav"
+dest_files=["res://.godot/imported/titulo_boss.wav-81d9ee6940f0d607c30540b481a2522c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

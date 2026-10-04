@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://gjowsa0qdc6b"
+path="res://.godot/imported/brotar.wav-589f052a2c6cf80089666f3e649f2120.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/audios lorax/brotar.wav"
+dest_files=["res://.godot/imported/brotar.wav-589f052a2c6cf80089666f3e649f2120.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
