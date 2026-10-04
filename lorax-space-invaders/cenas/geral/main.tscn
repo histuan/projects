@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://c57vp1aknu07h" path="res://efeitos sonoros reais/wav/coletar_coracao.wav" id="17_n3rig"]
 [ext_resource type="PackedScene" uid="uid://c00wpsfa85tbq" path="res://cenas/geral/pause_menu.tscn" id="18_8o0l5"]
 [ext_resource type="Script" uid="uid://cw5fjg77bn5gf" path="res://scripts/geral/camera.gd" id="20_qyhsy"]
+[ext_resource type="PackedScene" uid="uid://b4gk6ce2x106" path="res://cenas/efeitos/efeitos_tela.tscn" id="21_efeitos"]
 
 [node name="main" type="Node" unique_id=605077840]
 script = ExtResource("1_5wwvk")
@@ -68,6 +69,8 @@ stream = ExtResource("17_n3rig")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1158279175]
 anchor_mode = 0
 script = ExtResource("20_qyhsy")
+
+[node name="EfeitosTela" parent="." unique_id=77008397 instance=ExtResource("21_efeitos")]
 
 [node name="PauseMenu" parent="." unique_id=1052343631 instance=ExtResource("18_8o0l5")]
 

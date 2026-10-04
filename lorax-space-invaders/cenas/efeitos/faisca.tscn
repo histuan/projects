@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dssxqx2vdsyi6"]
+
+[ext_resource type="Script" uid="uid://cknqqibec8xxr" path="res://scripts/efeitos/particula.gd" id="1_particula"]
+
+[node name="faisca" type="CPUParticles2D" unique_id=985255576]
+emitting = false
+amount = 5
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 16.0
+script = ExtResource("1_particula")

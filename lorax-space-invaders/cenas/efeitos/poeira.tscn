@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://btldcq8gdpyeh"]
+
+[ext_resource type="Script" uid="uid://cknqqibec8xxr" path="res://scripts/efeitos/particula.gd" id="1_particula"]
+
+[node name="poeira" type="CPUParticles2D" unique_id=1570978721]
+emitting = false
+amount = 4
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 15.0
+color = Color(0.61960787, 0.6392157, 0.77254903, 1)
+script = ExtResource("1_particula")

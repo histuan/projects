@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bty7f6y8ug6kj"]
+
+[ext_resource type="Script" uid="uid://cknqqibec8xxr" path="res://scripts/efeitos/particula.gd" id="1_particula"]
+
+[node name="folhinhas" type="CPUParticles2D" unique_id=1471118616]
+emitting = false
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 90.0
+gravity = Vector2(0, 120)
+initial_velocity_max = 30.0
+color = Color(0.972549, 0.77254903, 0.22745098, 1)
+script = ExtResource("1_particula")

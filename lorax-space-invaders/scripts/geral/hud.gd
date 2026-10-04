@@ -10,9 +10,15 @@ var pontos_visiveis = true
 signal coracao_boss_perdido
 var coracoes_boss_cheios = 0
 
+# Treme junto com a tela: a câmera desloca a visão em +d, então o mundo anda -d
+func acompanhar_tremor(deslocamento):
+	offset = -deslocamento
+
 # Esconde os corações do boss e passa a escutar a Partida
 func _ready():
 	$coracoesBoss.hide()
+	# O letreiro só aparece quando uma wave começa (no LAB nenhuma começa)
+	$wave.modulate.a = 0.0
 	Partida.pontos_mudaram.connect(mostrar_pontuacao)
 	Partida.pontos_ganhos.connect(mostrar_pontos)
 	Partida.vidas_mudaram.connect(mostrar_vidas)

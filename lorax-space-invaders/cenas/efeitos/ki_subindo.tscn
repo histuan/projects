@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dqdoeoams5sne"]
+
+[ext_resource type="Script" uid="uid://cknqqibec8xxr" path="res://scripts/efeitos/particula.gd" id="1_particula"]
+
+[sub_resource type="Gradient" id="Gradient_ki"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75)
+colors = PackedColorArray(0.8784314, 0.84705883, 1, 1, 0.6901961, 0.6431373, 0.9647059, 1, 0.54901963, 0.43137255, 0.9098039, 1, 0.40784314, 0.27450982, 0.78431374, 1)
+
+[node name="ki_subindo" type="CPUParticles2D" unique_id=1811625595]
+emitting = false
+amount = 10
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(14, 0)
+direction = Vector2(0, -1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+color_initial_ramp = SubResource("Gradient_ki")
+script = ExtResource("1_particula")

@@ -2,6 +2,9 @@
 # Tudo em tempo real: hit-stop e câmera lenta (TempoJogo) não esticam nem congelam estes efeitos.
 extends Camera2D
 
+# A cada quadro: só o deslocamento do tremor (sem zoom), para quem quiser tremer junto
+signal tremeu(deslocamento)
+
 # Quanto o tremor sem duração perde de força por segundo
 const QUEDA_PADRAO = 20.0
 
@@ -15,10 +18,16 @@ var tween_continuo: Tween = null
 # Deslocamento do zoom/foco; o tremor é somado por cima a cada quadro
 var offset_base = Vector2.ZERO
 var tween_zoom: Tween = null
+# Onde o último zoom_para quer chegar (o zoom_punch volta para cá)
+var zoom_alvo = Vector2.ONE
+var offset_alvo = Vector2.ZERO
 
-# Ajustados pela main a partir do efeitos_boss.tres
+# Lidos do efeitos_boss.tres em configurar()
 var zoom_ligado = true
 var fator_tremor_reduzido = 1.0
+var vibracao_minimo = 0.0
+var vibracao_maximo = 0.0
+var vibracao_duracao_padrao = 0.0
 
 # Relógio real (ms) do quadro anterior
 var ultimo_tick = 0
@@ -26,6 +35,14 @@ var ultimo_tick = 0
 # Começa o relógio real
 func _ready():
 	ultimo_tick = Time.get_ticks_msec()
+
+# Lê do efeitos_boss.tres os números que são da câmera (a main chama)
+func configurar(efeitos):
+	zoom_ligado = efeitos.zoom_ligado
+	fator_tremor_reduzido = efeitos.fator_tremor_reduzido
+	vibracao_minimo = efeitos.vibracao_tremor_minimo
+	vibracao_maximo = efeitos.vibracao_tremor_maximo
+	vibracao_duracao_padrao = efeitos.vibracao_duracao_padrao
 
 # Ao sair do Pause, recomeça o relógio real (senão o tremor pularia o tempo pausado)
 func _notification(what):
@@ -42,6 +59,33 @@ func tremer(forca, duracao = 0.0):
 		queda_tremor = forca / duracao
 	else:
 		queda_tremor = QUEDA_PADRAO
+	vibrar(forca, duracao)
+
+# Tremores fortes vibram o gamepad: força ÷ máximo no motor forte, metade no fraco,
+# pela duração do tremor
+func vibrar(forca, duracao):
+	if vibracao_minimo <= 0 or forca < vibracao_minimo:
+		return
+	var forte = clampf(forca / vibracao_maximo, 0.0, 1.0)
+	if Configuracoes.reduzir_efeitos:
+		forte *= fator_tremor_reduzido
+	var tempo = duracao if duracao > 0 else vibracao_duracao_padrao
+	for gamepad in Input.get_connected_joypads():
+		Input.start_joy_vibration(gamepad, forte / 2.0, forte, tempo)
+
+# Volta ao normal na hora: sem tremor e sem zoom (usado pelo LAB)
+func restaurar():
+	for tween in [tween_continuo, tween_zoom]:
+		if tween != null:
+			tween.kill()
+	forca_tremor = 0.0
+	forca_continua = 0.0
+	zoom = Vector2.ONE
+	offset_base = Vector2.ZERO
+	zoom_alvo = Vector2.ONE
+	offset_alvo = Vector2.ZERO
+	for gamepad in Input.get_connected_joypads():
+		Input.stop_joy_vibration(gamepad)
 
 # Tremor que vai de 'de' até 'ate' em 'duracao' segundos e fica em 'ate' até ser parado
 func tremer_continuo(de, ate, duracao):
@@ -68,25 +112,25 @@ func zoom_para(fator, duracao, foco_global = null):
 		return
 	if tween_zoom != null:
 		tween_zoom.kill()
+	zoom_alvo = Vector2(fator, fator)
+	offset_alvo = offset_para(fator, foco_global)
 	tween_zoom = create_tween().set_ignore_time_scale().set_parallel()
-	tween_zoom.tween_property(self, "zoom", Vector2(fator, fator), duracao)
-	tween_zoom.tween_property(self, "offset_base", offset_para(fator, foco_global), duracao)
+	tween_zoom.tween_property(self, "zoom", zoom_alvo, duracao)
+	tween_zoom.tween_property(self, "offset_base", offset_alvo, duracao)
 
-# Vai na hora para 'fator' (mantendo o centro do que está na tela) e volta ao zoom de
-# antes em 'duracao' segundos
+# Vai na hora para 'fator' (mantendo o centro do que está na tela) e volta em 'duracao'
+# segundos para o ALVO do último zoom_para (mesmo que ele estivesse no meio do caminho)
 func zoom_punch(fator, duracao):
 	if not zoom_ligado:
 		return
 	if tween_zoom != null:
 		tween_zoom.kill()
-	var zoom_antes = zoom
-	var offset_antes = offset_base
 	var centro = offset_base + get_viewport_rect().size / zoom / 2.0
 	zoom = Vector2(fator, fator)
 	offset_base = offset_para(fator, centro)
 	tween_zoom = create_tween().set_ignore_time_scale().set_parallel()
-	tween_zoom.tween_property(self, "zoom", zoom_antes, duracao)
-	tween_zoom.tween_property(self, "offset_base", offset_antes, duracao)
+	tween_zoom.tween_property(self, "zoom", zoom_alvo, duracao)
+	tween_zoom.tween_property(self, "offset_base", offset_alvo, duracao)
 
 # offset_base que mostra a área do zoom 'fator' centrada no foco (ou no meio da tela).
 # A câmera é ancorada no canto, então o offset é o canto de cima da área visível
@@ -103,9 +147,12 @@ func _process(_delta):
 	var agora = Time.get_ticks_msec()
 	var passado = (agora - ultimo_tick) / 1000.0
 	ultimo_tick = agora
-	forca_tremor = move_toward(forca_tremor, 0, queda_tremor * passado)
+	# No hit-stop (tempo parado) o tremor fica na força máxima até o jogo voltar
+	if Engine.time_scale > 0:
+		forca_tremor = move_toward(forca_tremor, 0, queda_tremor * passado)
 	var forca = max(forca_tremor, forca_continua)
 	if Configuracoes.reduzir_efeitos:
 		forca *= fator_tremor_reduzido
-	var tremor = Vector2(randf_range(-forca, forca), randf_range(-forca, forca))
+	var tremor = Vector2(randf_range(-forca, forca), randf_range(-forca, forca)).round()
 	offset = (offset_base + tremor).round()
+	tremeu.emit(tremor)

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b4gk6ce2x106"]
+
+[ext_resource type="Script" uid="uid://vwnrvvern356" path="res://scripts/efeitos/efeitos_tela.gd" id="1_tela"]
+
+[node name="EfeitosTela" type="CanvasLayer" unique_id=1822267147]
+layer = 3
+script = ExtResource("1_tela")
