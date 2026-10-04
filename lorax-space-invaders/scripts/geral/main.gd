@@ -8,6 +8,7 @@ const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
 
 # Números dos efeitos da boss fight (afinados no Inspector)
 const EFEITOS = preload("res://recursos/boss/efeitos_boss.tres")
+const LabEfeitos = preload("res://scripts/geral/lab_efeitos.gd")
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -17,11 +18,11 @@ func _enter_tree():
 func _exit_tree():
 	TempoJogo.limpar()
 
-# Música, ajustes da câmera e reações aos sinais da Partida
+# Música, ajustes da câmera e da tela, reações aos sinais da Partida e o LAB (cheat)
 func _ready():
 	$sons/musga.play()
-	camera.zoom_ligado = EFEITOS.zoom_ligado
-	camera.fator_tremor_reduzido = EFEITOS.fator_tremor_reduzido
+	camera.configurar(EFEITOS)
+	$EfeitosTela.configurar(EFEITOS)
 	Partida.vida_perdida.connect(_on_vida_perdida)
 	Partida.vida_ganha.connect($sons/coletarCoracao.play)
 	Partida.morreu.connect(_on_morreu)
@@ -29,6 +30,17 @@ func _ready():
 	$groupAlien.wave_boss_chegou.connect($spawner.parar_planeta)
 	$groupAlien.boss_pode_entrar.connect(_on_boss_pode_entrar)
 	$hud.coracao_boss_perdido.connect(_on_coracao_boss_perdido)
+	if EFEITOS.hud_treme:
+		camera.tremeu.connect($hud.acompanhar_tremor)
+	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
+		abrir_lab()
+
+# LAB DE EFEITOS: painel que dispara cada efeito com os valores do efeitos_boss.tres;
+# o boneco do Lorax fica no mundo (filho da main) para tremor e zoom valerem para ele
+func abrir_lab():
+	var lab = LabEfeitos.new()
+	add_child(lab)
+	lab.preparar(camera, $EfeitosTela, $fundo/estrelas, EFEITOS, self)
 
 # Tela limpa na wave do boss: cria a batalha final logo depois do groupAlien na árvore
 # (desenha atrás do cenário e da hud), liga os sinais dela à hud e manda começar

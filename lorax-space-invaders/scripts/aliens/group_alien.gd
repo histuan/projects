@@ -32,6 +32,11 @@ var timer_boss_limpo: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
+	# Cheat "LAB DE EFEITOS": nada de horda, Lorax antigo nem timers rodando
+	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
+		for timer in $timers.get_children():
+			timer.stop()
+		return
 	# Cheat "WAVE DO BOSS": sem Lorax antigo; espera a main conectar os sinais
 	# (o _ready dela roda depois do meu) e pula direto para a wave anterior ao boss
 	if Partida.etapa_inicial == Partida.Etapa.WAVE_BOSS:
