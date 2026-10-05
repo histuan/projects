@@ -161,7 +161,7 @@ metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1217823765]
 texture = ExtResource("2_xcwva")
-hframes = 12
+hframes = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1301250694]
 position = Vector2(0, -0.5)
