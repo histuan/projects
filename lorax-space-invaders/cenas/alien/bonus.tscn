@@ -129,6 +129,23 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_xcwva"]
+resource_name = "fugindo"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [12, 13]
+}
+
 [sub_resource type="Animation" id="Animation_0idmp"]
 resource_name = "normal"
 length = 0.8
@@ -152,6 +169,7 @@ _data = {
 &"atacando": SubResource("Animation_x2snv"),
 &"dano": SubResource("Animation_rilvo"),
 &"destruido": SubResource("Animation_t8jp8"),
+&"fugindo": SubResource("Animation_xcwva"),
 &"normal": SubResource("Animation_0idmp")
 }
 
