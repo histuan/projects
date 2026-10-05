@@ -11,7 +11,8 @@ extends Resource
 @export var pitch_aleatorio := 1.0
 ## Pitch ao fim de um deslize (0 = não desliza); quem toca decide a duração
 @export var pitch_final := 0.0
-## dB do documento; a compensação do arquivo vem dos ganhos da BibliotecaSons
+## Ajuste de mixagem do evento, de ouvido (parte de 0); a compensação do arquivo vem dos
+## ganhos da BibliotecaSons
 @export var volume_db := 0.0
 @export var bus := &"Master"
 ## Segundos de espera antes de tocar (camadas)

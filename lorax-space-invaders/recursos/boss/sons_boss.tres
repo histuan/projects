@@ -17,14 +17,12 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/terminar_arena.wav"])
 pitch = 1.3
-volume_db = -6.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_arena_treme"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 1.8
-volume_db = -10.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_arvore_explode"]
@@ -36,20 +34,17 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.25
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_arvores_salvas_bom_camada2"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.5
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_arvores_salvas_bom"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-volume_db = -2.0
 bus = &"Efeitos"
 camadas = Array[ExtResource("1_som")]([SubResource("Som_arvores_salvas_bom_camada1"), SubResource("Som_arvores_salvas_bom_camada2")])
 
@@ -57,7 +52,6 @@ camadas = Array[ExtResource("1_som")]([SubResource("Som_arvores_salvas_bom_camad
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 0.5
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_aviso"]
@@ -68,7 +62,6 @@ bus = &"EfeitosEco"
 [sub_resource type="Resource" id="Som_batimento_vida_baixa"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/batimento.wav"])
-volume_db = -6.0
 bus = &"Efeitos"
 loop = true
 
@@ -80,25 +73,21 @@ bus = &"Efeitos"
 [sub_resource type="Resource" id="Som_boss_coracoes_reenchem"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav"])
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_cheat_abre"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_constelacao_camada1"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/brilho_descendente.wav"])
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_constelacao"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-volume_db = -4.0
 bus = &"Efeitos"
 camadas = Array[ExtResource("1_som")]([SubResource("Som_constelacao_camada1")])
 
@@ -106,42 +95,36 @@ camadas = Array[ExtResource("1_som")]([SubResource("Som_constelacao_camada1")])
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
 pitch = 0.5
-volume_db = -2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_escurecer"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 0.6
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_esfera_carga"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
 pitch = 0.7
-volume_db = -2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_esfera_estoura"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/explosao.wav"])
 pitch = 1.3
-volume_db = -2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_esquiva"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
 pitch = 1.1
-volume_db = -2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_estrela_cadente"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/brilho_descendente.wav"])
 pitch = 2.0
-volume_db = -14.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_estrelas_acendem"]
@@ -149,7 +132,6 @@ script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 0.8
 pitch_final = 2.0
-volume_db = -10.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_estrelas_apagam"]
@@ -157,14 +139,12 @@ script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.6
 pitch_final = 0.6
-volume_db = -10.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_estrelas_warp"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/ki_loop.wav"])
 pitch = 1.6
-volume_db = -14.0
 bus = &"Efeitos"
 loop = true
 
@@ -172,28 +152,24 @@ loop = true
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
 pitch = 1.6
-volume_db = -6.0
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_fala_caixa_abre"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.2
-volume_db = -8.0
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_fala_lorax"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
 pitch_aleatorio = 1.12
-volume_db = -4.0
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_fala_lorax_serio"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
 pitch = 0.65
-volume_db = -4.0
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_finalizar_desfazer"]
@@ -210,7 +186,6 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
 pitch = 0.5
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_finish_him"]
@@ -222,41 +197,35 @@ bus = &"Voz"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 2.0
-volume_db = -8.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_folha_acerta"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
 pitch = 1.3
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_folha_voando"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
 pitch = 1.6
-volume_db = -10.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_folhas_anulam"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/alien-explosao.wav"])
 pitch = 2.0
-volume_db = -8.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_folhas_chuva"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
-volume_db = -4.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_fumaca_cobre"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/poluicao_loop.wav"])
 pitch = 0.8
-volume_db = -2.0
 bus = &"Efeitos"
 loop = true
 
@@ -264,7 +233,6 @@ loop = true
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
 pitch = 1.8
-volume_db = -14.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_janela_abre"]
@@ -282,7 +250,6 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
 pitch = 1.4
-volume_db = -8.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax2_chegada"]
@@ -305,14 +272,12 @@ bus = &"Voz"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 0.9
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax2_pouso"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 1.5
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax2_raiva"]
@@ -325,14 +290,12 @@ script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/sobrevoando.wav"])
 pitch = 0.8
 pitch_final = 1.5
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax_fuga_fala"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
 pitch_aleatorio = 1.12
-volume_db = -4.0
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_lorax_ui_dano"]
@@ -343,35 +306,30 @@ bus = &"EfeitosEco"
 [sub_resource type="Resource" id="Som_luz_desfaz"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/poupar_desfazer.wav"])
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_mao_brilho"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
 pitch = 2.0
-volume_db = -12.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_marcador_arvore"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/tique.wav"])
 pitch = 0.8
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_menu_escolhe"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.5
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_menu_navega"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
 pitch = 1.3
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_musica_fase3a"]
@@ -389,14 +347,12 @@ loop = true
 [sub_resource type="Resource" id="Som_musica_final_bom"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_final_bom.mp3"])
-volume_db = -4.0
 bus = &"Musica"
 loop = true
 
 [sub_resource type="Resource" id="Som_musica_final_ruim"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_final_ruim.mp3"])
-volume_db = -4.0
 bus = &"Musica"
 loop = true
 
@@ -417,21 +373,18 @@ crossfade = 1.0
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
 pitch = 0.6
-volume_db = -4.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_orbe_lanca"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
 pitch = 1.4
-volume_db = -6.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_orbe_quica"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 1.6
-volume_db = -6.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_pancada"]
@@ -447,21 +400,18 @@ bus = &"EfeitosEco"
 [sub_resource type="Resource" id="Som_poluicao"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/poluicao_loop.wav"])
-volume_db = -4.0
 bus = &"Efeitos"
 loop = true
 
 [sub_resource type="Resource" id="Som_pontos_contagem"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
-volume_db = -8.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_projeteis_limpam"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/alien-explosao.wav"])
 pitch = 2.0
-volume_db = -8.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_puxao"]
@@ -478,28 +428,24 @@ bus = &"EfeitosEco"
 [sub_resource type="Resource" id="Som_raio_carga"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
-volume_db = -2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_raio_disparo_camada1"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 1.8
-volume_db = 2.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_raio_disparo"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
 pitch = 0.7
-volume_db = 2.0
 bus = &"EfeitosEco"
 camadas = Array[ExtResource("1_som")]([SubResource("Som_raio_disparo_camada1")])
 
 [sub_resource type="Resource" id="Som_reflorestar"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/ambiente_vivo_loop.wav"])
-volume_db = -4.0
 bus = &"Efeitos"
 loop = true
 
@@ -512,20 +458,17 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.25
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_semente_coletada_camada2"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.5
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_semente_coletada"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-volume_db = -2.0
 bus = &"Efeitos"
 camadas = Array[ExtResource("1_som")]([SubResource("Som_semente_coletada_camada1"), SubResource("Som_semente_coletada_camada2")])
 
@@ -533,26 +476,22 @@ camadas = Array[ExtResource("1_som")]([SubResource("Som_semente_coletada_camada1
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
 pitch = 1.6
-volume_db = -4.0
 bus = &"EfeitosEco"
 
 [sub_resource type="Resource" id="Som_titulo_boss"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/titulo_boss.wav"])
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_aura_pilar"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/aura_pilar.wav"])
-volume_db = 2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_chapeu"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
 pitch = 1.3
-volume_db = -4.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_despertar"]
@@ -564,34 +503,29 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 2.0
-volume_db = -12.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_raiva_pulso"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 0.7
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_reparo_camada1"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.25
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_reparo_camada2"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
 pitch = 1.5
-volume_db = -6.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_transf_reparo"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-volume_db = -6.0
 bus = &"Efeitos"
 camadas = Array[ExtResource("1_som")]([SubResource("Som_transf_reparo_camada1"), SubResource("Som_transf_reparo_camada2")])
 
@@ -604,14 +538,12 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/sobrevoando.wav"])
 pitch = 0.6
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_ultimo_coracao_pulso"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 pitch = 1.8
-volume_db = -10.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_vidas_reenchem"]
@@ -623,7 +555,6 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
 pitch = 0.7
-volume_db = -2.0
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_virada_fase"]

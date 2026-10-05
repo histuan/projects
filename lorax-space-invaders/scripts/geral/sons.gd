@@ -89,7 +89,7 @@ func arquivo_do_evento(evento: StringName, dados):
 		return ""
 	return caminho
 
-# Volume final: o do evento (número do documento) + o ganho do arquivo
+# Volume final: o ajuste do evento (mixagem de ouvido) + o ganho do arquivo
 func volume_de(dados, caminho):
 	return dados.volume_db + BIBLIOTECA.ganhos.get(caminho, 0.0)
 

@@ -8,12 +8,12 @@ extends Resource
 @export var eventos: Dictionary[StringName, SomDados] = {}
 
 @export_group("Arquivos")
-## Ganho (dB) de cada arquivo para todos ficarem com pico em -3 dB (o volume dos
-## eventos supõe isso). Trocar um arquivo = medir o pico e mudar só o ganho dele
+## Ganho (dB) de cada arquivo para todos partirem do mesmo pico (-3 dB); a mixagem de
+## ouvido vai no volume_db do evento. Trocar um arquivo = medir o pico e mudar só o ganho dele
 @export var ganhos: Dictionary[String, float] = {}
 
 @export_group("Wave 10")
-## Segundos para a música do jogo sumir quando a tela fica limpa
+## Segundos para a música do jogo sumir quando a wave 10 chega
 @export var wave10_fade_musica := 0.0
 ## Segundos de silêncio total depois de ela sumir, antes do alarme
 @export var wave10_silencio := 0.0
