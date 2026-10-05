@@ -108,10 +108,8 @@ func _on_timer_power_up_timeout():
 	powerup_ativo.ao_acabar(self)
 	powerup_ativo = null
 	
-# Toca um som vindo do PowerUp
+# Toca um som vindo do PowerUp (todo power-up precisa ter som_coleta e som_tiro)
 func tocar_som(no, stream, volume):
-	if stream == null:
-		return
 	no.stream = stream
 	no.volume_db = volume
 	no.play()

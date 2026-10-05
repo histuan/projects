@@ -62,8 +62,7 @@ func estourar(atingido = null):
 func explosao():
 	if global_position.y < 256:
 		get_viewport().get_camera_2d().tremer(6, 0.8)
-	if has_node("explosao"):
-		var som = $explosao
-		som.reparent(get_tree().current_scene)
-		som.play()
-		som.finished.connect(som.queue_free)
+	var som = $explosao
+	som.reparent(get_tree().current_scene)
+	som.play()
+	som.finished.connect(som.queue_free)

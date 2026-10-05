@@ -67,15 +67,12 @@ func morrer(_fonte):
 func dar_pontos(tamanho = 8):
 	Partida.somar_pontos(valor_pontos, global_position, tamanho)
 
-# Toca um som do próprio inimigo, se ele existir
+# Toca um som do próprio inimigo (nó que falta = erro do Godot com o caminho)
 func tocar_som(caminho):
-	if has_node(caminho):
-		get_node(caminho).play()
+	get_node(caminho).play()
 
 # Som que precisa continuar depois que o inimigo sumir: sai dele e vai para a cena principal
 func soltar_som(caminho):
-	if not has_node(caminho):
-		return
 	var som = get_node(caminho)
 	som.reparent(get_tree().current_scene)
 	som.play()

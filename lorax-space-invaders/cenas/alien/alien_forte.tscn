@@ -9,6 +9,7 @@
 [node name="alien_forte" unique_id=1910685652 instance=ExtResource("1_vfo55")]
 vidas = 2
 valor_pontos = 200
+som_morte_extra = "sons/forte_morte"
 
 [node name="Sprite2D" parent="." index="0" unique_id=1376603795]
 texture = ExtResource("2_klx2x")

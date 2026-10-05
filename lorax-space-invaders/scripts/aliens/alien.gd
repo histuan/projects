@@ -14,6 +14,8 @@ var distancia = 30
 var passo = 7
 var direction = 1
 var atingiu_base = false
+## Som a mais na morte, junto com o normal (vazio = nenhum; o alien_forte usa "sons/forte_morte")
+@export var som_morte_extra := ""
 
 # Ouvidos pelo groupAlien (tirar da lista)
 signal alien_eliminado(alien)
@@ -34,14 +36,15 @@ func _on_timer_mov_timeout():
 		direction *= -1
 
 # Morte com animação: toca "destroy" (que chama elimination() no fim).
-# Golpe de motosserra usa o som próprio; forte_morte só existe no alien_forte
+# Golpe de motosserra usa o som próprio; o som extra (forte_morte) é só do alien_forte
 func morrer(fonte):
 	animation_alien.play("destroy")
 	if fonte == "moto":
 		soltar_som("sons/motoHitSFX")
 	else:
 		soltar_som(som_morte)
-	soltar_som("sons/forte_morte")
+	if som_morte_extra != "":
+		soltar_som(som_morte_extra)
 
 # Chamada pela animação destroy: dá os pontos, avisa o groupAlien e remove o alien
 func elimination():
