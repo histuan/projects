@@ -9,6 +9,7 @@ size = Vector2(6, 6)
 [node name="folhaBoss" type="Area2D" unique_id=854872930]
 script = ExtResource("1_folha")
 velocidade = 160.0
+som_acerto = &"folha_acerta"
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=863586082]

@@ -15,6 +15,11 @@ var arvore = preload("res://cenas/alien/arvore.tscn")
 var dir_lado := 1
 var chegou = false
 
+# Fuga pelo topo (s): recua um pouco, pausa e sobe; o som sobe de tom o tempo todo
+const RECUO_FUGA = 0.15
+const PAUSA_FUGA = 0.25
+const SUBIDA_FUGA = 2.0
+
 # Ouvidos pela hud (corações do boss)
 signal boss_dano(vidas)
 signal boss_desceu
@@ -88,10 +93,11 @@ func fugir():
 	else:
 		$AnimationPlayer.play("dano")
 	$CollisionShape2D.set_deferred("disabled", true)
+	Sons.tocar_deslizando(&"lorax_fuga", RECUO_FUGA + PAUSA_FUGA + SUBIDA_FUGA)
 	var tween = create_tween()
-	tween.tween_property(self, "position:y", position.y + 4, 0.15)
-	tween.tween_interval(0.25)
-	tween.tween_property(self, "position:y", -40.0, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "position:y", position.y + 4, RECUO_FUGA)
+	tween.tween_interval(PAUSA_FUGA)
+	tween.tween_property(self, "position:y", -40.0, SUBIDA_FUGA).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_callback(func():
 		emit_signal("bonus_eliminado")
 		queue_free())

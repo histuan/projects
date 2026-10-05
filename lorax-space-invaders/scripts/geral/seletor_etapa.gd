@@ -65,11 +65,14 @@ func _unhandled_input(event):
 		return
 	if event.is_action_pressed("ui_down"):
 		indice = (indice + 1) % opcoes.size()
+		Sons.tocar(&"menu_navega")
 		destacar()
 	elif event.is_action_pressed("ui_up"):
 		indice = (indice - 1 + opcoes.size()) % opcoes.size()
+		Sons.tocar(&"menu_navega")
 		destacar()
 	elif event.is_action_pressed("ui_accept"):
+		Sons.tocar(&"menu_escolhe")
 		hide()
 		etapa_escolhida.emit(opcoes[indice]["etapa"])
 	elif event.is_action_pressed("ui_cancel"):

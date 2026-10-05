@@ -94,6 +94,7 @@ func _abrir_seletor():
 		opcoes.append({"nome": Partida.NOMES_ETAPAS[etapa], "etapa": etapa})
 	seletor_aberto = true
 	detector.ativo = false
+	Sons.tocar(&"cheat_abre")
 	seletor.abrir(opcoes)
 
 # Esc no seletor: volta à tela inicial normal

@@ -17,10 +17,21 @@ func comecar(contexto: ContextoBatalha):
 	preparar(contexto)
 	var corpo = ctx.corpo
 	corpo.ficar_invulneravel(true)
+	tocar_som(dados.som_chegada)
 	var tempo = abs(dados.altura - corpo.position.y) / dados.vel_entrada
 	var tween = create_tween()
 	tween.tween_property(corpo, "position:y", dados.altura, tempo)
-	tween.tween_callback(lutar)
+	tween.tween_callback(pousar)
+
+# Fim da descida: som do pouso e começa a luta
+func pousar():
+	tocar_som(dados.som_pouso)
+	lutar()
+
+# Toca um evento do sons_boss.tres; evento vazio = esta fase não tem som para isso
+func tocar_som(evento: StringName):
+	if evento != &"":
+		Sons.tocar(evento)
 
 # Sem entrada: já aparece no meio, na altura da fase
 func comecar_direto(contexto: ContextoBatalha):
@@ -68,11 +79,14 @@ func _process(delta):
 # Só toca a animação; os projéteis saem no quadro marcado dela (_on_evento_animacao)
 func atacar():
 	atacando = true
+	tocar_som(dados.som_ataque)
 	ctx.corpo.tocar("ataque")
 
-# Quadro marcado do ataque: solta o leque de projéteis
+# Quadro marcado do ataque: solta o leque de projéteis (com os sons do disparo)
 func _on_evento_animacao(nome):
 	if nome == "ataque":
+		for evento in dados.sons_disparo:
+			tocar_som(evento)
 		Projetil.criar_leque(dados.projetil, dados.quantidade, dados.angulo_leque,
 				ctx.corpo.global_position + dados.origem_tiro, ctx.ataques)
 
@@ -83,8 +97,10 @@ func _on_animacao_terminou(nome):
 		$TimerAtaque.start(intervalo_atual())
 	ctx.corpo.tocar("parado")
 
-# A animação de dano não interrompe um ataque em andamento (a piscada acontece sempre)
+# Som de dano sempre; a animação de dano não interrompe um ataque em andamento
+# (a piscada acontece sempre)
 func _on_ferido():
+	tocar_som(dados.som_dano)
 	if not atacando:
 		ctx.corpo.tocar("dano")
 

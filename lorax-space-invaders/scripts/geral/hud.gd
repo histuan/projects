@@ -8,6 +8,8 @@ var pontos_visiveis = true
 
 # Boss final: um coração cheio esvaziou (a main reage com a câmera)
 signal coracao_boss_perdido
+# Boss final: o número de corações cheios subiu (entrada da fase, troca de fase)
+signal coracoes_boss_reencheram
 var coracoes_boss_cheios = 0
 
 # Treme junto com a tela: a câmera desloca a visão em +d, então o mundo anda -d
@@ -62,6 +64,8 @@ func mostrar_vida_boss_final(vida, vida_max):
 	$coracoesBoss.set_vidas(cheios)
 	if cheios < coracoes_boss_cheios and cheios > 0:
 		coracao_boss_perdido.emit()
+	elif cheios > coracoes_boss_cheios:
+		coracoes_boss_reencheram.emit()
 	coracoes_boss_cheios = cheios
 
 # Boss final: corações piscando = ele está invulnerável

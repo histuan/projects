@@ -32,3 +32,16 @@ extends Resource
 @export_group("Animações")
 ## Precisa ter "parado", "dano" e "ataque" (o ataque com quadro_evento)
 @export var animacoes: Array[AnimacaoDados] = []
+
+@export_group("Sons")
+## Eventos do sons_boss.tres (vazio = sem som nesse momento)
+## No começo da descida
+@export var som_chegada := &""
+## No fim da descida
+@export var som_pouso := &""
+## No começo da animação de ataque (carga)
+@export var som_ataque := &""
+## No quadro de evento do ataque, quando os projéteis nascem
+@export var sons_disparo: Array[StringName] = []
+## A cada golpe que tira vida
+@export var som_dano := &""

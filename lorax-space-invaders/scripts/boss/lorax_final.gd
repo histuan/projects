@@ -63,9 +63,10 @@ func receber_dano(quantidade = 1, fonte = "tiro"):
 		return
 	super(quantidade, fonte)
 
-# Sobreviveu: som e piscada (padrão) e avisa a hud e a fase
-func ao_ferir(fonte):
-	super(fonte)
+# Sobreviveu: pisca e avisa a hud e a fase (o som do dano é da fase, pelo sons_boss.tres;
+# o corpo não tem nós de som)
+func ao_ferir(_fonte):
+	piscar()
 	vida_mudou.emit(vidas, vida_max)
 	ferido.emit()
 

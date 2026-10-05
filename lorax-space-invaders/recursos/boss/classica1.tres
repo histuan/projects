@@ -33,3 +33,7 @@ projetil = ExtResource("3_folha")
 quantidade = 5
 angulo_leque = 15.0
 animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque")])
+som_chegada = &"lorax2_chegada"
+som_pouso = &"lorax2_pouso"
+sons_disparo = Array[StringName]([&"lorax2_arremesso", &"folha_voando"])
+som_dano = &"lorax2_dano"
