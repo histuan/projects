@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c3p33rfafffrx"
+path="res://.godot/imported/final_fight1.mp3-272967f144b246dde1767295711f3df5.mp3str"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/final_fight1.mp3"
+dest_files=["res://.godot/imported/final_fight1.mp3-272967f144b246dde1767295711f3df5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

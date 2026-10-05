@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c3kl5d0eao863"
+path="res://.godot/imported/musica_final_ruim.mp3-e0f1dd07097fbb690a0513129ca52bc4.mp3str"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/musica_final_ruim.mp3"
+dest_files=["res://.godot/imported/musica_final_ruim.mp3-e0f1dd07097fbb690a0513129ca52bc4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

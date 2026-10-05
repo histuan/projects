@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bo02m5exsx28b"
+path="res://.godot/imported/poluicao_loop.wav-73238e382bf6a543db08f8c383f36426.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/poluicao_loop.wav"
+dest_files=["res://.godot/imported/poluicao_loop.wav-73238e382bf6a543db08f8c383f36426.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

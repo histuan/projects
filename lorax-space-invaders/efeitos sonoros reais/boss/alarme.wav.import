@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://kyfpvrrnv1aa"
+path="res://.godot/imported/alarme.wav-6362d6db087bfc073f4386f76a2afac8.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/alarme.wav"
+dest_files=["res://.godot/imported/alarme.wav-6362d6db087bfc073f4386f76a2afac8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://qgoiio5fglrc"
+path="res://.godot/imported/virada_fase.wav-dec6d3020d526792c90bcc1a95cb529a.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/virada_fase.wav"
+dest_files=["res://.godot/imported/virada_fase.wav-dec6d3020d526792c90bcc1a95cb529a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

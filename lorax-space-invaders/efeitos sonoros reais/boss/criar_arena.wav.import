@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ghrkeu6fjsvj"
+path="res://.godot/imported/criar_arena.wav-e9685c0343f695ed7149ee5684aa2758.sample"
+
+[deps]
+
+source_file="res://efeitos sonoros reais/boss/criar_arena.wav"
+dest_files=["res://.godot/imported/criar_arena.wav-e9685c0343f695ed7149ee5684aa2758.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
