@@ -17,9 +17,8 @@ var direcao_wave = 1
 var boss_morto = false	
 # A cada 3 waves, uma fila a mais de aliens fortes (máx. 4)
 const WAVES_FORTE = 3
-# Snipers: a partir da wave 4, no máximo 2, um em cada canto
+# Snipers: a partir da wave 5, entra um novo por wave se houver canto livre (máximo 2)
 const WAVE_SNIPER = 5
-const MAX_SNIPERS = 2
 const SLOTS_SNIPER = [Vector2(13, 49), Vector2(241, 49)]
 # Na wave do boss não nasce horda nova; a main reage a este sinal (hud, spawner)
 const WAVE_BOSS = 10
@@ -206,23 +205,18 @@ func _on_timer_proxima_wave_timeout():
 		_on_timer_wave_timeout()
 		$timers/TimerWave.start()
 		
-# Cria os snipers que faltam: 1 nas waves 4–6, 2 a partir da 7.
-# Cada um nasce 30 px fora da tela e desliza até o canto livre
+# Cria UM sniper por wave no primeiro canto livre (esquerda antes da direita).
 func _on_timer_sniper_timeout():
 	if em_boss:
 		return
-	var desejados = mini(1 + floori((Partida.wave - WAVE_SNIPER) / 3.0), MAX_SNIPERS)
-	var vivos = get_tree().get_nodes_in_group("snipers").size()
 	for slot in SLOTS_SNIPER:
-		if vivos >= desejados:
-			return
 		if slot_livre(slot):
 			var lado = -1 if slot.x < 127 else 1
 			var s = Sniper.instantiate()
 			s.global_position = Vector2(slot.x + 30 * lado, slot.y)
 			s.alvo = slot
 			get_parent().add_child(s)
-			vivos += 1
+			return
 
 # Um canto está livre se nenhum sniper tem ele como alvo
 func slot_livre(slot):
