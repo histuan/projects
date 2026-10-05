@@ -61,7 +61,7 @@ func tocar(evento: StringName, crossfade = -1.0, inicio = 0.0):
 	atual = novo
 	if duracao > 0:
 		var tween = novo_tween()
-		tween.tween_property(novo, "volume_db", alvo_db, duracao)
+		tween.tween_method(definir_amplitude.bind(novo), 0.0, db_to_linear(alvo_db), duracao)
 	sumir(anterior, duracao)
 
 # A música atual some em 'duracao' segundos e para
@@ -124,7 +124,8 @@ func filtro_low_pass():
 	push_error("Musica: o bus '%s' não tem LowPassFilter" % BUS)
 	return null
 
-# Faz um player sumir em 'duracao' s e parar (0 = para na hora)
+# Faz um player sumir em 'duracao' s e parar (0 = para na hora). O fade é linear na
+# AMPLITUDE: em dB a música despencaria no começo e soaria como um corte
 func sumir(player, duracao):
 	if player == null:
 		return
@@ -132,8 +133,12 @@ func sumir(player, duracao):
 		player.stop()
 		return
 	var tween = novo_tween()
-	tween.tween_property(player, "volume_db", SILENCIO_DB, duracao)
+	tween.tween_method(definir_amplitude.bind(player), db_to_linear(player.volume_db), 0.0, duracao)
 	tween.tween_callback(player.stop)
+
+# Volume por amplitude (0 a 1+), sem descer abaixo do silêncio
+func definir_amplitude(amplitude, player):
+	player.volume_db = maxf(linear_to_db(amplitude), SILENCIO_DB)
 
 # O player ainda existe (o adotado some quando a main é liberada)
 func valido(player):

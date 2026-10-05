@@ -13,6 +13,8 @@ const LabEfeitos = preload("res://scripts/geral/lab_efeitos.gd")
 # A wave do boss começou (o batimento com 1 vida só vale daqui em diante)
 var luta_comecou = false
 var batimento_ligado = false
+# Conta o fade da música do jogo (começa quando a wave 10 chega; pausa com o jogo)
+var relogio_fade: Timer = null
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -52,20 +54,30 @@ func abrir_lab():
 	add_child(lab)
 	lab.preparar(camera, $EfeitosTela, $fundo/estrelas, EFEITOS, self)
 
-# Wave 10 começou: a partir daqui, ficar com 1 vida liga o batimento
+# Wave 10 começou: a música do jogo some, e ficar com 1 vida passa a ligar o batimento
 func _on_wave_boss_chegou():
 	luta_comecou = true
 	atualizar_batimento(Partida.vidas)
+	Musica.fade_out(Sons.BIBLIOTECA.wave10_fade_musica)
+	relogio_fade = Timer.new()
+	relogio_fade.one_shot = true
+	relogio_fade.ignore_time_scale = true
+	add_child(relogio_fade)
+	relogio_fade.start(Sons.BIBLIOTECA.wave10_fade_musica)
 
-# Tela limpa na wave do boss: a música do jogo some, silêncio, alarme e, quando ele
-# termina, a música do Lorax 2.0 entra junto com a descida dele. Tudo pausa com o jogo
+# Tela limpa na wave do boss: espera a música do jogo terminar de sumir (se ainda não
+# sumiu), silêncio, alarme com FINAL WAVE piscando e, quando o letreiro some, a música do
+# Lorax 2.0 entra junto com a descida dele. Tudo pausa com o jogo
 func _on_boss_pode_entrar():
-	var sons = Sons.BIBLIOTECA
-	Musica.fade_out(sons.wave10_fade_musica)
-	await esperar(sons.wave10_fade_musica + sons.wave10_silencio)
+	if relogio_fade != null and relogio_fade.time_left > 0:
+		await esperar(relogio_fade.time_left)
+	await esperar(Sons.BIBLIOTECA.wave10_silencio)
 	var alarme = Sons.tocar(&"wave_boss_alarme")
+	var duracao_alarme = 0.0
 	if alarme != null:
-		await esperar(alarme.stream.get_length() / alarme.pitch_scale)
+		duracao_alarme = alarme.stream.get_length() / alarme.pitch_scale
+	$hud.mostrar_final_wave(duracao_alarme, EFEITOS.wave10_letreiro_pisca, EFEITOS.wave10_letreiro_fade)
+	await $hud.final_wave_sumiu
 	Musica.tocar(&"musica_wave10")
 	comecar_batalha()
 

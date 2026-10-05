@@ -118,6 +118,12 @@ extends Resource
 @export var wave10_bordas_pisca := 0.0
 @export var wave10_bordas_alfa := 0.0
 @export var wave10_alarme_tremor := Vector2.ZERO
+## Letreiro FINAL WAVE: segundos aceso/apagado enquanto o alarme toca (o mesmo ritmo das
+## bordas do alarme, efeitos.md 4.1)
+@export var wave10_letreiro_pisca := 0.0
+## Letreiro FINAL WAVE: segundos do fade quando o alarme termina. VALOR DE TESTE: não está
+## no efeitos.md (0,8 s = o fade do letreiro WAVE de sempre)
+@export var wave10_letreiro_fade := 0.0
 
 @export_group("Fase 1")
 ## Descida do Lorax 2.0
