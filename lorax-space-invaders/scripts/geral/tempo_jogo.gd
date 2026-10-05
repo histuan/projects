@@ -39,6 +39,11 @@ func segurar(escala, duracao):
 	await get_tree().create_timer(duracao, true, false, true).timeout
 	liberar(nome)
 
+# Está em câmera lenta: o jogo anda, mas na 'escala_maxima' ou mais devagar.
+# Hit-stop (escala 0) NÃO conta: o jogo está parado, não lento
+func em_camera_lenta(escala_maxima):
+	return Engine.time_scale > 0.0 and Engine.time_scale <= escala_maxima
+
 # Aplica a menor escala pedida (1,0 quando não há pedido)
 func aplicar():
 	var escala = 1.0
