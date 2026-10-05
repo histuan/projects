@@ -1,0 +1,794 @@
+[gd_resource type="Resource" script_class="BibliotecaSons" format=3 uid="uid://dbmxff2bp5msi"]
+
+[ext_resource type="Script" uid="uid://b21wqe55sr1xx" path="res://scripts/boss/dados/som_dados.gd" id="1_som"]
+[ext_resource type="Script" uid="uid://cokbpe4vkegr5" path="res://scripts/boss/dados/biblioteca_sons.gd" id="2_biblioteca"]
+
+[sub_resource type="Resource" id="Som_arena_criando"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/criar_arena.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_arena_pronta"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/terminar_arena.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_arena_redimensiona"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/terminar_arena.wav"])
+pitch = 1.3
+volume_db = -6.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_arena_treme"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 1.8
+volume_db = -10.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_arvore_explode"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/explosao.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_arvores_salvas_bom_camada1"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.25
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_arvores_salvas_bom_camada2"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.5
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_arvores_salvas_bom"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+volume_db = -2.0
+bus = &"Efeitos"
+camadas = Array[ExtResource("1_som")]([SubResource("Som_arvores_salvas_bom_camada1"), SubResource("Som_arvores_salvas_bom_camada2")])
+
+[sub_resource type="Resource" id="Som_arvores_salvas_ruim"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 0.5
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_aviso"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/tique.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_batimento_vida_baixa"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/batimento.wav"])
+volume_db = -6.0
+bus = &"Efeitos"
+loop = true
+
+[sub_resource type="Resource" id="Som_boss_coracao_perdido"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/stinger.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_boss_coracoes_reenchem"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav"])
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_cheat_abre"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_constelacao_camada1"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/brilho_descendente.wav"])
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_constelacao"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+volume_db = -4.0
+bus = &"Efeitos"
+camadas = Array[ExtResource("1_som")]([SubResource("Som_constelacao_camada1")])
+
+[sub_resource type="Resource" id="Som_desespero"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+pitch = 0.5
+volume_db = -2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_escurecer"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 0.6
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_esfera_carga"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+pitch = 0.7
+volume_db = -2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_esfera_estoura"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/explosao.wav"])
+pitch = 1.3
+volume_db = -2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_esquiva"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
+pitch = 1.1
+volume_db = -2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_estrela_cadente"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/brilho_descendente.wav"])
+pitch = 2.0
+volume_db = -14.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_estrelas_acendem"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 0.8
+pitch_final = 2.0
+volume_db = -10.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_estrelas_apagam"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.6
+pitch_final = 0.6
+volume_db = -10.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_estrelas_warp"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/ki_loop.wav"])
+pitch = 1.6
+volume_db = -14.0
+bus = &"Efeitos"
+loop = true
+
+[sub_resource type="Resource" id="Som_fala_avancar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
+pitch = 1.6
+volume_db = -6.0
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_fala_caixa_abre"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.2
+volume_db = -8.0
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_fala_lorax"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+pitch_aleatorio = 1.12
+volume_db = -4.0
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_fala_lorax_serio"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+pitch = 0.65
+volume_db = -4.0
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_finalizar_desfazer"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/finalizar_desfazer.wav"])
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_finalizar_golpe"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/finalizar_golpe.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_finalizar_rachar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
+pitch = 0.5
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_finish_him"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/finish_him.wav"])
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_finish_letra"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 2.0
+volume_db = -8.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_folha_acerta"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
+pitch = 1.3
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_folha_voando"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
+pitch = 1.6
+volume_db = -10.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_folhas_anulam"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/alien-explosao.wav"])
+pitch = 2.0
+volume_db = -8.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_folhas_chuva"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
+volume_db = -4.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_fumaca_cobre"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/poluicao_loop.wav"])
+pitch = 0.8
+volume_db = -2.0
+bus = &"Efeitos"
+loop = true
+
+[sub_resource type="Resource" id="Som_graze"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
+pitch = 1.8
+volume_db = -14.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_janela_abre"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/janela_abre.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_lorax2_arremesso"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/arvere.wav"])
+pitch_aleatorio = 1.08
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_carga"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+pitch = 1.4
+volume_db = -8.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_chegada"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/lorax chegada.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_dano"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/lorax-dano.wav"])
+pitch_aleatorio = 1.08
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_derrota"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/lorax2_derrota.wav"])
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_lorax2_invocar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 0.9
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_pouso"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 1.5
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax2_raiva"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/lorax_rosnado.wav"])
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_lorax_fuga"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/sobrevoando.wav"])
+pitch = 0.8
+pitch_final = 1.5
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_lorax_fuga_fala"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+pitch_aleatorio = 1.12
+volume_db = -4.0
+bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_lorax_ui_dano"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/lorax_ui_dano.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_luz_desfaz"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/poupar_desfazer.wav"])
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_mao_brilho"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+pitch = 2.0
+volume_db = -12.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_marcador_arvore"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/tique.wav"])
+pitch = 0.8
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_menu_escolhe"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.5
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_menu_navega"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
+pitch = 1.3
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_musica_fase3a"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/final_fight1.mp3"])
+bus = &"Musica"
+loop = true
+
+[sub_resource type="Resource" id="Som_musica_fase3b"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/final_fight2.mp3"])
+bus = &"Musica"
+loop = true
+
+[sub_resource type="Resource" id="Som_musica_final_bom"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_final_bom.mp3"])
+volume_db = -4.0
+bus = &"Musica"
+loop = true
+
+[sub_resource type="Resource" id="Som_musica_final_ruim"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_final_ruim.mp3"])
+volume_db = -4.0
+bus = &"Musica"
+loop = true
+
+[sub_resource type="Resource" id="Som_musica_transformacao"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_transformacao.mp3"])
+bus = &"Musica"
+
+[sub_resource type="Resource" id="Som_musica_wave10"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_lorax2.mp3"])
+volume_db = 9.0
+bus = &"Musica"
+loop = true
+crossfade = 1.0
+
+[sub_resource type="Resource" id="Som_onda_choque"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
+pitch = 0.6
+volume_db = -4.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_orbe_lanca"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
+pitch = 1.4
+volume_db = -6.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_orbe_quica"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 1.6
+volume_db = -6.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_pancada"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_player_hit_arena"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/player dano.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_poluicao"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/poluicao_loop.wav"])
+volume_db = -4.0
+bus = &"Efeitos"
+loop = true
+
+[sub_resource type="Resource" id="Som_pontos_contagem"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
+volume_db = -8.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_projeteis_limpam"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/alien-explosao.wav"])
+pitch = 2.0
+volume_db = -8.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_puxao"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/puxao.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_raio"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav", "res://efeitos sonoros reais/boss/raio_zap_2.wav", "res://efeitos sonoros reais/boss/raio_zap_3.wav"])
+pitch_aleatorio = 1.06
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_raio_carga"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+volume_db = -2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_raio_disparo_camada1"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 1.8
+volume_db = 2.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_raio_disparo"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/raio_zap_1.wav"])
+pitch = 0.7
+volume_db = 2.0
+bus = &"EfeitosEco"
+camadas = Array[ExtResource("1_som")]([SubResource("Som_raio_disparo_camada1")])
+
+[sub_resource type="Resource" id="Som_reflorestar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/ambiente_vivo_loop.wav"])
+volume_db = -4.0
+bus = &"Efeitos"
+loop = true
+
+[sub_resource type="Resource" id="Som_semente"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/semente.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_semente_coletada_camada1"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.25
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_semente_coletada_camada2"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.5
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_semente_coletada"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+volume_db = -2.0
+bus = &"Efeitos"
+camadas = Array[ExtResource("1_som")]([SubResource("Som_semente_coletada_camada1"), SubResource("Som_semente_coletada_camada2")])
+
+[sub_resource type="Resource" id="Som_teleporte"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
+pitch = 1.6
+volume_db = -4.0
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_titulo_boss"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/titulo_boss.wav"])
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_aura_pilar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/aura_pilar.wav"])
+volume_db = 2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_chapeu"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/whoosh.wav"])
+pitch = 1.3
+volume_db = -4.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_despertar"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/transf_despertar.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_piscada"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 2.0
+volume_db = -12.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_raiva_pulso"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 0.7
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_reparo_camada1"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.25
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_reparo_camada2"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 1.5
+volume_db = -6.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_reparo"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+volume_db = -6.0
+bus = &"Efeitos"
+camadas = Array[ExtResource("1_som")]([SubResource("Som_transf_reparo_camada1"), SubResource("Som_transf_reparo_camada2")])
+
+[sub_resource type="Resource" id="Som_transf_respira"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/deep_breath.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_transf_varredura"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/sobrevoando.wav"])
+pitch = 0.6
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_ultimo_coracao_pulso"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
+pitch = 1.8
+volume_db = -10.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_vidas_reenchem"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/wav/coletar_coracao.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_vinhas_fecham"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/folhas.wav"])
+pitch = 0.7
+volume_db = -2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_virada_fase"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/virada_fase.wav"])
+bus = &"EfeitosEco"
+
+[sub_resource type="Resource" id="Som_wave_boss_alarme"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/alarme.wav"])
+bus = &"Efeitos"
+
+[resource]
+script = ExtResource("2_biblioteca")
+eventos = Dictionary[StringName, ExtResource("1_som")]({
+&"arena_criando": SubResource("Som_arena_criando"),
+&"arena_pronta": SubResource("Som_arena_pronta"),
+&"arena_redimensiona": SubResource("Som_arena_redimensiona"),
+&"arena_treme": SubResource("Som_arena_treme"),
+&"arvore_explode": SubResource("Som_arvore_explode"),
+&"arvores_salvas_bom": SubResource("Som_arvores_salvas_bom"),
+&"arvores_salvas_ruim": SubResource("Som_arvores_salvas_ruim"),
+&"aviso": SubResource("Som_aviso"),
+&"batimento_vida_baixa": SubResource("Som_batimento_vida_baixa"),
+&"boss_coracao_perdido": SubResource("Som_boss_coracao_perdido"),
+&"boss_coracoes_reenchem": SubResource("Som_boss_coracoes_reenchem"),
+&"cheat_abre": SubResource("Som_cheat_abre"),
+&"constelacao": SubResource("Som_constelacao"),
+&"desespero": SubResource("Som_desespero"),
+&"escurecer": SubResource("Som_escurecer"),
+&"esfera_carga": SubResource("Som_esfera_carga"),
+&"esfera_estoura": SubResource("Som_esfera_estoura"),
+&"esquiva": SubResource("Som_esquiva"),
+&"estrela_cadente": SubResource("Som_estrela_cadente"),
+&"estrelas_acendem": SubResource("Som_estrelas_acendem"),
+&"estrelas_apagam": SubResource("Som_estrelas_apagam"),
+&"estrelas_warp": SubResource("Som_estrelas_warp"),
+&"fala_avancar": SubResource("Som_fala_avancar"),
+&"fala_caixa_abre": SubResource("Som_fala_caixa_abre"),
+&"fala_lorax": SubResource("Som_fala_lorax"),
+&"fala_lorax_serio": SubResource("Som_fala_lorax_serio"),
+&"finalizar_desfazer": SubResource("Som_finalizar_desfazer"),
+&"finalizar_golpe": SubResource("Som_finalizar_golpe"),
+&"finalizar_rachar": SubResource("Som_finalizar_rachar"),
+&"finish_him": SubResource("Som_finish_him"),
+&"finish_letra": SubResource("Som_finish_letra"),
+&"folha_acerta": SubResource("Som_folha_acerta"),
+&"folha_voando": SubResource("Som_folha_voando"),
+&"folhas_anulam": SubResource("Som_folhas_anulam"),
+&"folhas_chuva": SubResource("Som_folhas_chuva"),
+&"fumaca_cobre": SubResource("Som_fumaca_cobre"),
+&"graze": SubResource("Som_graze"),
+&"janela_abre": SubResource("Som_janela_abre"),
+&"lorax2_arremesso": SubResource("Som_lorax2_arremesso"),
+&"lorax2_carga": SubResource("Som_lorax2_carga"),
+&"lorax2_chegada": SubResource("Som_lorax2_chegada"),
+&"lorax2_dano": SubResource("Som_lorax2_dano"),
+&"lorax2_derrota": SubResource("Som_lorax2_derrota"),
+&"lorax2_invocar": SubResource("Som_lorax2_invocar"),
+&"lorax2_pouso": SubResource("Som_lorax2_pouso"),
+&"lorax2_raiva": SubResource("Som_lorax2_raiva"),
+&"lorax_fuga": SubResource("Som_lorax_fuga"),
+&"lorax_fuga_fala": SubResource("Som_lorax_fuga_fala"),
+&"lorax_ui_dano": SubResource("Som_lorax_ui_dano"),
+&"luz_desfaz": SubResource("Som_luz_desfaz"),
+&"mao_brilho": SubResource("Som_mao_brilho"),
+&"marcador_arvore": SubResource("Som_marcador_arvore"),
+&"menu_escolhe": SubResource("Som_menu_escolhe"),
+&"menu_navega": SubResource("Som_menu_navega"),
+&"musica_fase3a": SubResource("Som_musica_fase3a"),
+&"musica_fase3b": SubResource("Som_musica_fase3b"),
+&"musica_final_bom": SubResource("Som_musica_final_bom"),
+&"musica_final_ruim": SubResource("Som_musica_final_ruim"),
+&"musica_transformacao": SubResource("Som_musica_transformacao"),
+&"musica_wave10": SubResource("Som_musica_wave10"),
+&"onda_choque": SubResource("Som_onda_choque"),
+&"orbe_lanca": SubResource("Som_orbe_lanca"),
+&"orbe_quica": SubResource("Som_orbe_quica"),
+&"pancada": SubResource("Som_pancada"),
+&"player_hit_arena": SubResource("Som_player_hit_arena"),
+&"poluicao": SubResource("Som_poluicao"),
+&"pontos_contagem": SubResource("Som_pontos_contagem"),
+&"projeteis_limpam": SubResource("Som_projeteis_limpam"),
+&"puxao": SubResource("Som_puxao"),
+&"raio": SubResource("Som_raio"),
+&"raio_carga": SubResource("Som_raio_carga"),
+&"raio_disparo": SubResource("Som_raio_disparo"),
+&"reflorestar": SubResource("Som_reflorestar"),
+&"semente": SubResource("Som_semente"),
+&"semente_coletada": SubResource("Som_semente_coletada"),
+&"teleporte": SubResource("Som_teleporte"),
+&"titulo_boss": SubResource("Som_titulo_boss"),
+&"transf_aura_pilar": SubResource("Som_transf_aura_pilar"),
+&"transf_chapeu": SubResource("Som_transf_chapeu"),
+&"transf_despertar": SubResource("Som_transf_despertar"),
+&"transf_piscada": SubResource("Som_transf_piscada"),
+&"transf_raiva_pulso": SubResource("Som_transf_raiva_pulso"),
+&"transf_reparo": SubResource("Som_transf_reparo"),
+&"transf_respira": SubResource("Som_transf_respira"),
+&"transf_varredura": SubResource("Som_transf_varredura"),
+&"ultimo_coracao_pulso": SubResource("Som_ultimo_coracao_pulso"),
+&"vidas_reenchem": SubResource("Som_vidas_reenchem"),
+&"vinhas_fecham": SubResource("Som_vinhas_fecham"),
+&"virada_fase": SubResource("Som_virada_fase"),
+&"wave_boss_alarme": SubResource("Som_wave_boss_alarme")
+})
+ganhos = Dictionary[String, float]({
+"res://efeitos sonoros reais/boss/alarme.wav": -2.0,
+"res://efeitos sonoros reais/boss/ambiente_vivo_loop.wav": 6.7,
+"res://efeitos sonoros reais/boss/aura_pilar.wav": -1.2,
+"res://efeitos sonoros reais/boss/batimento.wav": 1.6,
+"res://efeitos sonoros reais/boss/blip.wav": 3.2,
+"res://efeitos sonoros reais/boss/brilho_descendente.wav": 4.9,
+"res://efeitos sonoros reais/boss/carga_energia.wav": -1.2,
+"res://efeitos sonoros reais/boss/criar_arena.wav": -3.0,
+"res://efeitos sonoros reais/boss/deep_breath.wav": 12.0,
+"res://efeitos sonoros reais/boss/final_fight1.mp3": -1.7,
+"res://efeitos sonoros reais/boss/final_fight2.mp3": -3.0,
+"res://efeitos sonoros reais/boss/finalizar_desfazer.wav": -3.0,
+"res://efeitos sonoros reais/boss/finalizar_golpe.wav": 8.7,
+"res://efeitos sonoros reais/boss/finish_him.wav": -3.0,
+"res://efeitos sonoros reais/boss/folhas.wav": 6.5,
+"res://efeitos sonoros reais/boss/impacto_grave.wav": -3.0,
+"res://efeitos sonoros reais/boss/janela_abre.wav": 3.4,
+"res://efeitos sonoros reais/boss/ki_loop.wav": 3.6,
+"res://efeitos sonoros reais/boss/lorax2_derrota.wav": -3.0,
+"res://efeitos sonoros reais/boss/lorax_rosnado.wav": -3.0,
+"res://efeitos sonoros reais/boss/lorax_ui_dano.wav": -2.6,
+"res://efeitos sonoros reais/boss/musica_final_bom.mp3": 2.8,
+"res://efeitos sonoros reais/boss/musica_final_ruim.mp3": -1.8,
+"res://efeitos sonoros reais/boss/musica_lorax2.mp3": -2.4,
+"res://efeitos sonoros reais/boss/musica_transformacao.mp3": -3.0,
+"res://efeitos sonoros reais/boss/nota.wav": 9.7,
+"res://efeitos sonoros reais/boss/poluicao_loop.wav": 8.5,
+"res://efeitos sonoros reais/boss/poupar_desfazer.wav": 4.0,
+"res://efeitos sonoros reais/boss/puxao.wav": 7.0,
+"res://efeitos sonoros reais/boss/raio_zap_1.wav": 2.8,
+"res://efeitos sonoros reais/boss/raio_zap_2.wav": 1.3,
+"res://efeitos sonoros reais/boss/raio_zap_3.wav": 10.6,
+"res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav": -2.2,
+"res://efeitos sonoros reais/boss/semente.wav": 5.7,
+"res://efeitos sonoros reais/boss/stinger.wav": -3.0,
+"res://efeitos sonoros reais/boss/terminar_arena.wav": 0.0,
+"res://efeitos sonoros reais/boss/tique.wav": -3.0,
+"res://efeitos sonoros reais/boss/titulo_boss.wav": 3.3,
+"res://efeitos sonoros reais/boss/transf_despertar.wav": -3.0,
+"res://efeitos sonoros reais/boss/virada_fase.wav": -3.0,
+"res://efeitos sonoros reais/boss/voz_lorax.wav": 4.1,
+"res://efeitos sonoros reais/boss/whoosh.wav": -3.0,
+"res://efeitos sonoros reais/wav/alien-explosao.wav": -3.0,
+"res://efeitos sonoros reais/wav/arvere.wav": -2.4,
+"res://efeitos sonoros reais/wav/coletar_coracao.wav": 2.1,
+"res://efeitos sonoros reais/wav/explosao.wav": -3.0,
+"res://efeitos sonoros reais/wav/lorax chegada.wav": -2.4,
+"res://efeitos sonoros reais/wav/lorax-dano.wav": -3.0,
+"res://efeitos sonoros reais/wav/lorax-morte.wav": -3.0,
+"res://efeitos sonoros reais/wav/player dano.wav": 0.7,
+"res://efeitos sonoros reais/wav/sobrevoando.wav": 6.0
+})
+wave10_fade_musica = 0.8
+wave10_silencio = 1.5
+recuo_troca_fase3 = 0.047
+escala_camera_lenta = 0.4
+pitch_camera_lenta = 0.7
+abafar_despertar_hz = 600.0
+abafar_despertar_duracao = 2.0
+destampar_duracao = 0.4
+abafar_vida_baixa_hz = 4000.0

@@ -17,11 +17,17 @@ boot_splash/bg_color=Color(0.011764706, 0, 0.101960786, 1)
 boot_splash/image="uid://bfwisjbieqs0h"
 config/icon="uid://bfwisjbieqs0h"
 
+[audio]
+
+buses/default_bus_layout="uid://i7v6ygxerfk"
+
 [autoload]
 
 Partida="*uid://bn51j2nmmof5t"
 TempoJogo="*uid://dgk3xojjxg0gi"
 Configuracoes="*uid://clvq84e2or8mg"
+Sons="*uid://5akashjm5akd"
+Musica="*uid://bnedblkxkt3aw"
 
 [display]
 

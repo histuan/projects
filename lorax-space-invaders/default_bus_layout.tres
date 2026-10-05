@@ -1,0 +1,44 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://i7v6ygxerfk"]
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_musica"]
+resource_name = "LowPassFilter"
+cutoff_hz = 20000.0
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_musica"]
+resource_name = "Compressor"
+sidechain = &"Efeitos"
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_eco"]
+resource_name = "Reverb"
+
+[resource]
+bus/1/name = &"Musica"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectLowPassFilter_musica")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectCompressor_musica")
+bus/1/effect/1/enabled = true
+bus/2/name = &"Efeitos"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
+bus/3/name = &"Voz"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"Master"
+bus/4/name = &"EfeitosEco"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = 0.0
+bus/4/send = &"Efeitos"
+bus/4/effect/0/effect = SubResource("AudioEffectReverb_eco")
+bus/4/effect/0/enabled = true

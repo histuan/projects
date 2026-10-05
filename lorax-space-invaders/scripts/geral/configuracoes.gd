@@ -1,8 +1,10 @@
 # Preferências do jogador (autoload "Configuracoes"), salvas em user://configuracoes.cfg.
-# Os volumes só ficam guardados aqui; quem os aplica nos buses de áudio é a E3c.
+# Os volumes vão direto para os buses de áudio (default_bus_layout.tres).
 extends Node
 
 const ARQUIVO = "user://configuracoes.cfg"
+# Volume → bus que ele controla
+const BUS_DO_VOLUME = {"geral": &"Master", "musica": &"Musica", "efeitos": &"Efeitos", "voz": &"Voz"}
 
 # Tremores e flashes mais fracos (câmera lenta e hit-stop continuam iguais)
 var reduzir_efeitos = false
@@ -12,9 +14,25 @@ var volume_musica = 1.0
 var volume_efeitos = 1.0
 var volume_voz = 1.0
 
-# Lê o arquivo ao abrir o jogo
+# Lê o arquivo ao abrir o jogo e aplica os volumes
 func _ready():
 	carregar()
+	aplicar_volumes()
+
+# Muda um volume ("geral", "musica", "efeitos" ou "voz", de 0 a 1), aplica e salva
+func definir_volume(nome, valor):
+	set("volume_" + nome, clampf(valor, 0.0, 1.0))
+	aplicar_volumes()
+	salvar()
+
+# Passa os volumes (0 a 1) para os buses, em dB
+func aplicar_volumes():
+	for nome in BUS_DO_VOLUME:
+		var indice = AudioServer.get_bus_index(BUS_DO_VOLUME[nome])
+		if indice < 0:
+			push_error("Configuracoes: o bus '%s' não existe (default_bus_layout.tres)" % BUS_DO_VOLUME[nome])
+			continue
+		AudioServer.set_bus_volume_db(indice, linear_to_db(get("volume_" + nome)))
 
 # Lê as preferências; sem arquivo, cria um com os valores padrão
 func carregar():
