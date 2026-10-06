@@ -1,14 +1,12 @@
-# LAB DE EFEITOS (opção do cheat): dispara cada efeito da tabela do efeitos.md com os
-# valores do efeitos_boss.tres, para sentir e afinar sem jogar a luta.
-# Teclas e layout: PainelLab. Partes sem número aparecem como "SEM VALOR" e partes que
-# dependem de uma peça da luta (squash, nome do boss, arena...) aparecem com a etapa em que entram.
+# LAB DE EFEITOS (opção do cheat): lista e toca os MOMENTOS do momentos_boss.tres (os mesmos
+# que a luta toca), para sentir e afinar cada número sem jogar a luta.
+# Cada linha é um momento; o detalhe mostra os passos dele. Passo pendente aparece com a marca
+# ("SEM VALOR", "NA F1"...) e não roda; momento só com passos pendentes fica só para consulta.
+# Momento ligado a animação: o LAB finge a animação com a duracao_animacao_lab (PROVISÓRIA) e
+# toca o 'seguinte' no fim dela. Teclas e layout: PainelLab.
 extends PainelLab
 
 const IDLE_LORAX = preload("res://meus sprites/lorax boss battle/fase1/fase1 idle.png")
-const FAISCA = preload("res://cenas/efeitos/faisca.tscn")
-const POEIRA = preload("res://cenas/efeitos/poeira.tscn")
-const FOLHINHAS = preload("res://cenas/efeitos/folhinhas.tscn")
-const KI_SUBINDO = preload("res://cenas/efeitos/ki_subindo.tscn")
 const Particula = preload("res://scripts/efeitos/particula.gd")
 
 # O boneco fica onde o Lorax luta: altura e meio do vai e vem da fase 1
@@ -23,10 +21,33 @@ const DEMO_ESQUIVA_PX = 40
 # Poeira da folha no bloco: à esquerda do boneco, na altura dos pés (fora do painel e
 # do lado oposto ao do teleporte)
 const LADO_BLOCO_PX = 40
-# Letras de "FINISH HIM" (cada uma treme)
-const LETRAS_FINISH_HIM = 9
 # Teste da regra de segurança: 4 flashes com este intervalo (s)
 const TESTE_FLASH_INTERVALO = 0.1
+const TESTE_FLASH_VEZES = 4
+# Linhas por página (uma por tecla)
+const LINHAS_POR_PAGINA = 10
+
+# Páginas da tabela 4 do efeitos.md: título e momentos, na ordem das teclas
+const PAGINAS = [
+	["ESTRELAS", [&"estrelas_normal", &"wave10_silencio", &"fase1_estrelas", &"fase2_estrelas",
+		&"derrota_f2_estrelas", &"despertar_estrelas", &"pico_estrelas", &"arena_estrelas",
+		&"virada_estrelas", &"desespero_estrelas"]],
+	["ESTRELAS 2", [&"tonto_estrelas", &"final_ruim_estrelas", &"raiva_estrelas",
+		&"reparo_estrelas", &"poupar_estrelas", &"puxao_estrelas", &"ataque_grande_estrelas"]],
+	["WAVE 10", [&"wave10_silencio", &"wave10_alarme", &"wave10_musica_entra"]],
+	["FASE 1", [&"descida", &"pouso", &"nome_do_boss", &"hit_comum", &"coracao_boss_perdido",
+		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
+	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arvore_explode", &"f2_respira", &"f2_desespero",
+		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
+	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
+		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
+	["FASE 3", [&"aviso", &"raio", &"cortina_todos", &"raio_direto_carga", &"pancada",
+		&"esfera_estoura", &"teleporte", &"hit_lorax_ui", &"player_hit", &"virada"]],
+	["FASE 3 (2)", [&"desespero", &"janela_abre", &"respirando"]],
+	["DESFECHO", [&"finish_him", &"golpe_final", &"poupar"]],
+]
+# Momentos que, na luta, acontecem fora do corpo do Lorax: onde o LAB solta (relativo ao boneco)
+const ALVOS_DEMO = {&"folha_acerta_bloco": Vector2(-LADO_BLOCO_PX, PES_BONECO)}
 
 var camera
 var tela
@@ -36,14 +57,13 @@ var mundo
 var boneco: Node2D
 var flash_boneco: FlashSprite
 var rastro: Afterimage
-var ki: Node = null
 var tween_boneco: Tween = null
 
-var letterbox_ligado = false
 # O boneco fica no alto (como na luta); a lista começa embaixo dele
 var posicao_boneco = Vector2.ZERO
 
-# Recebe da main quem ela vai controlar e monta o boneco, o texto e as páginas
+# Recebe da main quem ela vai controlar, confere o momentos_boss.tres e monta o boneco,
+# o texto e as páginas
 func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco):
 	camera = cam
 	tela = efeitos_tela
@@ -52,16 +72,30 @@ func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco):
 	mundo = pai_do_boneco
 	dica = "APERTE 1-0 PARA DISPARAR UM EFEITO"
 	posicao_boneco = Vector2((DADOS_FASE1.limite_esq + DADOS_FASE1.limite_dir) / 2.0, DADOS_FASE1.altura)
+	tela.flash_barrado.connect(_on_flash_barrado)
+	Momentos.validar_todos()
 	iniciar()
 	criar_boneco()
 
-# Páginas da tabela 4 do efeitos.md
+# As páginas de PAGINAS, depois OUTROS (momentos do arquivo que nenhuma linha alcança)
+# e, por último, as FERRAMENTAS
 func montar_paginas():
-	return [
-		pagina_estrelas(), pagina_estrelas_2(), pagina_wave10(), pagina_fase1(),
-		pagina_fase2_trocas(), pagina_transformacao(), pagina_fase3(), pagina_fase3_2(),
-		pagina_desfecho(), pagina_ferramentas(),
-	]
+	var lista = []
+	var alcancados = {}
+	for grupo in PAGINAS:
+		var linhas = []
+		for nome in grupo[1]:
+			linhas.append(linha_momento(nome))
+			marcar_alcancados(nome, alcancados)
+		lista.append(nova_pagina(grupo[0], linhas))
+	var outros = []
+	for nome in Momentos.BIBLIOTECA.momentos:
+		if not alcancados.has(nome):
+			outros.append(linha_momento(nome))
+	for inicio in range(0, outros.size(), LINHAS_POR_PAGINA):
+		lista.append(nova_pagina("OUTROS", outros.slice(inicio, inicio + LINHAS_POR_PAGINA)))
+	lista.append(pagina_ferramentas())
+	return lista
 
 # Boneco parado do Lorax 2.0 no mundo, com flash e afterimage (o afterimage vem antes
 # do sprite para as cópias ficarem atrás)
@@ -101,14 +135,22 @@ func estado_ligado():
 		itens.append("LETTERBOX")
 	if tela.bordas_visiveis():
 		itens.append("BORDAS")
-	if ki != null and is_instance_valid(ki) and ki.emitting:
+	if ki_emitindo():
 		itens.append("KI")
 	if itens.is_empty():
 		return "LIGADO: NADA"
 	return "LIGADO: " + ", ".join(itens)
 
-# Tudo volta ao normal na hora: tempo, câmera, tela, estrelas e boneco
+# Alguma partícula contínua (o ki subindo) ainda está saindo
+func ki_emitindo():
+	for particula in get_tree().get_nodes_in_group(Particula.GRUPO):
+		if not particula.one_shot and particula.emitting:
+			return true
+	return false
+
+# Tudo volta ao normal na hora: momentos agendados, tempo, câmera, tela, estrelas e boneco
 func ao_resetar():
+	Momentos.parar_tudo()
 	TempoJogo.limpar()
 	camera.restaurar()
 	tela.limpar()
@@ -120,403 +162,301 @@ func ao_resetar():
 	if tween_boneco != null:
 		tween_boneco.kill()
 	boneco.position = posicao_boneco
-	if ki != null:
-		ki.queue_free()
-		ki = null
-	letterbox_ligado = false
 
-# ---------- ferramentas usadas pelas linhas ----------
+# Um flash de tela foi barrado pela regra de segurança: avisa no detalhe
+func _on_flash_barrado():
+	aviso = "FLASH BARRADO: LIMITE DE %d POR SEGUNDO" % e.flashes_tela_por_segundo
+	mostrar()
 
-# Tremor no formato do .tres: Vector2(força, segundos)
-func tremer(valor):
-	camera.tremer(valor.x, valor.y)
+# ---------- linhas dos momentos ----------
 
-# Flash de tela no formato do .tres: Vector2(alfa, segundos); avisa se a regra barrou
-func piscar(cor, valor):
-	if not tela.flash_tela(cor, valor.x, valor.y):
-		aviso = "FLASH BARRADO: LIMITE DE %d POR SEGUNDO" % e.flashes_tela_por_segundo
-		mostrar()
+# Linha de um momento: título, passos descritos e, se algum passo roda, a ação de tocar
+func linha_momento(nome):
+	var dados = Momentos.momento(nome)
+	var detalhes = detalhes_do(nome)
+	if usa_animacao(dados):
+		detalhes.append("ANIMACAO NO LAB: %s S (PROVISORIO)" % n(duracao_lab(nome)))
+	var acao = Callable()
+	if tem_efeito(nome, {}):
+		acao = tocar_momento.bind(nome)
+	return linha(dados.titulo, detalhes, acao)
 
-# Hit-stop e, só depois dele, a câmera lenta (Vector2(escala, segundos))
-func congelar_e_desacelerar(hitstop, camera_lenta):
-	TempoJogo.congelar(hitstop)
-	if await esperar(hitstop):
-		TempoJogo.camera_lenta(camera_lenta.x, camera_lenta.y)
-
-# Solta uma partícula no mundo; 'ajuste' mexe na partícula antes de ela entrar na cena
-func soltar(cena, posicao, quantidade, distancia = 0.0, ajuste = Callable()):
-	var particula = cena.instantiate()
-	particula.position = posicao
-	if ajuste.is_valid():
-		ajuste.call(particula)
-	particula.configurar(quantidade, distancia)
-	mundo.add_child(particula)
-
-# Gradiente de cores sorteadas (uma por partícula) a partir de uma lista
-func gradiente(cores):
-	var g = Gradient.new()
-	g.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT
-	var posicoes = PackedFloat32Array()
-	for i in range(cores.size()):
-		posicoes.append(float(i) / cores.size())
-	g.offsets = posicoes
-	g.colors = cores
-	return g
-
-# "T(força;s)"
-func txt_t(valor):
-	return "T(%s;%s)" % [n(valor.x), n(valor.y)]
-
-# "TC(de->até)"
-func txt_tc(valor):
-	return "TC(%s->%s)" % [n(valor.x), n(valor.y)]
-
-# "F alfa/segundos"
-func txt_f(valor):
-	return "F %s/%s S" % [n(valor.x), n(valor.y)]
-
-# "CL(escala;s)"
-func txt_cl(valor):
-	return "CL(%s;%s)" % [n(valor.x), n(valor.y)]
-
-# "Z(fator;s)"
-func txt_z(valor):
-	return "Z(%s;%s)" % [n(valor.x), n(valor.y)]
-
-# ---------- páginas (efeitos.md, tabela 4) ----------
-
-# 4.0 Estrelas: velocidade e cor
-func pagina_estrelas():
-	return nova_pagina("ESTRELAS", [
-		linha("JOGO NORMAL", ["x" + n(e.estrelas_normal)],
-			func(): estrelas.mudar_velocidade(e.estrelas_normal)),
-		linha("SILENCIO", ["x" + n(e.estrelas_silencio)],
-			func(): estrelas.mudar_velocidade(e.estrelas_silencio)),
-		linha("FASE 1", ["x" + n(e.estrelas_fase1)],
-			func(): estrelas.mudar_velocidade(e.estrelas_fase1)),
-		linha("FASE 2", ["x" + n(e.estrelas_fase2), "COR PUXA PARA VERMELHO"], estrelas_fase2),
-		linha("DERROTA DA FASE 2", ["x" + n(e.estrelas_derrota_fase2) + " (CONGELAM)"],
-			func(): estrelas.mudar_velocidade(e.estrelas_derrota_fase2)),
-		linha("DESPERTAR -> AURA", ["x%s -> x%s EM %s S (PROVISORIO)" % [n(e.estrelas_despertar.x), n(e.estrelas_despertar.y), n(e.despertar_duracao)], "BRILHO SOBE: SEM VALOR"], estrelas_despertar),
-		linha("PICO DO PILAR", ["x%s POR %s S, DEPOIS x%s EM %s S" % [n(e.estrelas_pico.x), n(e.estrelas_pico.y), n(e.estrelas_resto_pilar.x), n(e.estrelas_resto_pilar.y)], "RISCOS: SEM VALOR", "EMPURRAR: SEM VALOR"], estrelas_pilar),
-		linha("ARENA / FASE 3A", ["x" + n(e.estrelas_arena), "BRILHO E COR LAVANDA: SEM VALOR"],
-			func(): estrelas.mudar_velocidade(e.estrelas_arena)),
-		linha("VIRADA 3A->3B", ["x" + n(e.estrelas_virada), "EMPURRAO: SEM VALOR"],
-			func(): estrelas.mudar_velocidade(e.estrelas_virada)),
-		linha("DESESPERO", ["x" + n(e.estrelas_desespero), "RISCOS: SEM VALOR"],
-			func(): estrelas.mudar_velocidade(e.estrelas_desespero)),
-	])
-
-# 4.0 Estrelas: apagar, acender e o que ainda não tem número
-func pagina_estrelas_2():
-	return nova_pagina("ESTRELAS 2", [
-		linha("TONTO / FINISH HIM", ["x" + n(e.estrelas_tonto)],
-			func(): estrelas.mudar_velocidade(e.estrelas_tonto)),
-		linha("FINAL RUIM: APAGAM", ["UMA A UMA EM %s S, PARADAS" % n(e.estrelas_apagar)], estrelas_apagar),
-		linha("DERROTA COM RAIVA", ["x0 -> x%s DEVAGAR: DURACAO SEM VALOR" % n(e.estrelas_raiva_alvo)]),
-		linha("REPARO", ["x3 -> x1: DURACAO SEM VALOR"]),
-		linha("POUPAR", ["VOLTAM A x1: DURACAO SEM VALOR", "ESTRELAS NOVAS: QUANTIDADE SEM VALOR", "CONSTELACAO: NA F7"]),
-		linha("PUXAO", ["RISCOS VERTICAIS: SEM VALOR"]),
-		linha("ANTES DE ATAQUE GRANDE", ["SUGAR E REPELIR: SEM VALOR"]),
-	])
-
-# 4.1 Wave 10 (o resto é som e letreiro: B1, B3 e F1)
-func pagina_wave10():
-	return nova_pagina("WAVE 10", [
-		linha("SILENCIO", ["ESTRELAS x" + n(e.estrelas_silencio), "MUSICA SOME: NA F1"],
-			func(): estrelas.mudar_velocidade(e.estrelas_silencio)),
-		linha("ALARME FINAL WAVE", ["BORDAS %dx %s S ALFA %s" % [e.wave10_bordas_piscadas, n(e.wave10_bordas_pisca), n(e.wave10_bordas_alfa)], txt_t(e.wave10_alarme_tremor), "LETREIRO (%s S/LETRA, %d PX): NA F1" % [n(e.wave10_letra_intervalo), e.wave10_letra_tremor_px]], wave10_alarme),
-		linha("MUSICA TENSA ENTRA", ["ESTRELAS x%s EM %s S" % [n(e.estrelas_volta_wave10.x), n(e.estrelas_volta_wave10.y)], "CROSSFADE: NA B1"],
-			func(): estrelas.mudar_velocidade(e.estrelas_volta_wave10.x, e.estrelas_volta_wave10.y)),
-	])
-
-# 4.2 Fase 1
-func pagina_fase1():
-	return nova_pagina("FASE 1", [
-		linha("DESCIDA", [txt_tc(e.descida_tremor_continuo) + " (FICA ATE O R)"],
-			func(): camera.tremer_continuo(e.descida_tremor_continuo.x, e.descida_tremor_continuo.y, 0.0)),
-		linha("POUSO", [txt_t(e.pouso_tremor), "POEIRA %s DE CADA LADO, %s PX" % [n(e.poeira_pouso.x), n(e.poeira_pouso.y)], "SQUASH (%s;%s) %s S: NA F1" % [n(e.pouso_squash.x), n(e.pouso_squash.y), n(e.pouso_squash_duracao)]], pouso),
-		linha("NOME DO BOSS", ["FADE %s S, LETRAS %s->%s PX, FICA %s S, SAI %s S: NA F1" % [n(e.nome_fade_in), n(e.nome_espacamento.x), n(e.nome_espacamento.y), n(e.nome_tempo), n(e.nome_fade_out)]]),
-		linha("HIT COMUM", ["FLASH NO CORPO " + txt_f(e.hit_flash), "FAISCA %s, %s PX" % [n(e.faisca_hit.x), n(e.faisca_hit.y)], "RECUO %d PX: NA F1" % e.hit_recuo_px], hit_comum),
-		linha("PERDEU UM CORACAO", [txt_t(e.coracao_boss_tremor) + " + HS " + n(e.coracao_boss_hitstop), "FOLHINHAS %s-%s" % [n(e.folhinhas_quantidade.x), n(e.folhinhas_quantidade.y)], "CORACAO DA HUD: NA F1 (FLASH SEM VALOR)"], perdeu_coracao),
-		linha("ULTIMO CORACAO", ["PULSA %s->%s A CADA %s S: NA F1" % [n(e.ultimo_coracao_escala.x), n(e.ultimo_coracao_escala.y), n(e.ultimo_coracao_periodo)]]),
-		linha("CARGA DO ATAQUE", ["AMARELO 0->%s: PERIODO SEM VALOR" % n(e.carga_alfa_maximo)]),
-		linha("SOLTAR FOLHAS", [txt_t(e.soltar_tremor)], func(): tremer(e.soltar_tremor)),
-		linha("FOLHA ACERTA BLOCO", ["POEIRA %s, %s PX" % [n(e.poeira_bloco.x), n(e.poeira_bloco.y)], "RASTRO %d PX ALFA %s: NA F1" % [e.folha_rastro_px, n(e.folha_rastro_alfa)]], folha_no_bloco),
-	])
-
-# 4.2 Fase 2 e as trocas de fase
-func pagina_fase2_trocas():
-	return nova_pagina("FASE 2 E TROCAS", [
-		linha("F2: CARGA DAS ARVORES", [txt_tc(e.f2_carga_tremor_continuo) + ": DURACAO SEM VALOR", "OLHOS ALFA %s: DURACAO SEM VALOR" % n(e.f2_olhos_alfa), "MARCADOR %s S ANTES: NA F2" % n(e.f2_marcador_antecedencia)]),
-		linha("F2: ARVORE EXPLODE", [txt_t(e.f2_arvore_tremor)], func(): tremer(e.f2_arvore_tremor)),
-		linha("F2: RESPIRA", ["%s S PARADO: NA F2" % n(e.f2_respira)]),
-		linha("F2: DESESPERO", ["BORDAS VERMELHAS %s (FICA ATE O R)" % n(e.f2_desespero_alfa)],
-			func(): tela.bordas(e.cor_dano, e.f2_desespero_alfa)),
-		linha("ULTIMO HIT DA FASE 1", ["HS %s -> %s" % [n(e.ultimo_hit_f1_hitstop), txt_cl(e.ultimo_hit_f1_camera_lenta)], "BRANCO " + txt_f(e.ultimo_hit_f1_flash), txt_t(e.ultimo_hit_f1_tremor), "LIMPEZA DE PROJETEIS: NA F2"], ultimo_hit_fase1),
-		linha("TRANSICAO 1->2", [txt_z(e.transicao_zoom) + " NO LORAX", txt_tc(e.transicao_tremor_continuo) + " EM %s S (PROVISORIO)" % n(e.transicao_duracao), "PICO: %s + HS %s + VERMELHO %s" % [txt_t(e.transicao_tremor), n(e.transicao_hitstop), txt_f(e.transicao_flash)], "Z VOLTA %s S" % n(e.transicao_zoom_volta), "ONDA PEQUENA E TOM VERMELHO: SEM VALOR", "CORACOES %s S CADA: NA F2" % n(e.transicao_coracoes_intervalo)], transicao),
-		linha("DERROTA DA FASE 2", ["HS %s -> %s" % [n(e.derrota_f2_hitstop), txt_cl(e.derrota_f2_camera_lenta)], "BRANCO " + txt_f(e.derrota_f2_flash), txt_t(e.derrota_f2_tremor)], derrota_fase2),
-	])
-
-# 4.3 Transformação (durações dos momentos provisórias até a B4)
-func pagina_transformacao():
-	return nova_pagina("TRANSFORMACAO", [
-		linha("DERROTA COM RAIVA", ["LETTERBOX %d PX %s S" % [e.letterbox_barras, n(e.letterbox_duracao)], txt_tc(e.raiva_tremor_continuo) + " EM %s S (PROVISORIO)" % n(e.raiva_duracao)], raiva),
-		linha("DESPERTAR", [txt_z(e.despertar_zoom) + " NO LORAX", txt_tc(e.despertar_tremor_continuo) + " EM %s S (PROVISORIO)" % n(e.despertar_duracao), "ESTRELAS x%s->x%s" % [n(e.estrelas_despertar.x), n(e.estrelas_despertar.y)], "ESCURO %s->%s: NA F3" % [n(e.despertar_escuro.x), n(e.despertar_escuro.y)], "LOW-PASS: NA B1"], despertar),
-		linha("AURA", [txt_tc(e.aura_tremor_continuo) + " EM %s S (PROVISORIO)" % n(e.aura_duracao), "KI SUBINDO %s/S" % n(e.aura_ki_por_segundo)], aura),
-		linha("PICO DO PILAR", ["HS %s + %s + BRANCO %s" % [n(e.pico_hitstop), txt_t(e.pico_tremor), txt_f(e.pico_flash)], "ONDA %s PX %s S FORCA %s" % [n(e.pico_onda.x), n(e.pico_onda.y), n(e.pico_onda.z)], "ESTRELAS x%s" % n(e.estrelas_pico.x), "ABERRACAO DO PICO: SEM VALOR", "BASES SOMEM: NA F3"], pico_do_pilar),
-		linha("RESTO DO PILAR", [txt_tc(e.resto_tremor_continuo) + ": DURACAO SEM VALOR", "ESTRELAS x%s EM %s S" % [n(e.estrelas_resto_pilar.x), n(e.estrelas_resto_pilar.y)]],
-			func(): estrelas.mudar_velocidade(e.estrelas_resto_pilar.x, e.estrelas_resto_pilar.y)),
-		linha("REPARO", [txt_tc(e.reparo_tremor_continuo) + ": DURACAO SEM VALOR", "Z VOLTA A 1 EM %s S" % n(e.reparo_zoom_volta)],
-			func(): camera.zoom_para(1.0, e.reparo_zoom_volta)),
-		linha("CHAPEU JOGADO", [txt_t(e.chapeu_tremor)], func(): tremer(e.chapeu_tremor)),
-		linha("PUXAO", [txt_tc(e.puxao_tremor_continuo) + " (FICA ATE A NAVE CHEGAR)", "FIO DE KI %d PX: NA F3" % e.puxao_fio_px, "RISCOS: SEM VALOR"],
-			func(): camera.tremer_continuo(e.puxao_tremor_continuo.x, e.puxao_tremor_continuo.y, 0.0)),
-		linha("NAVE CHEGA", [txt_t(e.nave_chega_tremor) + " (PARA O TC)"], nave_chega),
-		linha("ARENA NASCE", [txt_t(e.arena_tremor), "LETTERBOX SAI %s S" % n(e.letterbox_duracao), "ESTRELAS x" + n(e.estrelas_arena), "PONTO/LINHA/CAIXA %s+%s S: NA F3" % [n(e.arena_etapas.x), n(e.arena_etapas.y)], "ESCURO %s->%s EM %s S: NA F3" % [n(e.arena_escuro.x), n(e.arena_escuro.y), n(e.arena_escuro_duracao)], "FLASH NA BORDA: SEM VALOR"], arena_nasce),
-	])
-
-# 4.4 Fase 3
-func pagina_fase3():
-	return nova_pagina("FASE 3", [
-		linha("AVISO", ["PISCA %s S, ALFA %s: NA B5" % [n(e.aviso_pisca), n(e.cor_aviso.a)]]),
-		linha("RAIO COMUM", [txt_t(e.raio_tremor), "MINIMO %s S ENTRE TREMORES: NA B5" % n(e.intervalo_tremor_repetido)], func(): tremer(e.raio_tremor)),
-		linha("CORTINA TODOS JUNTOS", [txt_t(e.cortina_tremor)], func(): tremer(e.cortina_tremor)),
-		linha("RAIO DIRETO", ["CARGA " + txt_z(e.raio_direto_zoom), "DISPARO " + txt_t(e.raio_direto_tremor), "Z VOLTA: SEM VALOR (R VOLTA)"], raio_direto),
-		linha("PANCADA", [txt_t(e.pancada_tremor), "ARENA TREME %s PX %s S: NA B5" % [n(e.pancada_arena_tremor.x), n(e.pancada_arena_tremor.y)]], func(): tremer(e.pancada_tremor)),
-		linha("ESFERA ESTOURA", [txt_t(e.esfera_tremor), "BRANCO " + txt_f(e.esfera_flash)], esfera),
-		linha("TELEPORTE / ESQUIVA", ["AFTERIMAGE %d COPIAS, %s S, VIDA %s S, ALFA %s" % [e.afterimage_copias, n(e.afterimage_intervalo), n(e.afterimage_vida), n(e.afterimage_alfa)]], teleporte),
-		linha("HIT NO LORAX UI", ["KI %s, %s PX, VIDA %s S" % [n(e.ki_hit.x), n(e.ki_hit.y), n(e.ki_hit_vida)], "FLASH %s S: ALFA SEM VALOR" % n(e.hit_ui_flash_duracao), "RECUO %d PX: NA F4" % e.hit_ui_recuo_px], hit_lorax_ui),
-		linha("PLAYER LEVA HIT", [txt_t(e.player_hit_tremor) + " + HS " + n(e.player_hit_hitstop), "BORDAS %s S: ALFA SEM VALOR" % n(e.player_hit_bordas_duracao)], player_leva_hit),
-		linha("VIRADA 3A->3B", ["HS %s + %s" % [n(e.virada_hitstop), txt_t(e.virada_tremor)], "ONDA %s PX %s S FORCA %s" % [n(e.virada_onda.x), n(e.virada_onda.y), n(e.virada_onda.z)], "ESTRELAS x" + n(e.estrelas_virada), "ARENA ENCOLHE: NA F5"], virada),
-	])
-
-# 4.4 Fase 3: o que depende da arena
-func pagina_fase3_2():
-	return nova_pagina("FASE 3 (2)", [
-		linha("DESESPERO", [txt_tc(e.desespero_tremor_continuo) + ": DURACAO SEM VALOR", "FAISCAS NA MOLDURA: NA F5"]),
-		linha("JANELA DE ATAQUE", ["BORDA DA ARENA PISCA %dx %s S: NA B5" % [e.janela_piscadas, n(e.janela_pisca)]]),
-		linha("CAMERA RESPIRANDO", ["%s PX, PERIODO %s S: NA F4" % [n(e.respirando.x), n(e.respirando.y)]]),
-	])
-
-# 4.5 Desfecho
-func pagina_desfecho():
-	return nova_pagina("DESFECHO", [
-		linha("FINISH HIM", ["%d LETRAS, %s S CADA, %s" % [LETRAS_FINISH_HIM, n(e.finish_letra_intervalo), txt_t(e.finish_letra_tremor)], "LETRAS E ESCALA %s->%s: NA F6" % [n(e.finish_letra_escala.x), n(e.finish_letra_escala.y)]], finish_him),
-		linha("GOLPE FINAL", ["HS %s -> %s" % [n(e.golpe_hitstop), txt_cl(e.golpe_camera_lenta)], "ZOOM PUNCH " + txt_z(e.golpe_zoom_punch), "BRANCO %s + %s" % [txt_f(e.golpe_flash), txt_t(e.golpe_tremor)], "MUSICA CORTADA: NA B1"], golpe_final),
-		linha("POUPAR", ["ESCURO %s->%s EM %s S: NA F7" % [n(e.poupar_escuro.x), n(e.poupar_escuro.y), n(e.poupar_escuro_duracao)]]),
-	])
-
-# Ferramentas soltas, para testar cada uma
-func pagina_ferramentas():
-	return nova_pagina("FERRAMENTAS", [
-		linha("ABERRACAO MINIMA", ["%s PX, VOLTA EM %s S" % [n(e.aberracao_px.x), n(e.aberracao_volta)]],
-			func(): tela.aberracao(e.aberracao_px.x, e.aberracao_volta)),
-		linha("ABERRACAO MAXIMA", ["%s PX, VOLTA EM %s S" % [n(e.aberracao_px.y), n(e.aberracao_volta)]],
-			func(): tela.aberracao(e.aberracao_px.y, e.aberracao_volta)),
-		linha("LETTERBOX LIGA/DESLIGA", ["%d PX EM %s S" % [e.letterbox_barras, n(e.letterbox_duracao)]], alternar_letterbox),
-		linha("BORDAS LIGA/DESLIGA", ["DEGRADE %d PX, ALARME PISCANDO SEM PARAR" % e.bordas_largura], alternar_bordas),
-		linha("4 FLASHES SEGUIDOS", ["TESTA A REGRA: NO MAXIMO %d POR SEGUNDO" % e.flashes_tela_por_segundo], quatro_flashes),
-	])
-
-# ---------- ações com mais de um passo ----------
-
-# Fase 2: velocidade e tinta vermelha
-func estrelas_fase2():
-	estrelas.mudar_velocidade(e.estrelas_fase2)
-	estrelas.mudar_cor(e.cor_estrelas_fase2)
-
-# Despertar → aura: começa devagar e acelera ao longo do despertar
-func estrelas_despertar():
-	estrelas.mudar_velocidade(e.estrelas_despertar.x)
-	estrelas.mudar_velocidade(e.estrelas_despertar.y, e.despertar_duracao)
-
-# Pico do pilar: ×6 por um instante, depois cai para ×3
-func estrelas_pilar():
-	estrelas.mudar_velocidade(e.estrelas_pico.x)
-	if await esperar(e.estrelas_pico.y):
-		estrelas.mudar_velocidade(e.estrelas_resto_pilar.x, e.estrelas_resto_pilar.y)
-
-# Final ruim: congelam e apagam uma a uma
-func estrelas_apagar():
-	estrelas.mudar_velocidade(e.estrelas_tonto)
-	estrelas.apagar_uma_a_uma(e.estrelas_apagar)
-
-# Alarme da wave 10: bordas vermelhas piscando + tremor do primeiro toque
-func wave10_alarme():
-	tela.bordas(e.cor_dano, e.wave10_bordas_alfa, e.wave10_bordas_pisca, e.wave10_bordas_piscadas)
-	tremer(e.wave10_alarme_tremor)
-
-# Pouso: tremor e poeira saindo dos dois lados dos pés
-func pouso():
-	tremer(e.pouso_tremor)
-	var pes = boneco.position + Vector2(0, PES_BONECO)
-	for lado in [Vector2.LEFT, Vector2.RIGHT]:
-		soltar(POEIRA, pes, e.poeira_pouso.x, e.poeira_pouso.y, func(p): p.direction = lado)
-
-# Hit comum: flash branco no corpo e faísca onde o tiro bate (embaixo do corpo)
-func hit_comum():
-	flash_boneco.flash(e.cor_branco, e.hit_flash.x, e.hit_flash.y)
-	soltar(FAISCA, boneco.position + Vector2(0, PES_BONECO), e.faisca_hit.x, e.faisca_hit.y)
-
-# Perdeu um coração: tremor, hit-stop e folhinhas do pelo
-func perdeu_coracao():
-	tremer(e.coracao_boss_tremor)
-	TempoJogo.congelar(e.coracao_boss_hitstop)
-	var quantidade = randi_range(int(e.folhinhas_quantidade.x), int(e.folhinhas_quantidade.y))
-	soltar(FOLHINHAS, boneco.position, quantidade)
-
-# Folha acertando o bloco: poeira subindo ao lado do boneco (onde dá para ver)
-func folha_no_bloco():
-	var ponto = posicao_boneco + Vector2(-LADO_BLOCO_PX, PES_BONECO)
-	soltar(POEIRA, ponto, e.poeira_bloco.x, e.poeira_bloco.y, poeira_para_cima)
-
-# Poeira em meio círculo para cima (a cena sai, por padrão, para um lado só)
-func poeira_para_cima(particula):
-	particula.direction = Vector2.UP
-	particula.spread = 90.0
-
-# Último hit da fase 1: hit-stop → câmera lenta, flash branco e tremor forte
-func ultimo_hit_fase1():
-	piscar(e.cor_branco, e.ultimo_hit_f1_flash)
-	tremer(e.ultimo_hit_f1_tremor)
-	congelar_e_desacelerar(e.ultimo_hit_f1_hitstop, e.ultimo_hit_f1_camera_lenta)
-
-# Transição 1→2: zoom no Lorax e tremor subindo durante a animação; no fim, o pico
-func transicao():
-	camera.zoom_para(e.transicao_zoom.x, e.transicao_zoom.y, boneco.global_position)
-	camera.tremer_continuo(e.transicao_tremor_continuo.x, e.transicao_tremor_continuo.y, e.transicao_duracao)
-	if not await esperar(e.transicao_duracao):
+# Guarda o momento e tudo o que ele toca (sub-momentos e o seguinte)
+func marcar_alcancados(nome, alcancados):
+	if alcancados.has(nome):
 		return
-	camera.parar_tremor_continuo()
-	tremer(e.transicao_tremor)
-	TempoJogo.congelar(e.transicao_hitstop)
-	piscar(e.cor_raiva, e.transicao_flash)
-	camera.zoom_para(1.0, e.transicao_zoom_volta)
+	alcancados[nome] = true
+	var dados = Momentos.momento(nome)
+	if dados == null:
+		return
+	if dados.seguinte != &"":
+		marcar_alcancados(dados.seguinte, alcancados)
+	for passo in dados.passos:
+		if passo.tipo == Passo.Tipo.MOMENTO:
+			marcar_alcancados(passo.nome, alcancados)
 
-# Derrota da fase 2: hit-stop → câmera lenta, flash branco e tremor brutal
-func derrota_fase2():
-	piscar(e.cor_branco, e.derrota_f2_flash)
-	tremer(e.derrota_f2_tremor)
-	congelar_e_desacelerar(e.derrota_f2_hitstop, e.derrota_f2_camera_lenta)
+# Algum passo do momento (ou do que ele toca) roda de verdade
+func tem_efeito(nome, vistos):
+	if vistos.has(nome):
+		return false
+	vistos[nome] = true
+	var dados = Momentos.momento(nome)
+	if dados == null:
+		return false
+	if dados.seguinte != &"" and tem_efeito(dados.seguinte, vistos):
+		return true
+	for passo in dados.passos:
+		if passo.pendente != "":
+			continue
+		if passo.tipo != Passo.Tipo.MOMENTO or tem_efeito(passo.nome, vistos):
+			return true
+	return false
 
-# Derrota com raiva: entram as barras e o tremor começa a subir
-func raiva():
-	tela.letterbox(true, e.letterbox_duracao)
-	letterbox_ligado = true
-	camera.tremer_continuo(e.raiva_tremor_continuo.x, e.raiva_tremor_continuo.y, e.raiva_duracao)
+# O momento depende da duração da animação (passo da_animacao ou seguinte no fim dela)
+func usa_animacao(dados):
+	if dados.seguinte != &"":
+		return true
+	for passo in dados.passos:
+		if passo.da_animacao:
+			return true
+	return false
 
-# Despertar: zoom lento no Lorax, tremor subindo e estrelas acelerando
-func despertar():
-	camera.zoom_para(e.despertar_zoom.x, e.despertar_zoom.y, boneco.global_position)
-	camera.tremer_continuo(e.despertar_tremor_continuo.x, e.despertar_tremor_continuo.y, e.despertar_duracao)
-	estrelas_despertar()
+# Duração de animação que o LAB finge para o momento: a dele ou, se ele não tem, a do
+# momento que toca ele (ex.: as estrelas do despertar usam a do despertar)
+func duracao_lab(nome):
+	var dados = Momentos.momento(nome)
+	if dados.duracao_animacao_lab > 0:
+		return dados.duracao_animacao_lab
+	for outro in Momentos.BIBLIOTECA.momentos:
+		for passo in Momentos.BIBLIOTECA.momentos[outro].passos:
+			if passo.tipo == Passo.Tipo.MOMENTO and passo.nome == nome:
+				return duracao_lab(outro)
+	return 0.0
 
-# Aura: tremor subindo e ki saindo do corpo enquanto ela dura
-func aura():
-	camera.tremer_continuo(e.aura_tremor_continuo.x, e.aura_tremor_continuo.y, e.aura_duracao)
-	if ki != null:
-		ki.queue_free()
-	ki = KI_SUBINDO.instantiate()
-	ki.definir_taxa(e.aura_ki_por_segundo)
-	boneco.add_child(ki)
-	var meu_ki = ki
-	var continua = await esperar(e.aura_duracao)
-	if continua and is_instance_valid(meu_ki):
-		meu_ki.emitting = false
+# Os passos do momento em texto (sub-momentos abertos no lugar; o seguinte no fim)
+func detalhes_do(nome):
+	var dados = Momentos.momento(nome)
+	var partes = []
+	for passo in dados.passos:
+		if passo.tipo == Passo.Tipo.MOMENTO and passo.rotulo == "":
+			var dentro = detalhes_do(passo.nome)
+			if passo.tempo > 0:
+				dentro = ["AOS %s S: %s" % [n(passo.tempo), " + ".join(dentro)]]
+			partes.append_array(dentro)
+		else:
+			partes.append(descrever(passo))
+	if dados.seguinte != &"":
+		partes.append("NO FIM DA ANIMACAO: " + " + ".join(detalhes_do(dados.seguinte)))
+	return partes
 
-# Pico do pilar: hit-stop, tremor brutal, flash, onda de choque e estrelas disparando
-func pico_do_pilar():
-	TempoJogo.congelar(e.pico_hitstop)
-	tremer(e.pico_tremor)
-	piscar(e.cor_branco, e.pico_flash)
-	tela.onda_choque(boneco.global_position, e.pico_onda.x, e.pico_onda.y, e.pico_onda.z)
-	estrelas_pilar()
+# Toca o momento no boneco (ou no ponto de demonstração) e, no fim da animação fingida,
+# o seguinte. Momento com afterimage: o boneco desliza para as cópias aparecerem
+func tocar_momento(nome):
+	var dados = Momentos.momento(nome)
+	var duracao = duracao_lab(nome)
+	Momentos.tocar(nome, alvo_demo(nome), duracao)
+	for passo in dados.passos:
+		if passo.tipo == Passo.Tipo.AFTERIMAGE and passo.pendente == "":
+			deslizar_boneco(passo)
+	if dados.seguinte != &"" and await esperar(duracao):
+		tocar_momento(dados.seguinte)
 
-# Nave chega no fim do puxão: acaba o tremor contínuo e vem uma batida
-func nave_chega():
-	camera.parar_tremor_continuo()
-	tremer(e.nave_chega_tremor)
+# O boneco, ou o ponto de demonstração do momento
+func alvo_demo(nome):
+	if ALVOS_DEMO.has(nome):
+		return posicao_boneco + ALVOS_DEMO[nome]
+	return boneco
 
-# Arena nasce: batida, as barras saem e as estrelas desaceleram
-func arena_nasce():
-	tremer(e.arena_tremor)
-	tela.letterbox(false, e.letterbox_duracao)
-	letterbox_ligado = false
-	estrelas.mudar_velocidade(e.estrelas_arena)
-
-# Raio direto: zoom de carga e, quando ele chega, o disparo
-func raio_direto():
-	camera.zoom_para(e.raio_direto_zoom.x, e.raio_direto_zoom.y, boneco.global_position)
-	if await esperar(e.raio_direto_zoom.y):
-		tremer(e.raio_direto_tremor)
-
-# Esfera estoura: tremor forte e flash branco
-func esfera():
-	tremer(e.esfera_tremor)
-	piscar(e.cor_branco, e.esfera_flash)
-
-# Teleporte: o boneco desliza enquanto solta as cópias e depois volta
-func teleporte():
-	rastro.soltar(e.afterimage_copias, e.afterimage_intervalo, e.afterimage_vida, e.afterimage_cor, e.afterimage_alfa)
+# O boneco desliza enquanto solta as cópias e depois volta
+func deslizar_boneco(passo):
 	if tween_boneco != null:
 		tween_boneco.kill()
-	var ida = e.afterimage_copias * e.afterimage_intervalo
+	var ida = passo.copias * passo.intervalo
 	tween_boneco = boneco.create_tween().set_ignore_time_scale()
 	tween_boneco.tween_property(boneco, "position:x", posicao_boneco.x + DEMO_ESQUIVA_PX, ida)
-	tween_boneco.tween_interval(e.afterimage_vida)
+	tween_boneco.tween_interval(passo.vida)
 	tween_boneco.tween_property(boneco, "position", posicao_boneco, ida)
 
-# Hit no Lorax da fase 3: ki saindo do ponto do tiro
-func hit_lorax_ui():
-	soltar(FAISCA, boneco.position + Vector2(0, PES_BONECO), e.ki_hit.x, e.ki_hit.y, faisca_de_ki)
+# ---------- texto dos passos ----------
 
-# A faísca vira ki: vida do ki e as cores do ki sorteadas por partícula
-func faisca_de_ki(particula):
-	particula.lifetime = e.ki_hit_vida
-	particula.color_initial_ramp = gradiente(e.cores_ki)
+# Um passo em texto: quando, o quê (ou o rótulo), repetições e a marca de pendente
+func descrever(passo):
+	var texto = passo.rotulo if passo.rotulo != "" else texto_do_passo(passo)
+	if passo.tempo > 0:
+		texto = "AOS %s S: %s" % [n(passo.tempo), texto]
+	if passo.repetir > 1:
+		texto += " %dx A CADA %s S" % [passo.repetir, n(passo.repetir_a_cada)]
+	if passo.pendente != "":
+		texto += ": " + passo.pendente
+	return texto
 
-# Player leva hit na arena: tremor e hit-stop
-func player_leva_hit():
-	tremer(e.player_hit_tremor)
-	TempoJogo.congelar(e.player_hit_hitstop)
+# O que o passo faz, na notação do efeitos.md (T, TC, HS, CL, Z, F)
+func texto_do_passo(passo):
+	var cor = nome_da_cor(passo.cor)
+	match passo.tipo:
+		Passo.Tipo.TREMER:
+			return "T(%s;%s)" % [n(passo.forca), n(passo.duracao)]
+		Passo.Tipo.TREMER_CONTINUO:
+			return "TC(%s->%s)%s" % [n(passo.de), n(passo.ate), quando(passo)]
+		Passo.Tipo.PARAR_TREMOR_CONTINUO:
+			return "PARA O TC" + (" EM %s S" % n(passo.duracao) if passo.duracao > 0 else "")
+		Passo.Tipo.ZOOM:
+			return "Z(%s;%s)%s" % [n(passo.fator), n(passo.duracao), " NO LORAX" if passo.focar_alvo else ""]
+		Passo.Tipo.ZOOM_PUNCH:
+			return "ZOOM PUNCH Z(%s;%s)" % [n(passo.fator), n(passo.duracao)]
+		Passo.Tipo.CONGELAR:
+			return "HS " + n(passo.duracao)
+		Passo.Tipo.CAMERA_LENTA:
+			return "CL(%s;%s)" % [n(passo.escala), n(passo.duracao)]
+		Passo.Tipo.FLASH_TELA:
+			return "%s F %s/%s S" % [cor, n(passo.alfa), n(passo.duracao)]
+		Passo.Tipo.FLASH_CORPO:
+			if passo.pulsar > 0:
+				return "CORPO %s PULSA 0->%s A CADA %s S" % [cor, n(passo.alfa), n(passo.pulsar)]
+			if passo.duracao > 0:
+				return "FLASH NO CORPO %s F %s/%s S" % [cor, n(passo.alfa), n(passo.duracao)]
+			return "CORPO %s 0->%s" % [cor, n(passo.alfa)]
+		Passo.Tipo.LETTERBOX:
+			if passo.ligar:
+				return "LETTERBOX %d PX ENTRA EM %s S" % [e.letterbox_barras, n(e.letterbox_duracao)]
+			return "LETTERBOX SAI EM %s S" % n(e.letterbox_duracao)
+		Passo.Tipo.ONDA:
+			return "ONDA %s PX %s S FORCA %s" % [n(passo.raio), n(passo.duracao), n(passo.forca)]
+		Passo.Tipo.ABERRACAO:
+			return "ABERRACAO %s PX, VOLTA EM %s S" % [n(passo.px), n(e.aberracao_volta)]
+		Passo.Tipo.BORDAS:
+			return texto_bordas(passo, cor)
+		Passo.Tipo.ESTRELAS_VELOCIDADE:
+			var parada = " (CONGELAM)" if passo.fator == 0 else ""
+			return "ESTRELAS x%s%s%s" % [n(passo.fator), parada, quando(passo)]
+		Passo.Tipo.ESTRELAS_COR:
+			return "ESTRELAS %s%s" % [cor, quando(passo)]
+		Passo.Tipo.ESTRELAS_BRILHO:
+			return "BRILHO DAS ESTRELAS %s%s" % [n(passo.fator), quando(passo)]
+		Passo.Tipo.ESTRELAS_RISCO:
+			if passo.ligar:
+				return "RISCOS x%s ACIMA DE %s PX/S" % [n(passo.fator), n(passo.limiar)]
+			return "RISCOS DESLIGAM"
+		Passo.Tipo.ESTRELAS_EMPURRAR:
+			return "EMPURRAR %s PX EM %s S" % [n(passo.forca), n(passo.duracao)]
+		Passo.Tipo.ESTRELAS_APAGAR:
+			return "APAGAM UMA A UMA EM %s S" % n(passo.duracao)
+		Passo.Tipo.ESTRELAS_ACENDER:
+			return "%d ESTRELAS NOVAS %s EM %s S" % [passo.quantidade, cor, n(passo.duracao)]
+		Passo.Tipo.PARTICULA:
+			return texto_particula(passo)
+		Passo.Tipo.AFTERIMAGE:
+			return "AFTERIMAGE %d COPIAS, %s S, VIDA %s S, ALFA %s" % [passo.copias, n(passo.intervalo), n(passo.vida), n(passo.alfa)]
+		Passo.Tipo.SOM:
+			return "SOM " + maiusculo(passo.nome)
+		Passo.Tipo.SINAL:
+			return texto_sinal(passo)
+		Passo.Tipo.MOMENTO:
+			return "MOMENTO " + maiusculo(passo.nome)
+	return "PASSO SEM TIPO"
 
-# Virada 3A→3B: hit-stop, tremor brutal, onda de choque e estrelas aceleram
-func virada():
-	TempoJogo.congelar(e.virada_hitstop)
-	tremer(e.virada_tremor)
-	tela.onda_choque(boneco.global_position, e.virada_onda.x, e.virada_onda.y, e.virada_onda.z)
-	estrelas.mudar_velocidade(e.estrelas_virada)
+# Duração de um passo que leva tempo: " EM x S", " DA ANIMACAO" ou " (FICA LIGADO)"
+func quando(passo):
+	if passo.da_animacao:
+		return " DA ANIMACAO"
+	if passo.duracao > 0:
+		return " EM %s S" % n(passo.duracao)
+	if passo.fica_ligado:
+		return " (FICA LIGADO)"
+	return ""
 
-# FINISH HIM: um tremorzinho por letra
-func finish_him():
-	for i in range(LETRAS_FINISH_HIM):
-		tremer(e.finish_letra_tremor)
-		if not await esperar(e.finish_letra_intervalo):
-			return
+# Bordas ligando (fixas, piscando sem parar ou N vezes) ou desligando
+func texto_bordas(passo, cor):
+	if not passo.ligar:
+		return "BORDAS DESLIGAM"
+	var texto = "BORDAS %s ALFA %s" % [cor, n(passo.alfa)]
+	if passo.pulsar <= 0:
+		return texto + " (FICAM LIGADAS)"
+	if passo.vezes > 0:
+		return texto + " PISCAM %dx %s S" % [passo.vezes, n(passo.pulsar)]
+	return texto + " PISCANDO %s S" % n(passo.pulsar)
 
-# Golpe final: zoom punch, flash, tremor máximo e hit-stop → câmera lenta
-func golpe_final():
-	camera.zoom_punch(e.golpe_zoom_punch.x, e.golpe_zoom_punch.y)
-	piscar(e.cor_branco, e.golpe_flash)
-	tremer(e.golpe_tremor)
-	congelar_e_desacelerar(e.golpe_hitstop, e.golpe_camera_lenta)
+# Partícula com os números de Partículas do efeitos_boss.tres
+func texto_particula(passo):
+	var texto = "PARTICULA SEM TIPO"
+	match passo.particula:
+		Passo.Particula.FAISCA:
+			texto = "FAISCA %s, %s PX" % [n(e.faisca_hit.x), n(e.faisca_hit.y)]
+		Passo.Particula.POEIRA_POUSO:
+			texto = "POEIRA %s, %s PX" % [n(e.poeira_pouso.x), n(e.poeira_pouso.y)]
+		Passo.Particula.POEIRA_BLOCO:
+			texto = "POEIRA %s, %s PX" % [n(e.poeira_bloco.x), n(e.poeira_bloco.y)]
+		Passo.Particula.FOLHINHAS:
+			texto = "FOLHINHAS %s-%s" % [n(e.folhinhas_quantidade.x), n(e.folhinhas_quantidade.y)]
+		Passo.Particula.KI_HIT:
+			texto = "KI %s, %s PX, VIDA %s S" % [n(e.ki_hit.x), n(e.ki_hit.y), n(e.ki_hit_vida)]
+		Passo.Particula.KI_SUBINDO:
+			texto = "KI SUBINDO %s/S%s" % [n(e.ki_subindo_por_segundo), quando(passo)]
+	if passo.direcao.x < 0:
+		texto += " PARA A ESQUERDA"
+	elif passo.direcao.x > 0:
+		texto += " PARA A DIREITA"
+	elif passo.direcao.y < 0:
+		texto += " PARA CIMA"
+	return texto
 
-# Liga/desliga as barras de cinema
-func alternar_letterbox():
-	letterbox_ligado = not letterbox_ligado
-	tela.letterbox(letterbox_ligado, e.letterbox_duracao)
+# Pedido para a fase: o nome e os números dele
+func texto_sinal(passo):
+	var texto = maiusculo(passo.nome)
+	for chave in passo.parametros:
+		var valor = passo.parametros[chave]
+		if valor is Vector2:
+			texto += " %s (%s;%s)" % [maiusculo(chave), n(valor.x), n(valor.y)]
+		else:
+			texto += " %s %s" % [maiusculo(chave), n(valor)]
+	return texto
 
-# Liga/desliga as bordas do alarme, piscando sem parar
-func alternar_bordas():
+# "folha_acerta" → "FOLHA ACERTA"
+func maiusculo(texto):
+	return String(texto).replace("_", " ").to_upper()
+
+# Nome da cor de um passo ("CORACAO FASE1")
+func nome_da_cor(cor):
+	return maiusculo(EfeitosDados.Cor.keys()[cor])
+
+# ---------- ferramentas soltas ----------
+
+# Ferramentas da tela, para testar cada uma (números da Tela e de passos de momentos)
+func pagina_ferramentas():
+	var bordas = primeiro_passo(&"wave10_alarme", Passo.Tipo.BORDAS)
+	var flash = primeiro_passo(&"esfera_estoura", Passo.Tipo.FLASH_TELA)
+	return nova_pagina("FERRAMENTAS", [
+		linha("ABERRACAO MINIMA", ["%s PX, VOLTA EM %s S" % [n(e.aberracao_px.x), n(e.aberracao_volta)]],
+			func(): tela.aberracao(e.aberracao_px.x)),
+		linha("ABERRACAO MAXIMA", ["%s PX, VOLTA EM %s S" % [n(e.aberracao_px.y), n(e.aberracao_volta)]],
+			func(): tela.aberracao(e.aberracao_px.y)),
+		linha("LETTERBOX LIGA/DESLIGA", ["%d PX EM %s S" % [e.letterbox_barras, n(e.letterbox_duracao)]],
+			func(): tela.letterbox(not tela.letterbox_ligado())),
+		linha("BORDAS LIGA/DESLIGA", ["DEGRADE %d PX, ALARME PISCANDO SEM PARAR" % e.bordas_largura],
+			alternar_bordas.bind(bordas)),
+		linha("4 FLASHES SEGUIDOS", ["TESTA A REGRA: NO MAXIMO %d POR SEGUNDO" % e.flashes_tela_por_segundo],
+			quatro_flashes.bind(flash)),
+	])
+
+# O primeiro passo do tipo dado no momento (erro se não houver)
+func primeiro_passo(nome, tipo):
+	for passo in Momentos.momento(nome).passos:
+		if passo.tipo == tipo:
+			return passo
+	push_error("LAB DE EFEITOS: o momento '%s' não tem passo %s" % [nome, Passo.Tipo.keys()[tipo]])
+	return null
+
+# Liga/desliga as bordas do alarme da wave 10, piscando sem parar
+func alternar_bordas(passo):
+	var cor = e.cor(passo.cor)
 	if tela.bordas_visiveis():
-		tela.bordas(e.cor_dano, 0.0)
+		tela.bordas(cor, 0.0)
 	else:
-		tela.bordas(e.cor_dano, e.wave10_bordas_alfa, e.wave10_bordas_pisca)
+		tela.bordas(cor, passo.alfa, passo.pulsar)
 
-# Quatro flashes em menos de 1 s: o quarto tem que ser barrado
-func quatro_flashes():
-	for i in range(4):
-		piscar(e.cor_branco, e.esfera_flash)
+# Quatro flashes da esfera em menos de 1 s: o quarto tem que ser barrado
+func quatro_flashes(passo):
+	for i in range(TESTE_FLASH_VEZES):
+		tela.flash_tela(e.cor(passo.cor), passo.alfa, passo.duracao)
 		if not await esperar(TESTE_FLASH_INTERVALO):
 			return

@@ -6,7 +6,8 @@ extends Node
 
 const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
 
-# Números dos efeitos da boss fight (afinados no Inspector)
+# Ferramentas dos efeitos da boss fight: regras, cores, tela e partículas (afinadas no
+# Inspector). Os momentos da luta moram no momentos_boss.tres (autoload Momentos)
 const EFEITOS = preload("res://recursos/boss/efeitos_boss.tres")
 const LabEfeitos = preload("res://scripts/geral/lab_efeitos.gd")
 const LabSons = preload("res://scripts/geral/lab_sons.gd")
@@ -21,18 +22,22 @@ var relogio_fade: Timer = null
 func _enter_tree():
 	Partida.nova_partida()
 
-# Saindo da partida (game over, Reiniciar, Menu): o tempo do jogo volta ao normal e os
-# autoloads de áudio soltam tudo (senão o batimento e a música continuariam no menu)
+# Saindo da partida (game over, Reiniciar, Menu): o tempo do jogo volta ao normal, os
+# momentos agendados são cancelados e os autoloads de áudio soltam tudo (senão o
+# batimento e a música continuariam no menu)
 func _exit_tree():
 	TempoJogo.limpar()
+	Momentos.limpar()
 	Sons.parar_tudo()
 	Musica.limpar()
 
-# Música, ajustes da câmera e da tela, reações aos sinais da Partida e o LAB (cheat)
+# Música, ajustes da câmera e da tela, ferramentas dos momentos, reações aos sinais da
+# Partida e o LAB (cheat)
 func _ready():
 	Musica.adotar($sons/musga)
 	camera.configurar(EFEITOS)
 	$EfeitosTela.configurar(EFEITOS)
+	Momentos.registrar(camera, $EfeitosTela, $fundo/estrelas, self, EFEITOS)
 	Partida.vida_perdida.connect(_on_vida_perdida)
 	Partida.vida_ganha.connect($sons/coletarCoracao.play)
 	Partida.morreu.connect(_on_morreu)
@@ -50,7 +55,7 @@ func _ready():
 	elif Partida.etapa_inicial == Partida.Etapa.LAB_SONS:
 		abrir_lab_sons()
 
-# LAB DE EFEITOS: painel que dispara cada efeito com os valores do efeitos_boss.tres;
+# LAB DE EFEITOS: painel que toca cada momento do momentos_boss.tres;
 # o boneco do Lorax fica no mundo (filho da main) para tremor e zoom valerem para ele
 func abrir_lab():
 	var lab = LabEfeitos.new()
@@ -86,7 +91,8 @@ func _on_boss_pode_entrar():
 	var duracao_alarme = 0.0
 	if alarme != null:
 		duracao_alarme = alarme.stream.get_length() / alarme.pitch_scale
-	$hud.mostrar_final_wave(duracao_alarme, EFEITOS.wave10_letreiro_pisca, EFEITOS.wave10_letreiro_fade)
+	var letreiro = Momentos.parametros(&"wave10_alarme", &"letreiro_final_wave")
+	$hud.mostrar_final_wave(duracao_alarme, letreiro.get("pisca", 0.0), letreiro.get("fade", 0.0))
 	await $hud.final_wave_sumiu
 	Musica.tocar(&"musica_wave10")
 	comecar_batalha()
@@ -117,11 +123,10 @@ func esperar(segundos):
 func _on_batalha_terminou():
 	print("FASE 2 ENTRARIA AQUI")
 
-# Um coração do boss esvaziou (não vale para o último): stinger, tremor leve e hit-stop curto
+# Um coração do boss esvaziou (não vale para o último): o momento tem o stinger, o tremor
+# leve e o hit-stop curto (sem alvo por enquanto: as folhinhas entram quando a F1 passar o corpo)
 func _on_coracao_boss_perdido():
-	Sons.tocar(&"boss_coracao_perdido")
-	camera.tremer(EFEITOS.coracao_boss_tremor.x, EFEITOS.coracao_boss_tremor.y)
-	TempoJogo.congelar(EFEITOS.coracao_boss_hitstop)
+	Momentos.tocar(&"coracao_boss_perdido")
 
 # Os corações do boss encheram (entrada da fase)
 func _on_coracoes_boss_reencheram():

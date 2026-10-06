@@ -5,6 +5,9 @@
 # câmera lenta não esticam estes efeitos) e respeitando "reduzir efeitos".
 extends CanvasLayer
 
+# Um flash de tela foi barrado pela regra de segurança (o LAB avisa na tela)
+signal flash_barrado
+
 const SHADER_TELA = preload("res://shaders/efeitos_tela.gdshader")
 # Camada das barras do letterbox: acima da HUD (5) e do LAB (6), abaixo do Pause (10)
 const LAYER_LETTERBOX = 7
@@ -16,7 +19,9 @@ var fator_flash_reduzido = 1.0
 var alfa_maximo_flash_reduzido = 1.0
 var flashes_por_segundo = 0
 var barras_letterbox = 0.0
+var duracao_letterbox = 0.0
 var largura_bordas = 0
+var volta_aberracao = 0.0
 
 var distorcao: ColorRect
 var material_tela: ShaderMaterial
@@ -32,6 +37,8 @@ var px_aberracao = 0.0
 var cor_bordas = Color.TRANSPARENT
 var alfa_bordas = 0.0
 var bordas_acesas = false
+# As barras do letterbox foram mandadas entrar (estão entrando ou paradas na tela)
+var barras_ligadas = false
 
 var tween_flash: Tween = null
 var tween_letterbox: Tween = null
@@ -68,13 +75,16 @@ func configurar(efeitos):
 	alfa_maximo_flash_reduzido = efeitos.alfa_maximo_flash_reduzido
 	flashes_por_segundo = efeitos.flashes_tela_por_segundo
 	barras_letterbox = efeitos.letterbox_barras
+	duracao_letterbox = efeitos.letterbox_duracao
 	largura_bordas = efeitos.bordas_largura
+	volta_aberracao = efeitos.aberracao_volta
 	material_tela.set_shader_parameter("largura", efeitos.onda_largura)
 
 # Acende a tela com 'cor' em 'alfa' e apaga até 0 em 'duracao' s. Devolve false se a
 # regra de segurança (flashes por segundo) barrou este flash
 func flash_tela(cor, alfa, duracao):
 	if not pode_piscar():
+		flash_barrado.emit()
 		return false
 	if Configuracoes.reduzir_efeitos:
 		alfa = minf(alfa * fator_flash_reduzido, alfa_maximo_flash_reduzido)
@@ -85,10 +95,13 @@ func flash_tela(cor, alfa, duracao):
 	tween_flash.tween_property(retangulo_flash, "color:a", 0.0, duracao)
 	return true
 
-# Barras pretas de cinema entram (ligar) ou saem em 'duracao' segundos
-func letterbox(ligar, duracao):
+# Barras pretas de cinema entram (ligar) ou saem em 'duracao' segundos (sem duração: a da Tela)
+func letterbox(ligar, duracao = -1.0):
+	if duracao < 0:
+		duracao = duracao_letterbox
 	if tween_letterbox != null:
 		tween_letterbox.kill()
+	barras_ligadas = ligar
 	var alvo = barras_letterbox if ligar else 0.0
 	tween_letterbox = novo_tween()
 	tween_letterbox.tween_method(definir_letterbox, barra_cima.size.y, alvo, duracao)
@@ -106,10 +119,13 @@ func onda_choque(posicao_global, raio_final, duracao, forca):
 	tween_onda.tween_method(definir_raio_onda, 0.0, raio_final, duracao)
 	tween_onda.tween_method(definir_forca_onda, forca, 0.0, duracao)
 
-# Separa vermelho e azul em 'px' e volta ao normal em 'volta' s. Desligada com "reduzir efeitos"
-func aberracao(px, volta):
+# Separa vermelho e azul em 'px' e volta ao normal em 'volta' s (sem volta: a da Tela).
+# Desligada com "reduzir efeitos"
+func aberracao(px, volta = -1.0):
 	if Configuracoes.reduzir_efeitos:
 		return
+	if volta < 0:
+		volta = volta_aberracao
 	if tween_aberracao != null:
 		tween_aberracao.kill()
 	tween_aberracao = novo_tween()
@@ -136,6 +152,10 @@ func bordas(cor, alfa, pulsar = 0.0, vezes = 0):
 func letterbox_visivel():
 	return barra_cima.size.y > 0
 
+# As barras foram mandadas entrar e não foram mandadas sair
+func letterbox_ligado():
+	return barras_ligadas
+
 # As bordas estão ligadas (fixas ou ainda piscando)
 func bordas_visiveis():
 	var piscando = tween_bordas != null and tween_bordas.is_running()
@@ -148,6 +168,7 @@ func limpar():
 			tween.kill()
 	retangulo_flash.color.a = 0.0
 	momentos_flash.clear()
+	barras_ligadas = false
 	definir_letterbox(0.0)
 	alfa_bordas = 0.0
 	definir_bordas_acesas(false)

@@ -1,0 +1,1391 @@
+[gd_resource type="Resource" script_class="BibliotecaMomentos" format=3 uid="uid://bjaytxxdnyhr8"]
+
+[ext_resource type="Script" uid="uid://cm7nukyp8pei7" path="res://scripts/boss/dados/passo.gd" id="1_passo"]
+[ext_resource type="Script" uid="uid://biedy8nmo4e2b" path="res://scripts/boss/dados/momento.gd" id="2_momento"]
+[ext_resource type="Script" uid="uid://7g2865256rhh" path="res://scripts/boss/dados/biblioteca_momentos.gd" id="3_biblioteca"]
+
+[sub_resource type="Resource" id="Passo_arena_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 0.5
+
+[sub_resource type="Resource" id="Passo_arena_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 16
+pendente = "SEM VALOR"
+rotulo = "BRILHO E COR LAVANDA"
+
+[sub_resource type="Resource" id="Momento_arena_estrelas"]
+script = ExtResource("2_momento")
+titulo = "ARENA / FASE 3A"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_arena_estrelas_1"), SubResource("Passo_arena_estrelas_2")])
+
+[sub_resource type="Resource" id="Passo_arena_nasce_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 6.0
+duracao = 0.3
+
+[sub_resource type="Resource" id="Passo_arena_nasce_2"]
+script = ExtResource("1_passo")
+tipo = 10
+
+[sub_resource type="Resource" id="Passo_arena_nasce_3"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"arena_estrelas"
+
+[sub_resource type="Resource" id="Passo_arena_nasce_4"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+nome = &"arena_nasce"
+parametros = {
+"linha_caixa": 0.25,
+"ponto_linha": 0.25
+}
+
+[sub_resource type="Resource" id="Passo_arena_nasce_5"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+nome = &"escurecer"
+parametros = {
+"ate": 0.9,
+"de": 0.35,
+"duracao": 0.3
+}
+
+[sub_resource type="Resource" id="Passo_arena_nasce_6"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "SEM VALOR"
+nome = &"flash_na_borda"
+
+[sub_resource type="Resource" id="Momento_arena_nasce"]
+script = ExtResource("2_momento")
+titulo = "ARENA NASCE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_arena_nasce_1"), SubResource("Passo_arena_nasce_2"), SubResource("Passo_arena_nasce_3"), SubResource("Passo_arena_nasce_4"), SubResource("Passo_arena_nasce_5"), SubResource("Passo_arena_nasce_6")])
+
+[sub_resource type="Resource" id="Passo_ataque_grande_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 18
+pendente = "SEM VALOR"
+rotulo = "SUGAR E REPELIR"
+
+[sub_resource type="Resource" id="Momento_ataque_grande_estrelas"]
+script = ExtResource("2_momento")
+titulo = "ANTES DE ATAQUE GRANDE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ataque_grande_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_aura_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 5.0
+ate = 8.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Passo_aura_2"]
+script = ExtResource("1_passo")
+tipo = 21
+da_animacao = true
+particula = 6
+
+[sub_resource type="Resource" id="Momento_aura"]
+script = ExtResource("2_momento")
+titulo = "AURA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_aura_1"), SubResource("Passo_aura_2")])
+duracao_animacao_lab = 3.2
+
+[sub_resource type="Resource" id="Passo_aviso_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA B5"
+nome = &"aviso"
+parametros = {
+"pisca": 0.12
+}
+
+[sub_resource type="Resource" id="Momento_aviso"]
+script = ExtResource("2_momento")
+titulo = "AVISO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_aviso_1")])
+
+[sub_resource type="Resource" id="Passo_carga_ataque_1"]
+script = ExtResource("1_passo")
+tipo = 9
+pendente = "PERIODO SEM VALOR"
+cor = 3
+alfa = 0.6
+
+[sub_resource type="Resource" id="Momento_carga_ataque"]
+script = ExtResource("2_momento")
+titulo = "CARGA DO ATAQUE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_carga_ataque_1")])
+
+[sub_resource type="Resource" id="Passo_chapeu_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 3.0
+duracao = 0.2
+
+[sub_resource type="Resource" id="Momento_chapeu"]
+script = ExtResource("2_momento")
+titulo = "CHAPEU JOGADO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_chapeu_1")])
+
+[sub_resource type="Resource" id="Passo_coracao_boss_perdido_1"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"boss_coracao_perdido"
+
+[sub_resource type="Resource" id="Passo_coracao_boss_perdido_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 4.0
+duracao = 0.25
+
+[sub_resource type="Resource" id="Passo_coracao_boss_perdido_3"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.05
+
+[sub_resource type="Resource" id="Passo_coracao_boss_perdido_4"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 4
+
+[sub_resource type="Resource" id="Passo_coracao_boss_perdido_5"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1 (FLASH SEM VALOR)"
+nome = &"coracao_da_hud"
+parametros = {
+"duracao": 0.2,
+"escala": Vector2(1.4, 1),
+"tremor_px": 2
+}
+
+[sub_resource type="Resource" id="Momento_coracao_boss_perdido"]
+script = ExtResource("2_momento")
+titulo = "PERDEU UM CORACAO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_coracao_boss_perdido_1"), SubResource("Passo_coracao_boss_perdido_2"), SubResource("Passo_coracao_boss_perdido_3"), SubResource("Passo_coracao_boss_perdido_4"), SubResource("Passo_coracao_boss_perdido_5")])
+
+[sub_resource type="Resource" id="Passo_cortina_todos_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 6.0
+duracao = 0.3
+
+[sub_resource type="Resource" id="Momento_cortina_todos"]
+script = ExtResource("2_momento")
+titulo = "CORTINA TODOS JUNTOS"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_cortina_todos_1")])
+
+[sub_resource type="Resource" id="Passo_derrota_f2_1"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.15
+cor = 1
+alfa = 0.9
+
+[sub_resource type="Resource" id="Passo_derrota_f2_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 16.0
+duracao = 1.2
+
+[sub_resource type="Resource" id="Passo_derrota_f2_3"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.2
+
+[sub_resource type="Resource" id="Passo_derrota_f2_4"]
+script = ExtResource("1_passo")
+tempo = 0.2
+tipo = 7
+escala = 0.25
+duracao = 1.0
+
+[sub_resource type="Resource" id="Momento_derrota_f2"]
+script = ExtResource("2_momento")
+titulo = "DERROTA DA FASE 2"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_derrota_f2_1"), SubResource("Passo_derrota_f2_2"), SubResource("Passo_derrota_f2_3"), SubResource("Passo_derrota_f2_4")])
+
+[sub_resource type="Resource" id="Passo_derrota_f2_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+
+[sub_resource type="Resource" id="Momento_derrota_f2_estrelas"]
+script = ExtResource("2_momento")
+titulo = "DERROTA DA FASE 2"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_derrota_f2_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_descida_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 1.0
+ate = 1.0
+fica_ligado = true
+
+[sub_resource type="Resource" id="Momento_descida"]
+script = ExtResource("2_momento")
+titulo = "DESCIDA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_descida_1")])
+
+[sub_resource type="Resource" id="Passo_desespero_1"]
+script = ExtResource("1_passo")
+tipo = 2
+pendente = "DURACAO SEM VALOR"
+de = 2.0
+ate = 6.0
+
+[sub_resource type="Resource" id="Passo_desespero_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F5"
+nome = &"faiscas_na_moldura"
+
+[sub_resource type="Resource" id="Momento_desespero"]
+script = ExtResource("2_momento")
+titulo = "DESESPERO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_desespero_1"), SubResource("Passo_desespero_2")])
+
+[sub_resource type="Resource" id="Passo_desespero_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 4.0
+
+[sub_resource type="Resource" id="Passo_desespero_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 17
+pendente = "SEM VALOR"
+rotulo = "RISCOS"
+ligar = true
+
+[sub_resource type="Resource" id="Momento_desespero_estrelas"]
+script = ExtResource("2_momento")
+titulo = "DESESPERO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_desespero_estrelas_1"), SubResource("Passo_desespero_estrelas_2")])
+
+[sub_resource type="Resource" id="Passo_despertar_1"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.15
+duracao = 5.0
+focar_alvo = true
+
+[sub_resource type="Resource" id="Passo_despertar_2"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 2.0
+ate = 5.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Passo_despertar_3"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"despertar_estrelas"
+
+[sub_resource type="Resource" id="Passo_despertar_4"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+nome = &"escurecer"
+parametros = {
+"ate": 0.35,
+"de": 0
+}
+
+[sub_resource type="Resource" id="Passo_despertar_5"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+rotulo = "LOW-PASS"
+nome = &"abafar_musica"
+
+[sub_resource type="Resource" id="Momento_despertar"]
+script = ExtResource("2_momento")
+titulo = "DESPERTAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_despertar_1"), SubResource("Passo_despertar_2"), SubResource("Passo_despertar_3"), SubResource("Passo_despertar_4"), SubResource("Passo_despertar_5")])
+duracao_animacao_lab = 5.4
+
+[sub_resource type="Resource" id="Passo_despertar_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 0.3
+
+[sub_resource type="Resource" id="Passo_despertar_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 3.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Passo_despertar_estrelas_3"]
+script = ExtResource("1_passo")
+tipo = 16
+pendente = "SEM VALOR"
+rotulo = "BRILHO SOBE"
+
+[sub_resource type="Resource" id="Momento_despertar_estrelas"]
+script = ExtResource("2_momento")
+titulo = "DESPERTAR -> AURA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_despertar_estrelas_1"), SubResource("Passo_despertar_estrelas_2"), SubResource("Passo_despertar_estrelas_3")])
+
+[sub_resource type="Resource" id="Passo_esfera_estoura_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 8.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_esfera_estoura_2"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.08
+cor = 1
+alfa = 0.4
+
+[sub_resource type="Resource" id="Momento_esfera_estoura"]
+script = ExtResource("2_momento")
+titulo = "ESFERA ESTOURA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_esfera_estoura_1"), SubResource("Passo_esfera_estoura_2")])
+
+[sub_resource type="Resource" id="Passo_estrelas_normal_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 1.0
+
+[sub_resource type="Resource" id="Momento_estrelas_normal"]
+script = ExtResource("2_momento")
+titulo = "JOGO NORMAL"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_estrelas_normal_1")])
+
+[sub_resource type="Resource" id="Passo_f2_arvore_explode_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 6.0
+duracao = 0.8
+
+[sub_resource type="Resource" id="Momento_f2_arvore_explode"]
+script = ExtResource("2_momento")
+titulo = "F2: ARVORE EXPLODE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_arvore_explode_1")])
+
+[sub_resource type="Resource" id="Passo_f2_carga_1"]
+script = ExtResource("1_passo")
+tipo = 2
+pendente = "DURACAO SEM VALOR"
+de = 1.0
+ate = 2.0
+
+[sub_resource type="Resource" id="Passo_f2_carga_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "DURACAO SEM VALOR"
+nome = &"olhos_vermelhos"
+parametros = {
+"alfa": 0.5,
+"antecedencia": 0.15
+}
+
+[sub_resource type="Resource" id="Passo_f2_carga_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F2"
+nome = &"marcador"
+parametros = {
+"antecedencia": 0.6
+}
+
+[sub_resource type="Resource" id="Momento_f2_carga"]
+script = ExtResource("2_momento")
+titulo = "F2: CARGA DAS ARVORES"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_carga_1"), SubResource("Passo_f2_carga_2"), SubResource("Passo_f2_carga_3")])
+
+[sub_resource type="Resource" id="Passo_f2_desespero_1"]
+script = ExtResource("1_passo")
+tipo = 13
+cor = 2
+alfa = 0.08
+ligar = true
+
+[sub_resource type="Resource" id="Momento_f2_desespero"]
+script = ExtResource("2_momento")
+titulo = "F2: DESESPERO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_1")])
+
+[sub_resource type="Resource" id="Passo_f2_respira_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F2"
+nome = &"respira"
+parametros = {
+"segundos": 0.5
+}
+
+[sub_resource type="Resource" id="Momento_f2_respira"]
+script = ExtResource("2_momento")
+titulo = "F2: RESPIRA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_respira_1")])
+
+[sub_resource type="Resource" id="Passo_fase1_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 1.5
+
+[sub_resource type="Resource" id="Momento_fase1_estrelas"]
+script = ExtResource("2_momento")
+titulo = "FASE 1"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_fase1_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_fase2_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 1.8
+
+[sub_resource type="Resource" id="Passo_fase2_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 15
+rotulo = "COR PUXA PARA VERMELHO"
+cor = 10
+
+[sub_resource type="Resource" id="Momento_fase2_estrelas"]
+script = ExtResource("2_momento")
+titulo = "FASE 2"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_fase2_estrelas_1"), SubResource("Passo_fase2_estrelas_2")])
+
+[sub_resource type="Resource" id="Passo_final_ruim_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"tonto_estrelas"
+
+[sub_resource type="Resource" id="Passo_final_ruim_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 19
+duracao = 6.0
+
+[sub_resource type="Resource" id="Momento_final_ruim_estrelas"]
+script = ExtResource("2_momento")
+titulo = "FINAL RUIM: APAGAM"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_final_ruim_estrelas_1"), SubResource("Passo_final_ruim_estrelas_2")])
+
+[sub_resource type="Resource" id="Passo_finish_him_1"]
+script = ExtResource("1_passo")
+tipo = 1
+repetir = 9
+repetir_a_cada = 0.08
+forca = 2.0
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_finish_him_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F6"
+nome = &"letras"
+parametros = {
+"escala": Vector2(1.6, 1)
+}
+
+[sub_resource type="Resource" id="Momento_finish_him"]
+script = ExtResource("2_momento")
+titulo = "FINISH HIM"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_finish_him_1"), SubResource("Passo_finish_him_2")])
+
+[sub_resource type="Resource" id="Passo_folha_acerta_bloco_1"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 3
+direcao = Vector2(0, -1)
+espalhar = 90.0
+
+[sub_resource type="Resource" id="Passo_folha_acerta_bloco_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"rastro_da_folha"
+parametros = {
+"alfa": 0.5,
+"px": 4
+}
+
+[sub_resource type="Resource" id="Momento_folha_acerta_bloco"]
+script = ExtResource("2_momento")
+titulo = "FOLHA ACERTA BLOCO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_folha_acerta_bloco_1"), SubResource("Passo_folha_acerta_bloco_2")])
+
+[sub_resource type="Resource" id="Passo_golpe_final_1"]
+script = ExtResource("1_passo")
+tipo = 5
+fator = 1.15
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_golpe_final_2"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.2
+cor = 1
+alfa = 1.0
+
+[sub_resource type="Resource" id="Passo_golpe_final_3"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 21.0
+duracao = 1.5
+
+[sub_resource type="Resource" id="Passo_golpe_final_4"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.3
+
+[sub_resource type="Resource" id="Passo_golpe_final_5"]
+script = ExtResource("1_passo")
+tempo = 0.3
+tipo = 7
+escala = 0.2
+duracao = 1.5
+
+[sub_resource type="Resource" id="Passo_golpe_final_6"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F6"
+nome = &"musica_cortada"
+
+[sub_resource type="Resource" id="Momento_golpe_final"]
+script = ExtResource("2_momento")
+titulo = "GOLPE FINAL"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_golpe_final_1"), SubResource("Passo_golpe_final_2"), SubResource("Passo_golpe_final_3"), SubResource("Passo_golpe_final_4"), SubResource("Passo_golpe_final_5"), SubResource("Passo_golpe_final_6")])
+
+[sub_resource type="Resource" id="Passo_hit_comum_1"]
+script = ExtResource("1_passo")
+tipo = 9
+duracao = 0.05
+cor = 1
+alfa = 1.0
+
+[sub_resource type="Resource" id="Passo_hit_comum_2"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 1
+deslocamento = Vector2(0, 12)
+
+[sub_resource type="Resource" id="Passo_hit_comum_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"recuo"
+parametros = {
+"px": 2,
+"tempos": Vector2(0.04, 0.08)
+}
+
+[sub_resource type="Resource" id="Momento_hit_comum"]
+script = ExtResource("2_momento")
+titulo = "HIT COMUM"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_comum_1"), SubResource("Passo_hit_comum_2"), SubResource("Passo_hit_comum_3")])
+
+[sub_resource type="Resource" id="Passo_hit_lorax_ui_1"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 5
+deslocamento = Vector2(0, 12)
+
+[sub_resource type="Resource" id="Passo_hit_lorax_ui_2"]
+script = ExtResource("1_passo")
+tipo = 9
+pendente = "ALFA SEM VALOR"
+duracao = 0.05
+cor = 1
+
+[sub_resource type="Resource" id="Passo_hit_lorax_ui_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F4"
+nome = &"recuo"
+parametros = {
+"px": 1
+}
+
+[sub_resource type="Resource" id="Momento_hit_lorax_ui"]
+script = ExtResource("2_momento")
+titulo = "HIT NO LORAX UI"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_lorax_ui_1"), SubResource("Passo_hit_lorax_ui_2"), SubResource("Passo_hit_lorax_ui_3")])
+
+[sub_resource type="Resource" id="Passo_janela_abre_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA B5"
+nome = &"borda_da_arena_pisca"
+parametros = {
+"pisca": 0.1,
+"vezes": 2
+}
+
+[sub_resource type="Resource" id="Momento_janela_abre"]
+script = ExtResource("2_momento")
+titulo = "JANELA DE ATAQUE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_janela_abre_1")])
+
+[sub_resource type="Resource" id="Passo_nave_chega_1"]
+script = ExtResource("1_passo")
+tipo = 3
+
+[sub_resource type="Resource" id="Passo_nave_chega_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 4.0
+duracao = 0.2
+
+[sub_resource type="Resource" id="Momento_nave_chega"]
+script = ExtResource("2_momento")
+titulo = "NAVE CHEGA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_nave_chega_1"), SubResource("Passo_nave_chega_2")])
+
+[sub_resource type="Resource" id="Passo_nome_do_boss_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"nome_do_boss"
+parametros = {
+"espacamento": Vector2(0, 2),
+"fade_in": 0.4,
+"fade_out": 0.6,
+"tempo": 1.8
+}
+
+[sub_resource type="Resource" id="Momento_nome_do_boss"]
+script = ExtResource("2_momento")
+titulo = "NOME DO BOSS"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_nome_do_boss_1")])
+
+[sub_resource type="Resource" id="Passo_pancada_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 7.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_pancada_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA B5"
+nome = &"arena_treme"
+parametros = {
+"duracao": 0.2,
+"px": 3
+}
+
+[sub_resource type="Resource" id="Momento_pancada"]
+script = ExtResource("2_momento")
+titulo = "PANCADA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pancada_1"), SubResource("Passo_pancada_2")])
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_1"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 18.0
+duracao = 1.5
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_3"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.5
+cor = 1
+alfa = 1.0
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_4"]
+script = ExtResource("1_passo")
+tipo = 11
+forca = 0.05
+duracao = 0.6
+raio = 300.0
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_5"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"pico_estrelas"
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_6"]
+script = ExtResource("1_passo")
+tipo = 12
+pendente = "SEM VALOR"
+rotulo = "ABERRACAO DO PICO"
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_7"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+nome = &"bases_somem"
+
+[sub_resource type="Resource" id="Momento_pico_do_pilar"]
+script = ExtResource("2_momento")
+titulo = "PICO DO PILAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_do_pilar_1"), SubResource("Passo_pico_do_pilar_2"), SubResource("Passo_pico_do_pilar_3"), SubResource("Passo_pico_do_pilar_4"), SubResource("Passo_pico_do_pilar_5"), SubResource("Passo_pico_do_pilar_6"), SubResource("Passo_pico_do_pilar_7")])
+
+[sub_resource type="Resource" id="Passo_pico_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 6.0
+
+[sub_resource type="Resource" id="Passo_pico_estrelas_2"]
+script = ExtResource("1_passo")
+tempo = 0.5
+tipo = 25
+nome = &"resto_do_pilar"
+
+[sub_resource type="Resource" id="Passo_pico_estrelas_3"]
+script = ExtResource("1_passo")
+tipo = 17
+pendente = "SEM VALOR"
+rotulo = "RISCOS"
+ligar = true
+
+[sub_resource type="Resource" id="Passo_pico_estrelas_4"]
+script = ExtResource("1_passo")
+tipo = 18
+pendente = "SEM VALOR"
+rotulo = "EMPURRAR"
+
+[sub_resource type="Resource" id="Momento_pico_estrelas"]
+script = ExtResource("2_momento")
+titulo = "PICO DO PILAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_estrelas_1"), SubResource("Passo_pico_estrelas_2"), SubResource("Passo_pico_estrelas_3"), SubResource("Passo_pico_estrelas_4")])
+
+[sub_resource type="Resource" id="Passo_player_hit_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 5.0
+duracao = 0.3
+
+[sub_resource type="Resource" id="Passo_player_hit_2"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.05
+
+[sub_resource type="Resource" id="Passo_player_hit_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "ALFA SEM VALOR"
+nome = &"bordas_do_hit"
+parametros = {
+"duracao": 0.2
+}
+
+[sub_resource type="Resource" id="Momento_player_hit"]
+script = ExtResource("2_momento")
+titulo = "PLAYER LEVA HIT"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_hit_1"), SubResource("Passo_player_hit_2"), SubResource("Passo_player_hit_3")])
+
+[sub_resource type="Resource" id="Passo_poupar_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F7"
+nome = &"escurecer"
+parametros = {
+"ate": 0,
+"de": 0.9,
+"duracao": 4
+}
+
+[sub_resource type="Resource" id="Momento_poupar"]
+script = ExtResource("2_momento")
+titulo = "POUPAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_poupar_1")])
+
+[sub_resource type="Resource" id="Passo_poupar_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+pendente = "VOLTAM DEVAGAR: DURACAO SEM VALOR"
+fator = 1.0
+
+[sub_resource type="Resource" id="Passo_poupar_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 20
+pendente = "QUANTIDADE SEM VALOR"
+rotulo = "ESTRELAS NOVAS"
+cor = 11
+
+[sub_resource type="Resource" id="Passo_poupar_estrelas_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F7"
+nome = &"constelacao"
+
+[sub_resource type="Resource" id="Momento_poupar_estrelas"]
+script = ExtResource("2_momento")
+titulo = "POUPAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_poupar_estrelas_1"), SubResource("Passo_poupar_estrelas_2"), SubResource("Passo_poupar_estrelas_3")])
+
+[sub_resource type="Resource" id="Passo_pouso_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 5.0
+duracao = 0.3
+
+[sub_resource type="Resource" id="Passo_pouso_2"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 2
+deslocamento = Vector2(0, 12)
+direcao = Vector2(-1, 0)
+
+[sub_resource type="Resource" id="Passo_pouso_3"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 2
+deslocamento = Vector2(0, 12)
+direcao = Vector2(1, 0)
+
+[sub_resource type="Resource" id="Passo_pouso_4"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"squash"
+parametros = {
+"duracao": 0.18,
+"escala": Vector2(1.2, 0.8)
+}
+
+[sub_resource type="Resource" id="Momento_pouso"]
+script = ExtResource("2_momento")
+titulo = "POUSO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pouso_1"), SubResource("Passo_pouso_2"), SubResource("Passo_pouso_3"), SubResource("Passo_pouso_4")])
+
+[sub_resource type="Resource" id="Passo_puxao_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 2.0
+ate = 2.0
+fica_ligado = true
+
+[sub_resource type="Resource" id="Passo_puxao_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F3"
+nome = &"fio_de_ki"
+parametros = {
+"px": 1
+}
+
+[sub_resource type="Resource" id="Passo_puxao_3"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"puxao_estrelas"
+
+[sub_resource type="Resource" id="Momento_puxao"]
+script = ExtResource("2_momento")
+titulo = "PUXAO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_puxao_1"), SubResource("Passo_puxao_2"), SubResource("Passo_puxao_3")])
+
+[sub_resource type="Resource" id="Passo_puxao_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 17
+pendente = "SEM VALOR"
+rotulo = "RISCOS VERTICAIS"
+ligar = true
+
+[sub_resource type="Resource" id="Momento_puxao_estrelas"]
+script = ExtResource("2_momento")
+titulo = "PUXAO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_puxao_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_raio_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 3.0
+duracao = 0.15
+
+[sub_resource type="Resource" id="Passo_raio_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA B5"
+rotulo = "MINIMO ENTRE TREMORES (REGRA DO EFEITOS_BOSS)"
+nome = &"tremor_minimo"
+
+[sub_resource type="Resource" id="Momento_raio"]
+script = ExtResource("2_momento")
+titulo = "RAIO COMUM"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raio_1"), SubResource("Passo_raio_2")])
+
+[sub_resource type="Resource" id="Passo_raio_direto_carga_1"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.03
+duracao = 0.3
+focar_alvo = true
+
+[sub_resource type="Resource" id="Momento_raio_direto_carga"]
+script = ExtResource("2_momento")
+titulo = "RAIO DIRETO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raio_direto_carga_1")])
+seguinte = &"raio_direto_disparo"
+duracao_animacao_lab = 0.3
+
+[sub_resource type="Resource" id="Passo_raio_direto_disparo_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 5.0
+duracao = 0.25
+
+[sub_resource type="Resource" id="Passo_raio_direto_disparo_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "SEM VALOR (R VOLTA)"
+rotulo = "Z VOLTA"
+nome = &"zoom_volta"
+
+[sub_resource type="Resource" id="Momento_raio_direto_disparo"]
+script = ExtResource("2_momento")
+titulo = "RAIO DIRETO: DISPARO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raio_direto_disparo_1"), SubResource("Passo_raio_direto_disparo_2")])
+
+[sub_resource type="Resource" id="Passo_raiva_1"]
+script = ExtResource("1_passo")
+tipo = 10
+ligar = true
+
+[sub_resource type="Resource" id="Passo_raiva_2"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 1.0
+ate = 3.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Momento_raiva"]
+script = ExtResource("2_momento")
+titulo = "DERROTA COM RAIVA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_1"), SubResource("Passo_raiva_2")])
+duracao_animacao_lab = 5.9
+
+[sub_resource type="Resource" id="Passo_raiva_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+pendente = "DEVAGAR, A PARTIR DE x0: DURACAO SEM VALOR"
+fator = 0.3
+
+[sub_resource type="Resource" id="Momento_raiva_estrelas"]
+script = ExtResource("2_momento")
+titulo = "DERROTA COM RAIVA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_reparo_1"]
+script = ExtResource("1_passo")
+tipo = 2
+pendente = "DURACAO SEM VALOR"
+de = 3.0
+
+[sub_resource type="Resource" id="Passo_reparo_2"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.0
+duracao = 1.5
+
+[sub_resource type="Resource" id="Momento_reparo"]
+script = ExtResource("2_momento")
+titulo = "REPARO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_reparo_1"), SubResource("Passo_reparo_2")])
+
+[sub_resource type="Resource" id="Passo_reparo_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+pendente = "DEVAGAR, A PARTIR DE x3: DURACAO SEM VALOR"
+fator = 1.0
+
+[sub_resource type="Resource" id="Momento_reparo_estrelas"]
+script = ExtResource("2_momento")
+titulo = "REPARO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_reparo_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_respirando_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F4"
+nome = &"respirando"
+parametros = {
+"periodo": 4,
+"px": 1
+}
+
+[sub_resource type="Resource" id="Momento_respirando"]
+script = ExtResource("2_momento")
+titulo = "CAMERA RESPIRANDO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_respirando_1")])
+
+[sub_resource type="Resource" id="Passo_resto_do_pilar_1"]
+script = ExtResource("1_passo")
+tipo = 2
+pendente = "DURACAO SEM VALOR"
+de = 8.0
+ate = 3.0
+
+[sub_resource type="Resource" id="Passo_resto_do_pilar_2"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 3.0
+duracao = 1.0
+
+[sub_resource type="Resource" id="Momento_resto_do_pilar"]
+script = ExtResource("2_momento")
+titulo = "RESTO DO PILAR"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_resto_do_pilar_1"), SubResource("Passo_resto_do_pilar_2")])
+
+[sub_resource type="Resource" id="Passo_soltar_folhas_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 2.0
+duracao = 0.15
+
+[sub_resource type="Resource" id="Momento_soltar_folhas"]
+script = ExtResource("2_momento")
+titulo = "SOLTAR FOLHAS"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_soltar_folhas_1")])
+
+[sub_resource type="Resource" id="Passo_teleporte_1"]
+script = ExtResource("1_passo")
+tipo = 22
+cor = 12
+alfa = 0.5
+copias = 3
+intervalo = 0.04
+vida = 0.25
+
+[sub_resource type="Resource" id="Momento_teleporte"]
+script = ExtResource("2_momento")
+titulo = "TELEPORTE / ESQUIVA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_teleporte_1")])
+
+[sub_resource type="Resource" id="Passo_tonto_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+
+[sub_resource type="Resource" id="Momento_tonto_estrelas"]
+script = ExtResource("2_momento")
+titulo = "TONTO / FINISH HIM"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_tonto_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_1"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.08
+duracao = 0.8
+focar_alvo = true
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_2"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 2.0
+ate = 6.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Momento_transicao_1_2"]
+script = ExtResource("2_momento")
+titulo = "TRANSICAO 1->2"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_1"), SubResource("Passo_transicao_1_2_2")])
+seguinte = &"transicao_1_2_pico"
+duracao_animacao_lab = 3.2
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_1"]
+script = ExtResource("1_passo")
+tipo = 3
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 14.0
+duracao = 1.0
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_3"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_4"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.15
+cor = 4
+alfa = 0.5
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_5"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_6"]
+script = ExtResource("1_passo")
+tipo = 11
+pendente = "FORCA SEM VALOR"
+rotulo = "ONDA PEQUENA"
+duracao = 0.5
+raio = 120.0
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_7"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "INTENSIDADE SEM VALOR"
+nome = &"tom_vermelho"
+parametros = {
+"duracao": 1
+}
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_8"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F2"
+nome = &"coracoes_reenchem"
+parametros = {
+"intervalo": 0.12
+}
+
+[sub_resource type="Resource" id="Momento_transicao_1_2_pico"]
+script = ExtResource("2_momento")
+titulo = "TRANSICAO 1->2: PICO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_pico_1"), SubResource("Passo_transicao_1_2_pico_2"), SubResource("Passo_transicao_1_2_pico_3"), SubResource("Passo_transicao_1_2_pico_4"), SubResource("Passo_transicao_1_2_pico_5"), SubResource("Passo_transicao_1_2_pico_6"), SubResource("Passo_transicao_1_2_pico_7"), SubResource("Passo_transicao_1_2_pico_8")])
+
+[sub_resource type="Resource" id="Passo_ultimo_coracao_1"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"coracao_pulsa"
+parametros = {
+"escala": Vector2(1, 1.15),
+"periodo": 0.6
+}
+
+[sub_resource type="Resource" id="Momento_ultimo_coracao"]
+script = ExtResource("2_momento")
+titulo = "ULTIMO CORACAO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_coracao_1")])
+
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_1"]
+script = ExtResource("1_passo")
+tipo = 8
+duracao = 0.12
+cor = 1
+alfa = 0.6
+
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 8.0
+duracao = 0.6
+
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_3"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.15
+
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_4"]
+script = ExtResource("1_passo")
+tempo = 0.15
+tipo = 7
+escala = 0.3
+duracao = 0.6
+
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_5"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F2"
+nome = &"limpeza_de_projeteis"
+
+[sub_resource type="Resource" id="Momento_ultimo_hit_f1"]
+script = ExtResource("2_momento")
+titulo = "ULTIMO HIT DA FASE 1"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_hit_f1_1"), SubResource("Passo_ultimo_hit_f1_2"), SubResource("Passo_ultimo_hit_f1_3"), SubResource("Passo_ultimo_hit_f1_4"), SubResource("Passo_ultimo_hit_f1_5")])
+
+[sub_resource type="Resource" id="Passo_virada_1"]
+script = ExtResource("1_passo")
+tipo = 6
+duracao = 0.15
+
+[sub_resource type="Resource" id="Passo_virada_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 16.0
+duracao = 1.2
+
+[sub_resource type="Resource" id="Passo_virada_3"]
+script = ExtResource("1_passo")
+tipo = 11
+forca = 0.04
+duracao = 0.6
+raio = 300.0
+
+[sub_resource type="Resource" id="Passo_virada_4"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"virada_estrelas"
+
+[sub_resource type="Resource" id="Passo_virada_5"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F5"
+nome = &"arena_encolhe"
+
+[sub_resource type="Resource" id="Momento_virada"]
+script = ExtResource("2_momento")
+titulo = "VIRADA 3A->3B"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_virada_1"), SubResource("Passo_virada_2"), SubResource("Passo_virada_3"), SubResource("Passo_virada_4"), SubResource("Passo_virada_5")])
+
+[sub_resource type="Resource" id="Passo_virada_estrelas_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 2.0
+
+[sub_resource type="Resource" id="Passo_virada_estrelas_2"]
+script = ExtResource("1_passo")
+tipo = 18
+pendente = "SEM VALOR"
+rotulo = "EMPURRAO"
+
+[sub_resource type="Resource" id="Momento_virada_estrelas"]
+script = ExtResource("2_momento")
+titulo = "VIRADA 3A->3B"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_virada_estrelas_1"), SubResource("Passo_virada_estrelas_2")])
+
+[sub_resource type="Resource" id="Passo_wave10_alarme_1"]
+script = ExtResource("1_passo")
+tipo = 13
+cor = 2
+alfa = 0.35
+pulsar = 0.25
+vezes = 3
+ligar = true
+
+[sub_resource type="Resource" id="Passo_wave10_alarme_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 3.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_wave10_alarme_3"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA LUTA PELA MAIN (B1)"
+nome = &"letreiro_final_wave"
+parametros = {
+"fade": 0.8,
+"pisca": 0.25
+}
+
+[sub_resource type="Resource" id="Passo_wave10_alarme_4"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA F1"
+nome = &"letreiro_letras"
+parametros = {
+"letra_intervalo": 0.05,
+"letra_tremor_px": 1
+}
+
+[sub_resource type="Resource" id="Momento_wave10_alarme"]
+script = ExtResource("2_momento")
+titulo = "ALARME FINAL WAVE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_alarme_1"), SubResource("Passo_wave10_alarme_2"), SubResource("Passo_wave10_alarme_3"), SubResource("Passo_wave10_alarme_4")])
+
+[sub_resource type="Resource" id="Passo_wave10_musica_entra_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 1.5
+duracao = 1.0
+
+[sub_resource type="Resource" id="Passo_wave10_musica_entra_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA LUTA PELA MAIN (B1)"
+rotulo = "CROSSFADE"
+nome = &"crossfade"
+
+[sub_resource type="Resource" id="Momento_wave10_musica_entra"]
+script = ExtResource("2_momento")
+titulo = "MUSICA TENSA ENTRA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_musica_entra_1"), SubResource("Passo_wave10_musica_entra_2")])
+
+[sub_resource type="Resource" id="Passo_wave10_silencio_1"]
+script = ExtResource("1_passo")
+tipo = 14
+fator = 0.2
+
+[sub_resource type="Resource" id="Passo_wave10_silencio_2"]
+script = ExtResource("1_passo")
+tipo = 24
+pendente = "NA LUTA PELA MAIN (B1)"
+rotulo = "MUSICA SOME"
+nome = &"musica_some"
+
+[sub_resource type="Resource" id="Momento_wave10_silencio"]
+script = ExtResource("2_momento")
+titulo = "SILENCIO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_silencio_1"), SubResource("Passo_wave10_silencio_2")])
+
+[resource]
+script = ExtResource("3_biblioteca")
+momentos = Dictionary[StringName, ExtResource("2_momento")]({
+&"arena_estrelas": SubResource("Momento_arena_estrelas"),
+&"arena_nasce": SubResource("Momento_arena_nasce"),
+&"ataque_grande_estrelas": SubResource("Momento_ataque_grande_estrelas"),
+&"aura": SubResource("Momento_aura"),
+&"aviso": SubResource("Momento_aviso"),
+&"carga_ataque": SubResource("Momento_carga_ataque"),
+&"chapeu": SubResource("Momento_chapeu"),
+&"coracao_boss_perdido": SubResource("Momento_coracao_boss_perdido"),
+&"cortina_todos": SubResource("Momento_cortina_todos"),
+&"derrota_f2": SubResource("Momento_derrota_f2"),
+&"derrota_f2_estrelas": SubResource("Momento_derrota_f2_estrelas"),
+&"descida": SubResource("Momento_descida"),
+&"desespero": SubResource("Momento_desespero"),
+&"desespero_estrelas": SubResource("Momento_desespero_estrelas"),
+&"despertar": SubResource("Momento_despertar"),
+&"despertar_estrelas": SubResource("Momento_despertar_estrelas"),
+&"esfera_estoura": SubResource("Momento_esfera_estoura"),
+&"estrelas_normal": SubResource("Momento_estrelas_normal"),
+&"f2_arvore_explode": SubResource("Momento_f2_arvore_explode"),
+&"f2_carga": SubResource("Momento_f2_carga"),
+&"f2_desespero": SubResource("Momento_f2_desespero"),
+&"f2_respira": SubResource("Momento_f2_respira"),
+&"fase1_estrelas": SubResource("Momento_fase1_estrelas"),
+&"fase2_estrelas": SubResource("Momento_fase2_estrelas"),
+&"final_ruim_estrelas": SubResource("Momento_final_ruim_estrelas"),
+&"finish_him": SubResource("Momento_finish_him"),
+&"folha_acerta_bloco": SubResource("Momento_folha_acerta_bloco"),
+&"golpe_final": SubResource("Momento_golpe_final"),
+&"hit_comum": SubResource("Momento_hit_comum"),
+&"hit_lorax_ui": SubResource("Momento_hit_lorax_ui"),
+&"janela_abre": SubResource("Momento_janela_abre"),
+&"nave_chega": SubResource("Momento_nave_chega"),
+&"nome_do_boss": SubResource("Momento_nome_do_boss"),
+&"pancada": SubResource("Momento_pancada"),
+&"pico_do_pilar": SubResource("Momento_pico_do_pilar"),
+&"pico_estrelas": SubResource("Momento_pico_estrelas"),
+&"player_hit": SubResource("Momento_player_hit"),
+&"poupar": SubResource("Momento_poupar"),
+&"poupar_estrelas": SubResource("Momento_poupar_estrelas"),
+&"pouso": SubResource("Momento_pouso"),
+&"puxao": SubResource("Momento_puxao"),
+&"puxao_estrelas": SubResource("Momento_puxao_estrelas"),
+&"raio": SubResource("Momento_raio"),
+&"raio_direto_carga": SubResource("Momento_raio_direto_carga"),
+&"raio_direto_disparo": SubResource("Momento_raio_direto_disparo"),
+&"raiva": SubResource("Momento_raiva"),
+&"raiva_estrelas": SubResource("Momento_raiva_estrelas"),
+&"reparo": SubResource("Momento_reparo"),
+&"reparo_estrelas": SubResource("Momento_reparo_estrelas"),
+&"respirando": SubResource("Momento_respirando"),
+&"resto_do_pilar": SubResource("Momento_resto_do_pilar"),
+&"soltar_folhas": SubResource("Momento_soltar_folhas"),
+&"teleporte": SubResource("Momento_teleporte"),
+&"tonto_estrelas": SubResource("Momento_tonto_estrelas"),
+&"transicao_1_2": SubResource("Momento_transicao_1_2"),
+&"transicao_1_2_pico": SubResource("Momento_transicao_1_2_pico"),
+&"ultimo_coracao": SubResource("Momento_ultimo_coracao"),
+&"ultimo_hit_f1": SubResource("Momento_ultimo_hit_f1"),
+&"virada": SubResource("Momento_virada"),
+&"virada_estrelas": SubResource("Momento_virada_estrelas"),
+&"wave10_alarme": SubResource("Momento_wave10_alarme"),
+&"wave10_musica_entra": SubResource("Momento_wave10_musica_entra"),
+&"wave10_silencio": SubResource("Momento_wave10_silencio")
+})
