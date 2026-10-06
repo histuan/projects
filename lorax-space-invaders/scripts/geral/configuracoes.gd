@@ -25,14 +25,17 @@ func definir_volume(nome, valor):
 	aplicar_volumes()
 	salvar()
 
-# Passa os volumes (0 a 1) para os buses, em dB
+# Passa os volumes (0 a 1) para os buses, em dB; 0 deixa o bus mudo (linear_to_db(0) = -inf)
 func aplicar_volumes():
 	for nome in BUS_DO_VOLUME:
 		var indice = AudioServer.get_bus_index(BUS_DO_VOLUME[nome])
 		if indice < 0:
 			push_error("Configuracoes: o bus '%s' não existe (default_bus_layout.tres)" % BUS_DO_VOLUME[nome])
 			continue
-		AudioServer.set_bus_volume_db(indice, linear_to_db(get("volume_" + nome)))
+		var valor = get("volume_" + nome)
+		AudioServer.set_bus_mute(indice, valor <= 0.0)
+		if valor > 0.0:
+			AudioServer.set_bus_volume_db(indice, linear_to_db(valor))
 
 # Lê as preferências; sem arquivo, cria um com os valores padrão
 func carregar():
