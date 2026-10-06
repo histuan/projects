@@ -9,6 +9,7 @@ const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
 # Números dos efeitos da boss fight (afinados no Inspector)
 const EFEITOS = preload("res://recursos/boss/efeitos_boss.tres")
 const LabEfeitos = preload("res://scripts/geral/lab_efeitos.gd")
+const LabSons = preload("res://scripts/geral/lab_sons.gd")
 
 # A wave do boss começou (o batimento com 1 vida só vale daqui em diante)
 var luta_comecou = false
@@ -46,6 +47,8 @@ func _ready():
 		camera.tremeu.connect($hud.acompanhar_tremor)
 	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
 		abrir_lab()
+	elif Partida.etapa_inicial == Partida.Etapa.LAB_SONS:
+		abrir_lab_sons()
 
 # LAB DE EFEITOS: painel que dispara cada efeito com os valores do efeitos_boss.tres;
 # o boneco do Lorax fica no mundo (filho da main) para tremor e zoom valerem para ele
@@ -53,6 +56,13 @@ func abrir_lab():
 	var lab = LabEfeitos.new()
 	add_child(lab)
 	lab.preparar(camera, $EfeitosTela, $fundo/estrelas, EFEITOS, self)
+
+# LAB DE SONS: toca cada evento do sons_boss.tres (a música do jogo segue tocando,
+# para dar para ouvir os crossfades a partir dela)
+func abrir_lab_sons():
+	var lab = LabSons.new()
+	add_child(lab)
+	lab.iniciar()
 
 # Wave 10 começou: a música do jogo some, e ficar com 1 vida passa a ligar o batimento
 func _on_wave_boss_chegou():

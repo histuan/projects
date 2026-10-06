@@ -16,10 +16,11 @@ var wave = 0
 
 # Etapas do cheat code (o seletor da tela inicial lista NOMES_ETAPAS).
 # etapa_inicial sobrevive ao nova_partida(): é ela que o "Reiniciar" mantém
-enum Etapa { NENHUMA, WAVE_BOSS, LAB_EFEITOS }
+enum Etapa { NENHUMA, WAVE_BOSS, LAB_EFEITOS, LAB_SONS }
 const NOMES_ETAPAS = {
 	Etapa.WAVE_BOSS: "WAVE DO BOSS",
 	Etapa.LAB_EFEITOS: "LAB DE EFEITOS",
+	Etapa.LAB_SONS: "LAB DE SONS",
 }
 var etapa_inicial = Etapa.NENHUMA
 

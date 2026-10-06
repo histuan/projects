@@ -58,6 +58,32 @@ func parar_tudo():
 		player.stop()
 	loops.clear()
 
+# Nomes dos eventos tocando agora (para o LAB DE SONS)
+func eventos_tocando():
+	var nomes = []
+	for player in pool:
+		if player.playing:
+			nomes.append(player.get_meta(&"evento"))
+	return nomes
+
+# O evento em loop está tocando
+func em_loop(evento: StringName):
+	return loops.has(evento)
+
+# Põe arquivo, volume e pitch do evento num player de fora do pool (prévia de volume no
+# Pause, que toca com o jogo pausado); devolve false se não deu
+func preparar_player(evento: StringName, player):
+	var dados = dados_do_evento(evento)
+	if dados == null:
+		return false
+	var caminho = arquivo_do_evento(evento, dados)
+	if caminho == "":
+		return false
+	player.stream = stream_de(caminho, false)
+	player.volume_db = volume_de(dados, caminho)
+	player.pitch_scale = dados.pitch
+	return true
+
 # Leva o pitch de um player tocando até 'ate' em 'duracao' segundos (tempo real)
 func deslizar_pitch(player, ate, duracao):
 	tweens_pitch = tweens_pitch.filter(func(antigo): return antigo.is_valid())
@@ -127,6 +153,7 @@ func iniciar(evento: StringName, dados, caminho):
 	player.volume_db = volume_de(dados, caminho)
 	player.pitch_scale = pitch_sorteado(dados) * fator_camera_lenta()
 	player.bus = dados.bus
+	player.set_meta(&"evento", evento)
 	player.play()
 	if dados.loop:
 		loops[evento] = player
