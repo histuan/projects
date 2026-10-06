@@ -347,8 +347,10 @@ loop = true
 [sub_resource type="Resource" id="Som_musica_final_bom"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/musica_final_bom.mp3"])
+volume_db = 12.0
 bus = &"Musica"
 loop = true
+inicio = 6.0
 
 [sub_resource type="Resource" id="Som_musica_final_ruim"]
 script = ExtResource("1_som")

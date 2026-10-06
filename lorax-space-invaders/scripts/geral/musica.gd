@@ -13,6 +13,10 @@ var players: Array[AudioStreamPlayer] = []
 # O que está tocando agora (um dos dois players ou o adotado da main)
 var atual: AudioStreamPlayer = null
 var adotado: AudioStreamPlayer = null
+# Evento da música atual (vazio = nenhuma ou a adotada)
+var evento_atual: StringName = &""
+# Player posto para tocar com o jogo pausado (OPÇÕES do Pause)
+var tocando_na_pausa: AudioStreamPlayer = null
 var tweens: Array[Tween] = []
 # Nome do pedido → corte (Hz); vale o mais baixo
 var pedidos_abafar = {}
@@ -31,6 +35,7 @@ func adotar(player):
 	player.bus = BUS
 	adotado = player
 	atual = player
+	evento_atual = &""
 
 # Solta o adotado, para tweens e músicas e destampa (a main chama ao sair da árvore)
 func limpar():
@@ -39,12 +44,14 @@ func limpar():
 		player.stop()
 	adotado = null
 	atual = null
+	evento_atual = &""
+	tocando_na_pausa = null
 	pedidos_abafar.clear()
 	aplicar_abafar(0.0)
 
-# Toca a música do evento a partir de 'inicio' s; com crossfade (−1 = o do evento),
-# a anterior some enquanto a nova entra
-func tocar(evento: StringName, crossfade = -1.0, inicio = 0.0):
+# Toca a música do evento a partir de 'inicio' s (−1 = o do evento); com crossfade
+# (−1 = o do evento), a anterior some enquanto a nova entra
+func tocar(evento: StringName, crossfade = -1.0, inicio = -1.0):
 	var dados = Sons.dados_do_evento(evento)
 	if dados == null:
 		return
@@ -57,8 +64,9 @@ func tocar(evento: StringName, crossfade = -1.0, inicio = 0.0):
 	var alvo_db = Sons.volume_de(dados, caminho)
 	novo.stream = Sons.stream_de(caminho, dados.loop)
 	novo.volume_db = SILENCIO_DB if duracao > 0 else alvo_db
-	novo.play(inicio)
+	novo.play(dados.inicio if inicio < 0 else inicio)
 	atual = novo
+	evento_atual = evento
 	if duracao > 0:
 		var tween = novo_tween()
 		tween.tween_method(definir_amplitude.bind(novo), 0.0, db_to_linear(alvo_db), duracao)
@@ -68,6 +76,7 @@ func tocar(evento: StringName, crossfade = -1.0, inicio = 0.0):
 func fade_out(duracao):
 	sumir(atual if valido(atual) else null, duracao)
 	atual = null
+	evento_atual = &""
 
 # Corte SECO: tudo para no mesmo instante, sem fade (golpe final)
 func cortar():
@@ -77,10 +86,31 @@ func cortar():
 	if valido(adotado):
 		adotado.stop()
 	atual = null
+	evento_atual = &""
 
-# Troca para outra música começando na posição da atual − 'recuo' s (fight1 → fight2)
+# Nome do que está tocando (para o LAB DE SONS): o evento, "JOGO" (a adotada) ou ""
+func nome_atual():
+	if not valido(atual) or not atual.playing:
+		return ""
+	if atual == adotado:
+		return "JOGO"
+	return String(evento_atual)
+
+# Com o jogo pausado, deixa a música atual tocar (true) ou volta a pausar com o jogo (false).
+# Mudar o process_mode faz o Godot pausar/retomar o player na hora. Os fades continuam
+# congelados (os tweens são desta autoload, que segue pausada)
+func ouvir_na_pausa(ligado):
+	if valido(tocando_na_pausa):
+		tocando_na_pausa.process_mode = Node.PROCESS_MODE_INHERIT
+	tocando_na_pausa = null
+	if ligado and valido(atual):
+		atual.process_mode = Node.PROCESS_MODE_ALWAYS
+		tocando_na_pausa = atual
+
+# Troca para outra música começando na posição da atual − 'recuo' s (fight1 → fight2);
+# sem música tocando, começa no 'inicio' do evento
 func trocar_sincronizado(evento: StringName, recuo, crossfade):
-	var posicao = 0.0
+	var posicao = -1.0
 	if valido(atual) and atual.playing:
 		posicao = maxf(atual.get_playback_position() - recuo, 0.0)
 	tocar(evento, crossfade, posicao)

@@ -21,5 +21,7 @@ extends Resource
 @export var loop := false
 ## Músicas: segundos de crossfade ao entrar (0 = entra na hora)
 @export var crossfade := 0.0
+## Músicas: segundos em que começam a tocar (pula um começo lento/silencioso)
+@export var inicio := 0.0
 ## Outros sons tocados junto com este, cada um com pitch, volume e atraso próprios
 @export var camadas: Array[SomDados] = []
