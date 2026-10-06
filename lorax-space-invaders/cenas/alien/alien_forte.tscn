@@ -22,7 +22,9 @@ stream = ExtResource("4_7gwqx")
 volume_db = 3.667
 
 [node name="danoSFX" type="AudioStreamPlayer2D" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="3" unique_id=663392461]
+bus = &"Efeitos"
 stream = ExtResource("5_n732w")
 
 [node name="forte_morte" type="AudioStreamPlayer2D" parent="sons" parent_id_path=PackedInt32Array(1821316186) index="4" unique_id=948144164]
+bus = &"Efeitos"
 stream = ExtResource("5_klx2x")

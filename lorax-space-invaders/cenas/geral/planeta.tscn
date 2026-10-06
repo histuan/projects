@@ -418,5 +418,6 @@ autoplay = "default"
 centered = false
 
 [node name="voo" type="AudioStreamPlayer2D" parent="." unique_id=1199399513]
+bus = &"Efeitos"
 stream = ExtResource("4_rurce")
 volume_db = 24.0

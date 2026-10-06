@@ -105,12 +105,15 @@ autoplay = &"idle"
 [node name="sons" type="Node2D" parent="." unique_id=87593188]
 
 [node name="tiro" type="AudioStreamPlayer2D" parent="sons" unique_id=809962096]
+bus = &"Efeitos"
 stream = ExtResource("2_kmrgq")
 
 [node name="dano" type="AudioStreamPlayer2D" parent="sons" unique_id=998670329]
+bus = &"Efeitos"
 stream = ExtResource("3_6qbuk")
 
 [node name="morte" type="AudioStreamPlayer2D" parent="sons" unique_id=563824477]
+bus = &"Efeitos"
 stream = ExtResource("4_ttrdm")
 volume_db = 10.475
 

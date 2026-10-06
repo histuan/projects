@@ -112,13 +112,16 @@ shape = SubResource("RectangleShape2D_cdpwx")
 [node name="sons" type="Node2D" parent="." unique_id=1821316186]
 
 [node name="explosionsfx" type="AudioStreamPlayer2D" parent="sons" unique_id=1669721402]
+bus = &"Efeitos"
 stream = ExtResource("3_nhxo2")
 volume_db = 9.208
 
 [node name="motoHitSFX" type="AudioStreamPlayer2D" parent="sons" unique_id=348701178]
+bus = &"Efeitos"
 stream = ExtResource("4_r2oxq")
 
 [node name="tiro" type="AudioStreamPlayer2D" parent="sons" unique_id=502430671]
+bus = &"Efeitos"
 stream = ExtResource("5_vx35m")
 
 [connection signal="timeout" from="TimerMov" to="." method="_on_timer_mov_timeout"]

@@ -152,9 +152,11 @@ color = Color(0.5194127, 0.5194127, 0.5194127, 0)
 [node name="sons" type="Node" parent="." unique_id=257443294]
 
 [node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=1627709389]
+bus = &"Musica"
 stream = ExtResource("15_0yq6o")
 volume_db = 11.0
 autoplay = true
 
 [node name="start" type="AudioStreamPlayer" parent="sons" unique_id=495107538]
+bus = &"Efeitos"
 stream = ExtResource("17_gdrgb")

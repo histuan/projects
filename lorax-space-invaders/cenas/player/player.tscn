@@ -188,22 +188,27 @@ one_shot = true
 [node name="sons" type="Node2D" parent="." unique_id=1095782843]
 
 [node name="shootSFX" type="AudioStreamPlayer2D" parent="sons" unique_id=5106065]
+bus = &"Efeitos"
 stream = ExtResource("4_bmch6")
 volume_db = 11.86
 
 [node name="powerTiro" type="AudioStreamPlayer2D" parent="sons" unique_id=1188717130]
+bus = &"Efeitos"
 stream = ExtResource("5_4bqwr")
 volume_db = 12.0
 
 [node name="powerColeta" type="AudioStreamPlayer2D" parent="sons" unique_id=1726270292]
+bus = &"Efeitos"
 stream = ExtResource("5_l50kp")
 volume_db = 24.0
 
 [node name="dano" type="AudioStreamPlayer2D" parent="sons" unique_id=476881863]
+bus = &"Efeitos"
 stream = ExtResource("7_wneci")
 volume_db = 12.0
 
 [node name="morte" type="AudioStreamPlayer" parent="sons" unique_id=1506911696]
+bus = &"Efeitos"
 stream = ExtResource("8_wneci")
 
 [connection signal="body_entered" from="sensorAlien" to="." method="_on_sensor_alien_body_entered"]

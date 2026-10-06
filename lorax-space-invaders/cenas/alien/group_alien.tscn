@@ -36,6 +36,7 @@ wait_time = 4.5
 one_shot = true
 
 [node name="loraxChegada" type="AudioStreamPlayer" parent="." unique_id=714268824]
+bus = &"Efeitos"
 stream = ExtResource("2_pms08")
 volume_db = 16.0
 

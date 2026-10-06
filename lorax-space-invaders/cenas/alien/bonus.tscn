@@ -195,14 +195,17 @@ wait_time = 2.0
 [node name="sons" type="Node2D" parent="." unique_id=1356842749]
 
 [node name="arvere" type="AudioStreamPlayer2D" parent="sons" unique_id=199368519]
+bus = &"Efeitos"
 stream = ExtResource("3_xcwva")
 volume_db = 13.58
 
 [node name="dano" type="AudioStreamPlayer2D" parent="sons" unique_id=562136073]
+bus = &"Efeitos"
 stream = ExtResource("4_f5qju")
 volume_db = 12.0
 
 [node name="morte" type="AudioStreamPlayer2D" parent="sons" unique_id=387758961]
+bus = &"Efeitos"
 stream = ExtResource("5_susyg")
 volume_db = 24.0
 

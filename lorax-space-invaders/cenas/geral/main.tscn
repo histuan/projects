@@ -61,10 +61,13 @@ one_shot = true
 
 [node name="musga" type="AudioStreamPlayer" parent="sons" unique_id=341250108]
 stream = ExtResource("11_d07vn")
+volume_db = -4.0
 autoplay = true
+bus = &"Musica"
 
 [node name="coletarCoracao" type="AudioStreamPlayer" parent="sons" unique_id=735013477]
 stream = ExtResource("17_n3rig")
+bus = &"Efeitos"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1158279175]
 anchor_mode = 0
