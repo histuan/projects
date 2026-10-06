@@ -542,7 +542,7 @@ script = ExtResource("1_passo")
 tempo = 0.3
 tipo = 7
 escala = 0.2
-duracao = 1.5
+duracao = 2.0
 
 [sub_resource type="Resource" id="Passo_golpe_final_6"]
 script = ExtResource("1_passo")
