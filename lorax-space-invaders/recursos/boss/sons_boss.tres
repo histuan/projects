@@ -129,10 +129,9 @@ bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_estrelas_acendem"]
 script = ExtResource("1_som")
-arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
-pitch = 0.8
-pitch_final = 2.0
+arquivos = Array[String](["res://efeitos sonoros reais/boss/estrelas.wav"])
 bus = &"Efeitos"
+escala = Array[float]([1.0, 1.122, 1.26, 1.498, 1.682, 2.0])
 
 [sub_resource type="Resource" id="Som_estrelas_apagam"]
 script = ExtResource("1_som")
@@ -673,6 +672,7 @@ ganhos = Dictionary[String, float]({
 "res://efeitos sonoros reais/boss/carga_energia.wav": -1.2,
 "res://efeitos sonoros reais/boss/criar_arena.wav": -3.0,
 "res://efeitos sonoros reais/boss/deep_breath.wav": 12.0,
+"res://efeitos sonoros reais/boss/estrelas.wav": 11.3,
 "res://efeitos sonoros reais/boss/final_fight1.mp3": -1.7,
 "res://efeitos sonoros reais/boss/final_fight2.mp3": -3.0,
 "res://efeitos sonoros reais/boss/finalizar_desfazer.wav": -3.0,
