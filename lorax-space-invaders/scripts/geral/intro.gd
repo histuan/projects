@@ -7,7 +7,7 @@ const CENA_MENU = "res://cenas/geral/start.tscn"
 @onready var dica: Label = $dicaPular
 
 var saindo: bool = false
-const ESPERA_PULAR = 3
+const ESPERA_PULAR = 1.0
 const DICA_ESPERA = 1.0
 const DICA_VISIVEL = 3.0
 const DICA_FADE = 0.5
