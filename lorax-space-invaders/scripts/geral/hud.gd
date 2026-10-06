@@ -127,7 +127,7 @@ func criar_final_wave():
 	if letreiro_final_wave != null:
 		var sprite = Sprite2D.new()
 		sprite.texture = letreiro_final_wave
-		sprite.position = $wave.position
+		sprite.position = Vector2(get_viewport().get_visible_rect().size.x / 2.0, $wave.position.y)
 		no = sprite
 	else:
 		var texto = Label.new()
