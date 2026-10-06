@@ -11,12 +11,15 @@ const BATALHA_FINAL = preload("res://cenas/boss/batalha_final.tscn")
 const EFEITOS = preload("res://recursos/boss/efeitos_boss.tres")
 const LabEfeitos = preload("res://scripts/geral/lab_efeitos.gd")
 const LabSons = preload("res://scripts/geral/lab_sons.gd")
+const PainelDebug = preload("res://scripts/geral/painel_debug.gd")
 
 # A wave do boss começou (o batimento com 1 vida só vale daqui em diante)
 var luta_comecou = false
 var batimento_ligado = false
 # Conta o fade da música do jogo (começa quando a wave 10 chega; pausa com o jogo)
 var relogio_fade: Timer = null
+# Painel de debug (F3); só existe em build de debug
+var painel_debug = null
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -50,6 +53,9 @@ func _ready():
 	$hud.coracoes_boss_reencheram.connect(_on_coracoes_boss_reencheram)
 	if EFEITOS.hud_treme:
 		camera.tremeu.connect($hud.acompanhar_tremor)
+	if OS.is_debug_build():
+		painel_debug = PainelDebug.new()
+		add_child(painel_debug)
 	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
 		abrir_lab()
 	elif Partida.etapa_inicial == Partida.Etapa.LAB_SONS:
@@ -98,11 +104,15 @@ func _on_boss_pode_entrar():
 	comecar_batalha()
 
 # Cria a batalha final logo depois do groupAlien na árvore (desenha atrás do cenário e
-# da hud), liga os sinais dela à hud e manda começar
+# da hud), liga os sinais dela à hud (e ao painel de debug, se existir) e manda começar
 func comecar_batalha():
 	var batalha = BATALHA_FINAL.instantiate()
 	batalha.vida_boss_mudou.connect($hud.mostrar_vida_boss_final)
 	batalha.boss_invulneravel.connect($hud.piscar_vida_boss)
+	if painel_debug != null:
+		batalha.fase_mudou.connect(painel_debug.mostrar_fase)
+		batalha.vida_boss_mudou.connect(painel_debug.mostrar_vida_boss)
+		batalha.boss_invulneravel.connect(painel_debug.mostrar_invulneravel)
 	batalha.terminou.connect(_on_batalha_terminou)
 	add_child(batalha)
 	move_child(batalha, $groupAlien.get_index() + 1)

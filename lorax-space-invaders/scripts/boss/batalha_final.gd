@@ -5,6 +5,8 @@ extends Node
 
 signal vida_boss_mudou(vida, vida_max)
 signal boss_invulneravel(ligado)
+# Começou a fase 'nome' (o nó dela em $Fases); "FIM" quando acabam as fases
+signal fase_mudou(nome)
 # Acabaram as fases
 signal terminou
 
@@ -31,6 +33,8 @@ func proxima_fase():
 	indice_fase += 1
 	var fases = $Fases.get_children()
 	if indice_fase >= fases.size():
+		fase_mudou.emit(&"FIM")
 		terminou.emit()
 		return
+	fase_mudou.emit(fases[indice_fase].name)
 	fases[indice_fase].comecar(ctx)
