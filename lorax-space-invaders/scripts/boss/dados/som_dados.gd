@@ -23,5 +23,7 @@ extends Resource
 @export var crossfade := 0.0
 ## Músicas: segundos em que começam a tocar (pula um começo lento/silencioso)
 @export var inicio := 0.0
+## Pitches de uma escala para Sons.tocar_na_escala (vazio = não usa)
+@export var escala: Array[float] = []
 ## Outros sons tocados junto com este, cada um com pitch, volume e atraso próprios
 @export var camadas: Array[SomDados] = []

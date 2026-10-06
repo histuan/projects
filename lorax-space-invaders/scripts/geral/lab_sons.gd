@@ -36,6 +36,8 @@ const MUSICAS = [&"musica_wave10", &"musica_transformacao", &"musica_fase3a", &"
 # Sem valor no documento (decididos na F3 e na F5): o LAB testa com estes, marcados TESTE
 const TESTE_CROSSFADE = 1.0
 const TESTE_FADE = 1.0
+# Evento com escala: o LAB toca as notas em sequência com este intervalo (s), só para ouvir
+const TESTE_INTERVALO_ESCALA = 0.15
 # Pedidos de abafar feitos pelo LAB
 const ABAFAR_DESPERTAR = &"lab_despertar"
 const ABAFAR_VIDA_BAIXA = &"lab_vida_baixa"
@@ -84,7 +86,17 @@ func linha_evento(evento):
 		return linha(nome + " X", ["NAO EXISTE NO SONS_BOSS.TRES"])
 	if not arquivos_faltando(dados).is_empty():
 		return linha(nome + " X", detalhes_do(dados))
+	if not dados.escala.is_empty():
+		return linha(nome, detalhes_do(dados), tocar_escala.bind(evento))
 	return linha(nome, detalhes_do(dados), tocar_evento.bind(evento))
+
+# Toca todas as notas da escala do evento, uma depois da outra (o R interrompe)
+func tocar_escala(evento):
+	var escala = BIBLIOTECA.eventos[evento].escala
+	for i in range(escala.size()):
+		Sons.tocar_na_escala(evento, i)
+		if not await esperar(TESTE_INTERVALO_ESCALA):
+			return
 
 # Toca o evento; loop liga/desliga; com deslize, o pitch desliza pela duração do som
 func tocar_evento(evento):
@@ -153,6 +165,11 @@ func detalhes_do(dados):
 	partes.append(pitch)
 	partes.append("VOL %s DB" % n(dados.volume_db))
 	partes.append("BUS " + String(dados.bus).to_upper())
+	if not dados.escala.is_empty():
+		var notas = PackedStringArray()
+		for pitch_nota in dados.escala:
+			notas.append(n(pitch_nota))
+		partes.append("ESCALA " + "/".join(notas) + ", %s S ENTRE NOTAS (TESTE)" % n(TESTE_INTERVALO_ESCALA))
 	if dados.atraso > 0:
 		partes.append("ATRASO %s S" % n(dados.atraso))
 	if dados.loop:

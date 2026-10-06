@@ -34,6 +34,20 @@ func tocar(evento: StringName):
 		tocar_dados(evento, camada)
 	return tocar_dados(evento, dados)
 
+# Toca o evento na nota 'indice' da escala dele (dá a volta no fim da escala); sem a
+# variação aleatória, para a nota sair afinada
+func tocar_na_escala(evento: StringName, indice):
+	var dados = dados_do_evento(evento)
+	if dados == null:
+		return null
+	if dados.escala.is_empty():
+		push_error("Sons: o evento '%s' não tem escala" % evento)
+		return null
+	var player = tocar(evento)
+	if player != null:
+		player.pitch_scale = dados.escala[posmod(indice, dados.escala.size())] * fator_camera_lenta()
+	return player
+
 # Toca o evento e desliza o pitch até o pitch_final dele em 'duracao' segundos
 func tocar_deslizando(evento: StringName, duracao):
 	var player = tocar(evento)
