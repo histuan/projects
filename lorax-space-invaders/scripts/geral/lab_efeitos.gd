@@ -1,11 +1,9 @@
 # LAB DE EFEITOS (opção do cheat): dispara cada efeito da tabela do efeitos.md com os
 # valores do efeitos_boss.tres, para sentir e afinar sem jogar a luta.
-# Q/E trocam a página · 1–9 e 0 disparam · R volta tudo ao normal · H esconde o texto.
-# Partes sem número aparecem como "SEM VALOR" e partes que dependem de uma peça da luta
-# (squash, nome do boss, arena...) aparecem com a etapa em que entram.
-extends CanvasLayer
+# Teclas e layout: PainelLab. Partes sem número aparecem como "SEM VALOR" e partes que
+# dependem de uma peça da luta (squash, nome do boss, arena...) aparecem com a etapa em que entram.
+extends PainelLab
 
-const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 const IDLE_LORAX = preload("res://meus sprites/lorax boss battle/fase1/fase1 idle.png")
 const FAISCA = preload("res://cenas/efeitos/faisca.tscn")
 const POEIRA = preload("res://cenas/efeitos/poeira.tscn")
@@ -16,16 +14,6 @@ const Particula = preload("res://scripts/efeitos/particula.gd")
 # O boneco fica onde o Lorax luta: altura e meio do vai e vem da fase 1
 const DADOS_FASE1 = preload("res://recursos/boss/classica1.tres")
 
-# Layout do painel (px): boneco no alto (como na luta); embaixo dele a lista, depois o
-# detalhe e, colado no fim da tela, o rodapé fixo. As quatro áreas nunca se cruzam
-const LINHAS_LISTA = 11
-# Rodapé: 1 linha de comandos + 2 de status
-const LINHAS_RODAPE = 3
-const COMANDOS = "Q/E PAGINA  R RESET  H TEXTO"
-const MARGEM_TEXTO = 2
-const FOLGA = 4
-const LARGURA_PAINEL = 250
-const ALFA_FUNDO = 0.6
 # Meia altura do quadro de 32 px do boneco
 const MEIO_BONECO = 16
 # Pés do boneco: linha 28 do quadro de 32 px centrado = 12 px abaixo do centro
@@ -39,7 +27,6 @@ const LADO_BLOCO_PX = 40
 const LETRAS_FINISH_HIM = 9
 # Teste da regra de segurança: 4 flashes com este intervalo (s)
 const TESTE_FLASH_INTERVALO = 0.1
-const TECLAS = [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0]
 
 var camera
 var tela
@@ -52,24 +39,9 @@ var rastro: Afterimage
 var ki: Node = null
 var tween_boneco: Tween = null
 
-var paginas = []
-var pagina = 0
-var ultima = null
-var aviso = ""
-# Sobe a cada R: sequências que estavam esperando param de agir
-var geracao = 0
 var letterbox_ligado = false
-
-var texto_lista: Label
-var texto_detalhe: Label
-var texto_rodape: Label
-var fundo_lista: ColorRect
-var fundo_detalhe: ColorRect
-var fundo_rodape: ColorRect
-# Calculados em montar_layout() a partir da altura de linha da fonte
+# O boneco fica no alto (como na luta); a lista começa embaixo dele
 var posicao_boneco = Vector2.ZERO
-var altura_linha = 0.0
-var linhas_detalhe = 0
 
 # Recebe da main quem ela vai controlar e monta o boneco, o texto e as páginas
 func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco):
@@ -78,16 +50,18 @@ func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco):
 	estrelas = campo_estrelas
 	e = dados
 	mundo = pai_do_boneco
-	# Acima da HUD (5) e dos flashes (3): o texto fica legível; as barras do letterbox (7) cobrem ele
-	layer = 6
-	montar_layout()
+	dica = "APERTE 1-0 PARA DISPARAR UM EFEITO"
+	posicao_boneco = Vector2((DADOS_FASE1.limite_esq + DADOS_FASE1.limite_dir) / 2.0, DADOS_FASE1.altura)
+	iniciar()
 	criar_boneco()
-	paginas = [
+
+# Páginas da tabela 4 do efeitos.md
+func montar_paginas():
+	return [
 		pagina_estrelas(), pagina_estrelas_2(), pagina_wave10(), pagina_fase1(),
 		pagina_fase2_trocas(), pagina_transformacao(), pagina_fase3(), pagina_fase3_2(),
 		pagina_desfecho(), pagina_ferramentas(),
 	]
-	mostrar()
 
 # Boneco parado do Lorax 2.0 no mundo, com flash e afterimage (o afterimage vem antes
 # do sprite para as cópias ficarem atrás)
@@ -106,34 +80,9 @@ func criar_boneco():
 	sprite.add_child(flash_boneco)
 	mundo.add_child(boneco)
 
-# Boneco na altura da luta; abaixo dele a lista (LINHAS_LISTA fixas), o detalhe (o que
-# sobra) e o rodapé fixo colado no fim da tela
-func montar_layout():
-	posicao_boneco = Vector2((DADOS_FASE1.limite_esq + DADOS_FASE1.limite_dir) / 2.0, DADOS_FASE1.altura)
-	fundo_lista = criar_fundo()
-	texto_lista = criar_label()
-	fundo_detalhe = criar_fundo()
-	texto_detalhe = criar_label()
-	fundo_rodape = criar_fundo()
-	texto_rodape = criar_label()
-	altura_linha = texto_lista.get_line_height()
-	var altura_tela = get_viewport().get_visible_rect().size.y
-	var altura_rodape = LINHAS_RODAPE * altura_linha
-	var topo_rodape = altura_tela - altura_rodape - 2 * MARGEM_TEXTO
-	posicionar(fundo_rodape, texto_rodape, topo_rodape, altura_rodape)
-	texto_rodape.max_lines_visible = LINHAS_RODAPE
-	var topo_lista = posicao_boneco.y + MEIO_BONECO + FOLGA
-	var altura_lista = LINHAS_LISTA * altura_linha
-	posicionar(fundo_lista, texto_lista, topo_lista, altura_lista)
-	texto_lista.max_lines_visible = LINHAS_LISTA
-	var topo_detalhe = topo_lista + altura_lista + 2 * MARGEM_TEXTO + FOLGA
-	linhas_detalhe = floori((topo_rodape - FOLGA - topo_detalhe - 2 * MARGEM_TEXTO) / altura_linha)
-	posicionar(fundo_detalhe, texto_detalhe, topo_detalhe, 0)
-	texto_detalhe.max_lines_visible = linhas_detalhe
-
-# Rodapé: comandos e, embaixo, o que continua ligado (atualiza a cada quadro)
-func _process(_delta):
-	texto_rodape.text = COMANDOS + "\n" + estado_ligado()
+# A lista começa logo abaixo do boneco
+func topo_da_lista():
+	return posicao_boneco.y + MEIO_BONECO + FOLGA
 
 # Efeitos que ficam ligados até o R (zoom sem volta, tremor contínuo, estrelas, barras...)
 func estado_ligado():
@@ -158,75 +107,8 @@ func estado_ligado():
 		return "LIGADO: NADA"
 	return "LIGADO: " + ", ".join(itens)
 
-# Coloca um texto e o fundo dele a partir de 'topo', com 'altura' de texto
-func posicionar(fundo, texto, topo, altura):
-	var esquerda = (get_viewport().get_visible_rect().size.x - LARGURA_PAINEL) / 2.0
-	fundo.position = Vector2(esquerda, topo)
-	fundo.size = Vector2(LARGURA_PAINEL, altura + 2 * MARGEM_TEXTO)
-	texto.position = Vector2(esquerda + MARGEM_TEXTO, topo + MARGEM_TEXTO)
-	texto.size = Vector2(LARGURA_PAINEL - 2 * MARGEM_TEXTO, altura)
-
-# Fundo escuro semitransparente atrás de um bloco de texto
-func criar_fundo():
-	var fundo = ColorRect.new()
-	fundo.color = Color(0, 0, 0, ALFA_FUNDO)
-	fundo.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(fundo)
-	return fundo
-
-# Label com a fonte do jogo e contorno preto; texto comprido quebra de linha
-func criar_label():
-	var label = Label.new()
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_override("font", FONTE)
-	label.add_theme_font_size_override("font_size", 8)
-	# Sem espaço extra entre linhas (o padrão do Label é 3 px): cabe mais texto no painel
-	label.add_theme_constant_override("line_spacing", 0)
-	label.add_theme_constant_override("outline_size", 2)
-	label.add_theme_color_override("font_outline_color", Color.BLACK)
-	add_child(label)
-	return label
-
-# Teclas do LAB (o resto continua com o player e o Pause)
-func _unhandled_input(event):
-	if not (event is InputEventKey and event.pressed and not event.echo):
-		return
-	var tecla = event.physical_keycode
-	if tecla == KEY_Q:
-		trocar_pagina(-1)
-	elif tecla == KEY_E:
-		trocar_pagina(1)
-	elif tecla == KEY_R:
-		resetar()
-	elif tecla == KEY_H:
-		for no in [fundo_lista, texto_lista, fundo_detalhe, texto_detalhe]:
-			no.visible = not no.visible
-	elif tecla in TECLAS:
-		disparar(TECLAS.find(tecla))
-	else:
-		return
-	get_viewport().set_input_as_handled()
-
-# Vai para a página anterior/seguinte (dá a volta)
-func trocar_pagina(passo):
-	pagina = (pagina + passo + paginas.size()) % paginas.size()
-	mostrar()
-
-# Dispara a linha 'indice' da página atual e mostra os valores dela
-func disparar(indice):
-	var linhas = paginas[pagina]["linhas"]
-	if indice >= linhas.size():
-		return
-	ultima = linhas[indice]
-	aviso = ""
-	if ultima["acao"].is_valid():
-		ultima["acao"].call()
-	mostrar()
-
 # Tudo volta ao normal na hora: tempo, câmera, tela, estrelas e boneco
-func resetar():
-	geracao += 1
+func ao_resetar():
 	TempoJogo.limpar()
 	camera.restaurar()
 	tela.limpar()
@@ -242,50 +124,8 @@ func resetar():
 		ki.queue_free()
 		ki = null
 	letterbox_ligado = false
-	ultima = null
-	aviso = ""
-	mostrar()
-
-# Escreve a página atual e, embaixo, os valores da última linha disparada
-func mostrar():
-	var atual = paginas[pagina]
-	var texto = "Q< %d/%d %s >E" % [pagina + 1, paginas.size(), atual["titulo"]]
-	for i in range(atual["linhas"].size()):
-		var linha_atual = atual["linhas"][i]
-		var tecla = str((i + 1) % 10) if linha_atual["acao"].is_valid() else "-"
-		texto += "\n%s %s" % [tecla, linha_atual["nome"]]
-	texto_lista.text = texto
-	var detalhe = "APERTE 1-0 PARA DISPARAR UM EFEITO"
-	if ultima != null:
-		detalhe = ultima["nome"] + "\n" + "; ".join(ultima["detalhes"])
-		if not ultima["acao"].is_valid():
-			detalhe = "SO CONSULTA: " + detalhe
-		if aviso != "":
-			detalhe += "\n" + aviso
-	texto_detalhe.text = detalhe
-	ajustar_detalhe()
-
-# O fundo dos detalhes cresce com o texto (já quebrado), até o fim da tela
-func ajustar_detalhe():
-	var linhas = mini(texto_detalhe.get_line_count(), linhas_detalhe)
-	texto_detalhe.size.y = linhas * altura_linha
-	fundo_detalhe.size.y = linhas * altura_linha + 2 * MARGEM_TEXTO
 
 # ---------- ferramentas usadas pelas linhas ----------
-
-# Uma linha da lista: nome, partes (com marcas) e o que ela dispara
-func linha(nome, detalhes, acao = Callable()):
-	return {"nome": nome, "detalhes": detalhes, "acao": acao}
-
-# Uma página: título e linhas (no máximo 10, uma por tecla)
-func nova_pagina(titulo, linhas):
-	return {"titulo": titulo, "linhas": linhas}
-
-# Espera em tempo real; devolve false se o R foi apertado no meio
-func esperar(segundos):
-	var minha = geracao
-	await get_tree().create_timer(segundos, false, false, true).timeout
-	return minha == geracao
 
 # Tremor no formato do .tres: Vector2(força, segundos)
 func tremer(valor):
@@ -322,12 +162,6 @@ func gradiente(cores):
 	g.offsets = posicoes
 	g.colors = cores
 	return g
-
-# Número no jeito brasileiro: 0.25 → "0,25", 5.0 → "5"
-func n(valor):
-	if is_equal_approx(valor, roundf(valor)):
-		return str(int(roundf(valor)))
-	return str(snappedf(valor, 0.01)).replace(".", ",")
 
 # "T(força;s)"
 func txt_t(valor):
