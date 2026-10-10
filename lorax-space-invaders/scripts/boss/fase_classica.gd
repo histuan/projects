@@ -33,6 +33,10 @@ func tocar_som(evento: StringName):
 	if evento != &"":
 		Sons.tocar(evento)
 
+# A fase da luta vem do .tres (fase 1 ou 2)
+func numero_fase():
+	return dados.numero_fase
+
 # Sem entrada: já aparece no meio, na altura da fase
 func comecar_direto(contexto: ContextoBatalha):
 	preparar(contexto)

@@ -16,13 +16,19 @@ var wave = 0
 
 # Etapas do cheat code (o seletor da tela inicial lista NOMES_ETAPAS).
 # etapa_inicial sobrevive ao nova_partida(): é ela que o "Reiniciar" mantém
-enum Etapa { NENHUMA, WAVE_BOSS, LAB_EFEITOS, LAB_SONS }
+enum Etapa { NENHUMA, WAVE_BOSS, LAB_EFEITOS, LAB_SONS, LAB_TEXTOS }
 const NOMES_ETAPAS = {
 	Etapa.WAVE_BOSS: "WAVE DO BOSS",
 	Etapa.LAB_EFEITOS: "LAB DE EFEITOS",
 	Etapa.LAB_SONS: "LAB DE SONS",
+	Etapa.LAB_TEXTOS: "LAB DE TEXTOS",
 }
 var etapa_inicial = Etapa.NENHUMA
+
+# A wave do boss começou (o Pause mostra a fala, o batimento de 1 vida passa a valer)
+var em_luta_boss = false
+# Fase da luta do boss: 0 = fora dela, 1, 2 ou 3 (o retrato AUTO das falas usa)
+var fase_luta = 0
 
 # Guarda a etapa em que a próxima partida deve começar
 func escolher_etapa(etapa):
@@ -41,6 +47,16 @@ func nova_partida():
 	pontos = 0
 	vidas = MAX_VIDAS
 	wave = 0
+	em_luta_boss = false
+	fase_luta = 0
+
+# A wave do boss chegou
+func comecar_luta_boss():
+	em_luta_boss = true
+
+# Começou uma fase da luta (1, 2 ou 3)
+func definir_fase_luta(numero):
+	fase_luta = numero
 
 # Soma pontos de algo que morreu em 'posicao' (o hud mostra o "+N" ali)
 func somar_pontos(valor, posicao, tamanho = 8):

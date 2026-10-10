@@ -3,6 +3,12 @@
 [ext_resource type="Script" uid="uid://cm7nukyp8pei7" path="res://scripts/boss/dados/passo.gd" id="1_passo"]
 [ext_resource type="Script" uid="uid://biedy8nmo4e2b" path="res://scripts/boss/dados/momento.gd" id="2_momento"]
 [ext_resource type="Script" uid="uid://7g2865256rhh" path="res://scripts/boss/dados/biblioteca_momentos.gd" id="3_biblioteca"]
+[ext_resource type="Resource" path="res://recursos/boss/letreiros/final_wave.tres" id="4_final_wave"]
+[ext_resource type="Resource" uid="uid://dvy151eyaxnrg" path="res://recursos/boss/letreiros/nome_boss.tres" id="5_nome_boss"]
+[ext_resource type="Resource" uid="uid://cixpx1thja7fu" path="res://recursos/boss/letreiros/finish_him.tres" id="6_finish_him"]
+[ext_resource type="Resource" path="res://recursos/boss/letreiros/dica_ws.tres" id="7_dica_ws"]
+[ext_resource type="Resource" uid="uid://cjxaa0faqjq1d" path="res://recursos/boss/letreiros/contagem.tres" id="8_contagem"]
+[ext_resource type="Resource" uid="uid://b64257qpdb2it" path="res://recursos/boss/letreiros/nome_boss_instinto.tres" id="9_nome_boss_instinto"]
 
 [sub_resource type="Resource" id="Passo_arena_estrelas_1"]
 script = ExtResource("1_passo")
@@ -133,6 +139,18 @@ duracao = 0.2
 script = ExtResource("2_momento")
 titulo = "CHAPEU JOGADO"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_chapeu_1")])
+
+[sub_resource type="Resource" id="Passo_contagem_1"]
+script = ExtResource("1_passo")
+tipo = 26
+pendente = "NA F7: DURACAO SEM VALOR"
+letreiro = ExtResource("8_contagem")
+texto = "12345"
+
+[sub_resource type="Resource" id="Momento_contagem"]
+script = ExtResource("2_momento")
+titulo = "CONTAGEM DA TELA FINAL"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_contagem_1")])
 
 [sub_resource type="Resource" id="Passo_coracao_boss_perdido_1"]
 script = ExtResource("1_passo")
@@ -332,6 +350,16 @@ script = ExtResource("2_momento")
 titulo = "DESPERTAR -> AURA"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_despertar_estrelas_1"), SubResource("Passo_despertar_estrelas_2"), SubResource("Passo_despertar_estrelas_3")])
 
+[sub_resource type="Resource" id="Passo_dica_ws_1"]
+script = ExtResource("1_passo")
+tipo = 26
+letreiro = ExtResource("7_dica_ws")
+
+[sub_resource type="Resource" id="Momento_dica_ws"]
+script = ExtResource("2_momento")
+titulo = "DICA W/S"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_dica_ws_1")])
+
 [sub_resource type="Resource" id="Passo_esfera_estoura_1"]
 script = ExtResource("1_passo")
 tipo = 1
@@ -471,25 +499,35 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_final_ruim_estrelas_1
 
 [sub_resource type="Resource" id="Passo_finish_him_1"]
 script = ExtResource("1_passo")
-tipo = 1
-repetir = 9
-repetir_a_cada = 0.08
-forca = 2.0
-duracao = 0.1
+tipo = 26
+letreiro = ExtResource("6_finish_him")
+texto = "FINISH HIM"
 
 [sub_resource type="Resource" id="Passo_finish_him_2"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F6"
-nome = &"letras"
-parametros = {
-"escala": Vector2(1.6, 1)
-}
+tipo = 23
+nome = &"finish_him"
 
 [sub_resource type="Resource" id="Momento_finish_him"]
 script = ExtResource("2_momento")
 titulo = "FINISH HIM"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_finish_him_1"), SubResource("Passo_finish_him_2")])
+
+[sub_resource type="Resource" id="Passo_finish_letra_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 2.0
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_finish_letra_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"finish_letra"
+
+[sub_resource type="Resource" id="Momento_finish_letra"]
+script = ExtResource("2_momento")
+titulo = "FINISH HIM: CADA LETRA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_finish_letra_1"), SubResource("Passo_finish_letra_2")])
 
 [sub_resource type="Resource" id="Passo_folha_acerta_bloco_1"]
 script = ExtResource("1_passo")
@@ -642,20 +680,20 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_nave_chega_1"), SubRe
 
 [sub_resource type="Resource" id="Passo_nome_do_boss_1"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F1"
-nome = &"nome_do_boss"
-parametros = {
-"espacamento": Vector2(0, 2),
-"fade_in": 0.4,
-"fade_out": 0.6,
-"tempo": 1.8
-}
+tipo = 26
+letreiro = ExtResource("5_nome_boss")
+texto = "O LORAX"
+subtitulo = "Guardião das Trúfulas"
+
+[sub_resource type="Resource" id="Passo_nome_do_boss_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"titulo_boss"
 
 [sub_resource type="Resource" id="Momento_nome_do_boss"]
 script = ExtResource("2_momento")
 titulo = "NOME DO BOSS"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_nome_do_boss_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_nome_do_boss_1"), SubResource("Passo_nome_do_boss_2")])
 
 [sub_resource type="Resource" id="Passo_pancada_1"]
 script = ExtResource("1_passo")
@@ -767,17 +805,25 @@ duracao = 0.05
 
 [sub_resource type="Resource" id="Passo_player_hit_3"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "ALFA SEM VALOR"
-nome = &"bordas_do_hit"
-parametros = {
-"duracao": 0.2
-}
+tipo = 13
+cor = 2
+alfa = 0.35
+ligar = true
+
+[sub_resource type="Resource" id="Passo_player_hit_4"]
+script = ExtResource("1_passo")
+tempo = 0.2
+tipo = 13
+
+[sub_resource type="Resource" id="Passo_player_hit_5"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"player_hit_arena"
 
 [sub_resource type="Resource" id="Momento_player_hit"]
 script = ExtResource("2_momento")
 titulo = "PLAYER LEVA HIT"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_hit_1"), SubResource("Passo_player_hit_2"), SubResource("Passo_player_hit_3")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_hit_1"), SubResource("Passo_player_hit_2"), SubResource("Passo_player_hit_3"), SubResource("Passo_player_hit_4"), SubResource("Passo_player_hit_5")])
 
 [sub_resource type="Resource" id="Passo_poupar_1"]
 script = ExtResource("1_passo")
@@ -1057,6 +1103,23 @@ script = ExtResource("2_momento")
 titulo = "TELEPORTE / ESQUIVA"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_teleporte_1")])
 
+[sub_resource type="Resource" id="Passo_titulo_fase3_1"]
+script = ExtResource("1_passo")
+tipo = 26
+letreiro = ExtResource("9_nome_boss_instinto")
+texto = "LORAX"
+subtitulo = "INSTINTO SUPERIOR"
+
+[sub_resource type="Resource" id="Passo_titulo_fase3_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"titulo_boss"
+
+[sub_resource type="Resource" id="Momento_titulo_fase3"]
+script = ExtResource("2_momento")
+titulo = "TITULO DA FASE 3"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_titulo_fase3_1"), SubResource("Passo_titulo_fase3_2")])
+
 [sub_resource type="Resource" id="Passo_tonto_estrelas_1"]
 script = ExtResource("1_passo")
 tipo = 14
@@ -1186,16 +1249,10 @@ tipo = 7
 escala = 0.3
 duracao = 0.6
 
-[sub_resource type="Resource" id="Passo_ultimo_hit_f1_5"]
-script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F2"
-nome = &"limpeza_de_projeteis"
-
 [sub_resource type="Resource" id="Momento_ultimo_hit_f1"]
 script = ExtResource("2_momento")
 titulo = "ULTIMO HIT DA FASE 1"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_hit_f1_1"), SubResource("Passo_ultimo_hit_f1_2"), SubResource("Passo_ultimo_hit_f1_3"), SubResource("Passo_ultimo_hit_f1_4"), SubResource("Passo_ultimo_hit_f1_5")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_hit_f1_1"), SubResource("Passo_ultimo_hit_f1_2"), SubResource("Passo_ultimo_hit_f1_3"), SubResource("Passo_ultimo_hit_f1_4")])
 
 [sub_resource type="Resource" id="Passo_virada_1"]
 script = ExtResource("1_passo")
@@ -1264,28 +1321,14 @@ duracao = 0.4
 
 [sub_resource type="Resource" id="Passo_wave10_alarme_3"]
 script = ExtResource("1_passo")
-tipo = 24
+tipo = 26
 pendente = "NA LUTA PELA MAIN (B1)"
-nome = &"letreiro_final_wave"
-parametros = {
-"fade": 0.8,
-"pisca": 0.25
-}
-
-[sub_resource type="Resource" id="Passo_wave10_alarme_4"]
-script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F1"
-nome = &"letreiro_letras"
-parametros = {
-"letra_intervalo": 0.05,
-"letra_tremor_px": 1
-}
+letreiro = ExtResource("4_final_wave")
 
 [sub_resource type="Resource" id="Momento_wave10_alarme"]
 script = ExtResource("2_momento")
 titulo = "ALARME FINAL WAVE"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_alarme_1"), SubResource("Passo_wave10_alarme_2"), SubResource("Passo_wave10_alarme_3"), SubResource("Passo_wave10_alarme_4")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_alarme_1"), SubResource("Passo_wave10_alarme_2"), SubResource("Passo_wave10_alarme_3")])
 
 [sub_resource type="Resource" id="Passo_wave10_musica_entra_1"]
 script = ExtResource("1_passo")
@@ -1332,6 +1375,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"aviso": SubResource("Momento_aviso"),
 &"carga_ataque": SubResource("Momento_carga_ataque"),
 &"chapeu": SubResource("Momento_chapeu"),
+&"contagem": SubResource("Momento_contagem"),
 &"coracao_boss_perdido": SubResource("Momento_coracao_boss_perdido"),
 &"cortina_todos": SubResource("Momento_cortina_todos"),
 &"derrota_f2": SubResource("Momento_derrota_f2"),
@@ -1341,6 +1385,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"desespero_estrelas": SubResource("Momento_desespero_estrelas"),
 &"despertar": SubResource("Momento_despertar"),
 &"despertar_estrelas": SubResource("Momento_despertar_estrelas"),
+&"dica_ws": SubResource("Momento_dica_ws"),
 &"esfera_estoura": SubResource("Momento_esfera_estoura"),
 &"estrelas_normal": SubResource("Momento_estrelas_normal"),
 &"f2_arvore_explode": SubResource("Momento_f2_arvore_explode"),
@@ -1351,6 +1396,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"fase2_estrelas": SubResource("Momento_fase2_estrelas"),
 &"final_ruim_estrelas": SubResource("Momento_final_ruim_estrelas"),
 &"finish_him": SubResource("Momento_finish_him"),
+&"finish_letra": SubResource("Momento_finish_letra"),
 &"folha_acerta_bloco": SubResource("Momento_folha_acerta_bloco"),
 &"golpe_final": SubResource("Momento_golpe_final"),
 &"hit_comum": SubResource("Momento_hit_comum"),
@@ -1378,6 +1424,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"resto_do_pilar": SubResource("Momento_resto_do_pilar"),
 &"soltar_folhas": SubResource("Momento_soltar_folhas"),
 &"teleporte": SubResource("Momento_teleporte"),
+&"titulo_fase3": SubResource("Momento_titulo_fase3"),
 &"tonto_estrelas": SubResource("Momento_tonto_estrelas"),
 &"transicao_1_2": SubResource("Momento_transicao_1_2"),
 &"transicao_1_2_pico": SubResource("Momento_transicao_1_2_pico"),

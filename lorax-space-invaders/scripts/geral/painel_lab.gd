@@ -206,6 +206,36 @@ func esperar(segundos):
 	await get_tree().create_timer(segundos, false, false, true).timeout
 	return minha == geracao
 
+# Um estilo de letreiro em texto: nome do arquivo e só os números que ele usa
+func texto_letreiro(dados):
+	var partes = []
+	if dados.fade_in > 0:
+		partes.append("ENTRA EM %s S" % n(dados.fade_in))
+	if dados.espacamento != Vector2.ZERO:
+		partes.append("LETRAS %s->%s PX" % [n(dados.espacamento.x), n(dados.espacamento.y)])
+	if dados.letra_intervalo > 0:
+		partes.append("%s S POR LETRA, ESCALA %s->%s" % [n(dados.letra_intervalo), n(dados.letra_escala.x), n(dados.letra_escala.y)])
+	if dados.contagem and dados.contagem_duracao > 0:
+		partes.append("CONTA ATE O NUMERO EM %s S" % n(dados.contagem_duracao))
+	elif dados.contagem:
+		partes.append("CONTA ATE O NUMERO")
+	if dados.pisca > 0:
+		partes.append("PISCA %s S" % n(dados.pisca))
+	if dados.fica:
+		partes.append("FICA ATE ESCONDER")
+	elif dados.tempo > 0:
+		partes.append("FICA %s S" % n(dados.tempo))
+	if dados.vezes > 1:
+		partes.append("%dx" % dados.vezes)
+	if dados.fade_out > 0:
+		partes.append("SOME EM %s S" % n(dados.fade_out))
+	if dados.momento_por_letra != &"":
+		partes.append("POR LETRA: MOMENTO " + String(dados.momento_por_letra).replace("_", " ").to_upper())
+	if dados.nota != "":
+		partes.append(dados.nota)
+	var nome = dados.resource_path.get_file().get_basename().replace("_", " ").to_upper()
+	return "LETREIRO %s (%s)" % [nome, ", ".join(partes)]
+
 # Número no jeito brasileiro: 0.25 → "0,25", 5.0 → "5"
 func n(valor):
 	if is_equal_approx(valor, roundf(valor)):

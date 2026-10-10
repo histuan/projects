@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LetreiroDados" format=3 uid="uid://cjxaa0faqjq1d"]
+
+[ext_resource type="Script" uid="uid://dr47wj08vre64" path="res://scripts/boss/dados/letreiro_dados.gd" id="1_letreiro"]
+
+[resource]
+script = ExtResource("1_letreiro")
+posicao = Vector2(127, 112)
+tamanho_fonte = 16
+fica = true
+contagem = true
+nota = "POSICAO E FONTE: PROVISORIO; DURACAO E SOM: SEM VALOR (F7)"

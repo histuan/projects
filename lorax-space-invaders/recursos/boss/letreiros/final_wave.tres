@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LetreiroDados" format=3]
+
+[ext_resource type="Script" path="res://scripts/boss/dados/letreiro_dados.gd" id="1_letreiro"]
+[ext_resource type="Texture2D" uid="uid://bv1gees8tb7ud" path="res://meus sprites/geral/final_wave.png" id="2_final_wave"]
+
+[resource]
+script = ExtResource("1_letreiro")
+textura = ExtResource("2_final_wave")
+posicao = Vector2(127, 160)
+pisca = 0.25
+fade_out = 0.8
+nota = "TEMPO: O DO ALARME (QUEM MOSTRA PASSA)"

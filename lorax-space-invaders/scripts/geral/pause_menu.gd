@@ -25,6 +25,11 @@ var primeiro_slider: HSlider
 var botao_opcoes: Button
 # Toca a prévia com o jogo pausado (filho deste nó, então também é ALWAYS)
 var amostra: AudioStreamPlayer
+# Fala do Lorax mostrada no Pause durante a luta (filha deste nó: funciona pausada)
+var caixa_fala: CaixaDialogo
+# Acima do menu (10): a caixa fica embaixo, fora dos botões
+const LAYER_FALA = 11
+const FALA_PAUSE = &"pause_luta"
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -33,6 +38,9 @@ func _ready():
 	criar_painel_opcoes()
 	amostra = AudioStreamPlayer.new()
 	add_child(amostra)
+	caixa_fala = CaixaDialogo.new()
+	add_child(caixa_fala)
+	caixa_fala.layer = LAYER_FALA
 	for b in $VBoxContainer.get_children():
 		if b is Button:
 			preparar_botao(b)
@@ -54,6 +62,10 @@ func alternar():
 	visible = pausar
 	if pausar:
 		botao_continuar.grab_focus()
+	if pausar and Partida.em_luta_boss:
+		caixa_fala.mostrar_inteira(FALA_PAUSE)
+	else:
+		caixa_fala.fechar()
 
 func _on_continuar_pressed():
 	alternar()

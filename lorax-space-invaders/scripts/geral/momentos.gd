@@ -8,6 +8,7 @@
 extends Node
 
 const BIBLIOTECA = preload("res://recursos/boss/momentos_boss.tres")
+const FALAS = preload("res://recursos/boss/falas_boss.tres")
 const FAISCA = preload("res://cenas/efeitos/faisca.tscn")
 const POEIRA = preload("res://cenas/efeitos/poeira.tscn")
 const FOLHINHAS = preload("res://cenas/efeitos/folhinhas.tscn")
@@ -21,18 +22,23 @@ var tela
 var estrelas
 var mundo
 var efeitos: EfeitosDados
+var hud
+var caixa
 # Sobe a cada parar_tudo(): passos agendados deixam de acontecer
 var geracao = 0
 # Momento tocando → momento (ms) em que o último passo dele termina
 var tocando = {}
 
-# A main entrega quem executa os passos (mundo = onde nascem as partículas soltas)
-func registrar(nova_camera, nova_tela, novas_estrelas, novo_mundo, novos_efeitos):
+# A main entrega quem executa os passos (mundo = onde nascem as partículas soltas;
+# hud = onde aparecem os letreiros; caixa = a caixa de diálogo)
+func registrar(nova_camera, nova_tela, novas_estrelas, novo_mundo, novos_efeitos, nova_hud, nova_caixa):
 	camera = nova_camera
 	tela = nova_tela
 	estrelas = novas_estrelas
 	mundo = novo_mundo
 	efeitos = novos_efeitos
+	hud = nova_hud
+	caixa = nova_caixa
 
 # Toca um momento no alvo (Node2D = corpo, Vector2 = posição, null = nenhum).
 # duracao_animacao: a duração da animação, para os passos marcados da_animacao
@@ -75,10 +81,14 @@ func tocando_agora():
 			nomes.append(nome)
 	return nomes
 
-# Cancela tudo o que estava agendado (o R do LAB)
+# Cancela tudo o que estava agendado, apaga os letreiros e fecha a caixa (o R do LAB)
 func parar_tudo():
 	geracao += 1
 	tocando.clear()
+	if is_instance_valid(hud):
+		hud.limpar_letreiros()
+	if is_instance_valid(caixa):
+		caixa.fechar()
 
 # Saindo da partida: cancela e esquece as ferramentas da main
 func limpar():
@@ -87,6 +97,8 @@ func limpar():
 	tela = null
 	estrelas = null
 	mundo = null
+	hud = null
+	caixa = null
 
 # Confere todos os momentos do arquivo de uma vez (o LAB chama ao abrir); devolve os erros
 func validar_todos():
@@ -113,6 +125,10 @@ func passo_valido(nome, indice, passo, duracao_animacao):
 		problema = "tocado sem a duração da animação"
 	elif passo.tipo == Passo.Tipo.MOMENTO and (passo.nome == nome or not BIBLIOTECA.momentos.has(passo.nome)):
 		problema = "momento '%s' inválido" % passo.nome
+	elif passo.tipo == Passo.Tipo.LETREIRO and passo.letreiro.momento_por_letra != &"" 			and not BIBLIOTECA.momentos.has(passo.letreiro.momento_por_letra):
+		problema = "momento_por_letra '%s' inválido" % passo.letreiro.momento_por_letra
+	elif passo.tipo == Passo.Tipo.FALA and not FALAS.falas.has(passo.nome):
+		problema = "fala '%s' não existe no falas_boss.tres" % passo.nome
 	if problema != "":
 		push_error("Momentos: '%s' passo %d (%s): %s" % [nome, indice + 1, Passo.Tipo.keys()[passo.tipo], problema])
 		return false
@@ -214,6 +230,19 @@ func executar(passo, alvo, duracao_animacao):
 			pedido.emit(passo.nome, passo.parametros, alvo)
 		Passo.Tipo.MOMENTO:
 			tocar(passo.nome, alvo, duracao_animacao)
+		Passo.Tipo.LETREIRO:
+			mostrar_letreiro(passo, alvo)
+		Passo.Tipo.FALA:
+			caixa.falar(passo.nome)
+		_:
+			push_error("Momentos: o passo %s ainda não faz nada" % Passo.Tipo.keys()[passo.tipo])
+
+# Mostra o letreiro na hud; cada letra que entra toca o momento_por_letra do estilo no mesmo alvo
+func mostrar_letreiro(passo, alvo):
+	var letreiro = hud.mostrar_letreiro(passo.letreiro, passo.texto, passo.subtitulo, passo.duracao if passo.duracao > 0 else -1.0)
+	var por_letra = passo.letreiro.momento_por_letra
+	if por_letra != &"":
+		letreiro.letra_entrou.connect(func(_indice): tocar(por_letra, alvo))
 
 # Posição global do alvo (null se não há alvo ou ele já saiu da cena)
 func posicao(alvo):

@@ -21,6 +21,9 @@ var tweens: Array[Tween] = []
 # Nome do pedido → corte (Hz); vale o mais baixo
 var pedidos_abafar = {}
 var tween_abafar: Tween = null
+# Nome do pedido → dB (negativo); vale o mais baixo
+var pedidos_abaixar = {}
+var tween_abaixar: Tween = null
 
 # Dois players no bus Musica, para o crossfade
 func _ready():
@@ -48,6 +51,8 @@ func limpar():
 	tocando_na_pausa = null
 	pedidos_abafar.clear()
 	aplicar_abafar(0.0)
+	pedidos_abaixar.clear()
+	aplicar_abaixar(0.0)
 
 # Toca a música do evento a partir de 'inicio' s (−1 = o do evento); com crossfade
 # (−1 = o do evento), a anterior some enquanto a nova entra
@@ -141,17 +146,48 @@ func aplicar_abafar(duracao):
 	tween_abafar = create_tween().set_ignore_time_scale()
 	tween_abafar.tween_property(filtro, "cutoff_hz", alvo, duracao)
 
+# Pede para abaixar a música 'db' (negativo) em 'duracao' s; vale o mais baixo entre os pedidos
+# (a caixa de diálogo abaixa enquanto está aberta). Não mexe no volume do jogador (bus)
+func pedir_abaixar(nome, db, duracao = 0.0):
+	pedidos_abaixar[nome] = db
+	aplicar_abaixar(duracao)
+
+# Tira um pedido de abaixar e recalcula
+func liberar_abaixar(nome, duracao = 0.0):
+	pedidos_abaixar.erase(nome)
+	aplicar_abaixar(duracao)
+
+# Leva o Amplify do bus Musica ao pedido mais baixo (sem pedidos, 0 dB)
+func aplicar_abaixar(duracao):
+	var amplificador = efeito_do_bus("AudioEffectAmplify")
+	if amplificador == null:
+		return
+	var alvo = 0.0
+	for db in pedidos_abaixar.values():
+		alvo = minf(alvo, db)
+	if tween_abaixar != null:
+		tween_abaixar.kill()
+	if duracao <= 0:
+		amplificador.volume_db = alvo
+		return
+	tween_abaixar = create_tween().set_ignore_time_scale()
+	tween_abaixar.tween_property(amplificador, "volume_db", alvo, duracao)
+
 # O AudioEffectLowPassFilter do bus Musica (erro se o bus ou o efeito não existem)
 func filtro_low_pass():
+	return efeito_do_bus("AudioEffectLowPassFilter")
+
+# O efeito da classe 'classe' no bus Musica (erro se o bus ou o efeito não existem)
+func efeito_do_bus(classe):
 	var indice = AudioServer.get_bus_index(BUS)
 	if indice < 0:
 		push_error("Musica: o bus '%s' não existe (default_bus_layout.tres)" % BUS)
 		return null
 	for i in range(AudioServer.get_bus_effect_count(indice)):
 		var efeito = AudioServer.get_bus_effect(indice, i)
-		if efeito is AudioEffectLowPassFilter:
+		if efeito.is_class(classe):
 			return efeito
-	push_error("Musica: o bus '%s' não tem LowPassFilter" % BUS)
+	push_error("Musica: o bus '%s' não tem %s" % [BUS, classe])
 	return null
 
 # Faz um player sumir em 'duracao' s e parar (0 = para na hora). O fade é linear na

@@ -11,6 +11,7 @@ enum Tipo {
 	CAMERA_LENTA, FLASH_TELA, FLASH_CORPO, LETTERBOX, ONDA, ABERRACAO, BORDAS,
 	ESTRELAS_VELOCIDADE, ESTRELAS_COR, ESTRELAS_BRILHO, ESTRELAS_RISCO, ESTRELAS_EMPURRAR,
 	ESTRELAS_APAGAR, ESTRELAS_ACENDER, PARTICULA, AFTERIMAGE, SOM, SINAL, MOMENTO,
+	LETREIRO, FALA,
 }
 
 enum Particula { NENHUMA, FAISCA, POEIRA_POUSO, POEIRA_BLOCO, FOLHINHAS, KI_HIT, KI_SUBINDO }
@@ -44,6 +45,8 @@ const CAMPOS = {
 	Tipo.SOM: ["nome"],
 	Tipo.SINAL: ["nome", "parametros"],
 	Tipo.MOMENTO: ["nome"],
+	Tipo.LETREIRO: ["letreiro", "texto", "subtitulo", "duracao"],
+	Tipo.FALA: ["nome"],
 }
 
 ## Segundos (tempo real) depois do início do momento
@@ -71,6 +74,7 @@ const CAMPOS = {
 @export var fator := 0.0
 ## Câmera lenta: escala do tempo do jogo
 @export var escala := 0.0
+## Segundos. Letreiro: tempo na tela (0 = o do estilo)
 @export var duracao := 0.0
 ## A duração é a da animação que quem toca o momento informa (nunca um número copiado)
 @export var da_animacao := false
@@ -111,6 +115,11 @@ const CAMPOS = {
 @export var nome := &""
 ## Sinal: números que a fase usa (chaves em texto)
 @export var parametros := {}
+## Letreiro: o estilo (recursos/boss/letreiros/)
+@export var letreiro: LetreiroDados
+## Letreiro: o texto e o subtítulo (o subtítulo fica embaixo, menor)
+@export var texto := ""
+@export var subtitulo := ""
 
 # Esconde no Inspector os campos que o tipo atual não usa (eles continuam salvos)
 func _validate_property(property):
@@ -172,8 +181,11 @@ func campo_faltando():
 			return zerado({"particula": particula})
 		Tipo.AFTERIMAGE:
 			return zerado({"cor": cor, "copias": copias, "vida": vida, "alfa": alfa})
-		Tipo.SOM, Tipo.SINAL, Tipo.MOMENTO:
+		Tipo.SOM, Tipo.SINAL, Tipo.MOMENTO, Tipo.FALA:
 			return zerado({"nome": nome})
+		Tipo.LETREIRO:
+			if letreiro == null:
+				return "letreiro"
 	return ""
 
 # O primeiro campo da lista que está em 0 (ou vazio); "" se todos têm valor

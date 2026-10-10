@@ -5,8 +5,9 @@ extends Node
 
 signal vida_boss_mudou(vida, vida_max)
 signal boss_invulneravel(ligado)
-# Começou a fase 'nome' (o nó dela em $Fases); "FIM" quando acabam as fases
-signal fase_mudou(nome)
+# Começou a fase 'nome' (o nó dela em $Fases) da luta 'numero' (1, 2, 3);
+# "FIM" e 0 quando acabam as fases
+signal fase_mudou(nome, numero)
 # Acabaram as fases
 signal terminou
 
@@ -28,13 +29,15 @@ func comecar(player):
 	ctx.player = player
 	proxima_fase()
 
-# Começa o próximo filho de $Fases; se não há mais nenhum, avisa a main
+# Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
+# nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria
 func proxima_fase():
+	LimpezaProjeteis.limpar($Ataques, self)
 	indice_fase += 1
 	var fases = $Fases.get_children()
 	if indice_fase >= fases.size():
-		fase_mudou.emit(&"FIM")
+		fase_mudou.emit(&"FIM", 0)
 		terminou.emit()
 		return
-	fase_mudou.emit(fases[indice_fase].name)
+	fase_mudou.emit(fases[indice_fase].name, fases[indice_fase].numero_fase())
 	fases[indice_fase].comecar(ctx)

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlayerDados" format=3 uid="uid://dhtq8yyditpcp"]
+
+[ext_resource type="Script" uid="uid://dv20bba814ey5" path="res://scripts/player/player_dados.gd" id="1_dados"]
+
+[resource]
+script = ExtResource("1_dados")
+iframes_duracao = 1.0
+iframes_pisca = 0.08
+iframes_alfa = 0.2
+velocidade_arena = 150.0
+hurtbox = Vector2(6, 6)
+caixa_sprite = Rect2(-11, -17, 22, 33)
+pontinho_px = 2

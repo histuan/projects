@@ -37,6 +37,12 @@ var px_aberracao = 0.0
 var cor_bordas = Color.TRANSPARENT
 var alfa_bordas = 0.0
 var bordas_acesas = false
+# Bordas FIXAS (ex.: vida baixa): ficam por baixo das temporárias (hit, alarme) e voltam
+# quando a temporária desliga ou termina as piscadas
+var cor_bordas_fixas = Color.TRANSPARENT
+var alfa_bordas_fixas = 0.0
+var pulsar_bordas_fixas = 0.0
+var bordas_temporarias = false
 # As barras do letterbox foram mandadas entrar (estão entrando ou paradas na tela)
 var barras_ligadas = false
 
@@ -131,9 +137,40 @@ func aberracao(px, volta = -1.0):
 	tween_aberracao = novo_tween()
 	tween_aberracao.tween_method(definir_aberracao, px, 0.0, volta)
 
-# Degradê de 'cor' nas bordas. pulsar = segundos aceso/apagado (0 = fixa);
-# vezes = quantas piscadas (0 = até a próxima chamada). alfa 0 desliga
+# Bordas TEMPORÁRIAS: degradê de 'cor' nas bordas. pulsar = segundos aceso/apagado
+# (0 = fixa); vezes = quantas piscadas (0 = até a próxima chamada). alfa 0 desliga e
+# volta para as bordas fixas (se houver); o fim das piscadas também
 func bordas(cor, alfa, pulsar = 0.0, vezes = 0):
+	if alfa <= 0:
+		voltar_para_bordas_fixas()
+		return
+	bordas_temporarias = true
+	aplicar_bordas(cor, alfa, pulsar, vezes)
+	if vezes > 0 and pulsar > 0:
+		tween_bordas.finished.connect(voltar_para_bordas_fixas)
+
+# Bordas que ficam até soltar_bordas_fixas() (ex.: vida baixa). Uma temporária ligada
+# continua na frente; quando ela acaba, estas aparecem
+func bordas_fixas(cor, alfa, pulsar = 0.0):
+	cor_bordas_fixas = cor
+	alfa_bordas_fixas = alfa
+	pulsar_bordas_fixas = pulsar
+	if not bordas_temporarias:
+		voltar_para_bordas_fixas()
+
+# Tira as bordas fixas (some na hora se nenhuma temporária estiver na frente)
+func soltar_bordas_fixas():
+	alfa_bordas_fixas = 0.0
+	if not bordas_temporarias:
+		voltar_para_bordas_fixas()
+
+# Sem temporária: mostra as fixas (ou nada, se não há fixas)
+func voltar_para_bordas_fixas():
+	bordas_temporarias = false
+	aplicar_bordas(cor_bordas_fixas, alfa_bordas_fixas, pulsar_bordas_fixas, 0)
+
+# Desenha o degradê com 'cor' e 'alfa', piscando 'vezes' vezes (0 = sem parar) a cada 'pulsar' s
+func aplicar_bordas(cor, alfa, pulsar, vezes):
 	if tween_bordas != null:
 		tween_bordas.kill()
 	cor_bordas = cor
@@ -171,6 +208,8 @@ func limpar():
 	barras_ligadas = false
 	definir_letterbox(0.0)
 	alfa_bordas = 0.0
+	alfa_bordas_fixas = 0.0
+	bordas_temporarias = false
 	definir_bordas_acesas(false)
 	definir_forca_onda(0.0)
 	definir_aberracao(0.0)

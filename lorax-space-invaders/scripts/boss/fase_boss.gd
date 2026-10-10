@@ -18,3 +18,7 @@ func comecar_direto(contexto: ContextoBatalha):
 # Interrompe a fase: para relógios e solta o corpo
 func parar():
 	pass
+
+# Qual fase da luta esta é (1, 2 ou 3; 0 = não informada). Cada fase devolve a dela
+func numero_fase():
+	return 0

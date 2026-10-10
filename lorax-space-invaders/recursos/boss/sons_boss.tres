@@ -161,13 +161,13 @@ bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_fala_lorax"]
 script = ExtResource("1_som")
-arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax_curta.wav"])
 pitch_aleatorio = 1.12
 bus = &"Voz"
 
 [sub_resource type="Resource" id="Som_fala_lorax_serio"]
 script = ExtResource("1_som")
-arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax_curta.wav"])
 pitch = 0.65
 bus = &"Voz"
 
@@ -293,7 +293,7 @@ bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax_fuga_fala"]
 script = ExtResource("1_som")
-arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax.wav"])
+arquivos = Array[String](["res://efeitos sonoros reais/boss/voz_lorax_curta.wav"])
 pitch_aleatorio = 1.12
 bus = &"Voz"
 
@@ -705,6 +705,7 @@ ganhos = Dictionary[String, float]({
 "res://efeitos sonoros reais/boss/transf_despertar.wav": -3.0,
 "res://efeitos sonoros reais/boss/virada_fase.wav": -3.0,
 "res://efeitos sonoros reais/boss/voz_lorax.wav": 4.1,
+"res://efeitos sonoros reais/boss/voz_lorax_curta.wav": 5.2,
 "res://efeitos sonoros reais/boss/whoosh.wav": -3.0,
 "res://efeitos sonoros reais/wav/alien-explosao.wav": -3.0,
 "res://efeitos sonoros reais/wav/arvere.wav": -2.4,

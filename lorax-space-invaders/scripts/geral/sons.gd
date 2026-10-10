@@ -62,6 +62,14 @@ func parar(evento: StringName):
 		loops[evento].stop()
 		loops.erase(evento)
 
+# Corta na hora todo som deste evento que ainda está tocando (loop ou não), por exemplo a
+# voz quando o texto da fala acaba
+func cortar(evento: StringName):
+	for player in pool:
+		if player.playing and player.get_meta(&"evento", &"") == evento:
+			player.stop()
+	loops.erase(evento)
+
 # Para tudo (a main chama ao sair da árvore, para nada continuar no menu)
 func parar_tudo():
 	for tween in tweens_pitch:

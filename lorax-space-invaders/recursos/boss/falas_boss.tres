@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="BibliotecaFalas" format=3 uid="uid://cpx5nqr80chvs"]
+
+[ext_resource type="Script" uid="uid://dtmwq42ji23mv" path="res://scripts/boss/dados/fala.gd" id="1_fala"]
+[ext_resource type="Script" uid="uid://brgpspsjbx0ad" path="res://scripts/boss/dados/biblioteca_falas.gd" id="2_biblioteca"]
+
+[sub_resource type="Resource" id="Fala_abertura_fase3"]
+script = ExtResource("1_fala")
+texto = "Eu te dei a escolha de ir embora."
+personagem = 4
+voz = &"fala_lorax"
+seguinte = &"abertura_fase3_2"
+
+[sub_resource type="Resource" id="Fala_abertura_fase3_2"]
+script = ExtResource("1_fala")
+texto = "Você devia ter aceitado."
+personagem = 4
+expressao = 1
+voz = &"fala_lorax_serio"
+
+[sub_resource type="Resource" id="Fala_ainda_nao"]
+script = ExtResource("1_fala")
+texto = "[shake]ISSO AINDA NÃO ACABOU.[/shake]"
+personagem = 4
+expressao = 1
+voz = &"fala_lorax_serio"
+tamanho_fonte = 16
+letras_por_segundo = 20.0
+
+[sub_resource type="Resource" id="Fala_dica_fim_3a"]
+script = ExtResource("1_fala")
+texto = "Você sabe... nem todas as batalhas precisam acabar com morte."
+personagem = 4
+voz = &"fala_lorax"
+
+[sub_resource type="Resource" id="Fala_lorax_antigo_foge"]
+script = ExtResource("1_fala")
+texto = "Isso ainda não acabou."
+personagem = 1
+expressao = 1
+voz = &"lorax_fuga_fala"
+
+[sub_resource type="Resource" id="Fala_morte_fase3_1"]
+script = ExtResource("1_fala")
+texto = "Isso era óbvio desde o começo."
+voz = &"fala_lorax"
+
+[sub_resource type="Resource" id="Fala_morte_fase3_2"]
+script = ExtResource("1_fala")
+texto = "Você nunca teve chance."
+voz = &"fala_lorax"
+
+[sub_resource type="Resource" id="Fala_morte_fase3_3"]
+script = ExtResource("1_fala")
+texto = "Essa era a vontade dos seus patrões."
+voz = &"fala_lorax"
+
+[sub_resource type="Resource" id="Fala_pause_luta"]
+script = ExtResource("1_fala")
+texto = "Para onde pensa que você vai?"
+expressao = 1
+voz = &"fala_lorax_serio"
+
+[sub_resource type="Resource" id="Fala_player_morre_f12"]
+script = ExtResource("1_fala")
+texto = "Você nunca passou de uma estatística para eles."
+expressao = 2
+voz = &"fala_lorax"
+
+[sub_resource type="Resource" id="Fala_voce_de_novo"]
+script = ExtResource("1_fala")
+texto = "Você ainda está aqui?"
+personagem = 2
+expressao = 1
+voz = &"fala_lorax_serio"
+
+[resource]
+script = ExtResource("2_biblioteca")
+falas = Dictionary[StringName, ExtResource("1_fala")]({
+&"abertura_fase3": SubResource("Fala_abertura_fase3"),
+&"abertura_fase3_2": SubResource("Fala_abertura_fase3_2"),
+&"ainda_nao": SubResource("Fala_ainda_nao"),
+&"dica_fim_3a": SubResource("Fala_dica_fim_3a"),
+&"lorax_antigo_foge": SubResource("Fala_lorax_antigo_foge"),
+&"morte_fase3_1": SubResource("Fala_morte_fase3_1"),
+&"morte_fase3_2": SubResource("Fala_morte_fase3_2"),
+&"morte_fase3_3": SubResource("Fala_morte_fase3_3"),
+&"pause_luta": SubResource("Fala_pause_luta"),
+&"player_morre_f12": SubResource("Fala_player_morre_f12"),
+&"voce_de_novo": SubResource("Fala_voce_de_novo")
+})

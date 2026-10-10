@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="LetreiroDados" format=3]
+
+[ext_resource type="Script" path="res://scripts/boss/dados/letreiro_dados.gd" id="1_letreiro"]
+[ext_resource type="Texture2D" uid="uid://cdvfi64mb0xcy" path="res://meus sprites/teclas/tecla_w_cima.png" id="2_w"]
+[ext_resource type="Texture2D" uid="uid://8rpeimii2f6q" path="res://meus sprites/teclas/tecla_s_baixo.png" id="3_s"]
+
+[resource]
+script = ExtResource("1_letreiro")
+texturas = Array[Texture2D]([ExtResource("2_w"), ExtResource("3_s")])
+quadros_por_textura = 2
+espaco_texturas = 4.0
+posicao = Vector2(127, 160)
+fade_in = 0.8
+tempo = 0.5
+vezes = 2
+fade_out = 0.8
+nota = "TEMPOS COPIADOS DO LETREIRO WAVE; POSICAO E ESPACO: PROVISORIO"

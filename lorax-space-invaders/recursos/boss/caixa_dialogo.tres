@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="CaixaDialogoDados" format=3 uid="uid://cd8oihlmxno37"]
+
+[ext_resource type="Script" uid="uid://u5df5fyewnar" path="res://scripts/boss/dados/caixa_dialogo_dados.gd" id="1_caixa"]
+[ext_resource type="Texture2D" uid="uid://1wtyfkqsu1ng" path="res://meus sprites/lorax boss battle/fase1/retrato_fase1.png" id="1_pg0sn"]
+[ext_resource type="Texture2D" uid="uid://p7u1yod4xbgw" path="res://meus sprites/inimigos/retratos_lorax_antigo.png" id="2_antigo"]
+[ext_resource type="Texture2D" uid="uid://dj8tvfirammn5" path="res://meus sprites/lorax boss battle/fase2/retratos_fase2.png" id="4_fase2"]
+[ext_resource type="Texture2D" uid="uid://csjb5yyalqmeo" path="res://meus sprites/lorax boss battle/lorax_ui_final/retratos/lorax_retratos_48.png" id="5_instinto"]
+
+[resource]
+script = ExtResource("1_caixa")
+letras_por_segundo = 30.0
+pausa_ponto = 0.2
+boca_intervalo = 0.2
+pausa_espaco = 0.02
+pausa_virgula = 0.12
+pausa_frase = 0.2
+rajada_chance = 0.25
+rajada_velocidade = 1.8
+frase_curta_letras = 20
+frase_longa_letras = 60
+frase_longa_velocidade = 1.3
+voz_intervalo_min = 0.05
+seta_pulo_px = 2
+seta_pulo_periodo = 0.5
+musica_abaixa_db = -8.0
+musica_abaixa_entrada = 0.3
+musica_abaixa_saida = 0.5
+retrato_lorax_antigo = ExtResource("2_antigo")
+retrato_fase1 = ExtResource("1_pg0sn")
+retrato_fase2 = ExtResource("4_fase2")
+retrato_instinto = ExtResource("5_instinto")
+espaco_retrato = 48
+margem = 4
+distancia_tela = 2
+tamanho_fonte = 8
+linhas = 3

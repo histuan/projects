@@ -24,6 +24,24 @@ const LADO_BLOCO_PX = 40
 # Teste da regra de segurança: 4 flashes com este intervalo (s)
 const TESTE_FLASH_INTERVALO = 0.1
 const TESTE_FLASH_VEZES = 4
+# Teste da limpeza de projéteis (PROVISÓRIO, só do LAB): segundos entre o leque sair e a
+# limpeza, e a grade de folhas paradas que passa do teto (colunas × linhas, px entre elas)
+const LIMPEZA_ESPERA = 0.5
+const TETO_COLUNAS = 8
+const TETO_LINHAS = 5
+const TETO_ESPACO = Vector2(28, 16)
+# Teste do player (PROVISÓRIO, só do LAB): arena de mentira (largura, altura, centro na
+# horizontal e a BASE do retângulo, na altura do pé das árvores: y 196 + 14 do tronco),
+# segundos de cada ida/volta do MOVER PARA e o intervalo dos dois hits seguidos (tem que
+# cair dentro dos i-frames)
+const ARENA_TESTE_LARGURA = 192
+const ARENA_TESTE_ALTURA = 96
+const ARENA_TESTE_CENTRO_X = 127
+const ARENA_TESTE_BASE_Y = 210
+const MOVER_TESTE_TEMPO = 1.0
+const HIT_DUPLO_INTERVALO = 0.1
+# Dono dos pedidos de travar/bloquear tiro feitos pelo LAB
+const DONO_LAB = &"lab"
 # Linhas por página (uma por tecla)
 const LINHAS_POR_PAGINA = 10
 
@@ -43,8 +61,8 @@ const PAGINAS = [
 		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
 	["FASE 3", [&"aviso", &"raio", &"cortina_todos", &"raio_direto_carga", &"pancada",
 		&"esfera_estoura", &"teleporte", &"hit_lorax_ui", &"player_hit", &"virada"]],
-	["FASE 3 (2)", [&"desespero", &"janela_abre", &"respirando"]],
-	["DESFECHO", [&"finish_him", &"golpe_final", &"poupar"]],
+	["FASE 3 (2)", [&"desespero", &"janela_abre", &"respirando", &"titulo_fase3", &"dica_ws"]],
+	["DESFECHO", [&"finish_him", &"finish_letra", &"golpe_final", &"poupar", &"contagem"]],
 ]
 # Momentos que, na luta, acontecem fora do corpo do Lorax: onde o LAB solta (relativo ao boneco)
 const ALVOS_DEMO = {&"folha_acerta_bloco": Vector2(-LADO_BLOCO_PX, PES_BONECO)}
@@ -54,28 +72,49 @@ var tela
 var estrelas
 var e: EfeitosDados
 var mundo
+var hud
 var boneco: Node2D
 var flash_boneco: FlashSprite
 var rastro: Afterimage
 var tween_boneco: Tween = null
+# Onde nascem as folhas do teste de limpeza (faz o papel do $Ataques da luta)
+var ataques_teste: Node2D
+var player
+# O cenário (bases, chão, paredes): some com a arena ligada, como na F3
+var cenario
+# Contorno da arena de teste (só aparece com o modo arena ligado)
+var contorno_arena: Node2D
+# Onde o player estava antes da primeira ação da página PLAYER (a volta e o R vão para lá)
+var posicao_original = null
+# MOVER PARA: o player está no centro da arena de teste (a próxima vez volta)
+var player_no_centro = false
 
 # O boneco fica no alto (como na luta); a lista começa embaixo dele
 var posicao_boneco = Vector2.ZERO
 
 # Recebe da main quem ela vai controlar, confere o momentos_boss.tres e monta o boneco,
 # o texto e as páginas
-func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco):
+func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco, nova_hud, novo_player, novo_cenario):
+	player = novo_player
+	cenario = novo_cenario
 	camera = cam
 	tela = efeitos_tela
 	estrelas = campo_estrelas
 	e = dados
 	mundo = pai_do_boneco
+	hud = nova_hud
 	dica = "APERTE 1-0 PARA DISPARAR UM EFEITO"
 	posicao_boneco = Vector2((DADOS_FASE1.limite_esq + DADOS_FASE1.limite_dir) / 2.0, DADOS_FASE1.altura)
 	tela.flash_barrado.connect(_on_flash_barrado)
 	Momentos.validar_todos()
 	iniciar()
 	criar_boneco()
+	ataques_teste = Node2D.new()
+	mundo.add_child(ataques_teste)
+	contorno_arena = Node2D.new()
+	contorno_arena.visible = false
+	contorno_arena.draw.connect(_desenhar_contorno_arena)
+	mundo.add_child(contorno_arena)
 
 # As páginas de PAGINAS, depois OUTROS (momentos do arquivo que nenhuma linha alcança)
 # e, por último, as FERRAMENTAS
@@ -95,6 +134,7 @@ func montar_paginas():
 	for inicio in range(0, outros.size(), LINHAS_POR_PAGINA):
 		lista.append(nova_pagina("OUTROS", outros.slice(inicio, inicio + LINHAS_POR_PAGINA)))
 	lista.append(pagina_ferramentas())
+	lista.append(pagina_player())
 	return lista
 
 # Boneco parado do Lorax 2.0 no mundo, com flash e afterimage (o afterimage vem antes
@@ -137,6 +177,18 @@ func estado_ligado():
 		itens.append("BORDAS")
 	if ki_emitindo():
 		itens.append("KI")
+	if hud.letreiros_na_tela() > 0:
+		itens.append("LETREIRO")
+	if player.em_arena:
+		itens.append("ARENA")
+	if player.travado:
+		itens.append("TRAVADO")
+	elif not player.pode_atirar:
+		itens.append("SEM TIRO")
+	if player.invulneravel:
+		itens.append("I-FRAMES")
+	if Partida.vidas == 1:
+		itens.append("1 VIDA")
 	if itens.is_empty():
 		return "LIGADO: NADA"
 	return "LIGADO: " + ", ".join(itens)
@@ -162,6 +214,9 @@ func ao_resetar():
 	if tween_boneco != null:
 		tween_boneco.kill()
 	boneco.position = posicao_boneco
+	for folha in ataques_teste.get_children():
+		folha.queue_free()
+	resetar_player()
 
 # Um flash de tela foi barrado pela regra de segurança: avisa no detalhe
 func _on_flash_barrado():
@@ -181,7 +236,8 @@ func linha_momento(nome):
 		acao = tocar_momento.bind(nome)
 	return linha(dados.titulo, detalhes, acao)
 
-# Guarda o momento e tudo o que ele toca (sub-momentos e o seguinte)
+# Guarda o momento e tudo o que ele toca (sub-momentos, o seguinte e o momento por letra
+# dos letreiros)
 func marcar_alcancados(nome, alcancados):
 	if alcancados.has(nome):
 		return
@@ -194,6 +250,8 @@ func marcar_alcancados(nome, alcancados):
 	for passo in dados.passos:
 		if passo.tipo == Passo.Tipo.MOMENTO:
 			marcar_alcancados(passo.nome, alcancados)
+		elif passo.tipo == Passo.Tipo.LETREIRO and passo.letreiro.momento_por_letra != &"":
+			marcar_alcancados(passo.letreiro.momento_por_letra, alcancados)
 
 # Algum passo do momento (ou do que ele toca) roda de verdade
 func tem_efeito(nome, vistos):
@@ -353,7 +411,18 @@ func texto_do_passo(passo):
 			return texto_sinal(passo)
 		Passo.Tipo.MOMENTO:
 			return "MOMENTO " + maiusculo(passo.nome)
+		Passo.Tipo.LETREIRO:
+			return texto_do_letreiro(passo)
 	return "PASSO SEM TIPO"
+
+# Texto mostrado ("O LORAX / Guardião...") e o estilo do letreiro
+func texto_do_letreiro(passo):
+	var conteudo = passo.texto
+	if passo.subtitulo != "":
+		conteudo += " / " + passo.subtitulo
+	if conteudo == "":
+		return texto_letreiro(passo.letreiro)
+	return "\"%s\" %s" % [conteudo.to_upper(), texto_letreiro(passo.letreiro)]
 
 # Duração de um passo que leva tempo: " EM x S", " DA ANIMACAO" ou " (FICA LIGADO)"
 func quando(passo):
@@ -436,7 +505,42 @@ func pagina_ferramentas():
 			alternar_bordas.bind(bordas)),
 		linha("4 FLASHES SEGUIDOS", ["TESTA A REGRA: NO MAXIMO %d POR SEGUNDO" % e.flashes_tela_por_segundo],
 			quatro_flashes.bind(flash)),
+		linha("LIMPAR PROJETEIS", ["LEQUE DE %d FOLHAS DO BONECO; %s S DEPOIS VIRAM FAISCA" % [DADOS_FASE1.quantidade, n(LIMPEZA_ESPERA)],
+			texto_limpeza()], limpar_leque),
+		linha("LIMPAR %d (TETO)" % (TETO_COLUNAS * TETO_LINHAS), ["FOLHAS PARADAS, LIMPAS NA HORA",
+			texto_limpeza()], limpar_grade),
 	])
+
+# Os números da limpeza (efeitos_boss.tres) e o som dela
+func texto_limpeza():
+	return "FAISCA %d (%s PX); TETO %d, DEPOIS 1 A CADA %d; SOM PROJETEIS LIMPAM" % [
+		e.limpeza_faisca.x, n(e.limpeza_faisca.y), e.limpeza_teto, e.limpeza_faisca_a_cada]
+
+# Solta o leque da fase 1 do boneco e, depois da espera, limpa como a troca de fase
+func limpar_leque():
+	Projetil.criar_leque(DADOS_FASE1.projetil, DADOS_FASE1.quantidade, DADOS_FASE1.angulo_leque,
+			boneco.global_position + DADOS_FASE1.origem_tiro, ataques_teste)
+	if not await esperar(LIMPEZA_ESPERA):
+		return
+	limpar_teste()
+
+# Grade de folhas paradas (mais que o teto) limpa na hora
+func limpar_grade():
+	var largura = (TETO_COLUNAS - 1) * TETO_ESPACO.x
+	var inicio = Vector2(boneco.position.x - largura / 2.0, boneco.position.y + MEIO_BONECO + TETO_ESPACO.y)
+	for linha_grade in range(TETO_LINHAS):
+		for coluna in range(TETO_COLUNAS):
+			var folha = DADOS_FASE1.projetil.instantiate()
+			folha.velocidade = 0.0
+			folha.position = inicio + Vector2(coluna, linha_grade) * TETO_ESPACO
+			ataques_teste.add_child(folha)
+	limpar_teste()
+
+# A mesma limpeza da luta, nas folhas do teste; o detalhe diz quantas limpou
+func limpar_teste():
+	var quantos = LimpezaProjeteis.limpar(ataques_teste, mundo)
+	aviso = "LIMPOU %d PROJETEIS" % quantos
+	mostrar()
 
 # O primeiro passo do tipo dado no momento (erro se não houver)
 func primeiro_passo(nome, tipo):
@@ -460,3 +564,142 @@ func quatro_flashes(passo):
 		tela.flash_tela(e.cor(passo.cor), passo.alfa, passo.duracao)
 		if not await esperar(TESTE_FLASH_INTERVALO):
 			return
+
+# ---------- player (B4a) ----------
+
+# Ferramentas do player: modo arena, hits e i-frames, 1 vida, travar, tiro e mover_para
+func pagina_player():
+	var d = player.DADOS
+	var arena = "ARENA DE TESTE %dx%d, BASE EM Y %d (PROVISORIO); VELOCIDADE %s; HURTBOX %dx%d; PONTINHO %d PX; SPRITE %dx%d DENTRO" % [
+		ARENA_TESTE_LARGURA, ARENA_TESTE_ALTURA, ARENA_TESTE_BASE_Y, n(d.velocidade_arena), d.hurtbox.x, d.hurtbox.y,
+		d.pontinho_px, d.caixa_sprite.size.x, d.caixa_sprite.size.y]
+	var iframes = "I-FRAMES %s S, PISCA %s S ATE ALFA %s" % [n(d.iframes_duracao), n(d.iframes_pisca), n(d.iframes_alfa)]
+	var vida_baixa = "LOW-PASS %s HZ EM %s S; BORDAS ALFA %s PULSANDO %s S; BATIMENTO" % [
+		n(e.vida_baixa_abafar_hz), n(e.vida_baixa_abafar_duracao), n(e.vida_baixa_bordas_alfa), n(e.vida_baixa_bordas_pulsar)]
+	return nova_pagina("PLAYER", [
+		linha("MODO ARENA LIGA/DESLIGA", [arena, "VAI AO CENTRO EM %s S; O CENARIO SOME; W/A/S/D OU SETAS ANDAM EM 8 DIRECOES" % n(MOVER_TESTE_TEMPO)], alternar_arena),
+		linha("LEVAR HIT", [iframes, "NA ARENA: MOMENTO PLAYER HIT (TREMOR, HIT-STOP, BORDAS, SOM)"], levar_hit),
+		linha("2 HITS SEGUIDOS", ["O 2o HIT VEM %s S DEPOIS: TEM QUE SER IGNORADO" % n(HIT_DUPLO_INTERVALO), iframes], dois_hits),
+		linha("1 VIDA LIGA/DESLIGA", [vida_baixa], alternar_vida_baixa),
+		linha("TRAVADO LIGA/DESLIGA", ["NAO ANDA NEM ATIRA (DONO LAB)"], alternar_travado),
+		linha("TIRO LIGA/DESLIGA", ["ANDA MAS NAO ATIRA (DONO LAB)"], alternar_tiro),
+		linha("MOVER PARA", ["VAI AO CENTRO DA ARENA DE TESTE E VOLTA, %s S (PROVISORIO)" % n(MOVER_TESTE_TEMPO)], mover_player),
+	])
+
+# A arena de teste, montada pelas constantes do topo
+func arena_teste() -> Rect2:
+	var tamanho = Vector2(ARENA_TESTE_LARGURA, ARENA_TESTE_ALTURA)
+	return Rect2(Vector2(ARENA_TESTE_CENTRO_X - tamanho.x / 2.0, ARENA_TESTE_BASE_Y - tamanho.y), tamanho)
+
+# Liga: o cenário some, o player vai ao centro da arena (mover_para) e entra no modo arena
+# ao chegar. Desliga: sai do modo arena, o cenário volta e o player volta para onde estava
+func alternar_arena():
+	if player.em_arena or player.chegou.is_connected(_on_player_chegou_na_arena):
+		if player.chegou.is_connected(_on_player_chegou_na_arena):
+			player.chegou.disconnect(_on_player_chegou_na_arena)
+		player.sair_arena()
+		mostrar_cenario(true)
+		contorno_arena.visible = false
+		player.mover_para(posicao_original, MOVER_TESTE_TEMPO)
+		player_no_centro = false
+		return
+	guardar_posicao_original()
+	mostrar_cenario(false)
+	contorno_arena.visible = true
+	contorno_arena.queue_redraw()
+	player.chegou.connect(_on_player_chegou_na_arena, CONNECT_ONE_SHOT)
+	player.mover_para(arena_teste().get_center(), MOVER_TESTE_TEMPO)
+
+# O player chegou ao centro da arena de teste: liga o modo arena
+func _on_player_chegou_na_arena():
+	player.entrar_arena(arena_teste())
+
+# Guarda onde o player está antes da primeira ação que o tira do lugar
+func guardar_posicao_original():
+	if posicao_original == null:
+		posicao_original = player.global_position
+
+# Esconde (ou mostra) bases, chão e paredes; escondidos, ficam sem colisão
+# (process_mode DISABLED tira os corpos do espaço físico). A AreaGameOver fica
+func mostrar_cenario(ligado):
+	for nome in [&"bases", &"chao", &"paredes"]:
+		var grupo = cenario.get_node(NodePath(nome))
+		grupo.process_mode = Node.PROCESS_MODE_INHERIT if ligado else Node.PROCESS_MODE_DISABLED
+		for filho in grupo.get_children():
+			if filho is CanvasItem:
+				filho.visible = ligado
+
+# Um hit no player; com 1 vida, ganha uma antes (o LAB não deixa morrer)
+func levar_hit():
+	if Partida.vidas <= 1:
+		Partida.ganhar_vida()
+	player.receber_dano()
+	aviso = "VIDAS: %d" % Partida.vidas
+
+# Dois hits seguidos: só o primeiro pode tirar vida
+func dois_hits():
+	if Partida.vidas <= 2:
+		Partida.ganhar_vida()
+	var antes = Partida.vidas
+	player.receber_dano()
+	if not await esperar(HIT_DUPLO_INTERVALO):
+		return
+	player.receber_dano()
+	aviso = "PERDEU %d VIDA(S) (TEM QUE SER 1)" % (antes - Partida.vidas)
+	mostrar()
+
+# Vai a 1 vida (perdendo pela Partida) ou volta ao máximo
+func alternar_vida_baixa():
+	if Partida.vidas > 1:
+		while Partida.vidas > 1:
+			Partida.perder_vida()
+	else:
+		while Partida.pode_ganhar_vida():
+			Partida.ganhar_vida()
+
+# Pedido do LAB para travar o player
+func alternar_travado():
+	if player.donos_travando.has(DONO_LAB):
+		player.destravar(DONO_LAB)
+	else:
+		player.travar(DONO_LAB)
+
+# Pedido do LAB para bloquear o tiro
+func alternar_tiro():
+	if player.donos_sem_tiro.has(DONO_LAB):
+		player.liberar_tiro(DONO_LAB)
+	else:
+		player.bloquear_tiro(DONO_LAB)
+
+# Leva o player ao centro da arena de teste; na próxima vez, de volta para onde estava
+func mover_player():
+	guardar_posicao_original()
+	if player_no_centro:
+		player.mover_para(posicao_original, MOVER_TESTE_TEMPO)
+	else:
+		player.mover_para(arena_teste().get_center(), MOVER_TESTE_TEMPO)
+	player_no_centro = not player_no_centro
+
+# Contorno de 1 px da arena de teste
+func _desenhar_contorno_arena():
+	contorno_arena.draw_rect(arena_teste().grow(-0.5), e.cor_branco, false, 1.0)
+
+# O R: para o mover_para, sai da arena, o cenário volta, o player volta na hora para onde
+# estava, solta os pedidos do LAB, corta os i-frames e volta ao máximo de vidas
+func resetar_player():
+	if player.chegou.is_connected(_on_player_chegou_na_arena):
+		player.chegou.disconnect(_on_player_chegou_na_arena)
+	player.parar_movimento()
+	player.sair_arena()
+	mostrar_cenario(true)
+	contorno_arena.visible = false
+	if posicao_original != null:
+		player.global_position = posicao_original
+		posicao_original = null
+	player.velocity = Vector2.ZERO
+	player_no_centro = false
+	player.destravar(DONO_LAB)
+	player.liberar_tiro(DONO_LAB)
+	player.terminar_iframes()
+	while Partida.pode_ganhar_vida():
+		Partida.ganhar_vida()

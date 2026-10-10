@@ -47,8 +47,8 @@ func _input(event):
 		get_viewport().set_input_as_handled()
 
 # Fase da batalha que começou (a main liga no fase_mudou da BatalhaFinal)
-func mostrar_fase(nome):
-	fase = String(nome)
+func mostrar_fase(nome, numero = 0):
+	fase = "%s (%d)" % [nome, numero]
 
 # Vida do boss (a main liga no vida_boss_mudou da BatalhaFinal)
 func mostrar_vida_boss(vida, vida_max):

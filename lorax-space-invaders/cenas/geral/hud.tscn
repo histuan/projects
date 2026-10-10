@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://13rj6lp8f6l8" path="res://scripts/geral/hud.gd" id="1_tk4hp"]
 [ext_resource type="Texture2D" uid="uid://cya266vipgupb" path="res://meus sprites/geral/points.png" id="2_3lyjj"]
-[ext_resource type="Texture2D" uid="uid://bv1gees8tb7ud" path="res://meus sprites/geral/final_wave.png" id="2_k18o7"]
 [ext_resource type="FontFile" uid="uid://eo0ndfp5g245" path="res://meus sprites/geral/numeros16_molde.png" id="3_3lyjj"]
 [ext_resource type="Script" uid="uid://ctpbcjvlke5mh" path="res://scripts/geral/coracoes.gd" id="4_ukkbo"]
 [ext_resource type="Texture2D" uid="uid://ci3gbek7dfo57" path="res://meus sprites/geral/coracao.png" id="5_3lyjj"]
@@ -14,7 +13,6 @@
 [node name="hud" type="CanvasLayer" unique_id=823700872]
 layer = 5
 script = ExtResource("1_tk4hp")
-letreiro_final_wave = ExtResource("2_k18o7")
 
 [node name="placar" type="HBoxContainer" parent="." unique_id=282110837]
 anchors_preset = 10

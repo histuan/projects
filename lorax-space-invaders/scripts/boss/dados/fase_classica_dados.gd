@@ -6,6 +6,8 @@ extends Resource
 @export_group("Vida")
 ## Golpes que o boss aguenta nesta fase (a hud reparte isso nos corações)
 @export var vida := 15
+## Fase da luta (1, 2 ou 3): decide o retrato AUTO das falas (0 = não informada)
+@export var numero_fase := 0
 
 @export_group("Movimento")
 @export var velocidade := 50.0

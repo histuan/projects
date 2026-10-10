@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LetreiroDados" format=3 uid="uid://cixpx1thja7fu"]
+
+[ext_resource type="Script" uid="uid://dr47wj08vre64" path="res://scripts/boss/dados/letreiro_dados.gd" id="1_letreiro"]
+
+[resource]
+script = ExtResource("1_letreiro")
+posicao = Vector2(127, 112)
+tamanho_fonte = 16
+cor = Color(0.9098039, 0.14901961, 0.16862746, 1)
+contorno_cor = Color(0.023529412, 0.023529412, 0.03137255, 1)
+contorno_px = 1
+letra_intervalo = 0.08
+letra_escala = Vector2(1.6, 1)
+fica = true
+momento_por_letra = &"finish_letra"
+nota = "POSICAO, FONTE E CORES: PROVISORIO"

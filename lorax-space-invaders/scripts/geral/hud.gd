@@ -1,17 +1,11 @@
-# HUD: placar, corações do player e do boss, letreiro da wave e os "+N" flutuantes.
+# HUD: placar, corações do player e do boss, letreiro da wave, os letreiros da boss fight
+# (Letreiro + estilo LetreiroDados) e os "+N" flutuantes.
 # Só desenha; quem decide pontos e vidas é a Partida.
 extends CanvasLayer
 
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 var tween_wave: Tween = null
 var pontos_visiveis = true
-
-## Desenho do letreiro "FINAL WAVE" (wave 10). Vazio = provisório em texto com a fonte do jogo
-@export var letreiro_final_wave: Texture2D
-# O alarme acabou e o FINAL WAVE terminou de sumir (a main espera isto para soltar o boss)
-signal final_wave_sumiu
-var final_wave: CanvasItem = null
-var tween_final: Tween = null
 
 # Boss final: um coração cheio esvaziou (a main reage com a câmera)
 signal coracao_boss_perdido
@@ -96,52 +90,33 @@ func mostrar_wave(n):
 		tween_wave.tween_interval(0.5)
 		tween_wave.tween_property(w, "modulate:a", 0.0, 0.8)
 
-# Wave 10: FINAL WAVE no lugar do letreiro de wave, piscando ('pisca' s aceso/apagado)
-# por 'duracao' s (o tamanho do alarme) e sumindo com fade de 'fade' s. Pausa com o jogo
-func mostrar_final_wave(duracao, pisca, fade):
+# Some na hora com o letreiro "WAVE N" (o FINAL WAVE aparece no lugar dele)
+func esconder_letreiro_wave():
 	if tween_wave != null:
 		tween_wave.kill()
 	$wave.modulate.a = 0.0
-	if final_wave == null:
-		final_wave = criar_final_wave()
-	if tween_final != null:
-		tween_final.kill()
-	tween_final = create_tween().set_ignore_time_scale()
-	tween_final.set_loops(maxi(1, roundi(duracao / (2.0 * pisca))))
-	tween_final.tween_callback(func(): final_wave.modulate.a = 1.0)
-	tween_final.tween_interval(pisca)
-	tween_final.tween_callback(func(): final_wave.modulate.a = 0.0)
-	tween_final.tween_interval(pisca)
-	tween_final.finished.connect(sumir_final_wave.bind(fade))
 
-# Fim do alarme: o FINAL WAVE aparece uma última vez e some com fade
-func sumir_final_wave(fade):
-	final_wave.modulate.a = 1.0
-	tween_final = create_tween().set_ignore_time_scale()
-	tween_final.tween_property(final_wave, "modulate:a", 0.0, fade)
-	tween_final.tween_callback(final_wave_sumiu.emit)
+# Mostra um letreiro no estilo 'dados' e devolve ele (sinais sumiu e letra_entrou).
+# 'tempo' < 0 = o tempo do estilo
+func mostrar_letreiro(dados, texto = "", subtitulo = "", tempo = -1.0):
+	var letreiro = Letreiro.new()
+	add_child(letreiro)
+	letreiro.mostrar(dados, texto, subtitulo, tempo)
+	return letreiro
 
-# O letreiro FINAL WAVE na posição do letreiro de wave: o desenho, ou o texto provisório
-func criar_final_wave():
-	var no: CanvasItem
-	if letreiro_final_wave != null:
-		var sprite = Sprite2D.new()
-		sprite.texture = letreiro_final_wave
-		sprite.position = Vector2(get_viewport().get_visible_rect().size.x / 2.0, $wave.position.y)
-		no = sprite
-	else:
-		var texto = Label.new()
-		texto.text = "FINAL WAVE"
-		texto.add_theme_font_override("font", FONTE)
-		texto.add_theme_font_size_override("font_size", 16)
-		texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		texto.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		texto.size = Vector2(get_viewport().get_visible_rect().size.x, 16)
-		texto.position = Vector2(0, $wave.position.y - texto.size.y / 2.0)
-		no = texto
-	no.modulate.a = 0.0
-	add_child(no)
-	return no
+# Quantos letreiros estão na tela (para o status dos LABs)
+func letreiros_na_tela():
+	var total = 0
+	for filho in get_children():
+		if filho is Letreiro and not filho.is_queued_for_deletion():
+			total += 1
+	return total
+
+# Apaga na hora todos os letreiros (R dos LABs)
+func limpar_letreiros():
+	for filho in get_children():
+		if filho is Letreiro:
+			filho.queue_free()
 
 # Texto "+N" que sobe e some. Cor por valor: 200 forte, 300 sniper, 500 boss
 func mostrar_pontos(valor, pos, tamanho = 8):

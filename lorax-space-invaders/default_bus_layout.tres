@@ -8,6 +8,9 @@ cutoff_hz = 20000.0
 resource_name = "Compressor"
 sidechain = &"Efeitos"
 
+[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_musica"]
+resource_name = "Amplify"
+
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_eco"]
 resource_name = "Reverb"
 
@@ -22,6 +25,8 @@ bus/1/effect/0/effect = SubResource("AudioEffectLowPassFilter_musica")
 bus/1/effect/0/enabled = true
 bus/1/effect/1/effect = SubResource("AudioEffectCompressor_musica")
 bus/1/effect/1/enabled = true
+bus/1/effect/2/effect = SubResource("AudioEffectAmplify_musica")
+bus/1/effect/2/enabled = true
 bus/2/name = &"Efeitos"
 bus/2/solo = false
 bus/2/mute = false

@@ -32,9 +32,17 @@ func _on_timer_planeta_timeout():
 	main.get_node("fundo").add_child(Planeta.instantiate())
 	$TimerPlaneta.start(randf_range(45, 70))
 
-# Wave do boss: nenhum planeta novo (o que já está descendo termina de sair)
+# Wave do boss: nenhum planeta novo (o que já está descendo termina de passar)
 func parar_planeta():
 	$TimerPlaneta.stop()
+
+# LAB DE EFEITOS: nada cai nem passa (power-ups, corações e planetas; os que estão na tela somem)
+func parar_tudo():
+	$TimerSpawnPowerUp.stop()
+	$TimerSpawnCoracao.stop()
+	parar_planeta()
+	for planeta in get_tree().get_nodes_in_group(&"planetas"):
+		planeta.sumir()
 
 # Só cria coração se faltar vida; o timer é reagendado sempre
 func _on_timer_spawn_coracao_timeout():

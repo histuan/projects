@@ -76,6 +76,16 @@ enum Cor {
 ## Segundos para a aberração voltar ao normal
 @export var aberracao_volta := 0.0
 
+@export_group("Vida baixa")
+## Corte (Hz) do low-pass da música com 1 vida do player na luta
+@export var vida_baixa_abafar_hz := 0.0
+## Segundos para a música abafar (e voltar) ao entrar/sair da vida baixa
+@export var vida_baixa_abafar_duracao := 0.0
+## Alfa das bordas vermelhas (cor_dano) com 1 vida
+@export var vida_baixa_bordas_alfa := 0.0
+## Segundos aceso/apagado das bordas de vida baixa (0 = fixas)
+@export var vida_baixa_bordas_pulsar := 0.0
+
 @export_group("Partículas")
 ## Faísca do hit no Lorax 2.0: (quantidade, distância px)
 @export var faisca_hit := Vector2.ZERO
@@ -91,6 +101,12 @@ enum Cor {
 @export var ki_hit_vida := 0.0
 ## Ki subindo do corpo (aura): partículas por segundo
 @export var ki_subindo_por_segundo := 0.0
+## Faísca de cada projétil limpo na troca de fase: (quantidade, distância px)
+@export var limpeza_faisca := Vector2.ZERO
+## Projéteis que ganham faísca numa limpeza; os que passam disso seguem limpeza_faisca_a_cada
+@export var limpeza_teto := 0
+## Depois do teto, 1 projétil a cada N ganha faísca (os outros só somem)
+@export var limpeza_faisca_a_cada := 0
 
 # A cor de um passo de momento (Cor.NENHUMA = transparente)
 func cor(qual):
