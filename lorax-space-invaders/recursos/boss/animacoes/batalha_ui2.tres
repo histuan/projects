@@ -1,0 +1,182 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://dmma2i3a7t3b3"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_2tvwr"]
+[ext_resource type="Texture2D" uid="uid://mkos5ojlh78u" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/area/abre_os_dois.png" id="2_iwbdf"]
+[ext_resource type="Texture2D" uid="uid://dxdi2ctjbpr60" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/area/mao_dir.png" id="3_r5bti"]
+[ext_resource type="Texture2D" uid="uid://u4grabij7tpj" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/area/mao_esq.png" id="4_nlg7q"]
+[ext_resource type="Texture2D" uid="uid://d3md0y4ad0hj6" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/energia/esfera.png" id="5_ckrf8"]
+[ext_resource type="Texture2D" uid="uid://8w74juiq1mih" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/energia/orbe_dir.png" id="6_x76yr"]
+[ext_resource type="Texture2D" uid="uid://bmt8jgpfncel7" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/energia/orbe_esq.png" id="7_qcj8n"]
+[ext_resource type="Texture2D" uid="uid://yp0jpwpli6hd" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/energia/pancada.png" id="8_50uxx"]
+[ext_resource type="Texture2D" uid="uid://c0iw6c8wsu071" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/energia/raio.png" id="9_q4xiu"]
+[ext_resource type="Texture2D" uid="uid://c4jhaa03e4p8j" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/folha/chamar_folhas.png" id="10_rl2cy"]
+[ext_resource type="Texture2D" uid="uid://bl6trgjxrb1m4" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/folha/lancar_folhas.png" id="11_rtdra"]
+[ext_resource type="Texture2D" uid="uid://cbefene4j2vln" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/idle/entrar_em_guarda.png" id="12_lp1ah"]
+[ext_resource type="Texture2D" uid="uid://d3d40d5jhevx4" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/idle/postura.png" id="13_0b4v3"]
+[ext_resource type="Texture2D" uid="uid://ddiuucd1jy4db" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/movimento/desliza_dir.png" id="14_ymjha"]
+[ext_resource type="Texture2D" uid="uid://boo1ug0qxdik" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/movimento/desliza_esq.png" id="15_nfr64"]
+[ext_resource type="Texture2D" uid="uid://dcs6ppkitusee" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/movimento/esquiva_dir.png" id="16_jiw2p"]
+[ext_resource type="Texture2D" uid="uid://dty8fw34wcaij" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/movimento/esquiva_esq.png" id="17_2cpy3"]
+[ext_resource type="Texture2D" uid="uid://by17n4mik811p" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/reacao/dano.png" id="18_hu4xo"]
+[ext_resource type="Texture2D" uid="uid://bw0s7cbnvln06" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/reacao/teleporte.png" id="19_ei56g"]
+[ext_resource type="Texture2D" uid="uid://b2gs1hgitgkb7" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/reacao/tonto.png" id="20_fjytp"]
+[ext_resource type="Texture2D" uid="uid://bcqw0qft3q1n6" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/UI-fase2/reacao/virada_de_fase.png" id="21_taa5a"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="22_5e8cb"]
+
+[sub_resource type="Resource" id="Resource_b45tn"]
+script = ExtResource("1_2tvwr")
+nome = "abre_os_dois"
+folha = ExtResource("2_iwbdf")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 1
+
+[sub_resource type="Resource" id="Resource_ytkdh"]
+script = ExtResource("1_2tvwr")
+nome = "mao_dir"
+folha = ExtResource("3_r5bti")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 1
+
+[sub_resource type="Resource" id="Resource_h8lue"]
+script = ExtResource("1_2tvwr")
+nome = "mao_esq"
+folha = ExtResource("4_nlg7q")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 1
+
+[sub_resource type="Resource" id="Resource_l2gtg"]
+script = ExtResource("1_2tvwr")
+nome = "esfera"
+folha = ExtResource("5_ckrf8")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 5
+
+[sub_resource type="Resource" id="Resource_7cbv4"]
+script = ExtResource("1_2tvwr")
+nome = "orbe_dir"
+folha = ExtResource("6_x76yr")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 4
+
+[sub_resource type="Resource" id="Resource_eq87k"]
+script = ExtResource("1_2tvwr")
+nome = "orbe_esq"
+folha = ExtResource("7_qcj8n")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 4
+
+[sub_resource type="Resource" id="Resource_67y5a"]
+script = ExtResource("1_2tvwr")
+nome = "pancada"
+folha = ExtResource("8_50uxx")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 3
+
+[sub_resource type="Resource" id="Resource_sorvn"]
+script = ExtResource("1_2tvwr")
+nome = "raio"
+folha = ExtResource("9_q4xiu")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 4
+
+[sub_resource type="Resource" id="Resource_gk6hj"]
+script = ExtResource("1_2tvwr")
+nome = "chamar_folhas"
+folha = ExtResource("10_rl2cy")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 4
+
+[sub_resource type="Resource" id="Resource_4we3v"]
+script = ExtResource("1_2tvwr")
+nome = "lancar_folhas"
+folha = ExtResource("11_rtdra")
+velocidade = 1.5
+largura_quadro = 40
+quadro_evento = 3
+
+[sub_resource type="Resource" id="Resource_rrjmh"]
+script = ExtResource("1_2tvwr")
+nome = "entrar_em_guarda"
+folha = ExtResource("12_lp1ah")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_0ox3a"]
+script = ExtResource("1_2tvwr")
+nome = "postura"
+folha = ExtResource("13_0b4v3")
+largura_quadro = 40
+tempo_por_quadro = 0.5
+repetir = true
+
+[sub_resource type="Resource" id="Resource_cs40l"]
+script = ExtResource("1_2tvwr")
+nome = "desliza_dir"
+folha = ExtResource("14_ymjha")
+velocidade = 1.5
+largura_quadro = 40
+repetir = true
+
+[sub_resource type="Resource" id="Resource_k2ja7"]
+script = ExtResource("1_2tvwr")
+nome = "desliza_esq"
+folha = ExtResource("15_nfr64")
+velocidade = 1.5
+largura_quadro = 40
+repetir = true
+
+[sub_resource type="Resource" id="Resource_txi1n"]
+script = ExtResource("1_2tvwr")
+nome = "esquiva_dir"
+folha = ExtResource("16_jiw2p")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_5n68d"]
+script = ExtResource("1_2tvwr")
+nome = "esquiva_esq"
+folha = ExtResource("17_2cpy3")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_pacd8"]
+script = ExtResource("1_2tvwr")
+nome = "dano"
+folha = ExtResource("18_hu4xo")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_hnqf8"]
+script = ExtResource("1_2tvwr")
+nome = "teleporte"
+folha = ExtResource("19_ei56g")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_230y5"]
+script = ExtResource("1_2tvwr")
+nome = "tonto"
+folha = ExtResource("20_fjytp")
+velocidade = 1.5
+largura_quadro = 40
+repetir = true
+
+[sub_resource type="Resource" id="Resource_fps2x"]
+script = ExtResource("1_2tvwr")
+nome = "virada_de_fase"
+folha = ExtResource("21_taa5a")
+velocidade = 1.5
+largura_quadro = 40
+
+[resource]
+script = ExtResource("22_5e8cb")
+animacoes = Array[ExtResource("1_2tvwr")]([SubResource("Resource_b45tn"), SubResource("Resource_ytkdh"), SubResource("Resource_h8lue"), SubResource("Resource_l2gtg"), SubResource("Resource_7cbv4"), SubResource("Resource_eq87k"), SubResource("Resource_67y5a"), SubResource("Resource_sorvn"), SubResource("Resource_gk6hj"), SubResource("Resource_4we3v"), SubResource("Resource_rrjmh"), SubResource("Resource_0ox3a"), SubResource("Resource_cs40l"), SubResource("Resource_k2ja7"), SubResource("Resource_txi1n"), SubResource("Resource_5n68d"), SubResource("Resource_pacd8"), SubResource("Resource_hnqf8"), SubResource("Resource_230y5"), SubResource("Resource_fps2x")])

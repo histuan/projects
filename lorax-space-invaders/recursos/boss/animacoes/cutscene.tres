@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://c40xm2n4u2iss"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_kwgba"]
+[ext_resource type="Texture2D" uid="uid://ct33sy4p1l622" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/0_derrota_raiva.png" id="2_o3imw"]
+[ext_resource type="Texture2D" uid="uid://duqvdeaj8tj6l" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/1_despertar.png" id="3_tog2m"]
+[ext_resource type="Texture2D" uid="uid://b52g8kie887cy" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/2_aura.png" id="4_8bcyv"]
+[ext_resource type="Texture2D" uid="uid://bwmkq7e6pe6cj" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/3_pilar.png" id="5_kk60u"]
+[ext_resource type="Texture2D" uid="uid://bf2prxpc1qv75" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/4_reparo.png" id="6_fnr1y"]
+[ext_resource type="Texture2D" uid="uid://bjcw7hxgryayx" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/5_chapeu.png" id="7_8wvp6"]
+[ext_resource type="Texture2D" uid="uid://dwn4d5cdc27xf" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/6_parado.png" id="8_xkpns"]
+[ext_resource type="Texture2D" uid="uid://b3g8kiptj4flb" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/7_piscada.png" id="9_6fege"]
+[ext_resource type="Texture2D" uid="uid://kmi375s2bdgk" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/invocar_jaula.png" id="10_t1dvn"]
+[ext_resource type="Texture2D" uid="uid://qdqjsq7gmi1d" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/puxao.png" id="11_wqraf"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="12_683wl"]
+
+[sub_resource type="Resource" id="Resource_glbij"]
+script = ExtResource("1_kwgba")
+nome = "derrota_raiva"
+folha = ExtResource("2_o3imw")
+velocidade = 1.5
+tempos = Array[float]([0.5, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.4, 0.5, 0.5, 0.4, 0.6, 0.5, 0.6])
+
+[sub_resource type="Resource" id="Resource_0gfx5"]
+script = ExtResource("1_kwgba")
+nome = "despertar"
+folha = ExtResource("3_tog2m")
+velocidade = 1.5
+tempos = Array[float]([0.5, 0.5, 0.5, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.3, 0.25, 0.25, 0.25, 0.35])
+
+[sub_resource type="Resource" id="Resource_etmh2"]
+script = ExtResource("1_kwgba")
+nome = "aura"
+folha = ExtResource("4_8bcyv")
+velocidade = 1.5
+tempos = Array[float]([0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.28, 0.22, 0.22, 0.22, 0.22, 0.25])
+
+[sub_resource type="Resource" id="Resource_o8tiw"]
+script = ExtResource("1_kwgba")
+nome = "pilar"
+folha = ExtResource("5_kk60u")
+velocidade = 1.5
+tempos = Array[float]([0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25])
+
+[sub_resource type="Resource" id="Resource_t1nf3"]
+script = ExtResource("1_kwgba")
+nome = "reparo"
+folha = ExtResource("6_fnr1y")
+velocidade = 1.5
+tempos = Array[float]([0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.6])
+
+[sub_resource type="Resource" id="Resource_hodip"]
+script = ExtResource("1_kwgba")
+nome = "chapeu"
+folha = ExtResource("7_8wvp6")
+velocidade = 1.5
+tempos = Array[float]([0.22, 0.22, 0.25, 0.22, 0.22, 0.22, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25])
+
+[sub_resource type="Resource" id="Resource_jhlxw"]
+script = ExtResource("1_kwgba")
+nome = "parado"
+folha = ExtResource("8_xkpns")
+repetir = true
+tempos = Array[float]([0.5, 0.5])
+
+[sub_resource type="Resource" id="Resource_511c0"]
+script = ExtResource("1_kwgba")
+nome = "piscada"
+folha = ExtResource("9_6fege")
+velocidade = 1.5
+tempos = Array[float]([0.16, 0.2, 0.16])
+
+[sub_resource type="Resource" id="Resource_2lhty"]
+script = ExtResource("1_kwgba")
+nome = "invocar_jaula"
+folha = ExtResource("10_t1dvn")
+velocidade = 1.5
+largura_quadro = 40
+
+[sub_resource type="Resource" id="Resource_f7q45"]
+script = ExtResource("1_kwgba")
+nome = "puxao"
+folha = ExtResource("11_wqraf")
+velocidade = 1.5
+largura_quadro = 40
+
+[resource]
+script = ExtResource("12_683wl")
+animacoes = Array[ExtResource("1_kwgba")]([SubResource("Resource_glbij"), SubResource("Resource_0gfx5"), SubResource("Resource_etmh2"), SubResource("Resource_o8tiw"), SubResource("Resource_t1nf3"), SubResource("Resource_hodip"), SubResource("Resource_jhlxw"), SubResource("Resource_511c0"), SubResource("Resource_2lhty"), SubResource("Resource_f7q45")])

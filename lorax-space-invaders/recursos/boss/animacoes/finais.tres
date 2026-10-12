@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://c14udq265u64i"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_ukqdp"]
+[ext_resource type="Texture2D" uid="uid://b4fqtkxaxehu2" path="res://meus sprites/lorax boss battle/lorax_ui_final/final/lorax_finalizar.png" id="2_ivkgd"]
+[ext_resource type="Texture2D" uid="uid://csm3qh3k0pwdt" path="res://meus sprites/lorax boss battle/lorax_ui_final/final/lorax_poupar.png" id="3_1o330"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="4_i6dd7"]
+
+[sub_resource type="Resource" id="Resource_qt7a2"]
+script = ExtResource("1_ukqdp")
+nome = "lorax_finalizar"
+folha = ExtResource("2_ivkgd")
+largura_quadro = 40
+tempos = Array[float]([0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.16, 0.16, 0.2, 0.18, 0.18, 0.6, 0.28, 0.28, 0.28, 0.28, 0.28, 0.4, 0.4, 0.4, 1.0, 0.6, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.9])
+
+[sub_resource type="Resource" id="Resource_7c7ti"]
+script = ExtResource("1_ukqdp")
+nome = "lorax_poupar"
+folha = ExtResource("3_1o330")
+largura_quadro = 40
+quadro_evento = 13
+tempos = Array[float]([0.25, 0.25, 0.25, 0.2, 0.2, 0.7, 0.7, 1.1, 0.4, 0.6, 0.2, 0.2, 0.2, 0.7, 0.7, 0.7, 0.7, 0.9, 0.25, 0.5, 0.6, 0.9, 0.5, 0.4, 1.0, 0.5, 0.7, 1.7, 0.32, 0.32, 0.32, 0.32, 0.9, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 0.24, 1.3])
+
+[resource]
+script = ExtResource("4_i6dd7")
+animacoes = Array[ExtResource("1_ukqdp")]([SubResource("Resource_qt7a2"), SubResource("Resource_7c7ti")])

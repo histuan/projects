@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://c4j737ekosxmo"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_jpbh7"]
+[ext_resource type="Texture2D" uid="uid://kgl8jahsirjm" path="res://meus sprites/lorax boss battle/lorax_ui_final/batalha/comum/idle/meditando.png" id="2_fk83e"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="3_clyc3"]
+
+[sub_resource type="Resource" id="Resource_m21mq"]
+script = ExtResource("1_jpbh7")
+nome = "meditando"
+folha = ExtResource("2_fk83e")
+largura_quadro = 40
+tempo_por_quadro = 0.5
+repetir = true
+
+[resource]
+script = ExtResource("3_clyc3")
+animacoes = Array[ExtResource("1_jpbh7")]([SubResource("Resource_m21mq")])

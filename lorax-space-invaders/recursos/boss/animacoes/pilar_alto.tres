@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://dvb3wf61x5bff"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_678aw"]
+[ext_resource type="Texture2D" uid="uid://b4goblamsmqv" path="res://meus sprites/lorax boss battle/lorax_ui_final/cutscene/8_pilar_alto/8_pilar_alto.png" id="2_15slq"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="3_6w6cm"]
+
+[sub_resource type="Resource" id="Resource_qp4vi"]
+script = ExtResource("1_678aw")
+nome = "pilar_alto"
+folha = ExtResource("2_15slq")
+velocidade = 1.5
+largura_quadro = 64
+tempos = Array[float]([0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.22, 0.22])
+
+[resource]
+script = ExtResource("3_6w6cm")
+animacoes = Array[ExtResource("1_678aw")]([SubResource("Resource_qp4vi")])

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ConjuntoAnimacoes" format=3 uid="uid://iu5t1xgbu0dp"]
+
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="1_aqhid"]
+[ext_resource type="Texture2D" uid="uid://dkj4keemmvu22" path="res://meus sprites/lorax boss battle/lorax_ui_final/final/finish_him.png" id="2_xderb"]
+[ext_resource type="Script" uid="uid://bxuolsesdnrgn" path="res://scripts/boss/dados/conjunto_animacoes.gd" id="3_w414f"]
+
+[sub_resource type="Resource" id="Resource_e251x"]
+script = ExtResource("1_aqhid")
+nome = "finish_him_entrada"
+folha = ExtResource("2_xderb")
+largura_quadro = 118
+tempos = Array[float]([0.18])
+quadros = Array[int]([0])
+
+[sub_resource type="Resource" id="Resource_wp215"]
+script = ExtResource("1_aqhid")
+nome = "finish_him"
+folha = ExtResource("2_xderb")
+largura_quadro = 118
+repetir = true
+tempos = Array[float]([0.25, 0.25])
+quadros = Array[int]([1, 2])
+
+[resource]
+script = ExtResource("3_w414f")
+animacoes = Array[ExtResource("1_aqhid")]([SubResource("Resource_e251x"), SubResource("Resource_wp215")])
