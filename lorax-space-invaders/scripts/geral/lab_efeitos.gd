@@ -4,10 +4,13 @@
 # ("SEM VALOR", "NA F1"...) e não roda; momento só com passos pendentes fica só para consulta.
 # Momento ligado a animação: o LAB finge a animação com a duracao_animacao_lab (PROVISÓRIA) e
 # toca o 'seguinte' no fim dela. Teclas e layout: PainelLab.
+# Página ANIMACOES (B4b): as animações do gerador tocando no corpo de verdade (lorax_final),
+# trocadas com as setas cima/baixo.
 extends PainelLab
 
 const IDLE_LORAX = preload("res://meus sprites/lorax boss battle/fase1/fase1 idle.png")
 const Particula = preload("res://scripts/efeitos/particula.gd")
+const CENA_CORPO = preload("res://cenas/boss/lorax_final.tscn")
 
 # O boneco fica onde o Lorax luta: altura e meio do vai e vem da fase 1
 const DADOS_FASE1 = preload("res://recursos/boss/classica1.tres")
@@ -44,6 +47,25 @@ const HIT_DUPLO_INTERVALO = 0.1
 const DONO_LAB = &"lab"
 # Linhas por página (uma por tecla)
 const LINHAS_POR_PAGINA = 10
+# Página ANIMACOES: rótulo curto e .tres de cada conjunto do gerador (load, não preload: o
+# LAB abre mesmo antes de o gerador rodar)
+const CONJUNTOS_ANIMACAO = [
+	["CENA", "res://recursos/boss/animacoes/cutscene.tres"],
+	["PILAR", "res://recursos/boss/animacoes/pilar_alto.tres"],
+	["FINAIS", "res://recursos/boss/animacoes/finais.tres"],
+	["PREVIA", "res://recursos/boss/animacoes/previa_finish_him.tres"],
+	["UI1", "res://recursos/boss/animacoes/batalha_ui1.tres"],
+	["UI2", "res://recursos/boss/animacoes/batalha_ui2.tres"],
+	["COMUM", "res://recursos/boss/animacoes/batalha_comum.tres"],
+]
+# Conjuntos da fase 3: os quadros de evento deles ainda são sugestão
+const ROTULOS_SUGESTAO = ["UI1", "UI2", "COMUM"]
+# Nomes da lista visíveis de cada vez (as teclas 1–3 ficam com as ações)
+const JANELA_ANIMACOES = 7
+# O pilar alto toca atrás do corpo, com a base no pé dele
+const POSICAO_PILAR_ALTO = Vector2(0, -32)
+# Folga (s) para o seek cair dentro do quadro, e não na borda dele
+const FOLGA_QUADRO = 0.001
 
 # Páginas da tabela 4 do efeitos.md: título e momentos, na ordem das teclas
 const PAGINAS = [
@@ -92,6 +114,18 @@ var player_no_centro = false
 # O boneco fica no alto (como na luta); a lista começa embaixo dele
 var posicao_boneco = Vector2.ZERO
 
+# Página ANIMACOES: o corpo de verdade (criado na primeira vez que toca) e o pilar alto de teste
+var corpo = null
+var anim_corpo: AnimationPlayer
+var pilar_teste: Node2D
+var anim_pilar: AnimationPlayer
+# Todas as animações geradas: {rotulo, conjunto, dados}
+var animacoes_lab = []
+var escolhida = 0
+var conjunto_no_corpo = null
+var pagina_animacoes_indice = -1
+var animacao_pausada = false
+
 # Recebe da main quem ela vai controlar, confere o momentos_boss.tres e monta o boneco,
 # o texto e as páginas
 func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco, nova_hud, novo_player, novo_cenario):
@@ -135,6 +169,9 @@ func montar_paginas():
 		lista.append(nova_pagina("OUTROS", outros.slice(inicio, inicio + LINHAS_POR_PAGINA)))
 	lista.append(pagina_ferramentas())
 	lista.append(pagina_player())
+	carregar_animacoes_lab()
+	pagina_animacoes_indice = lista.size()
+	lista.append(pagina_animacoes())
 	return lista
 
 # Boneco parado do Lorax 2.0 no mundo, com flash e afterimage (o afterimage vem antes
@@ -217,6 +254,7 @@ func ao_resetar():
 	for folha in ataques_teste.get_children():
 		folha.queue_free()
 	resetar_player()
+	parar_animacoes_lab()
 
 # Um flash de tela foi barrado pela regra de segurança: avisa no detalhe
 func _on_flash_barrado():
@@ -703,3 +741,243 @@ func resetar_player():
 	player.terminar_iframes()
 	while Partida.pode_ganhar_vida():
 		Partida.ganhar_vida()
+
+# ---------- animações (B4b) ----------
+
+# Lê os conjuntos do gerador (falta algum = erro com o caminho) e monta a lista da página
+func carregar_animacoes_lab():
+	animacoes_lab = []
+	for par in CONJUNTOS_ANIMACAO:
+		if not ResourceLoader.exists(par[1]):
+			push_error("LAB DE EFEITOS: falta %s (rode o gerador_animacoes.gd)" % par[1])
+			continue
+		var conjunto = load(par[1])
+		for dados in conjunto.animacoes:
+			animacoes_lab.append({"rotulo": par[0], "conjunto": conjunto, "dados": dados})
+
+# Página ANIMACOES: 1–3 controlam a animação; embaixo, uma janela da lista com a escolhida
+func pagina_animacoes():
+	var linhas = [
+		linha("TOCAR DE NOVO", [], tocar_animacao_lab),
+		linha("PAUSAR/CONTINUAR", [], pausar_animacao_lab),
+		linha("AVANCAR 1 QUADRO", [], avancar_quadro_lab),
+	]
+	if animacoes_lab.is_empty():
+		linhas.append(linha("RODE O GERADOR DE ANIMACOES", []))
+		return nova_pagina("ANIMACOES", linhas)
+	var meio = floori(JANELA_ANIMACOES / 2.0)
+	var inicio = clampi(escolhida - meio, 0, maxi(animacoes_lab.size() - JANELA_ANIMACOES, 0))
+	for i in range(inicio, mini(inicio + JANELA_ANIMACOES, animacoes_lab.size())):
+		var marca = "> " if i == escolhida else "  "
+		linhas.append(linha(marca + nome_animacao_lab(animacoes_lab[i]), []))
+	return nova_pagina("ANIMACOES", linhas)
+
+# "UI1 MAO DIR": rótulo do conjunto + nome da animação
+func nome_animacao_lab(item):
+	return item["rotulo"] + " " + item["dados"].nome.replace("_", " ").to_upper()
+
+# A animação de 'nome' no conjunto de 'rotulo' (null se não existe)
+func item_lab(rotulo, nome):
+	for item in animacoes_lab:
+		if item["rotulo"] == rotulo and item["dados"].nome == nome:
+			return item
+	return null
+
+# A página da vez é a ANIMACOES
+func na_pagina_animacoes():
+	return pagina == pagina_animacoes_indice
+
+# Pilar e pilar alto tocam sempre juntos (o alto atrás do corpo)
+func eh_pilar(item):
+	return item["dados"].nome in ["pilar", "pilar_alto"]
+
+# Setas cima/baixo trocam a animação (só na página ANIMACOES; segurar repete)
+func _unhandled_input(event):
+	if na_pagina_animacoes() and event is InputEventKey and event.pressed \
+			and event.physical_keycode in [KEY_UP, KEY_DOWN]:
+		escolher_animacao(1 if event.physical_keycode == KEY_DOWN else -1)
+		get_viewport().set_input_as_handled()
+		return
+	super(event)
+
+# Entrar na página mostra o corpo tocando a escolhida; sair devolve o boneco da fase 1
+func trocar_pagina(passo):
+	parar_animacoes_lab()
+	super(passo)
+	if na_pagina_animacoes():
+		tocar_animacao_lab()
+
+# Na página ANIMACOES o detalhe é o estado da animação
+func mostrar():
+	super()
+	if na_pagina_animacoes():
+		texto_detalhe.text = texto_animacao_lab()
+		ajustar_detalhe()
+
+# O detalhe da página ANIMACOES acompanha o quadro a cada frame
+func _process(delta):
+	super(delta)
+	if na_pagina_animacoes() and corpo != null and corpo.visible:
+		texto_detalhe.text = texto_animacao_lab()
+		ajustar_detalhe()
+
+# Anda na lista (dá a volta) e já toca a nova
+func escolher_animacao(passo):
+	if animacoes_lab.is_empty():
+		return
+	escolhida = (escolhida + passo + animacoes_lab.size()) % animacoes_lab.size()
+	tocar_animacao_lab()
+
+# O corpo de verdade (lorax_final.tscn) no lugar do boneco: invulnerável, sem colisão e fora
+# do grupo aliens. O pilar alto de teste é o primeiro filho dele (desenhado atrás do Sprite2D)
+func criar_corpo_lab():
+	corpo = CENA_CORPO.instantiate()
+	corpo.remove_from_group(&"aliens")
+	corpo.collision_layer = 0
+	corpo.collision_mask = 0
+	corpo.position = posicao_boneco
+	corpo.visible = false
+	corpo.evento_animacao.connect(_on_evento_animacao_lab)
+	pilar_teste = Node2D.new()
+	pilar_teste.position = POSICAO_PILAR_ALTO
+	pilar_teste.visible = false
+	var sprite = Sprite2D.new()
+	sprite.name = "Sprite2D"
+	pilar_teste.add_child(sprite)
+	anim_pilar = AnimationPlayer.new()
+	pilar_teste.add_child(anim_pilar)
+	corpo.add_child(pilar_teste)
+	corpo.move_child(pilar_teste, 0)
+	mundo.add_child(corpo)
+	corpo.ficar_invulneravel(true)
+	anim_corpo = corpo.get_node("AnimationPlayer")
+
+# Toca a escolhida do começo no corpo (pilar e pilar alto tocam juntos)
+func tocar_animacao_lab():
+	if animacoes_lab.is_empty():
+		return
+	if corpo == null:
+		criar_corpo_lab()
+	var item = animacoes_lab[escolhida]
+	boneco.visible = false
+	corpo.visible = true
+	animacao_pausada = false
+	aviso = ""
+	anim_pilar.stop()
+	pilar_teste.visible = false
+	if eh_pilar(item):
+		tocar_no_corpo(item_lab("CENA", "pilar"))
+		tocar_no_pilar(item_lab("PILAR", "pilar_alto"))
+	else:
+		tocar_no_corpo(item)
+	paginas[pagina_animacoes_indice] = pagina_animacoes()
+	mostrar()
+
+# Carrega no corpo o conjunto da animação (se ainda não está) e toca do começo
+func tocar_no_corpo(item):
+	if item == null:
+		return
+	if conjunto_no_corpo != item["conjunto"]:
+		corpo.carregar_animacoes(item["conjunto"].animacoes)
+		conjunto_no_corpo = item["conjunto"]
+	anim_corpo.stop()
+	anim_corpo.play(item["dados"].nome)
+
+# O pilar alto tem nó próprio: toca junto com o corpo, atrás dele
+func tocar_no_pilar(item):
+	if item == null:
+		return
+	var biblioteca = AnimationLibrary.new()
+	biblioteca.add_animation(item["dados"].nome, item["dados"].criar_animacao())
+	if anim_pilar.has_animation_library(""):
+		anim_pilar.remove_animation_library("")
+	anim_pilar.add_animation_library("", biblioteca)
+	pilar_teste.visible = true
+	anim_pilar.play(item["dados"].nome)
+
+# Os AnimationPlayers do LAB que estão em uso (o do pilar alto só com ele visível)
+func players_lab():
+	return [anim_corpo, anim_pilar] if pilar_teste.visible else [anim_corpo]
+
+# O AnimationPlayer que toca a escolhida (o do pilar alto, se for ela)
+func player_da_escolhida():
+	return anim_pilar if animacoes_lab[escolhida]["dados"].nome == "pilar_alto" else anim_corpo
+
+# Pausa ou continua o corpo (e o pilar alto junto)
+func pausar_animacao_lab():
+	if corpo == null or not corpo.visible:
+		return
+	animacao_pausada = not animacao_pausada
+	for anim in players_lab():
+		if animacao_pausada:
+			anim.pause()
+		else:
+			anim.play()
+
+# Pausa e vai para o quadro seguinte da escolhida (do último volta ao primeiro)
+func avancar_quadro_lab():
+	if corpo == null or not corpo.visible:
+		return
+	if not animacao_pausada:
+		pausar_animacao_lab()
+	var dados = animacoes_lab[escolhida]["dados"]
+	var proximo = (quadro_atual(dados, player_da_escolhida()) + 1) % dados.quadros_tocados().size()
+	var instante = dados.instante_do_quadro(proximo) + FOLGA_QUADRO
+	for anim in players_lab():
+		anim.seek(instante, true)
+
+# Posição (a partir de 0) do quadro em que a animação está
+func quadro_atual(dados, anim):
+	if anim.assigned_animation == &"":
+		return 0
+	var posicao = anim.current_animation_position + FOLGA_QUADRO
+	for i in range(dados.quadros_tocados().size() - 1, -1, -1):
+		if posicao >= dados.instante_do_quadro(i):
+			return i
+	return 0
+
+# O corpo passou pelo quadro de evento: avisa no detalhe
+func _on_evento_animacao_lab(nome):
+	aviso = "EVENTO! (%s)" % String(nome).to_upper()
+
+# Nome, quadro, tempo, loop e evento da escolhida, e o aviso do último evento
+func texto_animacao_lab():
+	if animacoes_lab.is_empty():
+		return "NENHUMA ANIMACAO: RODE O GERADOR (FILE > RUN) E ABRA O LAB DE NOVO"
+	var item = animacoes_lab[escolhida]
+	var dados = item["dados"]
+	var linhas = ["%d/%d %s" % [escolhida + 1, animacoes_lab.size(), nome_animacao_lab(item)]]
+	if corpo == null or not corpo.visible:
+		linhas.append("APERTE 1 PARA TOCAR; CIMA/BAIXO TROCA")
+		return "\n".join(linhas)
+	var lista = dados.quadros_tocados()
+	var i = quadro_atual(dados, player_da_escolhida())
+	var quadro = "QUADRO %d (0 A %d), %s S" % [i, lista.size() - 1, n(dados.tempo_do_quadro(i))]
+	if i == dados.quadro_evento:
+		quadro += " << EVENTO"
+	linhas.append(quadro)
+	linhas.append("ASEPRITE %d; LOOP %s; DURACAO %s S" % [lista[i] + 1, "SIM" if dados.repetir else "NAO", n(dados.duracao())])
+	if dados.quadro_evento >= 0:
+		var sugestao = " (SUGESTAO)" if item["rotulo"] in ROTULOS_SUGESTAO else ""
+		linhas.append("EVENTO NO QUADRO %d%s" % [dados.quadro_evento, sugestao])
+	else:
+		linhas.append("SEM EVENTO")
+	if animacao_pausada:
+		linhas.append("PAUSADO")
+	if eh_pilar(item):
+		linhas.append("PILAR E PILAR ALTO TOCAM JUNTOS")
+	if player.em_arena:
+		linhas.append("MODO ARENA: CIMA/BAIXO TAMBEM ANDAM COM O PLAYER")
+	if aviso != "":
+		linhas.append(aviso)
+	return "\n".join(linhas)
+
+# Para o corpo e o pilar alto de teste e devolve o boneco da fase 1
+func parar_animacoes_lab():
+	animacao_pausada = false
+	if corpo != null:
+		anim_corpo.stop()
+		anim_pilar.stop()
+		corpo.visible = false
+		pilar_teste.visible = false
+	boneco.visible = true
