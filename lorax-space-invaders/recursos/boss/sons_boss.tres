@@ -62,6 +62,7 @@ bus = &"EfeitosEco"
 [sub_resource type="Resource" id="Som_batimento_vida_baixa"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/batimento.wav"])
+volume_db = 24.0
 bus = &"Efeitos"
 loop = true
 
@@ -393,6 +394,18 @@ script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/impacto_grave.wav"])
 bus = &"EfeitosEco"
 
+[sub_resource type="Resource" id="Som_pause_escolhe"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+pitch = 2.0
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_pause_navega"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/blip.wav"])
+pitch = 1.7
+bus = &"Efeitos"
+
 [sub_resource type="Resource" id="Som_player_hit_arena"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/wav/player dano.wav"])
@@ -635,6 +648,8 @@ eventos = Dictionary[StringName, ExtResource("1_som")]({
 &"orbe_lanca": SubResource("Som_orbe_lanca"),
 &"orbe_quica": SubResource("Som_orbe_quica"),
 &"pancada": SubResource("Som_pancada"),
+&"pause_escolhe": SubResource("Som_pause_escolhe"),
+&"pause_navega": SubResource("Som_pause_navega"),
 &"player_hit_arena": SubResource("Som_player_hit_arena"),
 &"poluicao": SubResource("Som_poluicao"),
 &"pontos_contagem": SubResource("Som_pontos_contagem"),

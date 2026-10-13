@@ -13,6 +13,10 @@ const VOLUMES = [
 ]
 # Som curto da prévia de volume
 const EVENTO_AMOSTRA = &"menu_navega"
+# Sons do menu de pausa (mais agudos que os do menu de cheat): ao mudar de opção e ao escolher.
+# O pitch de cada um mora no sons_boss.tres
+const SOM_NAVEGA = &"pause_navega"
+const SOM_ESCOLHE = &"pause_escolhe"
 const LARGURA_NOME = 64
 const LARGURA_SLIDER = 110
 const LARGURA_VALOR = 40
@@ -25,6 +29,10 @@ var primeiro_slider: HSlider
 var botao_opcoes: Button
 # Toca a prévia com o jogo pausado (filho deste nó, então também é ALWAYS)
 var amostra: AudioStreamPlayer
+# Player dos sons de navegação (também ALWAYS: o Sons do jogo pausa junto com a árvore)
+var som_menu: AudioStreamPlayer
+# Ligado enquanto o foco é dado por código (abrir o menu não é "mudar de opção")
+var foco_mudo := false
 # Fala do Lorax mostrada no Pause durante a luta (filha deste nó: funciona pausada)
 var caixa_fala: CaixaDialogo
 # Acima do menu (10): a caixa fica embaixo, fora dos botões
@@ -38,6 +46,8 @@ func _ready():
 	criar_painel_opcoes()
 	amostra = AudioStreamPlayer.new()
 	add_child(amostra)
+	som_menu = AudioStreamPlayer.new()
+	add_child(som_menu)
 	caixa_fala = CaixaDialogo.new()
 	add_child(caixa_fala)
 	caixa_fala.layer = LAYER_FALA
@@ -61,7 +71,7 @@ func alternar():
 	get_tree().paused = pausar
 	visible = pausar
 	if pausar:
-		botao_continuar.grab_focus()
+		focar(botao_continuar)
 	if pausar and Partida.em_luta_boss:
 		caixa_fala.mostrar_inteira(FALA_PAUSE)
 	else:
@@ -92,6 +102,8 @@ func preparar_botao(b):
 	b.mouse_entered.connect(b.grab_focus)
 	b.focus_entered.connect(destacar.bind(b, true))
 	b.focus_exited.connect(destacar.bind(b, false))
+	b.focus_entered.connect(tocar_som.bind(SOM_NAVEGA))
+	b.pressed.connect(tocar_som.bind(SOM_ESCOLHE))
 
 # Pinta o texto de amarelo quando o botão tem foco e volta ao branco quando perde
 func destacar(b, ligado):
@@ -158,6 +170,7 @@ func criar_linha_volume(nome, texto, bus):
 	slider.mouse_entered.connect(slider.grab_focus)
 	slider.focus_entered.connect(destacar.bind(rotulo, true))
 	slider.focus_exited.connect(destacar.bind(rotulo, false))
+	slider.focus_entered.connect(tocar_som.bind(SOM_NAVEGA))
 	if primeiro_slider == null:
 		primeiro_slider = slider
 	linha.add_child(rotulo)
@@ -196,7 +209,7 @@ func abrir_opcoes():
 	$VBoxContainer.hide()
 	$controles.hide()
 	painel_opcoes.show()
-	primeiro_slider.grab_focus()
+	focar(primeiro_slider)
 	Musica.ouvir_na_pausa(true)
 
 # Volta para a lista (com foco no OPÇÕES) e a música pausa de novo
@@ -206,4 +219,19 @@ func fechar_opcoes():
 	painel_opcoes.hide()
 	$controles.show()
 	$VBoxContainer.show()
-	botao_opcoes.grab_focus()
+	focar(botao_opcoes)
+
+# Dá foco por código sem tocar o som de navegação (abrir o menu ou voltar das OPÇÕES)
+func focar(controle):
+	foco_mudo = true
+	controle.grab_focus()
+	foco_mudo = false
+
+# Toca um som do menu com o jogo pausado, num player próprio (o Sons pausa com a árvore).
+# Reiniciar, Menu e Sair trocam de cena logo depois, então o som deles é cortado
+func tocar_som(evento):
+	if foco_mudo:
+		return
+	if Sons.preparar_player(evento, som_menu):
+		som_menu.bus = Sons.dados_do_evento(evento).bus
+		som_menu.play()

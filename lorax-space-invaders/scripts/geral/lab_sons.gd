@@ -29,7 +29,7 @@ const GRUPOS = [
 		&"fumaca_cobre", &"reflorestar", &"luz_desfaz", &"estrelas_apagam", &"estrelas_acendem",
 		&"constelacao", &"pontos_contagem", &"arvores_salvas_bom", &"arvores_salvas_ruim"]],
 	["INTERFACE", [&"titulo_boss", &"lorax_fuga", &"cheat_abre", &"menu_navega",
-		&"menu_escolhe", &"batimento_vida_baixa", &"ultimo_coracao_pulso", &"estrela_cadente"]],
+		&"menu_escolhe", &"pause_navega", &"pause_escolhe", &"batimento_vida_baixa", &"ultimo_coracao_pulso", &"estrela_cadente"]],
 ]
 const MUSICAS = [&"musica_wave10", &"musica_transformacao", &"musica_fase3a", &"musica_fase3b",
 	&"musica_final_bom", &"musica_final_ruim"]
