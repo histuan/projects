@@ -31,6 +31,8 @@ func montar():
 	var fundo = ColorRect.new()
 	fundo.color = Color(0, 0, 0, 0.85)
 	fundo.size = Vector2(254, 256)
+	# Segura o clique fora das opções: nada da tela inicial por baixo reage
+	fundo.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(fundo)
 	var caixa = VBoxContainer.new()
 	caixa.size = Vector2(254, 0)
@@ -40,6 +42,9 @@ func montar():
 	caixa.add_child(criar_label("CHEAT", 16, Color.WHITE))
 	for o in opcoes:
 		var l = criar_label(o["nome"], 10, Color.WHITE)
+		l.mouse_filter = Control.MOUSE_FILTER_STOP
+		l.mouse_entered.connect(_on_mouse_entrou.bind(labels.size()))
+		l.gui_input.connect(_on_label_input.bind(labels.size()))
 		caixa.add_child(l)
 		labels.append(l)
 	destacar()
@@ -72,10 +77,28 @@ func _unhandled_input(event):
 		Sons.tocar(&"menu_navega")
 		destacar()
 	elif event.is_action_pressed("ui_accept"):
-		Sons.tocar(&"menu_escolhe")
-		hide()
-		etapa_escolhida.emit(opcoes[indice]["etapa"])
+		escolher()
 	elif event.is_action_pressed("ui_cancel"):
 		hide()
 		cancelado.emit()
 	get_viewport().set_input_as_handled()
+
+# Mouse em cima de uma opção: ela vira a selecionada (o blip só toca se mudou)
+func _on_mouse_entrou(i):
+	if not visible or i == indice:
+		return
+	indice = i
+	Sons.tocar(&"menu_navega")
+	destacar()
+
+# Clique esquerdo numa opção: escolhe ela (mesmo se o mouse não se mexeu desde que a lista abriu)
+func _on_label_input(event, i):
+	if visible and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		indice = i
+		escolher()
+
+# Fecha a lista e avisa a etapa escolhida (teclado e mouse)
+func escolher():
+	Sons.tocar(&"menu_escolhe")
+	hide()
+	etapa_escolhida.emit(opcoes[indice]["etapa"])
