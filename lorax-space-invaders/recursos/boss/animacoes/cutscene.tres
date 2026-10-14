@@ -75,6 +75,7 @@ nome = "invocar_jaula"
 folha = ExtResource("10_t1dvn")
 velocidade = 1.5
 largura_quadro = 40
+tempos = Array[float]([0.2, 0.2, 0.2, 0.2, 0.3, 0.3, 0.375])
 
 [sub_resource type="Resource" id="Resource_f7q45"]
 script = ExtResource("1_kwgba")
@@ -82,6 +83,7 @@ nome = "puxao"
 folha = ExtResource("11_wqraf")
 velocidade = 1.5
 largura_quadro = 40
+tempos = Array[float]([0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.27, 0.375, 0.375])
 
 [resource]
 script = ExtResource("12_683wl")
