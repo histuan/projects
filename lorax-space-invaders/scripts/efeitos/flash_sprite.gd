@@ -1,7 +1,6 @@
 # Flash de cor num Sprite2D (flash de hit, brilho de carga, olhos vermelhos), pelo
 # flash.gdshader. Fica como filho do sprite (ou aponte 'sprite' para ele). É o dono do
-# material do sprite: a inclinação (suavizar a borda do sprite girado, ou o lean em fileiras
-# inteiras) também passa por aqui.
+# material do sprite: a inclinação (suavizar a borda do sprite girado) também passa por aqui.
 class_name FlashSprite
 extends Node
 
@@ -16,9 +15,6 @@ var tween: Tween = null
 # cima dele não o apaga: quando o flash acaba, o pulso volta pelo tempo que falta
 var pulso = null
 # Estado da inclinação no material (aplicar_material junta tudo)
-var lean_px := 0.0
-var margem_lean := 0.0
-var pes_px := 12.0
 var suavizar := false
 
 # Dá ao sprite uma cópia própria do material: dada por código, a mesma instância
@@ -77,14 +73,6 @@ func comecar(cor):
 	material_flash.set_shader_parameter("cor_flash", cor)
 	tween = create_tween().set_ignore_time_scale()
 
-# Lean do shader: o topo desloca 'px' (arredondado por fileira), com 'margem' px de quad
-# a mais de cada lado e os pés a 'pes' px do centro
-func definir_lean(px, margem, pes):
-	lean_px = px
-	margem_lean = margem
-	pes_px = pes
-	aplicar_material()
-
 # Sprite girado: liga/desliga a borda suavizada (1 px de quad a mais em volta para o contorno
 # misturado não ser cortado)
 func definir_suavizar(ligado):
@@ -96,9 +84,7 @@ func definir_suavizar(ligado):
 func aplicar_material():
 	var borda = 1.0 if suavizar else 0.0
 	material_flash.set_shader_parameter("suavizar_borda", suavizar)
-	material_flash.set_shader_parameter("lean_px", lean_px)
-	material_flash.set_shader_parameter("margem_px", Vector2(maxf(margem_lean, borda), borda))
-	material_flash.set_shader_parameter("pes_px", pes_px)
+	material_flash.set_shader_parameter("margem_px", Vector2(borda, borda))
 	material_flash.set_shader_parameter("offset_px", get_node(sprite).offset)
 
 # Quanto da cor cobre o sprite (0 a 1)

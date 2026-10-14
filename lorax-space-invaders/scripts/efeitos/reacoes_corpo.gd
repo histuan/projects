@@ -3,8 +3,7 @@
 # faz com FlashSprite e Afterimage. Fica como filho do corpo (ou aponte 'sprite' para o Sprite2D).
 # PIVÔ NOS PÉS: no _ready o sprite passa a ter offset (0, -pes) e o nó dele desce para a linha
 # dos pés (o desenho não muda de lugar); assim escala (squash) e rotação giram em torno do pé.
-# Inclinar = girar o sprite (o shader do FlashSprite suaviza a borda dos texels); o lean em
-# fileiras inteiras fica como alternativa (inclinar_lean).
+# Inclinar = girar o sprite (o shader do FlashSprite suaviza a borda dos texels).
 class_name ReacoesCorpo
 extends Node
 
@@ -18,8 +17,6 @@ var posicao_base := Vector2.ZERO
 # O que cada reação faz agora; aplicar() junta tudo no sprite
 var escala := Vector2.ONE
 var graus := 0.0
-# Px que o topo desloca agora no lean (o shader arredonda por fileira)
-var lean := 0.0
 var recuo := 0.0
 var lado := 0.0
 var tween_squash: Tween = null
@@ -80,18 +77,6 @@ func definir_inclinacao(novos_graus):
 	if novos_graus != graus:
 		definir_graus(novos_graus)
 
-# Alternativa à rotação: o topo desloca 'px' (negativo = esquerda; 0 = de pé) em 'tempo' s,
-# em degraus inteiros pelo shader. Sem FlashSprite no sprite, não faz nada
-func inclinar_lean(px, tempo):
-	var flash = flash_do_sprite()
-	if flash == null:
-		return
-	flash.definir_lean(lean, ceilf(maxf(absf(px), absf(lean))), pes)
-	if tween_inclinar != null:
-		tween_inclinar.kill()
-	tween_inclinar = create_tween()
-	tween_inclinar.tween_method(definir_lean.bind(flash), lean, px, maxf(tempo, 0.001))
-
 # Alternativa à inclinação: desloca 'px' para o lado em 'tempo' s (0 = no lugar)
 func deslocar(px, tempo):
 	if tween_lado != null:
@@ -116,12 +101,6 @@ func definir_graus(valor):
 	var flash = flash_do_sprite()
 	if flash != null:
 		flash.definir_suavizar(graus != 0.0)
-
-# Px do lean no topo (o tween chama a cada quadro); a margem do quad (px inteiros, para não
-# desalinhar os texels) acompanha o maior valor
-func definir_lean(valor, flash):
-	lean = valor
-	flash.definir_lean(lean, ceilf(maxf(flash.margem_lean, absf(lean))), pes)
 
 # O FlashSprite filho do sprite (dono do material), ou null
 func flash_do_sprite():
@@ -155,6 +134,3 @@ func parar():
 	var flash = flash_do_sprite() if alvo != null else null
 	if flash != null:
 		flash.definir_suavizar(false)
-		if lean != 0.0:
-			flash.definir_lean(0.0, 0.0, pes)
-	lean = 0.0

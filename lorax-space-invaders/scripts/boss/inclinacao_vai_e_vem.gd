@@ -1,4 +1,4 @@
-# Inclinação progressiva do vai e vem (modo ROTACAO_AA): a cada quadro calcula o ângulo pela
+# Inclinação progressiva do vai e vem (rotação): a cada quadro calcula o ângulo pela
 # distância percorrida desde a borda de onde ele saiu (0 na borda, o máximo no meio do trajeto).
 # O ângulo real segue esse alvo com velocidade limitada (vira na borda sem salto) e sai em
 # passos. A fase e o LAB usam a mesma conta.

@@ -1,13 +1,11 @@
-// Material do corpo do boss: inclinação (rotação com anti-alias na borda dos texels, ou o
-// "lean" em fileiras inteiras) e o flash de cor.
+// Material do corpo do boss: inclinação (rotação com anti-alias na borda dos texels) e o
+// flash de cor.
 // Flash: pinta o sprite com cor_flash na proporção 'intensidade' (0 = normal, 1 = cor chapada),
 // mantendo o alfa e o modulate do sprite.
 // suavizar_borda (sprite girado): "sharp bilinear" feito à mão com 4 texels lidos em nearest; o
 // miolo de cada texel fica nítido e só a faixa de ~1 pixel da tela entre dois texels é
 // misturada. Texel fora do quadro conta como transparente (nunca o quadro vizinho da folha) e a
 // mistura é pré-multiplicada (sem halo escuro).
-// Lean: cada fileira do quadro desloca X por um número INTEIRO de pixels, proporcional à
-// altura acima dos pés (0 nos pés, lean_px no topo); sem rotação nem reamostragem.
 // O quad é alargado em margem_px para nada ser cortado. Supõe o sprite centrado (com offset_px).
 shader_type canvas_item;
 
@@ -15,12 +13,8 @@ uniform vec4 cor_flash : source_color = vec4(1.0);
 uniform float intensidade : hint_range(0.0, 1.0) = 0.0;
 // Rotação com anti-alias na borda dos texels
 uniform bool suavizar_borda = false;
-// Px que o topo do quadro desloca no lean (negativo = para a esquerda); arredondado por fileira
-uniform float lean_px = 0.0;
 // Px a mais de cada lado do quad (x, y)
 uniform vec2 margem_px = vec2(0.0);
-// Px do centro do quadro até a linha dos pés (linha 28 do quadro de 32 = 12)
-uniform float pes_px = 12.0;
 // O offset do Sprite2D (o quadro fica centrado nele)
 uniform vec2 offset_px = vec2(0.0);
 
@@ -79,15 +73,6 @@ void fragment() {
 			vec4 c11 = TEXEL(i0 + vec2(1.0, 1.0));
 			s = mix(mix(c00, c10, k.x), mix(c01, c11, k.x), k.y);
 		}
-		c = s.a > 0.0 ? vec4(s.rgb / s.a, s.a) * cor_vertice : vec4(0.0);
-	} else if (lean_px != 0.0 || margem_px.x != 0.0 || margem_px.y != 0.0) {
-		vec2 p = floor(t);
-		float linha_pes = m.y + pes_px;
-		float altura = clamp(linha_pes - p.y, 0.0, linha_pes);
-		// Arredonda o .5 para longe do zero (o round() do GLSL não define o lado)
-		float bruto = lean_px * altura / linha_pes;
-		float desvio = sign(bruto) * floor(abs(bruto) + 0.5 + 0.0001);
-		vec4 s = TEXEL(vec2(p.x - desvio, p.y));
 		c = s.a > 0.0 ? vec4(s.rgb / s.a, s.a) * cor_vertice : vec4(0.0);
 	}
 	COLOR = vec4(mix(c.rgb, cor_flash.rgb, intensidade), c.a);

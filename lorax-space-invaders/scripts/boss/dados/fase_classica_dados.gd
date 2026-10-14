@@ -3,8 +3,7 @@
 class_name FaseClassicaDados
 extends Resource
 
-enum ModoInclinacao { ROTACAO_AA, LEAN }
-# Na ROTACAO_AA, o que a inclinação faz da metade do trajeto até a outra borda
+# O que a inclinação faz da metade do trajeto até a outra borda
 enum DepoisDoMeio { MANTER, SINO }
 
 @export_group("Vida")
@@ -21,21 +20,17 @@ enum DepoisDoMeio { MANTER, SINO }
 @export var limite_dir := 217.0
 ## Velocidade com que chega até a altura no começo da fase
 @export var vel_entrada := 40.0
-## Como ele inclina no vai e vem: girando (com a borda dos texels suavizada) ou em fileiras inteiras
-@export var modo_inclinacao := ModoInclinacao.ROTACAO_AA
-## ROTACAO_AA: graus que ele gira para o lado do movimento, em torno dos pés (0 = não gira)
+## Graus que ele gira para o lado do movimento no vai e vem, em torno dos pés, com a borda dos
+## texels suavizada (0 = não gira)
 @export var inclinacao_graus := 0.0
-## LEAN: px que o topo do sprite desloca para o lado do movimento no vai e vem, em fileiras inteiras
-## (0 nos pés; 0 = não inclina)
-@export var inclinacao := 0.0
 ## Px que ele se desloca para o lado do movimento, em vez de inclinar (0 = não desloca)
 @export var inclinacao_px := 0.0
 ## Segundos para chegar à inclinação (ou ao deslocamento) e para voltar
 @export var inclinacao_tempo := 0.0
-## ROTACAO_AA: a inclinação cresce de 0 (na borda) a inclinacao_graus (no meio do trajeto); depois
+## A inclinação cresce de 0 (na borda) a inclinacao_graus (no meio do trajeto); depois
 ## do meio MANTER segura o máximo e SINO volta a 0 até a outra borda
 @export var inclinacao_depois_do_meio := DepoisDoMeio.MANTER
-## ROTACAO_AA: o ângulo anda em passos deste tamanho (0 = contínuo)
+## O ângulo anda em passos deste tamanho (0 = contínuo)
 @export var inclinacao_passo_graus := 0.0
 
 @export_group("Ataque")

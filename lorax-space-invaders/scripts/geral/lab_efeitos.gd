@@ -113,11 +113,9 @@ var tween_boneco: Tween = null
 # VAI E VEM ligado (o boneco anda entre os limites da fase 1) e leques já soltos pelo ATAQUE
 var tween_vaivem: Tween = null
 var leques_lab = 0
-# Inclinação que o VAI E VEM do LAB usa (começa como a do classica1; o R volta a ela): o modo e
-# o ângulo em graus (no lean, vira px no topo = tan(ângulo) × altura dos pés)
-var modo_lab = DADOS_FASE1.modo_inclinacao
+# Ângulo (graus) que o VAI E VEM do LAB usa (começa como o do classica1; o R volta a ele)
 var angulo_lab = DADOS_FASE1.inclinacao_graus
-# Inclinação progressiva do VAI E VEM do LAB (ROTACAO_AA): o que fazer depois do meio, o passo e a
+# Inclinação progressiva do VAI E VEM do LAB: o que fazer depois do meio, o passo e a
 # conta (a mesma da luta) com a posição anterior do boneco (o sentido sai do movimento)
 var depois_do_meio_lab = DADOS_FASE1.inclinacao_depois_do_meio
 var passo_lab = DADOS_FASE1.inclinacao_passo_graus
@@ -285,7 +283,6 @@ func ao_resetar():
 	if tween_vaivem != null:
 		tween_vaivem.kill()
 		tween_vaivem = null
-	modo_lab = DADOS_FASE1.modo_inclinacao
 	angulo_lab = DADOS_FASE1.inclinacao_graus
 	depois_do_meio_lab = DADOS_FASE1.inclinacao_depois_do_meio
 	passo_lab = DADOS_FASE1.inclinacao_passo_graus
@@ -629,15 +626,13 @@ func limpar_teste():
 # Ferramentas da página FASE 1 (2): o ataque inteiro, o vai e vem e a Trúfula do player
 func linhas_combate_fase1():
 	var leque = "LEQUES %s ALTERNANDO, %s GRAUS, COM RASTRO" % [str(DADOS_FASE1.quantidades), n(DADOS_FASE1.angulo_leque)]
-	var postura = "CLASSICA1: %s %s GRAUS (LEAN %s PX) / DESLOCA %s PX EM %s S" % [
-		FaseClassicaDados.ModoInclinacao.keys()[DADOS_FASE1.modo_inclinacao], n(DADOS_FASE1.inclinacao_graus),
-		n(DADOS_FASE1.inclinacao), n(DADOS_FASE1.inclinacao_px), n(DADOS_FASE1.inclinacao_tempo)]
+	var postura = "CLASSICA1: ROTACAO %s GRAUS / DESLOCA %s PX EM %s S" % [
+		n(DADOS_FASE1.inclinacao_graus), n(DADOS_FASE1.inclinacao_px), n(DADOS_FASE1.inclinacao_tempo)]
 	return [
 		linha("ATAQUE", ["CARGA %s S; NO DISPARO O SOM SOME EM %s S (AMPLITUDE LINEAR, ATE O FIM DO ATAQUE)" % [n(duracao_carga()), n(DADOS_FASE1.duracao_depois_do_disparo())], leque + "; MIRA NO PLAYER ATE %s GRAUS" % n(DADOS_FASE1.mira_max_graus)], atacar_lab),
 		linha("VAI E VEM LIGA/DESLIGA", ["VELOCIDADE %s, LIMITES %s A %s" % [n(DADOS_FASE1.velocidade), n(DADOS_FASE1.limite_esq), n(DADOS_FASE1.limite_dir)], postura], alternar_vaivem),
 		linha("TRUFULA", ["DA O POWER-UP AO PLAYER: ATIRE NAS FOLHAS (AS DUAS SOMEM)"], func(): player.ativar_powerup(TRUFULA)),
-		linha("MODO DA INCLINACAO", ["ALTERNA ROTACAO AA / LEAN NO VAI E VEM (SO NO LAB; O R VOLTA AO CLASSICA1)"], trocar_modo_lab),
-		linha("ANGULO", ["%s GRAUS (ROTACAO) OU O LEAN EQUIVALENTE (SO NO LAB)" % " / ".join(ANGULOS_LAB.map(func(a): return n(a)))], trocar_angulo_lab),
+		linha("ANGULO", ["%s GRAUS (SO NO LAB; O R VOLTA AO CLASSICA1)" % " / ".join(ANGULOS_LAB.map(func(a): return n(a)))], trocar_angulo_lab),
 		linha("DEPOIS DO MEIO", ["ROTACAO: MANTER O MAXIMO ATE A BORDA / SINO (VOLTA A 0) (SO NO LAB)"], trocar_depois_do_meio_lab),
 		linha("PASSO", ["ROTACAO EM PASSOS DE %s GRAUS (0 = CONTINUO) (SO NO LAB)" % " / ".join(PASSOS_LAB.map(func(a): return n(a)))], trocar_passo_lab),
 	]
@@ -665,8 +660,8 @@ func atacar_lab():
 	Projetil.criar_leque(DADOS_FASE1.projetil, quantidade, DADOS_FASE1.angulo_leque,
 			origem, ataques_teste, DADOS_FASE1.angulo_da_mira(origem, alvo))
 
-# Liga: o boneco vai e vem entre os limites da fase 1, inclinado para o lado em que anda (na
-# ROTACAO_AA, progressivo como na luta). Desliga: volta ao meio, de pé
+# Liga: o boneco vai e vem entre os limites da fase 1, inclinado para o lado em que anda
+# (progressivo, como na luta). Desliga: volta ao meio, de pé
 func alternar_vaivem():
 	inclinacao_lab = null
 	if tween_vaivem != null:
@@ -685,19 +680,6 @@ func alternar_vaivem():
 	tween_vaivem.tween_property(boneco, "position:x", DADOS_FASE1.limite_esq, tempo_lado)
 	tween_vaivem.tween_callback(inclinar_boneco.bind(1))
 	tween_vaivem.tween_property(boneco, "position:x", posicao_boneco.x, tempo_lado / 2.0)
-
-# Px no topo do lean que dá a mesma inclinação que 'graus' de rotação (altura = centro→pés + metade
-# do quadro de 32)
-func lean_do_angulo(graus):
-	return tan(deg_to_rad(graus)) * (16 + reacoes_boneco.pes)
-
-# Alterna o modo da inclinação do LAB; o boneco volta de pé e o VAI E VEM segue no modo novo
-func trocar_modo_lab():
-	modo_lab = FaseClassicaDados.ModoInclinacao.LEAN if modo_lab == FaseClassicaDados.ModoInclinacao.ROTACAO_AA else FaseClassicaDados.ModoInclinacao.ROTACAO_AA
-	reacoes_boneco.parar()
-	inclinacao_lab = null
-	aviso = "MODO: %s, %s GRAUS" % [FaseClassicaDados.ModoInclinacao.keys()[modo_lab], n(angulo_lab)]
-	mostrar()
 
 # Alterna o que a rotação do VAI E VEM do LAB faz depois do meio do trajeto (MANTER / SINO)
 func trocar_depois_do_meio_lab():
@@ -731,17 +713,14 @@ func trocar_angulo_lab():
 	if tween_vaivem == null:
 		reacoes_boneco.parar()
 		inclinar_boneco(1, true)
-	aviso = "MODO: %s, %s GRAUS" % [FaseClassicaDados.ModoInclinacao.keys()[modo_lab], n(angulo_lab)]
+	aviso = "ANGULO: %s GRAUS" % n(angulo_lab)
 	mostrar()
 
-# Inclina (girando ou em fileiras, pelo modo do LAB) e/ou desloca o boneco para 'lado', como a luta
-# faz. Na ROTACAO_AA andando, quem gira é a conta progressiva (_process); 'fixo' mostra o ângulo parado
+# Inclina e/ou desloca o boneco para 'lado', como a luta faz. Andando, quem gira é a conta
+# progressiva (_process); 'fixo' mostra o ângulo parado
 func inclinar_boneco(lado, fixo = false):
-	if modo_lab == FaseClassicaDados.ModoInclinacao.ROTACAO_AA:
-		if lado == 0 or fixo:
-			reacoes_boneco.inclinar(lado * angulo_lab, DADOS_FASE1.inclinacao_tempo)
-	else:
-		reacoes_boneco.inclinar_lean(lado * lean_do_angulo(angulo_lab), DADOS_FASE1.inclinacao_tempo)
+	if lado == 0 or fixo:
+		reacoes_boneco.inclinar(lado * angulo_lab, DADOS_FASE1.inclinacao_tempo)
 	if DADOS_FASE1.inclinacao_px != 0:
 		reacoes_boneco.deslocar(lado * DADOS_FASE1.inclinacao_px, DADOS_FASE1.inclinacao_tempo)
 
@@ -979,11 +958,11 @@ func mostrar():
 		texto_detalhe.text = texto_animacao_lab()
 		ajustar_detalhe()
 
-# O detalhe da página ANIMACOES acompanha o quadro a cada frame; com o VAI E VEM na ROTACAO_AA,
+# O detalhe da página ANIMACOES acompanha o quadro a cada frame; com o VAI E VEM ligado,
 # o boneco gira pela conta progressiva (o sentido sai do movimento dele)
 func _process(delta):
 	super(delta)
-	if tween_vaivem != null and modo_lab == FaseClassicaDados.ModoInclinacao.ROTACAO_AA:
+	if tween_vaivem != null:
 		var dx = boneco.position.x - x_anterior
 		if dx != 0:
 			sentido_lab = 1 if dx > 0 else -1

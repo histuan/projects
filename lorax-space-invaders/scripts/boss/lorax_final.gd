@@ -53,10 +53,6 @@ func inclinar(graus, tempo):
 func definir_inclinacao(graus):
 	reacoes.definir_inclinacao(graus)
 
-# Alternativa: inclina em fileiras inteiras até o topo deslocar 'px' em 'tempo' s (0 = de pé)
-func inclinar_lean(px, tempo):
-	reacoes.inclinar_lean(px, tempo)
-
 # Desloca o sprite 'px' para o lado em 'tempo' s (alternativa à inclinação)
 func deslocar(px, tempo):
 	reacoes.deslocar(px, tempo)

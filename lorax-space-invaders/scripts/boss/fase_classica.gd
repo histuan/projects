@@ -18,9 +18,9 @@ var andando := false
 var atacando := false
 # Leques já soltos (escolhe a vez em 'quantidades')
 var ataques_feitos := 0
-# Lado para onde o corpo está inclinado agora (-1, 0, 1); só usado pelo lean e pelo deslocar
+# Lado para onde o corpo está deslocado agora (-1, 0, 1); só usado pelo deslocar
 var postura := 0
-# Inclinação progressiva do vai e vem (ROTACAO_AA com inclinacao_graus); null = sem
+# Inclinação progressiva do vai e vem (com inclinacao_graus); null = sem
 var inclinacao_vv: InclinacaoVaiEVem = null
 
 # O relógio do ataque é da própria fase
@@ -91,7 +91,7 @@ func comecar_direto(contexto: ContextoBatalha):
 # ouvir os sinais dele
 func preparar(contexto: ContextoBatalha):
 	ctx = contexto
-	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.ROTACAO_AA and dados.inclinacao_graus != 0:
+	if dados.inclinacao_graus != 0:
 		inclinacao_vv = InclinacaoVaiEVem.new(dados)
 	if dados.coracao_boss != null:
 		trocar_coracoes.emit(dados.coracao_boss)
@@ -134,14 +134,12 @@ func _process(delta):
 	elif corpo.position.x >= dados.limite_dir:
 		direcao = -1
 
-# Lean (em fileiras) e/ou deslocamento para 'lado' só quando ele muda; com os valores em 0 no
-# .tres, nada acontece. A rotação (ROTACAO_AA) é progressiva: inclinacao_vv, no _process
+# Deslocamento para 'lado' só quando ele muda; com inclinacao_px em 0 no .tres, nada acontece.
+# A rotação é progressiva: inclinacao_vv, no _process
 func atualizar_postura(lado):
 	if lado == postura:
 		return
 	postura = lado
-	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.LEAN and dados.inclinacao != 0:
-		ctx.corpo.inclinar_lean(lado * dados.inclinacao, dados.inclinacao_tempo)
 	if dados.inclinacao_px != 0:
 		ctx.corpo.deslocar(lado * dados.inclinacao_px, dados.inclinacao_tempo)
 

@@ -30,7 +30,6 @@ quadro_evento = 4
 script = ExtResource("1_fase")
 numero_fase = 1
 inclinacao_graus = 6.0
-inclinacao = 2.0
 inclinacao_tempo = 0.15
 inclinacao_passo_graus = 1.0
 intervalo_ataque = 1.6
