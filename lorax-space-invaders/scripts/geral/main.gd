@@ -16,6 +16,14 @@ const LabSons = preload("res://scripts/geral/lab_sons.gd")
 const LabTextos = preload("res://scripts/geral/lab_textos.gd")
 const PainelDebug = preload("res://scripts/geral/painel_debug.gd")
 
+# Silêncio da wave 10 (valores de teste): as estrelas desaceleram até SILENCIO_ESTRELAS_FATOR em
+# SILENCIO_ESTRELAS_TEMPO s (ease-out); silêncio mais curto que isso = SILENCIO_FRACAO dele.
+# Quando o alarme toca, voltam a ×1 em SILENCIO_VOLTA_TEMPO s (0 = na hora)
+const SILENCIO_ESTRELAS_TEMPO = 1.5
+const SILENCIO_FRACAO = 0.7
+const SILENCIO_ESTRELAS_FATOR = 0.2
+const SILENCIO_VOLTA_TEMPO = 0.0
+
 # 1 vida na luta: batimento, música abafada e bordas vermelhas ligados
 var vida_baixa_ligada = false
 # Conta o fade da música do jogo (começa quando a wave 10 chega; pausa com o jogo)
@@ -104,12 +112,19 @@ func _on_wave_boss_chegou():
 	relogio_fade.start(Sons.BIBLIOTECA.wave10_fade_musica)
 
 # Tela limpa na wave do boss: espera a música do jogo terminar de sumir (se ainda não
-# sumiu), silêncio, alarme com FINAL WAVE piscando e, quando o letreiro some, a música do
-# Lorax 2.0 entra junto com a descida dele. Tudo pausa com o jogo
+# sumiu), silêncio com as estrelas quase paradas, alarme (bordas, tremor) com FINAL WAVE
+# piscando e, quando o letreiro some, a música do Lorax 2.0 entra junto com a descida dele
+# e as estrelas aceleram. Tudo pausa com o jogo
 func _on_boss_pode_entrar():
 	if relogio_fade != null and relogio_fade.time_left > 0:
 		await esperar(relogio_fade.time_left)
-	await esperar(Sons.BIBLIOTECA.wave10_silencio)
+	var silencio = Sons.BIBLIOTECA.wave10_silencio
+	var desacelera = silencio * SILENCIO_FRACAO if silencio < SILENCIO_ESTRELAS_TEMPO else SILENCIO_ESTRELAS_TEMPO
+	$fundo/estrelas.mudar_velocidade(SILENCIO_ESTRELAS_FATOR, desacelera, true)
+	Momentos.tocar(&"wave10_silencio")
+	await esperar(silencio)
+	$fundo/estrelas.mudar_velocidade(1.0, SILENCIO_VOLTA_TEMPO, true)
+	Momentos.tocar(&"wave10_alarme")
 	var alarme = Sons.tocar(&"wave_boss_alarme")
 	var duracao_alarme = 0.0
 	if alarme != null:
@@ -118,14 +133,18 @@ func _on_boss_pode_entrar():
 	var letreiro = $hud.mostrar_letreiro(LETREIRO_FINAL_WAVE, "", "", duracao_alarme)
 	await letreiro.sumiu
 	Musica.tocar(&"musica_wave10")
+	Momentos.tocar(&"wave10_musica_entra")
 	comecar_batalha()
 
 # Cria a batalha final logo depois do groupAlien na árvore (desenha atrás do cenário e
-# da hud), liga os sinais dela à hud (e ao painel de debug, se existir) e manda começar
+# da hud), liga os sinais dela à hud, à Partida (e ao painel de debug, se existir) e manda
+# começar com a caixa de diálogo
 func comecar_batalha():
 	var batalha = BATALHA_FINAL.instantiate()
 	batalha.vida_boss_mudou.connect($hud.mostrar_vida_boss_final)
 	batalha.boss_invulneravel.connect($hud.piscar_vida_boss)
+	batalha.coracoes_boss_trocados.connect($hud.trocar_coracoes_boss)
+	batalha.boss_entrou.connect(Partida.marcar_boss_em_cena)
 	if painel_debug != null:
 		batalha.fase_mudou.connect(painel_debug.mostrar_fase)
 		batalha.vida_boss_mudou.connect(painel_debug.mostrar_vida_boss)
@@ -134,7 +153,7 @@ func comecar_batalha():
 	batalha.terminou.connect(_on_batalha_terminou)
 	add_child(batalha)
 	move_child(batalha, $groupAlien.get_index() + 1)
-	batalha.comecar(player)
+	batalha.comecar(player, caixa_dialogo)
 
 # Espera em tempo real que congela no Pause. O Timer é filho da main: se a cena trocar
 # no meio, ele some junto e a sequência simplesmente não continua

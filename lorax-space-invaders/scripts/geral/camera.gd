@@ -95,14 +95,17 @@ func tremer_continuo(de, ate, duracao):
 	tween_continuo = create_tween().set_ignore_time_scale()
 	tween_continuo.tween_property(self, "forca_continua", ate, duracao)
 
-# Desliga o tremor contínuo, levando a força a 0 em 'fade' segundos (0 = na hora)
-func parar_tremor_continuo(fade = 0.0):
+# Desliga o tremor contínuo, levando a força a 0 em 'fade' segundos (0 = na hora;
+# suave = ease-out)
+func parar_tremor_continuo(fade = 0.0, suave = false):
 	if tween_continuo != null:
 		tween_continuo.kill()
 	if fade <= 0:
 		forca_continua = 0.0
 		return
 	tween_continuo = create_tween().set_ignore_time_scale()
+	if suave:
+		tween_continuo.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween_continuo.tween_property(self, "forca_continua", 0.0, fade)
 
 # Zoom suave até 'fator' em 'duracao' segundos. Sem foco, centrado na tela; com foco,

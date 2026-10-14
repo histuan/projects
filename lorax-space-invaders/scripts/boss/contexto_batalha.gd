@@ -8,3 +8,5 @@ var corpo
 # Node2D onde nascem os projéteis do boss
 var ataques: Node
 var player
+# A caixa de diálogo da main (falas da luta)
+var dialogo: CaixaDialogo

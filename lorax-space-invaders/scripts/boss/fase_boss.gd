@@ -4,6 +4,10 @@ class_name FaseBoss
 extends Node
 
 signal terminou
+# O boss terminou de entrar e está em cena (o Pause passa a mostrar a fala)
+signal entrou
+# Os corações do boss passam a usar esta textura de "cheio"
+signal trocar_coracoes(textura)
 
 var ctx: ContextoBatalha
 

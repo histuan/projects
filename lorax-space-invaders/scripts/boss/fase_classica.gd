@@ -2,6 +2,11 @@
 # solta um leque de projéteis. Tudo que muda de uma fase para outra está em 'dados'.
 extends FaseBoss
 
+# Fim do tremor contínuo da descida: segundos que ele leva para cair a 0 (ease-out) e
+# quantos segundos antes do pouso ele chega a 0 (valores de teste)
+const POUSO_TC_SOME = 1.0
+const POUSO_TC_ANTES = 0.1
+
 @export var dados: FaseClassicaDados
 
 var direcao := 1
@@ -12,21 +17,53 @@ var atacando := false
 func _ready():
 	$TimerAtaque.timeout.connect(atacar)
 
-# Entrada: invulnerável enquanto chega até a altura; depois começa a luta
+# Entrada: invulnerável enquanto desce tremendo (o tremor some pouco antes do pouso);
+# depois pousa, fala e só então luta
 func comecar(contexto: ContextoBatalha):
 	preparar(contexto)
 	var corpo = ctx.corpo
 	corpo.ficar_invulneravel(true)
-	tocar_som(dados.som_chegada)
+	tocar_momento(dados.momento_descida)
 	var tempo = abs(dados.altura - corpo.position.y) / dados.vel_entrada
 	var tween = create_tween()
 	tween.tween_property(corpo, "position:y", dados.altura, tempo)
 	tween.tween_callback(pousar)
+	agendar_fim_do_tremor(tempo)
 
-# Fim da descida: som do pouso e começa a luta
+# O tremor contínuo da descida cai a 0 em POUSO_TC_SOME s e chega a 0 POUSO_TC_ANTES s antes
+# do pouso (descida curta: começa já e cai no tempo que sobra)
+func agendar_fim_do_tremor(tempo_descida):
+	var fim = maxf(tempo_descida - POUSO_TC_ANTES, 0.0)
+	var some = minf(POUSO_TC_SOME, fim)
+	var tween = create_tween()
+	tween.tween_interval(fim - some)
+	tween.tween_callback(func(): get_viewport().get_camera_2d().parar_tremor_continuo(some, true))
+
+# Fim da descida: o pouso (tremor, poeira, squash, som) e a fala de entrada; sem fala, a
+# apresentação vem na hora
 func pousar():
-	tocar_som(dados.som_pouso)
+	tocar_momento(dados.momento_pouso)
+	entrou.emit()
+	if dados.fala_entrada == &"":
+		apresentar()
+		return
+	ctx.dialogo.terminou.connect(_on_fala_entrada_terminou, CONNECT_ONE_SHOT)
+	ctx.dialogo.falar(dados.fala_entrada)
+
+# A caixa fechou: segue a entrada
+func _on_fala_entrada_terminou(_nome):
+	apresentar()
+
+# Nome do boss e estrelas da fase; a luta começa junto
+func apresentar():
+	tocar_momento(dados.momento_nome)
+	tocar_momento(dados.momento_estrelas)
 	lutar()
+
+# Toca um momento do momentos_boss.tres no corpo; vazio = esta fase não tem nada nesse ponto
+func tocar_momento(nome: StringName):
+	if nome != &"":
+		Momentos.tocar(nome, ctx.corpo)
 
 # Toca um evento do sons_boss.tres; evento vazio = esta fase não tem som para isso
 func tocar_som(evento: StringName):
@@ -37,15 +74,20 @@ func tocar_som(evento: StringName):
 func numero_fase():
 	return dados.numero_fase
 
-# Sem entrada: já aparece no meio, na altura da fase
+# Sem entrada (nem fala, nem nome): já aparece no meio, na altura da fase
 func comecar_direto(contexto: ContextoBatalha):
 	preparar(contexto)
 	ctx.corpo.position = Vector2((dados.limite_esq + dados.limite_dir) / 2.0, dados.altura)
+	entrou.emit()
+	tocar_momento(dados.momento_estrelas)
 	lutar()
 
-# Veste o corpo com a vida e as animações desta fase e passa a ouvir os sinais dele
+# Veste o corpo com a vida e as animações desta fase, pede os corações da fase e passa a
+# ouvir os sinais dele
 func preparar(contexto: ContextoBatalha):
 	ctx = contexto
+	if dados.coracao_boss != null:
+		trocar_coracoes.emit(dados.coracao_boss)
 	var corpo = ctx.corpo
 	corpo.carregar_animacoes(dados.animacoes)
 	corpo.definir_vida(dados.vida)

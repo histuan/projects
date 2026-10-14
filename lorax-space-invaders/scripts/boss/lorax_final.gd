@@ -12,18 +12,25 @@ signal animacao_terminou(nome)
 
 var vida_max := 1
 var invulneravel := false
+# Squash e as outras reações pedidas pelos momentos (criado por código no _ready)
+var reacoes: ReacoesCorpo
 
 # Não dá pontos (o placar some na wave do boss). Trúfula: 2 rajadas por golpe
 func _init():
 	valor_pontos = 0
 	rajadas_por_dano = {"trufula": 2}
 
-# Liga por código o fim das animações (na cena o AnimationPlayer não tem conexões)
+# Liga por código o fim das animações (na cena o AnimationPlayer não tem conexões) e cria
+# o ReacoesCorpo (a cena não precisa saber dele)
 func _ready():
 	$AnimationPlayer.animation_finished.connect(_on_animacao_terminou)
+	reacoes = ReacoesCorpo.new()
+	add_child(reacoes)
 
-# Enche a vida para uma fase nova (e revive: a vida anterior pode ter zerado)
+# Enche a vida para uma fase nova (e revive: a vida anterior pode ter zerado); o sprite
+# volta ao normal
 func definir_vida(valor):
+	reacoes.parar()
 	vida_max = valor
 	vidas = valor
 	vivo = true
@@ -72,5 +79,6 @@ func ao_ferir(_fonte):
 
 # Vida no zero: não some, só avisa. A fase decide o que acontece com ele
 func morrer(_fonte):
+	reacoes.parar()
 	vida_mudou.emit(0, vida_max)
 	vida_acabou.emit()

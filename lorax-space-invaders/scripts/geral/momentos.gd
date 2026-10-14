@@ -14,7 +14,8 @@ const POEIRA = preload("res://cenas/efeitos/poeira.tscn")
 const FOLHINHAS = preload("res://cenas/efeitos/folhinhas.tscn")
 const KI_SUBINDO = preload("res://cenas/efeitos/ki_subindo.tscn")
 
-# O que só a fase sabe fazer (squash, recuo, letreiros...): passo SINAL
+# O que só a fase sabe fazer (letreiros, coração da hud...): passo SINAL. As reações do corpo
+# (squash...) o ReacoesCorpo do alvo faz sozinho; o pedido sai do mesmo jeito
 signal pedido(nome, parametros, alvo)
 
 var camera
@@ -227,6 +228,9 @@ func executar(passo, alvo, duracao_animacao):
 		Passo.Tipo.SOM:
 			Sons.tocar(passo.nome)
 		Passo.Tipo.SINAL:
+			var reacoes = achar(alvo, ReacoesCorpo)
+			if reacoes != null:
+				reacoes.reagir(passo.nome, passo.parametros)
 			pedido.emit(passo.nome, passo.parametros, alvo)
 		Passo.Tipo.MOMENTO:
 			tocar(passo.nome, alvo, duracao_animacao)
@@ -252,7 +256,7 @@ func posicao(alvo):
 		return alvo.global_position
 	return null
 
-# Um nó do tipo 'classe' dentro do corpo (FlashSprite, Afterimage); null se não há
+# Um nó do tipo 'classe' dentro do corpo (FlashSprite, Afterimage, ReacoesCorpo); null se não há
 func achar(alvo, classe):
 	if not (is_instance_valid(alvo) and alvo is Node2D):
 		return null

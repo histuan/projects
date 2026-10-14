@@ -108,8 +108,9 @@ func cor_da_estrela(estrela, b):
 	return Color(base.r * cor.r, base.g * cor.g, base.b * cor.b)
 
 # Multiplicador de velocidade de todas as estrelas (0 = param); com duração, chega aos poucos
-func mudar_velocidade(mult, duracao = 0.0):
-	tween_velocidade = animar(tween_velocidade, "velocidade_mult", mult, duracao)
+# (suave = ease-out: muda rápido no começo e assenta devagar)
+func mudar_velocidade(mult, duracao = 0.0, suave = false):
+	tween_velocidade = animar(tween_velocidade, "velocidade_mult", mult, duracao, suave)
 
 # Multiplicador de brilho de todas as estrelas (0 a 1)
 func mudar_brilho(valor, duracao = 0.0):
@@ -168,14 +169,16 @@ func restaurar():
 	resta_empurrao = 0.0
 	criar_estrelas()
 
-# Leva uma propriedade ao valor na hora (duração 0) ou por tween em tempo real;
-# mata o tween anterior da mesma propriedade e devolve o novo
-func animar(tween_antigo, propriedade, valor, duracao):
+# Leva uma propriedade ao valor na hora (duração 0) ou por tween em tempo real (suave =
+# ease-out); mata o tween anterior da mesma propriedade e devolve o novo
+func animar(tween_antigo, propriedade, valor, duracao, suave = false):
 	if tween_antigo != null:
 		tween_antigo.kill()
 	if duracao <= 0:
 		set(propriedade, valor)
 		return null
 	var tween = create_tween().set_ignore_time_scale()
+	if suave:
+		tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, propriedade, valor, duracao)
 	return tween

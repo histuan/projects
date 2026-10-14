@@ -35,12 +35,25 @@ extends Resource
 ## Precisa ter "parado", "dano" e "ataque" (o ataque com quadro_evento)
 @export var animacoes: Array[AnimacaoDados] = []
 
+@export_group("Entrada")
+## Fala (falas_boss.tres) depois do pouso; ele só ataca quando ela fecha (vazio = sem fala)
+@export var fala_entrada := &""
+## Textura dos corações CHEIOS do boss nesta fase (vazio = a da hud)
+@export var coracao_boss: Texture2D
+
+@export_group("Momentos")
+## Momentos do momentos_boss.tres tocados no corpo (vazio = nada nesse ponto)
+## No começo da descida
+@export var momento_descida := &""
+## No fim da descida
+@export var momento_pouso := &""
+## Depois da fala de entrada (nome do boss)
+@export var momento_nome := &""
+## Quando a luta começa (estrelas da fase)
+@export var momento_estrelas := &""
+
 @export_group("Sons")
 ## Eventos do sons_boss.tres (vazio = sem som nesse momento)
-## No começo da descida
-@export var som_chegada := &""
-## No fim da descida
-@export var som_pouso := &""
 ## No começo da animação de ataque (carga)
 @export var som_ataque := &""
 ## No quadro de evento do ataque, quando os projéteis nascem

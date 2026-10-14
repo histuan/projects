@@ -312,9 +312,9 @@ func mostrar_seta(ligada):
 func definir_altura_seta(altura):
 	seta.position.y = seta_y - roundf(altura)
 
-# 'shoot' completa o texto ou, com ele completo, avança
+# Espaço ('shoot') ou Enter ('ui_accept') completa o texto ou, com ele completo, avança
 func _unhandled_input(event):
-	if not aberta or so_mostrando or not event.is_action_pressed("shoot"):
+	if not aberta or so_mostrando or not (event.is_action_pressed("shoot") or event.is_action_pressed("ui_accept")):
 		return
 	if digitando:
 		parar_voz()

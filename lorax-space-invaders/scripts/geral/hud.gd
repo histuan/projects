@@ -69,6 +69,11 @@ func mostrar_vida_boss_final(vida, vida_max):
 		coracoes_boss_reencheram.emit()
 	coracoes_boss_cheios = cheios
 
+# Boss final: os corações cheios passam a usar a textura da fase (null = não muda)
+func trocar_coracoes_boss(textura):
+	if textura != null:
+		$coracoesBoss.trocar_cheio(textura)
+
 # Boss final: corações piscando = ele está invulnerável
 func piscar_vida_boss(ligado):
 	if ligado:

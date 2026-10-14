@@ -10,23 +10,30 @@ signal boss_invulneravel(ligado)
 signal fase_mudou(nome, numero)
 # Acabaram as fases
 signal terminou
+# O boss terminou de entrar (repassado da fase)
+signal boss_entrou
+# A fase pediu outra textura de coração cheio (repassado para a hud)
+signal coracoes_boss_trocados(textura)
 
 var ctx: ContextoBatalha
 var indice_fase := -1
 
-# Repassa os sinais do corpo para cima e ouve o 'terminou' de cada fase
+# Repassa os sinais do corpo e das fases para cima e ouve o 'terminou' de cada fase
 func _ready():
 	$LoraxFinal.vida_mudou.connect(vida_boss_mudou.emit)
 	$LoraxFinal.invulneravel_mudou.connect(boss_invulneravel.emit)
 	for fase in $Fases.get_children():
 		fase.terminou.connect(proxima_fase)
+		fase.entrou.connect(boss_entrou.emit)
+		fase.trocar_coracoes.connect(coracoes_boss_trocados.emit)
 
 # Chamada pela main (depois de conectar os sinais): monta o contexto e começa a 1ª fase
-func comecar(player):
+func comecar(player, dialogo):
 	ctx = ContextoBatalha.new()
 	ctx.corpo = $LoraxFinal
 	ctx.ataques = $Ataques
 	ctx.player = player
+	ctx.dialogo = dialogo
 	proxima_fase()
 
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais

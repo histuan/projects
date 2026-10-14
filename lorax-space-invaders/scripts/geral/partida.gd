@@ -29,6 +29,8 @@ var etapa_inicial = Etapa.NENHUMA
 var em_luta_boss = false
 # Fase da luta do boss: 0 = fora dela, 1, 2 ou 3 (o retrato AUTO das falas usa)
 var fase_luta = 0
+# O boss terminou de entrar e está em cena (o Pause mostra a fala só a partir daqui)
+var boss_em_cena = false
 
 # Guarda a etapa em que a próxima partida deve começar
 func escolher_etapa(etapa):
@@ -49,10 +51,15 @@ func nova_partida():
 	wave = 0
 	em_luta_boss = false
 	fase_luta = 0
+	boss_em_cena = false
 
 # A wave do boss chegou
 func comecar_luta_boss():
 	em_luta_boss = true
+
+# O boss pousou (ou já começou em cena): a partir daqui o Pause mostra a fala
+func marcar_boss_em_cena():
+	boss_em_cena = true
 
 # Começou uma fase da luta (1, 2 ou 3)
 func definir_fase_luta(numero):

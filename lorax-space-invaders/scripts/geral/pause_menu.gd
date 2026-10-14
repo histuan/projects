@@ -72,7 +72,7 @@ func alternar():
 	visible = pausar
 	if pausar:
 		focar(botao_continuar)
-	if pausar and Partida.em_luta_boss:
+	if pausar and Partida.boss_em_cena:
 		caixa_fala.mostrar_inteira(FALA_PAUSE)
 	else:
 		caixa_fala.fechar()

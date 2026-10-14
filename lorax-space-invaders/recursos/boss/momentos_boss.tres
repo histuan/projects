@@ -246,10 +246,15 @@ de = 1.0
 ate = 1.0
 fica_ligado = true
 
+[sub_resource type="Resource" id="Passo_descida_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_chegada"
+
 [sub_resource type="Resource" id="Momento_descida"]
 script = ExtResource("2_momento")
 titulo = "DESCIDA"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_descida_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_descida_1"), SubResource("Passo_descida_2")])
 
 [sub_resource type="Resource" id="Passo_desespero_1"]
 script = ExtResource("1_passo")
@@ -888,17 +893,21 @@ direcao = Vector2(1, 0)
 [sub_resource type="Resource" id="Passo_pouso_4"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F1"
 nome = &"squash"
 parametros = {
 "duracao": 0.18,
 "escala": Vector2(1.2, 0.8)
 }
 
+[sub_resource type="Resource" id="Passo_pouso_5"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_pouso"
+
 [sub_resource type="Resource" id="Momento_pouso"]
 script = ExtResource("2_momento")
 titulo = "POUSO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_pouso_1"), SubResource("Passo_pouso_2"), SubResource("Passo_pouso_3"), SubResource("Passo_pouso_4")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pouso_1"), SubResource("Passo_pouso_2"), SubResource("Passo_pouso_3"), SubResource("Passo_pouso_4"), SubResource("Passo_pouso_5")])
 
 [sub_resource type="Resource" id="Passo_puxao_1"]
 script = ExtResource("1_passo")
@@ -1351,6 +1360,7 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_wave10_musica_entra_1
 [sub_resource type="Resource" id="Passo_wave10_silencio_1"]
 script = ExtResource("1_passo")
 tipo = 14
+pendente = "NA LUTA PELA MAIN (F1a)"
 fator = 0.2
 
 [sub_resource type="Resource" id="Passo_wave10_silencio_2"]

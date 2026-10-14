@@ -97,6 +97,7 @@ var mundo
 var hud
 var boneco: Node2D
 var flash_boneco: FlashSprite
+var reacoes_boneco: ReacoesCorpo
 var rastro: Afterimage
 var tween_boneco: Tween = null
 # Onde nascem as folhas do teste de limpeza (faz o papel do $Ataques da luta)
@@ -174,8 +175,8 @@ func montar_paginas():
 	lista.append(pagina_animacoes())
 	return lista
 
-# Boneco parado do Lorax 2.0 no mundo, com flash e afterimage (o afterimage vem antes
-# do sprite para as cópias ficarem atrás)
+# Boneco parado do Lorax 2.0 no mundo, com flash, afterimage e reações (squash...); o
+# afterimage vem antes do sprite para as cópias ficarem atrás
 func criar_boneco():
 	boneco = Node2D.new()
 	boneco.position = posicao_boneco
@@ -189,6 +190,8 @@ func criar_boneco():
 	boneco.add_child(sprite)
 	flash_boneco = FlashSprite.new()
 	sprite.add_child(flash_boneco)
+	reacoes_boneco = ReacoesCorpo.new()
+	boneco.add_child(reacoes_boneco)
 	mundo.add_child(boneco)
 
 # A lista começa logo abaixo do boneco
@@ -245,6 +248,7 @@ func ao_resetar():
 	tela.limpar()
 	estrelas.restaurar()
 	flash_boneco.parar()
+	reacoes_boneco.parar()
 	rastro.parar()
 	for particula in get_tree().get_nodes_in_group(Particula.GRUPO):
 		particula.queue_free()

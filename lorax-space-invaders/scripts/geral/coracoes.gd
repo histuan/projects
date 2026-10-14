@@ -5,6 +5,8 @@ extends Node2D
 @export var vazio: Texture2D = preload("res://meus sprites/geral/coracao_vazio.png")
 
 @onready var coracoes = []
+# Quantos estão cheios agora (a troca de textura redesenha com ele)
+var cheios = 0
 
 # Junta os Sprite2D dos filhos (coracao1, coracao2...) na ordem da cena
 func _ready():
@@ -12,11 +14,18 @@ func _ready():
 		var s = filho.get_node_or_null("Sprite2D")
 		if s != null:
 			coracoes.append(s)
-			
+	cheios = coracoes.size()
+
 # Os n primeiros ficam cheios, o resto vazio
 func set_vidas(n):
+	cheios = n
 	for i in range(coracoes.size()):
 		coracoes[i].texture = cheio if i < n else vazio
+
+# Troca a textura do coração cheio (cor da fase do boss) e redesenha
+func trocar_cheio(textura):
+	cheio = textura
+	set_vidas(cheios)
 
 var tween_piscada: Tween = null
 
