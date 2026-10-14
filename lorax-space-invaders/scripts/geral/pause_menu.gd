@@ -1,7 +1,16 @@
 # Menu de pausa (Esc/P). Pausa a árvore toda; este nó continua ativo
 # porque o process_mode é ALWAYS. O painel OPÇÕES (volumes e "reduzir tremor e flashes")
-# é montado por código.
+# é montado por código. No modo menu principal (tela inicial) não pausa nada e só tem
+# VOLTAR, OPÇÕES e SAIR.
 extends CanvasLayer
+
+signal abriu
+signal fechou
+
+# Ligado pela tela inicial antes do add_child
+@export var modo_menu_principal := false
+# Só no modo menu principal: a tela inicial desliga enquanto o seletor está aberto ou o jogo começa
+var pode_abrir := true
 
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 # Sliders de volume: nome em Configuracoes, texto e bus (a prévia toca nele)
@@ -54,9 +63,25 @@ func _ready():
 	for b in $VBoxContainer.get_children():
 		if b is Button:
 			preparar_botao(b)
+	if modo_menu_principal:
+		$VBoxContainer/Titulo.text = "MENU"
+		botao_continuar.text = "VOLTAR"
+		$VBoxContainer/Reiniciar.hide()
+		$VBoxContainer/Menu.hide()
+		# A tela inicial já tem a barra de teclas dela, no rodapé
+		$controles.hide()
+		# Escurece tudo menos a faixa da barra (y 238–256)
+		$Fundo.offset_bottom = 238
+		# Offsets simétricos: o bloco fica centrado na âncora (y 128) qualquer que seja o conteúdo
+		var meia_altura = ($VBoxContainer.offset_bottom - $VBoxContainer.offset_top) / 2
+		$VBoxContainer.offset_top = -meia_altura
+		$VBoxContainer.offset_bottom = meia_altura
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
+		# Fechado e bloqueado pela tela inicial: a tecla fica para quem estiver com ela (o seletor)
+		if modo_menu_principal and not visible and not pode_abrir:
+			return
 		# Dentro das OPÇÕES, Esc/P só volta para a lista (não despausa)
 		if painel_opcoes.visible:
 			fechar_opcoes()
@@ -65,17 +90,25 @@ func _unhandled_input(event):
 		# Marca a tecla como usada para nenhum outro nó reagir a ela
 		get_viewport().set_input_as_handled()
 
-# Liga/desliga a pausa e mostra/esconde o menu
+# Liga/desliga a pausa e mostra/esconde o menu (no modo menu principal, só mostra/esconde)
 func alternar():
-	var pausar = not get_tree().paused
-	get_tree().paused = pausar
+	var pausar = not visible if modo_menu_principal else not get_tree().paused
+	if not modo_menu_principal:
+		get_tree().paused = pausar
 	visible = pausar
 	if pausar:
 		focar(botao_continuar)
-	if pausar and Partida.boss_em_cena:
+	elif modo_menu_principal:
+		# O VOLTAR escondido não pode ficar com o foco (um Enter na tela inicial o apertaria)
+		get_viewport().gui_release_focus()
+	if pausar and Partida.boss_em_cena and not modo_menu_principal:
 		caixa_fala.mostrar_inteira(FALA_PAUSE)
 	else:
 		caixa_fala.fechar()
+	if pausar:
+		abriu.emit()
+	else:
+		fechou.emit()
 
 func _on_continuar_pressed():
 	alternar()
@@ -210,14 +243,18 @@ func abrir_opcoes():
 	$controles.hide()
 	painel_opcoes.show()
 	focar(primeiro_slider)
-	Musica.ouvir_na_pausa(true)
+	# Na tela inicial nada está pausado: a música da cena já toca
+	if not modo_menu_principal:
+		Musica.ouvir_na_pausa(true)
 
 # Volta para a lista (com foco no OPÇÕES) e a música pausa de novo
 func fechar_opcoes():
-	Musica.ouvir_na_pausa(false)
+	if not modo_menu_principal:
+		Musica.ouvir_na_pausa(false)
 	amostra.stop()
 	painel_opcoes.hide()
-	$controles.show()
+	if not modo_menu_principal:
+		$controles.show()
 	$VBoxContainer.show()
 	focar(botao_opcoes)
 

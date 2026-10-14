@@ -28,15 +28,22 @@ var base_y = {}
 
 const DetectorCodigo = preload("res://scripts/geral/detector_codigo.gd")
 const SeletorEtapa = preload("res://scripts/geral/seletor_etapa.gd")
+const PAUSE_MENU = preload("res://cenas/geral/pause_menu.tscn")
 
 var detector
 var seletor
 # Com o seletor aberto, o Enter é dele e não inicia o jogo normal
 var seletor_aberto = false
+# Menu de Esc/P (o PauseMenu no modo menu principal): com ele aberto, o Enter é dos botões
+var menu
+var menu_aberto = false
+# Quadro em que o menu fechou: o Enter que aperta o VOLTAR não pode iniciar o jogo no mesmo quadro
+var quadro_fechou = -10
 
 # Guarda os valores originais para animar a partir deles
 func _ready():
 	Partida.limpar_etapa()
+	criar_menu()
 	criar_cheat()
 	escala_lorax = lorax.scale
 	splash.text = FRASES.pick_random()
@@ -72,8 +79,28 @@ func _process(delta):
 		s.position.y = base_y[s] + round(sin(tempo * 2.0 + i) * 1.5)
 		i += 1
 
-	if Input.is_action_just_pressed("ui_accept") and not seletor_aberto:
+	var enter_livre = not seletor_aberto and not menu_aberto and Engine.get_process_frames() - quadro_fechou > 1
+	if Input.is_action_just_pressed("ui_accept") and enter_livre:
 		comecar()
+
+# Cria o menu de Esc/P antes do cheat (o seletor fica depois na árvore e recebe o Esc primeiro)
+func criar_menu():
+	menu = PAUSE_MENU.instantiate()
+	menu.modo_menu_principal = true
+	add_child(menu)
+	menu.abriu.connect(_on_menu_abriu)
+	menu.fechou.connect(_on_menu_fechou)
+
+# Menu aberto: as setas são dele (Konami desligado)
+func _on_menu_abriu():
+	menu_aberto = true
+	detector.ativo = false
+
+# Menu fechado: volta o Konami e guarda o quadro para a trava do Enter
+func _on_menu_fechou():
+	menu_aberto = false
+	quadro_fechou = Engine.get_process_frames()
+	detector.ativo = true
 
 # Cria o detector do código Konami e o seletor de etapa e liga os sinais
 func criar_cheat():
@@ -87,13 +114,14 @@ func criar_cheat():
 
 # Código certo: abre a lista com as etapas de Partida.NOMES_ETAPAS
 func _abrir_seletor():
-	if saindo or seletor_aberto:
+	if saindo or seletor_aberto or menu_aberto:
 		return
 	var opcoes = []
 	for etapa in Partida.NOMES_ETAPAS:
 		opcoes.append({"nome": Partida.NOMES_ETAPAS[etapa], "etapa": etapa})
 	seletor_aberto = true
 	detector.ativo = false
+	menu.pode_abrir = false
 	Sons.tocar(&"cheat_abre")
 	seletor.abrir(opcoes)
 
@@ -101,6 +129,7 @@ func _abrir_seletor():
 func _fechar_seletor():
 	seletor_aberto = false
 	detector.ativo = true
+	menu.pode_abrir = true
 
 # Etapa escolhida: grava na Partida e começa o jogo com a transição de sempre
 func _on_etapa_escolhida(etapa):
@@ -111,6 +140,7 @@ func _on_etapa_escolhida(etapa):
 # música abaixa e, no fim, troca para o jogo
 func comecar():
 	saindo = true
+	menu.pode_abrir = false
 	$CanvasLayer/controles.set_process(false)
 	label_enter.modulate.a = 1.0
 	var t = create_tween().set_parallel()
