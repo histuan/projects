@@ -6,12 +6,20 @@ extends FaseBoss
 # quantos segundos antes do pouso ele chega a 0 (valores de teste)
 const POUSO_TC_SOME = 1.0
 const POUSO_TC_ANTES = 0.1
+# Os sons da carga somem com fade do quadro de evento até o fim do "ataque" (false = tocam até o fim)
+const CORTAR_SOM_CARGA = true
+# Fade (s) dos sons da carga quando a fase para no meio do ataque (valor de teste)
+const CARGA_CORTE_PARADA = 0.15
 
 @export var dados: FaseClassicaDados
 
 var direcao := 1
 var andando := false
 var atacando := false
+# Leques já soltos (escolhe a vez em 'quantidades')
+var ataques_feitos := 0
+# Lado para onde o corpo está inclinado agora (-1, 0, 1)
+var postura := 0
 
 # O relógio do ataque é da própria fase
 func _ready():
@@ -65,11 +73,6 @@ func tocar_momento(nome: StringName):
 	if nome != &"":
 		Momentos.tocar(nome, ctx.corpo)
 
-# Toca um evento do sons_boss.tres; evento vazio = esta fase não tem som para isso
-func tocar_som(evento: StringName):
-	if evento != &"":
-		Sons.tocar(evento)
-
 # A fase da luta vem do .tres (fase 1 ou 2)
 func numero_fase():
 	return dados.numero_fase
@@ -111,9 +114,12 @@ func intervalo_atual():
 	var fracao = (corpo.vidas - 1) / float(corpo.vida_max - 1)
 	return lerp(dados.intervalo_minimo, dados.intervalo_ataque, fracao)
 
-# Vai e vem entre os limites (parado durante o ataque, se a fase pedir)
+# Vai e vem entre os limites (parado durante o ataque, se a fase pedir), inclinado para o
+# lado em que anda
 func _process(delta):
-	if not andando or (atacando and dados.para_ao_atacar):
+	var parado = not andando or (atacando and dados.para_ao_atacar)
+	atualizar_postura(0 if parado else direcao)
+	if parado:
 		return
 	var corpo = ctx.corpo
 	corpo.position.x += direcao * dados.velocidade * delta
@@ -122,19 +128,49 @@ func _process(delta):
 	elif corpo.position.x >= dados.limite_dir:
 		direcao = -1
 
-# Só toca a animação; os projéteis saem no quadro marcado dela (_on_evento_animacao)
+# Inclina (girando ou em fileiras, pelo modo do .tres) e/ou desloca o corpo para 'lado' só
+# quando ele muda; com os valores em 0 no .tres, nada acontece
+func atualizar_postura(lado):
+	if lado == postura:
+		return
+	postura = lado
+	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.ROTACAO_AA and dados.inclinacao_graus != 0:
+		ctx.corpo.inclinar(lado * dados.inclinacao_graus, dados.inclinacao_tempo)
+	elif dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.LEAN and dados.inclinacao != 0:
+		ctx.corpo.inclinar_lean(lado * dados.inclinacao, dados.inclinacao_tempo)
+	if dados.inclinacao_px != 0:
+		ctx.corpo.deslocar(lado * dados.inclinacao_px, dados.inclinacao_tempo)
+
+# Toca a animação e a carga (que dura até o quadro de evento); os projéteis saem no quadro
+# marcado dela (_on_evento_animacao)
 func atacar():
 	atacando = true
-	tocar_som(dados.som_ataque)
+	if dados.momento_carga != &"":
+		Momentos.tocar(dados.momento_carga, ctx.corpo, dados.duracao_carga())
 	ctx.corpo.tocar("ataque")
 
-# Quadro marcado do ataque: solta o leque de projéteis (com os sons do disparo)
+# Quadro marcado do ataque: os sons da carga somem, o disparo toca e sai o leque da vez
 func _on_evento_animacao(nome):
 	if nome == "ataque":
-		for evento in dados.sons_disparo:
-			tocar_som(evento)
-		Projetil.criar_leque(dados.projetil, dados.quantidade, dados.angulo_leque,
+		cortar_sons_da_carga(dados.duracao_depois_do_disparo())
+		tocar_momento(dados.momento_disparo)
+		Projetil.criar_leque(dados.projetil, quantidade_do_leque(), dados.angulo_leque,
 				ctx.corpo.global_position + dados.origem_tiro, ctx.ataques)
+		ataques_feitos += 1
+
+# Os sons (passos SOM) do momento da carga somem com fade de 'fade' s
+func cortar_sons_da_carga(fade):
+	if not CORTAR_SOM_CARGA or dados.momento_carga == &"":
+		return
+	for passo in Momentos.momento(dados.momento_carga).passos:
+		if passo.tipo == Passo.Tipo.SOM:
+			Sons.cortar(passo.nome, fade)
+
+# Projéteis deste leque: a vez em 'quantidades', ou sempre 'quantidade'
+func quantidade_do_leque():
+	if dados.quantidades.is_empty():
+		return dados.quantidade
+	return dados.quantidades[ataques_feitos % dados.quantidades.size()]
 
 # Fim do ataque: agenda o próximo. Fim do ataque ou do dano: volta a ficar parado
 func _on_animacao_terminou(nome):
@@ -143,10 +179,10 @@ func _on_animacao_terminou(nome):
 		$TimerAtaque.start(intervalo_atual())
 	ctx.corpo.tocar("parado")
 
-# Som de dano sempre; a animação de dano não interrompe um ataque em andamento
+# Momento do hit sempre; a animação de dano não interrompe um ataque em andamento
 # (a piscada acontece sempre)
 func _on_ferido():
-	tocar_som(dados.som_dano)
+	tocar_momento(dados.momento_hit)
 	if not atacando:
 		ctx.corpo.tocar("dano")
 
@@ -155,8 +191,11 @@ func _on_vida_acabou():
 	parar()
 	terminou.emit()
 
-# Para relógio e movimento, deixa o corpo parado e deixa de ouvir os sinais dele
+# Para relógio e movimento (no meio de um ataque, os sons da carga somem rápido), deixa o
+# corpo parado e deixa de ouvir os sinais dele
 func parar():
+	if atacando:
+		cortar_sons_da_carga(CARGA_CORTE_PARADA)
 	andando = false
 	atacando = false
 	$TimerAtaque.stop()

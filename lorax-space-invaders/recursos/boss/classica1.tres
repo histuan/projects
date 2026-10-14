@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bfcjgsqvhllxb" path="res://meus sprites/lorax boss battle/fase1/fase1 idle.png" id="4_idle"]
 [ext_resource type="Texture2D" uid="uid://con16pmrhcb8e" path="res://meus sprites/lorax boss battle/fase1/fase1 hit.png" id="5_hit"]
 [ext_resource type="Texture2D" uid="uid://bgf2cmafntdlj" path="res://meus sprites/lorax boss battle/fase1/fase1 ataque.png" id="6_ataque"]
-[ext_resource type="Texture2D" path="res://meus sprites/geral/coracao_boss_amarelo.png" id="7_coracao"]
+[ext_resource type="Texture2D" uid="uid://ckx625v7lkold" path="res://meus sprites/geral/coracao_boss_amarelo.png" id="7_coracao"]
 
 [sub_resource type="Resource" id="Resource_parado"]
 script = ExtResource("2_anim")
@@ -29,10 +29,14 @@ quadro_evento = 4
 [resource]
 script = ExtResource("1_fase")
 numero_fase = 1
+inclinacao_graus = 6.0
+inclinacao = 2.0
+inclinacao_tempo = 0.15
 intervalo_ataque = 1.6
 intervalo_minimo = 1.0
 projetil = ExtResource("3_folha")
 quantidade = 5
+quantidades = Array[int]([5, 4])
 angulo_leque = 15.0
 animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque")])
 fala_entrada = &"voce_de_novo"
@@ -41,5 +45,6 @@ momento_descida = &"descida"
 momento_pouso = &"pouso"
 momento_nome = &"nome_do_boss"
 momento_estrelas = &"fase1_estrelas"
-sons_disparo = Array[StringName]([&"lorax2_arremesso", &"folha_voando"])
-som_dano = &"lorax2_dano"
+momento_carga = &"carga_ataque"
+momento_disparo = &"soltar_folhas"
+momento_hit = &"hit_comum"

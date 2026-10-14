@@ -3,6 +3,8 @@
 class_name FaseClassicaDados
 extends Resource
 
+enum ModoInclinacao { ROTACAO_AA, LEAN }
+
 @export_group("Vida")
 ## Golpes que o boss aguenta nesta fase (a hud reparte isso nos corações)
 @export var vida := 15
@@ -17,6 +19,17 @@ extends Resource
 @export var limite_dir := 217.0
 ## Velocidade com que chega até a altura no começo da fase
 @export var vel_entrada := 40.0
+## Como ele inclina no vai e vem: girando (com a borda dos texels suavizada) ou em fileiras inteiras
+@export var modo_inclinacao := ModoInclinacao.ROTACAO_AA
+## ROTACAO_AA: graus que ele gira para o lado do movimento, em torno dos pés (0 = não gira)
+@export var inclinacao_graus := 0.0
+## LEAN: px que o topo do sprite desloca para o lado do movimento no vai e vem, em fileiras inteiras
+## (0 nos pés; 0 = não inclina)
+@export var inclinacao := 0.0
+## Px que ele se desloca para o lado do movimento, em vez de inclinar (0 = não desloca)
+@export var inclinacao_px := 0.0
+## Segundos para chegar à inclinação (ou ao deslocamento) e para voltar
+@export var inclinacao_tempo := 0.0
 
 @export_group("Ataque")
 ## Segundos entre o fim de um ataque e o começo do próximo, com a vida cheia
@@ -25,6 +38,8 @@ extends Resource
 @export var intervalo_minimo := 2.5
 @export var projetil: PackedScene
 @export var quantidade := 1
+## Projéteis de cada leque, alternando a cada ataque (ex.: [5, 4]); vazio = sempre 'quantidade'
+@export var quantidades: Array[int] = []
 ## Graus entre dois projéteis vizinhos (só importa com quantidade > 1)
 @export var angulo_leque := 0.0
 ## De onde o projétil sai, em relação ao centro do boss
@@ -51,12 +66,26 @@ extends Resource
 @export var momento_nome := &""
 ## Quando a luta começa (estrelas da fase)
 @export var momento_estrelas := &""
-
-@export_group("Sons")
-## Eventos do sons_boss.tres (vazio = sem som nesse momento)
-## No começo da animação de ataque (carga)
-@export var som_ataque := &""
+## No começo do ataque, até o quadro de evento (a duração vem da animação "ataque")
+@export var momento_carga := &""
 ## No quadro de evento do ataque, quando os projéteis nascem
-@export var sons_disparo: Array[StringName] = []
+@export var momento_disparo := &""
 ## A cada golpe que tira vida
-@export var som_dano := &""
+@export var momento_hit := &""
+
+# Segundos da carga: do começo do "ataque" até o quadro de evento
+func duracao_carga():
+	var ataque = animacao("ataque")
+	return ataque.instante_do_quadro(ataque.quadro_evento)
+
+# Segundos do quadro de evento até o fim do "ataque" (a volta ao parado)
+func duracao_depois_do_disparo():
+	return animacao("ataque").duracao() - duracao_carga()
+
+# A animação 'nome' da lista (null, com erro, se ela não existe)
+func animacao(nome):
+	for dados in animacoes:
+		if dados.nome == nome:
+			return dados
+	push_error("FaseClassicaDados: sem a animação '%s'" % nome)
+	return null

@@ -12,8 +12,9 @@ signal animacao_terminou(nome)
 
 var vida_max := 1
 var invulneravel := false
-# Squash e as outras reações pedidas pelos momentos (criado por código no _ready)
+# Squash, recuo, inclinação e o flash de cor do sprite (criados por código no _ready)
 var reacoes: ReacoesCorpo
+var flash: FlashSprite
 
 # Não dá pontos (o placar some na wave do boss). Trúfula: 2 rajadas por golpe
 func _init():
@@ -21,16 +22,19 @@ func _init():
 	rajadas_por_dano = {"trufula": 2}
 
 # Liga por código o fim das animações (na cena o AnimationPlayer não tem conexões) e cria
-# o ReacoesCorpo (a cena não precisa saber dele)
+# o ReacoesCorpo e o FlashSprite (a cena não precisa saber deles)
 func _ready():
 	$AnimationPlayer.animation_finished.connect(_on_animacao_terminou)
 	reacoes = ReacoesCorpo.new()
 	add_child(reacoes)
+	flash = FlashSprite.new()
+	$Sprite2D.add_child(flash)
 
 # Enche a vida para uma fase nova (e revive: a vida anterior pode ter zerado); o sprite
 # volta ao normal
 func definir_vida(valor):
 	reacoes.parar()
+	flash.parar()
 	vida_max = valor
 	vidas = valor
 	vivo = true
@@ -40,6 +44,18 @@ func definir_vida(valor):
 func ficar_invulneravel(ligado):
 	invulneravel = ligado
 	invulneravel_mudou.emit(ligado)
+
+# Gira o sprite até 'graus' em 'tempo' s, em torno dos pés, com a borda suavizada (0 = de pé)
+func inclinar(graus, tempo):
+	reacoes.inclinar(graus, tempo)
+
+# Alternativa: inclina em fileiras inteiras até o topo deslocar 'px' em 'tempo' s (0 = de pé)
+func inclinar_lean(px, tempo):
+	reacoes.inclinar_lean(px, tempo)
+
+# Desloca o sprite 'px' para o lado em 'tempo' s (alternativa à inclinação)
+func deslocar(px, tempo):
+	reacoes.deslocar(px, tempo)
 
 # Troca o conjunto de animações (lista de AnimacaoDados) pelo da fase atual
 func carregar_animacoes(lista):
@@ -80,5 +96,6 @@ func ao_ferir(_fonte):
 # Vida no zero: não some, só avisa. A fase decide o que acontece com ele
 func morrer(_fonte):
 	reacoes.parar()
+	flash.parar()
 	vida_mudou.emit(0, vida_max)
 	vida_acabou.emit()

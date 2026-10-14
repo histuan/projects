@@ -28,7 +28,7 @@ const CAMPOS = {
 	Tipo.CONGELAR: ["duracao"],
 	Tipo.CAMERA_LENTA: ["escala", "duracao"],
 	Tipo.FLASH_TELA: ["cor", "alfa", "duracao"],
-	Tipo.FLASH_CORPO: ["cor", "alfa", "duracao", "pulsar"],
+	Tipo.FLASH_CORPO: ["cor", "alfa", "duracao", "pulsar", "da_animacao"],
 	Tipo.LETTERBOX: ["ligar"],
 	Tipo.ONDA: ["raio", "duracao", "forca"],
 	Tipo.ABERRACAO: ["px"],
@@ -85,7 +85,8 @@ const CAMPOS = {
 ## A cor mora no efeitos_boss.tres
 @export var cor := EfeitosDados.Cor.NENHUMA
 @export var alfa := 0.0
-## Flash no corpo: segundos de cada pulso (0 = flash único). Bordas: segundos aceso/apagado
+## Flash no corpo: segundos de cada pulso (0 = flash único; pulsa por 'duracao', ou pela animação,
+## ou até o fim se as duas forem 0). Bordas: segundos aceso/apagado
 @export var pulsar := 0.0
 ## Bordas: quantas piscadas (0 = até a próxima chamada)
 @export var vezes := 0

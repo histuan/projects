@@ -120,14 +120,20 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_aviso_1")])
 [sub_resource type="Resource" id="Passo_carga_ataque_1"]
 script = ExtResource("1_passo")
 tipo = 9
-pendente = "PERIODO SEM VALOR"
+da_animacao = true
 cor = 3
 alfa = 0.6
+pulsar = 0.2
+
+[sub_resource type="Resource" id="Passo_carga_ataque_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_carga"
 
 [sub_resource type="Resource" id="Momento_carga_ataque"]
 script = ExtResource("2_momento")
 titulo = "CARGA DO ATAQUE"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_carga_ataque_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_carga_ataque_1"), SubResource("Passo_carga_ataque_2")])
 
 [sub_resource type="Resource" id="Passo_chapeu_1"]
 script = ExtResource("1_passo")
@@ -543,18 +549,28 @@ espalhar = 90.0
 
 [sub_resource type="Resource" id="Passo_folha_acerta_bloco_2"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F1"
-nome = &"rastro_da_folha"
-parametros = {
-"alfa": 0.5,
-"px": 4
-}
+tipo = 23
+nome = &"folha_acerta"
 
 [sub_resource type="Resource" id="Momento_folha_acerta_bloco"]
 script = ExtResource("2_momento")
 titulo = "FOLHA ACERTA BLOCO"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_folha_acerta_bloco_1"), SubResource("Passo_folha_acerta_bloco_2")])
+
+[sub_resource type="Resource" id="Passo_folhas_anulam_1"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 1
+
+[sub_resource type="Resource" id="Passo_folhas_anulam_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"folhas_anulam"
+
+[sub_resource type="Resource" id="Momento_folhas_anulam"]
+script = ExtResource("2_momento")
+titulo = "TRUFULA ANULA FOLHA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_folhas_anulam_1"), SubResource("Passo_folhas_anulam_2")])
 
 [sub_resource type="Resource" id="Passo_golpe_final_1"]
 script = ExtResource("1_passo")
@@ -614,17 +630,21 @@ deslocamento = Vector2(0, 12)
 [sub_resource type="Resource" id="Passo_hit_comum_3"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F1"
 nome = &"recuo"
 parametros = {
 "px": 2,
 "tempos": Vector2(0.04, 0.08)
 }
 
+[sub_resource type="Resource" id="Passo_hit_comum_4"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_dano"
+
 [sub_resource type="Resource" id="Momento_hit_comum"]
 script = ExtResource("2_momento")
 titulo = "HIT COMUM"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_comum_1"), SubResource("Passo_hit_comum_2"), SubResource("Passo_hit_comum_3")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_comum_1"), SubResource("Passo_hit_comum_2"), SubResource("Passo_hit_comum_3"), SubResource("Passo_hit_comum_4")])
 
 [sub_resource type="Resource" id="Passo_hit_lorax_ui_1"]
 script = ExtResource("1_passo")
@@ -1093,10 +1113,20 @@ tipo = 1
 forca = 2.0
 duracao = 0.15
 
+[sub_resource type="Resource" id="Passo_soltar_folhas_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_arremesso"
+
+[sub_resource type="Resource" id="Passo_soltar_folhas_3"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"folha_voando"
+
 [sub_resource type="Resource" id="Momento_soltar_folhas"]
 script = ExtResource("2_momento")
 titulo = "SOLTAR FOLHAS"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_soltar_folhas_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_soltar_folhas_1"), SubResource("Passo_soltar_folhas_2"), SubResource("Passo_soltar_folhas_3")])
 
 [sub_resource type="Resource" id="Passo_teleporte_1"]
 script = ExtResource("1_passo")
@@ -1408,6 +1438,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"finish_him": SubResource("Momento_finish_him"),
 &"finish_letra": SubResource("Momento_finish_letra"),
 &"folha_acerta_bloco": SubResource("Momento_folha_acerta_bloco"),
+&"folhas_anulam": SubResource("Momento_folhas_anulam"),
 &"golpe_final": SubResource("Momento_golpe_final"),
 &"hit_comum": SubResource("Momento_hit_comum"),
 &"hit_lorax_ui": SubResource("Momento_hit_lorax_ui"),

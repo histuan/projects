@@ -188,7 +188,7 @@ func executar(passo, alvo, duracao_animacao):
 		Passo.Tipo.FLASH_CORPO:
 			var flash = achar(alvo, FlashSprite)
 			if flash != null and passo.pulsar > 0:
-				flash.pulsar(cor, passo.alfa, passo.pulsar)
+				flash.pulsar(cor, passo.alfa, passo.pulsar, duracao)
 			elif flash != null:
 				flash.flash(cor, passo.alfa, duracao)
 		Passo.Tipo.LETTERBOX:

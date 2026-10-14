@@ -14,6 +14,13 @@ const CENA_CORPO = preload("res://cenas/boss/lorax_final.tscn")
 
 # O boneco fica onde o Lorax luta: altura e meio do vai e vem da fase 1
 const DADOS_FASE1 = preload("res://recursos/boss/classica1.tres")
+# Se a luta corta o som da carga (CORTAR_SOM_CARGA) e o power-up da ferramenta TRÚFULA
+const FaseClassica = preload("res://scripts/boss/fase_classica.gd")
+const TRUFULA = preload("res://recursos/powerups/trufula.tres")
+# Página com as ferramentas do combate da fase 1 (ATAQUE, VAI E VEM, TRÚFULA) depois dos momentos
+const PAGINA_FASE1_COMBATE = "FASE 1 (2)"
+# Ângulos (graus) que a linha ANGULO percorre
+const ANGULOS_LAB = [0.0, 4.0, 6.0, 8.0, 10.0]
 
 # Meia altura do quadro de 32 px do boneco
 const MEIO_BONECO = 16
@@ -77,6 +84,7 @@ const PAGINAS = [
 	["WAVE 10", [&"wave10_silencio", &"wave10_alarme", &"wave10_musica_entra"]],
 	["FASE 1", [&"descida", &"pouso", &"nome_do_boss", &"hit_comum", &"coracao_boss_perdido",
 		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
+	[PAGINA_FASE1_COMBATE, [&"folhas_anulam"]],
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arvore_explode", &"f2_respira", &"f2_desespero",
 		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
@@ -100,6 +108,13 @@ var flash_boneco: FlashSprite
 var reacoes_boneco: ReacoesCorpo
 var rastro: Afterimage
 var tween_boneco: Tween = null
+# VAI E VEM ligado (o boneco anda entre os limites da fase 1) e leques já soltos pelo ATAQUE
+var tween_vaivem: Tween = null
+var leques_lab = 0
+# Inclinação que o VAI E VEM do LAB usa (começa como a do classica1; o R volta a ela): o modo e
+# o ângulo em graus (no lean, vira px no topo = tan(ângulo) × altura dos pés)
+var modo_lab = DADOS_FASE1.modo_inclinacao
+var angulo_lab = DADOS_FASE1.inclinacao_graus
 # Onde nascem as folhas do teste de limpeza (faz o papel do $Ataques da luta)
 var ataques_teste: Node2D
 var player
@@ -161,6 +176,8 @@ func montar_paginas():
 		for nome in grupo[1]:
 			linhas.append(linha_momento(nome))
 			marcar_alcancados(nome, alcancados)
+		if grupo[0] == PAGINA_FASE1_COMBATE:
+			linhas.append_array(linhas_combate_fase1())
 		lista.append(nova_pagina(grupo[0], linhas))
 	var outros = []
 	for nome in Momentos.BIBLIOTECA.momentos:
@@ -254,6 +271,11 @@ func ao_resetar():
 		particula.queue_free()
 	if tween_boneco != null:
 		tween_boneco.kill()
+	if tween_vaivem != null:
+		tween_vaivem.kill()
+		tween_vaivem = null
+	modo_lab = DADOS_FASE1.modo_inclinacao
+	angulo_lab = DADOS_FASE1.inclinacao_graus
 	boneco.position = posicao_boneco
 	for folha in ataques_teste.get_children():
 		folha.queue_free()
@@ -271,7 +293,9 @@ func _on_flash_barrado():
 func linha_momento(nome):
 	var dados = Momentos.momento(nome)
 	var detalhes = detalhes_do(nome)
-	if usa_animacao(dados):
+	if nome == DADOS_FASE1.momento_carga:
+		detalhes.append("DURA %s S: O ATAQUE DO CLASSICA1 ATE O QUADRO DE EVENTO" % n(duracao_carga()))
+	elif usa_animacao(dados):
 		detalhes.append("ANIMACAO NO LAB: %s S (PROVISORIO)" % n(duracao_lab(nome)))
 	var acao = Callable()
 	if tem_efeito(nome, {}):
@@ -324,6 +348,8 @@ func usa_animacao(dados):
 # Duração de animação que o LAB finge para o momento: a dele ou, se ele não tem, a do
 # momento que toca ele (ex.: as estrelas do despertar usam a do despertar)
 func duracao_lab(nome):
+	if nome == DADOS_FASE1.momento_carga:
+		return duracao_carga()
 	var dados = Momentos.momento(nome)
 	if dados.duracao_animacao_lab > 0:
 		return dados.duracao_animacao_lab
@@ -583,6 +609,92 @@ func limpar_teste():
 	var quantos = LimpezaProjeteis.limpar(ataques_teste, mundo)
 	aviso = "LIMPOU %d PROJETEIS" % quantos
 	mostrar()
+
+# ---------- combate da fase 1 (F1b) ----------
+
+# Ferramentas da página FASE 1 (2): o ataque inteiro, o vai e vem e a Trúfula do player
+func linhas_combate_fase1():
+	var leque = "LEQUES %s ALTERNANDO, %s GRAUS, COM RASTRO" % [str(DADOS_FASE1.quantidades), n(DADOS_FASE1.angulo_leque)]
+	var postura = "CLASSICA1: %s %s GRAUS (LEAN %s PX) / DESLOCA %s PX EM %s S" % [
+		FaseClassicaDados.ModoInclinacao.keys()[DADOS_FASE1.modo_inclinacao], n(DADOS_FASE1.inclinacao_graus),
+		n(DADOS_FASE1.inclinacao), n(DADOS_FASE1.inclinacao_px), n(DADOS_FASE1.inclinacao_tempo)]
+	return [
+		linha("ATAQUE", ["CARGA %s S; NO DISPARO O SOM SOME EM %s S (ATE O FIM DO ATAQUE)" % [n(duracao_carga()), n(DADOS_FASE1.duracao_depois_do_disparo())], leque], atacar_lab),
+		linha("VAI E VEM LIGA/DESLIGA", ["VELOCIDADE %s, LIMITES %s A %s" % [n(DADOS_FASE1.velocidade), n(DADOS_FASE1.limite_esq), n(DADOS_FASE1.limite_dir)], postura], alternar_vaivem),
+		linha("TRUFULA", ["DA O POWER-UP AO PLAYER: ATIRE NAS FOLHAS (AS DUAS SOMEM)"], func(): player.ativar_powerup(TRUFULA)),
+		linha("MODO DA INCLINACAO", ["ALTERNA ROTACAO AA / LEAN NO VAI E VEM (SO NO LAB; O R VOLTA AO CLASSICA1)"], trocar_modo_lab),
+		linha("ANGULO", ["%s GRAUS (ROTACAO) OU O LEAN EQUIVALENTE (SO NO LAB)" % " / ".join(ANGULOS_LAB.map(func(a): return n(a)))], trocar_angulo_lab),
+	]
+
+# Duração da carga como na luta: o "ataque" do classica1 até o quadro de evento
+func duracao_carga():
+	return DADOS_FASE1.duracao_carga()
+
+# Carga no boneco; no disparo o som some até o fim do ataque (como na luta), o disparo toca
+# e sai o leque da vez
+func atacar_lab():
+	var duracao = duracao_carga()
+	Momentos.tocar(DADOS_FASE1.momento_carga, boneco, duracao)
+	if not await esperar(duracao):
+		return
+	for passo in Momentos.momento(DADOS_FASE1.momento_carga).passos:
+		if passo.tipo == Passo.Tipo.SOM and FaseClassica.CORTAR_SOM_CARGA:
+			Sons.cortar(passo.nome, DADOS_FASE1.duracao_depois_do_disparo())
+	Momentos.tocar(DADOS_FASE1.momento_disparo, boneco)
+	var quantidades = DADOS_FASE1.quantidades
+	var quantidade = quantidades[leques_lab % quantidades.size()] if not quantidades.is_empty() else DADOS_FASE1.quantidade
+	leques_lab += 1
+	Projetil.criar_leque(DADOS_FASE1.projetil, quantidade, DADOS_FASE1.angulo_leque,
+			boneco.global_position + DADOS_FASE1.origem_tiro, ataques_teste)
+
+# Liga: o boneco vai e vem entre os limites da fase 1, inclinado para o lado em que anda.
+# Desliga: volta ao meio, de pé
+func alternar_vaivem():
+	if tween_vaivem != null:
+		tween_vaivem.kill()
+		tween_vaivem = null
+		boneco.position = posicao_boneco
+		inclinar_boneco(0)
+		return
+	var tempo_lado = (DADOS_FASE1.limite_dir - DADOS_FASE1.limite_esq) / DADOS_FASE1.velocidade
+	tween_vaivem = boneco.create_tween().set_loops()
+	tween_vaivem.tween_callback(inclinar_boneco.bind(1))
+	tween_vaivem.tween_property(boneco, "position:x", DADOS_FASE1.limite_dir, tempo_lado / 2.0)
+	tween_vaivem.tween_callback(inclinar_boneco.bind(-1))
+	tween_vaivem.tween_property(boneco, "position:x", DADOS_FASE1.limite_esq, tempo_lado)
+	tween_vaivem.tween_callback(inclinar_boneco.bind(1))
+	tween_vaivem.tween_property(boneco, "position:x", posicao_boneco.x, tempo_lado / 2.0)
+
+# Px no topo do lean que dá a mesma inclinação que 'graus' de rotação (altura = centro→pés + metade
+# do quadro de 32)
+func lean_do_angulo(graus):
+	return tan(deg_to_rad(graus)) * (16 + reacoes_boneco.pes)
+
+# Alterna o modo da inclinação do LAB; o boneco volta de pé e o VAI E VEM segue no modo novo
+func trocar_modo_lab():
+	modo_lab = FaseClassicaDados.ModoInclinacao.LEAN if modo_lab == FaseClassicaDados.ModoInclinacao.ROTACAO_AA else FaseClassicaDados.ModoInclinacao.ROTACAO_AA
+	reacoes_boneco.parar()
+	aviso = "MODO: %s, %s GRAUS" % [FaseClassicaDados.ModoInclinacao.keys()[modo_lab], n(angulo_lab)]
+	mostrar()
+
+# Próximo ângulo da lista (0, 4, 6, 8, 10); com o VAI E VEM desligado, mostra o boneco já inclinado
+# para a direita
+func trocar_angulo_lab():
+	angulo_lab = ANGULOS_LAB[(ANGULOS_LAB.find(angulo_lab) + 1) % ANGULOS_LAB.size()]
+	if tween_vaivem == null:
+		reacoes_boneco.parar()
+		inclinar_boneco(1)
+	aviso = "MODO: %s, %s GRAUS" % [FaseClassicaDados.ModoInclinacao.keys()[modo_lab], n(angulo_lab)]
+	mostrar()
+
+# Inclina (girando ou em fileiras, pelo modo do LAB) e/ou desloca o boneco para 'lado', como a luta faz
+func inclinar_boneco(lado):
+	if modo_lab == FaseClassicaDados.ModoInclinacao.ROTACAO_AA:
+		reacoes_boneco.inclinar(lado * angulo_lab, DADOS_FASE1.inclinacao_tempo)
+	else:
+		reacoes_boneco.inclinar_lean(lado * lean_do_angulo(angulo_lab), DADOS_FASE1.inclinacao_tempo)
+	if DADOS_FASE1.inclinacao_px != 0:
+		reacoes_boneco.deslocar(lado * DADOS_FASE1.inclinacao_px, DADOS_FASE1.inclinacao_tempo)
 
 # O primeiro passo do tipo dado no momento (erro se não houver)
 func primeiro_passo(nome, tipo):

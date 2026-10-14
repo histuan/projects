@@ -9,7 +9,12 @@ size = Vector2(6, 6)
 [node name="folhaBoss" type="Area2D" unique_id=854872930]
 script = ExtResource("1_folha")
 velocidade = 160.0
-som_acerto = &"folha_acerta"
+momento_bloco = &"folha_acerta_bloco"
+momento_anulada = &"folhas_anulam"
+rastro_pontos = 6
+rastro_largura = 4.0
+rastro_alfa = 0.5
+rastro_cor = Color(0.2784314, 0.44705883, 0.21960784, 1)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=863586082]

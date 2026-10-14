@@ -6,6 +6,8 @@ extends Node
 
 const BIBLIOTECA = preload("res://recursos/boss/sons_boss.tres")
 const TAMANHO_POOL = 12
+# Volume (dB) em que o fade do cortar() considera o som sumido
+const VOLUME_SILENCIO = -60.0
 
 var pool: Array[AudioStreamPlayer] = []
 var proximo_do_pool = 0
@@ -62,13 +64,24 @@ func parar(evento: StringName):
 		loops[evento].stop()
 		loops.erase(evento)
 
-# Corta na hora todo som deste evento que ainda está tocando (loop ou não), por exemplo a
-# voz quando o texto da fala acaba
-func cortar(evento: StringName):
+# Corta todo som deste evento que ainda está tocando (loop ou não), por exemplo a voz
+# quando o texto da fala acaba. 'fade' > 0: abaixa até sumir nesses segundos antes de parar
+func cortar(evento: StringName, fade = 0.0):
 	for player in pool:
 		if player.playing and player.get_meta(&"evento", &"") == evento:
-			player.stop()
+			if fade > 0:
+				sumir(player, fade)
+			else:
+				player.stop()
 	loops.erase(evento)
+
+# Abaixa o volume do player até o silêncio em 'fade' s e para (o iniciar() cancela o fade
+# se o player for reaproveitado no meio)
+func sumir(player, fade):
+	var tween = create_tween()
+	player.set_meta(&"sumindo", tween)
+	tween.tween_property(player, "volume_db", VOLUME_SILENCIO, fade)
+	tween.tween_callback(player.stop)
 
 # Para tudo (a main chama ao sair da árvore, para nada continuar no menu)
 func parar_tudo():
@@ -171,6 +184,9 @@ func tocar_dados(evento: StringName, dados):
 # Põe o arquivo num player livre com volume, pitch e bus do evento e toca
 func iniciar(evento: StringName, dados, caminho):
 	var player = player_livre()
+	if player.has_meta(&"sumindo"):
+		player.get_meta(&"sumindo").kill()
+		player.remove_meta(&"sumindo")
 	player.stream = stream_de(caminho, dados.loop)
 	player.volume_db = volume_de(dados, caminho)
 	player.pitch_scale = pitch_sorteado(dados) * fator_camera_lenta()
