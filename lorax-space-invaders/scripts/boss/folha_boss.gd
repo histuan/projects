@@ -24,8 +24,10 @@ func _init():
 	direcao = Vector2.DOWN
 	grupos_alvo = ["tanque", "blocos"]
 
-# Liga o encontro com outras áreas (a semente da Trúfula) e cria o rastro, se a cena pedir
+# Liga o encontro com outras áreas (a semente da Trúfula) e cria o rastro, se a cena pedir. O
+# desenho não gira com o nó (leque/mira): girado ele serrilha; só a direção e a colisão giram
 func _ready():
+	$Sprite2D.global_rotation = 0.0
 	area_entered.connect(_on_area_entered)
 	if rastro_pontos > 0:
 		criar_rastro()

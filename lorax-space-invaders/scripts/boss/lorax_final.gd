@@ -49,6 +49,10 @@ func ficar_invulneravel(ligado):
 func inclinar(graus, tempo):
 	reacoes.inclinar(graus, tempo)
 
+# Põe a rotação em 'graus' na hora (o vai e vem progressivo calcula a cada quadro)
+func definir_inclinacao(graus):
+	reacoes.definir_inclinacao(graus)
+
 # Alternativa: inclina em fileiras inteiras até o topo deslocar 'px' em 'tempo' s (0 = de pé)
 func inclinar_lean(px, tempo):
 	reacoes.inclinar_lean(px, tempo)

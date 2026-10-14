@@ -71,6 +71,15 @@ func inclinar(novos_graus, tempo):
 	tween_inclinar = create_tween()
 	tween_inclinar.tween_method(definir_graus, graus, novos_graus, maxf(tempo, 0.001))
 
+# Põe a rotação em 'novos_graus' na hora (o vai e vem progressivo chama a cada quadro); só
+# mexe no sprite quando o ângulo muda
+func definir_inclinacao(novos_graus):
+	if tween_inclinar != null:
+		tween_inclinar.kill()
+		tween_inclinar = null
+	if novos_graus != graus:
+		definir_graus(novos_graus)
+
 # Alternativa à rotação: o topo desloca 'px' (negativo = esquerda; 0 = de pé) em 'tempo' s,
 # em degraus inteiros pelo shader. Sem FlashSprite no sprite, não faz nada
 func inclinar_lean(px, tempo):

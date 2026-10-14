@@ -22,12 +22,13 @@ const ALTURA_TELA = 256
 var acertou := false
 
 # Cria 'quantidade' projéteis da 'cena' saindo de 'origem', filhos de 'pai'.
-# Com mais de um, abrem em leque: 'angulo' graus entre dois vizinhos
-static func criar_leque(cena: PackedScene, quantidade: int, angulo: float, origem: Vector2, pai: Node):
+# Com mais de um, abrem em leque: 'angulo' graus entre dois vizinhos. 'rotacao_base'
+# (radianos) gira o leque inteiro (0 = o meio dele na direção de sempre)
+static func criar_leque(cena: PackedScene, quantidade: int, angulo: float, origem: Vector2, pai: Node, rotacao_base := 0.0):
 	for i in range(quantidade):
 		var p = cena.instantiate()
 		p.global_position = origem
-		p.rotation = deg_to_rad((i - (quantidade - 1) / 2.0) * angulo)
+		p.rotation = rotacao_base + deg_to_rad((i - (quantidade - 1) / 2.0) * angulo)
 		pai.add_child(p)
 
 # Anda e, se saiu da tela sem acertar nada, avisa ao_sair_da_tela()

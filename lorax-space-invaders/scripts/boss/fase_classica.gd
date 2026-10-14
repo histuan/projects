@@ -18,8 +18,10 @@ var andando := false
 var atacando := false
 # Leques já soltos (escolhe a vez em 'quantidades')
 var ataques_feitos := 0
-# Lado para onde o corpo está inclinado agora (-1, 0, 1)
+# Lado para onde o corpo está inclinado agora (-1, 0, 1); só usado pelo lean e pelo deslocar
 var postura := 0
+# Inclinação progressiva do vai e vem (ROTACAO_AA com inclinacao_graus); null = sem
+var inclinacao_vv: InclinacaoVaiEVem = null
 
 # O relógio do ataque é da própria fase
 func _ready():
@@ -89,6 +91,8 @@ func comecar_direto(contexto: ContextoBatalha):
 # ouvir os sinais dele
 func preparar(contexto: ContextoBatalha):
 	ctx = contexto
+	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.ROTACAO_AA and dados.inclinacao_graus != 0:
+		inclinacao_vv = InclinacaoVaiEVem.new(dados)
 	if dados.coracao_boss != null:
 		trocar_coracoes.emit(dados.coracao_boss)
 	var corpo = ctx.corpo
@@ -119,6 +123,8 @@ func intervalo_atual():
 func _process(delta):
 	var parado = not andando or (atacando and dados.para_ao_atacar)
 	atualizar_postura(0 if parado else direcao)
+	if inclinacao_vv != null:
+		ctx.corpo.definir_inclinacao(inclinacao_vv.atualizar(ctx.corpo.position.x, 0 if parado else direcao, delta))
 	if parado:
 		return
 	var corpo = ctx.corpo
@@ -128,15 +134,13 @@ func _process(delta):
 	elif corpo.position.x >= dados.limite_dir:
 		direcao = -1
 
-# Inclina (girando ou em fileiras, pelo modo do .tres) e/ou desloca o corpo para 'lado' só
-# quando ele muda; com os valores em 0 no .tres, nada acontece
+# Lean (em fileiras) e/ou deslocamento para 'lado' só quando ele muda; com os valores em 0 no
+# .tres, nada acontece. A rotação (ROTACAO_AA) é progressiva: inclinacao_vv, no _process
 func atualizar_postura(lado):
 	if lado == postura:
 		return
 	postura = lado
-	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.ROTACAO_AA and dados.inclinacao_graus != 0:
-		ctx.corpo.inclinar(lado * dados.inclinacao_graus, dados.inclinacao_tempo)
-	elif dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.LEAN and dados.inclinacao != 0:
+	if dados.modo_inclinacao == FaseClassicaDados.ModoInclinacao.LEAN and dados.inclinacao != 0:
 		ctx.corpo.inclinar_lean(lado * dados.inclinacao, dados.inclinacao_tempo)
 	if dados.inclinacao_px != 0:
 		ctx.corpo.deslocar(lado * dados.inclinacao_px, dados.inclinacao_tempo)
@@ -154,17 +158,26 @@ func _on_evento_animacao(nome):
 	if nome == "ataque":
 		cortar_sons_da_carga(dados.duracao_depois_do_disparo())
 		tocar_momento(dados.momento_disparo)
+		var origem = ctx.corpo.global_position + dados.origem_tiro
 		Projetil.criar_leque(dados.projetil, quantidade_do_leque(), dados.angulo_leque,
-				ctx.corpo.global_position + dados.origem_tiro, ctx.ataques)
+				origem, ctx.ataques, dados.angulo_da_mira(origem, posicao_do_player()))
 		ataques_feitos += 1
 
-# Os sons (passos SOM) do momento da carga somem com fade de 'fade' s
+# Onde o player está, para a mira (null sem player vivo na cena: o leque sai reto para baixo)
+func posicao_do_player():
+	var player = ctx.player
+	if not is_instance_valid(player) or not player.is_inside_tree() or not player.vivo:
+		return null
+	return player.global_position
+
+# Os sons (passos SOM) do momento da carga somem com fade de 'fade' s, em amplitude linear (em dB
+# a queda soa mais curta que o fade)
 func cortar_sons_da_carga(fade):
 	if not CORTAR_SOM_CARGA or dados.momento_carga == &"":
 		return
 	for passo in Momentos.momento(dados.momento_carga).passos:
 		if passo.tipo == Passo.Tipo.SOM:
-			Sons.cortar(passo.nome, fade)
+			Sons.cortar(passo.nome, fade, Sons.Curva.LINEAR)
 
 # Projéteis deste leque: a vez em 'quantidades', ou sempre 'quantidade'
 func quantidade_do_leque():
@@ -196,6 +209,7 @@ func _on_vida_acabou():
 func parar():
 	if atacando:
 		cortar_sons_da_carga(CARGA_CORTE_PARADA)
+	inclinacao_vv = null
 	andando = false
 	atacando = false
 	$TimerAtaque.stop()

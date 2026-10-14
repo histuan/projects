@@ -4,6 +4,8 @@ class_name FaseClassicaDados
 extends Resource
 
 enum ModoInclinacao { ROTACAO_AA, LEAN }
+# Na ROTACAO_AA, o que a inclinação faz da metade do trajeto até a outra borda
+enum DepoisDoMeio { MANTER, SINO }
 
 @export_group("Vida")
 ## Golpes que o boss aguenta nesta fase (a hud reparte isso nos corações)
@@ -30,6 +32,11 @@ enum ModoInclinacao { ROTACAO_AA, LEAN }
 @export var inclinacao_px := 0.0
 ## Segundos para chegar à inclinação (ou ao deslocamento) e para voltar
 @export var inclinacao_tempo := 0.0
+## ROTACAO_AA: a inclinação cresce de 0 (na borda) a inclinacao_graus (no meio do trajeto); depois
+## do meio MANTER segura o máximo e SINO volta a 0 até a outra borda
+@export var inclinacao_depois_do_meio := DepoisDoMeio.MANTER
+## ROTACAO_AA: o ângulo anda em passos deste tamanho (0 = contínuo)
+@export var inclinacao_passo_graus := 0.0
 
 @export_group("Ataque")
 ## Segundos entre o fim de um ataque e o começo do próximo, com a vida cheia
@@ -45,6 +52,8 @@ enum ModoInclinacao { ROTACAO_AA, LEAN }
 ## De onde o projétil sai, em relação ao centro do boss
 @export var origem_tiro := Vector2(0, 12)
 @export var para_ao_atacar := true
+## O meio do leque aponta para o player no quadro de evento, limitado a ±este ângulo (0 = reto para baixo)
+@export var mira_max_graus := 0.0
 
 @export_group("Animações")
 ## Precisa ter "parado", "dano" e "ataque" (o ataque com quadro_evento)
@@ -72,6 +81,14 @@ enum ModoInclinacao { ROTACAO_AA, LEAN }
 @export var momento_disparo := &""
 ## A cada golpe que tira vida
 @export var momento_hit := &""
+
+# Rotação (radianos) do leque que sai de 'origem' com o meio apontado para 'alvo' (null = reto para
+# baixo), limitada a ±mira_max_graus
+func angulo_da_mira(origem: Vector2, alvo):
+	if alvo == null or mira_max_graus <= 0:
+		return 0.0
+	var limite = deg_to_rad(mira_max_graus)
+	return clampf(Vector2.DOWN.angle_to(alvo - origem), -limite, limite)
 
 # Segundos da carga: do começo do "ataque" até o quadro de evento
 func duracao_carga():

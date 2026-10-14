@@ -8,6 +8,9 @@ const BIBLIOTECA = preload("res://recursos/boss/sons_boss.tres")
 const TAMANHO_POOL = 12
 # Volume (dB) em que o fade do cortar() considera o som sumido
 const VOLUME_SILENCIO = -60.0
+# Forma do fade do cortar(): DB = linear em dB até VOLUME_SILENCIO (os últimos ~25 dB quase não se
+# ouvem, então o som parece sumir antes); LINEAR = amplitude linear até 0 (a queda ocupa o fade todo)
+enum Curva { DB, LINEAR }
 
 var pool: Array[AudioStreamPlayer] = []
 var proximo_do_pool = 0
@@ -65,22 +68,26 @@ func parar(evento: StringName):
 		loops.erase(evento)
 
 # Corta todo som deste evento que ainda está tocando (loop ou não), por exemplo a voz
-# quando o texto da fala acaba. 'fade' > 0: abaixa até sumir nesses segundos antes de parar
-func cortar(evento: StringName, fade = 0.0):
+# quando o texto da fala acaba. 'fade' > 0: abaixa até sumir nesses segundos antes de parar,
+# na 'curva' pedida
+func cortar(evento: StringName, fade = 0.0, curva = Curva.DB):
 	for player in pool:
 		if player.playing and player.get_meta(&"evento", &"") == evento:
 			if fade > 0:
-				sumir(player, fade)
+				sumir(player, fade, curva)
 			else:
 				player.stop()
 	loops.erase(evento)
 
-# Abaixa o volume do player até o silêncio em 'fade' s e para (o iniciar() cancela o fade
-# se o player for reaproveitado no meio)
-func sumir(player, fade):
+# Abaixa o volume do player até o silêncio em 'fade' s (em dB ou em amplitude, pela 'curva') e
+# para (o iniciar() cancela o fade se o player for reaproveitado no meio)
+func sumir(player, fade, curva = Curva.DB):
 	var tween = create_tween()
 	player.set_meta(&"sumindo", tween)
-	tween.tween_property(player, "volume_db", VOLUME_SILENCIO, fade)
+	if curva == Curva.LINEAR:
+		tween.tween_property(player, "volume_linear", 0.0, fade)
+	else:
+		tween.tween_property(player, "volume_db", VOLUME_SILENCIO, fade)
 	tween.tween_callback(player.stop)
 
 # Para tudo (a main chama ao sair da árvore, para nada continuar no menu)
