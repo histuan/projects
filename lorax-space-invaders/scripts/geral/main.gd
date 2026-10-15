@@ -31,6 +31,8 @@ var relogio_fade: Timer = null
 # Painel de debug (F3); só existe em build de debug
 var painel_debug = null
 var caixa_dialogo: CaixaDialogo
+# Tinta sobre o fundo (tom vermelho da fase 2), logo depois do nó 'fundo'
+var tinta_fundo: TintaFundo
 # A batalha final (null antes da wave 10 e no LAB)
 var batalha = null
 # A fala de fuga do Lorax antigo já apareceu nesta partida (é uma vez só)
@@ -57,6 +59,9 @@ func _ready():
 	$EfeitosTela.configurar(EFEITOS)
 	caixa_dialogo = CaixaDialogo.new()
 	add_child(caixa_dialogo)
+	tinta_fundo = TintaFundo.new()
+	add_child(tinta_fundo)
+	move_child(tinta_fundo, $fundo.get_index() + 1)
 	Momentos.registrar(camera, $EfeitosTela, $fundo/estrelas, self, EFEITOS, $hud, caixa_dialogo)
 	caixa_dialogo.abriu.connect(player.bloquear_tiro.bind(&"caixa"))
 	# Diferido: o Espaço que fecha a caixa não pode virar tiro no mesmo quadro
@@ -180,7 +185,7 @@ func _on_fase_mudou(_nome, numero):
 
 # Acabaram as fases que existem (por enquanto só imprime)
 func _on_batalha_terminou():
-	print("FASE 2 ENTRARIA AQUI")
+	print("TRANSFORMACAO ENTRARIA AQUI")
 
 # Um coração do boss esvaziou (não vale para o último): stinger, tremor leve, hit-stop curto,
 # folhinhas saindo do corpo e o coração da hud quebrando
