@@ -44,6 +44,12 @@ func corpo():
 func parar_desespero():
 	$LoraxFinal.parar_desespero()
 
+# O player morreu: a fase da vez para (o boss para de andar e de atacar)
+func parar_luta():
+	var fases = $Fases.get_children()
+	if indice_fase >= 0 and indice_fase < fases.size():
+		fases[indice_fase].parar()
+
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
 # nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria
 func proxima_fase():

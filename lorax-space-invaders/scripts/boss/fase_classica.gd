@@ -22,6 +22,8 @@ var ataques_feitos := 0
 var postura := 0
 # Inclinação progressiva do vai e vem (com inclinacao_graus); null = sem
 var inclinacao_vv: InclinacaoVaiEVem = null
+# parar() já rodou (a fase acabou ou o player morreu): nada da entrada nem da luta continua
+var parada := false
 
 # O relógio do ataque é da própria fase
 func _ready():
@@ -52,6 +54,8 @@ func agendar_fim_do_tremor(tempo_descida):
 # Fim da descida: o pouso (tremor, poeira, squash, som) e a fala de entrada; sem fala, a
 # apresentação vem na hora
 func pousar():
+	if parada:
+		return
 	tocar_momento(dados.momento_pouso)
 	entrou.emit()
 	if dados.fala_entrada == &"":
@@ -66,6 +70,8 @@ func _on_fala_entrada_terminou(_nome):
 
 # Nome do boss e estrelas da fase; a luta começa junto
 func apresentar():
+	if parada:
+		return
 	tocar_momento(dados.momento_nome)
 	tocar_momento(dados.momento_estrelas)
 	lutar()
@@ -106,6 +112,8 @@ func preparar(contexto: ContextoBatalha):
 
 # Começa o vai e vem e a contagem do primeiro ataque
 func lutar():
+	if parada:
+		return
 	ctx.corpo.ficar_invulneravel(false)
 	andando = true
 	$TimerAtaque.start(intervalo_atual())
@@ -121,6 +129,8 @@ func intervalo_atual():
 # Vai e vem entre os limites (parado durante o ataque, se a fase pedir), inclinado para o
 # lado em que anda
 func _process(delta):
+	if parada:
+		return
 	var parado = not andando or (atacando and dados.para_ao_atacar)
 	atualizar_postura(0 if parado else direcao)
 	if inclinacao_vv != null:
@@ -203,15 +213,22 @@ func _on_vida_acabou():
 	terminou.emit()
 
 # Para relógio e movimento (no meio de um ataque, os sons da carga somem rápido), deixa o
-# corpo parado e deixa de ouvir os sinais dele
+# corpo parado e de pé, solta a fala de entrada e deixa de ouvir os sinais dele. Chamar de
+# novo não faz nada (boss e player podem morrer no mesmo instante)
 func parar():
+	if parada:
+		return
+	parada = true
 	if atacando:
 		cortar_sons_da_carga(CARGA_CORTE_PARADA)
 	inclinacao_vv = null
 	andando = false
 	atacando = false
 	$TimerAtaque.stop()
+	if ctx.dialogo != null and ctx.dialogo.terminou.is_connected(_on_fala_entrada_terminou):
+		ctx.dialogo.terminou.disconnect(_on_fala_entrada_terminou)
 	var corpo = ctx.corpo
+	corpo.inclinar(0, dados.inclinacao_tempo)
 	corpo.tocar("parado")
 	corpo.ferido.disconnect(_on_ferido)
 	corpo.vida_acabou.disconnect(_on_vida_acabou)

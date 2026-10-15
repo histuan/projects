@@ -25,6 +25,8 @@ const WAVE_BOSS = 10
 signal wave_boss_chegou
 # Emitido uma vez, quando não sobra alien, sniper nem Lorax antigo na tela
 signal boss_pode_entrar
+# O Lorax antigo zerou a vida (repassado dele): a main fala e depois manda ele fugir
+signal lorax_antigo_derrotado(bonus)
 var em_boss = false
 var lorax_antigo = null
 var timer_boss_limpo: Timer
@@ -150,6 +152,7 @@ func _on_timer_bonus_timeout():
 	bonus.boss_apareceu.connect(hud.mostrar_vida_boss)
 	bonus.boss_desceu.connect(hud.parar_piscada_boss)
 	bonus.bonus_eliminado.connect(_on_boss_morreu)
+	bonus.derrotado.connect(lorax_antigo_derrotado.emit.bind(bonus))
 	lorax_antigo = bonus
 	self.add_child(bonus)
 	$loraxChegada.play()

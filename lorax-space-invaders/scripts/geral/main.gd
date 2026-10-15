@@ -33,6 +33,8 @@ var painel_debug = null
 var caixa_dialogo: CaixaDialogo
 # A batalha final (null antes da wave 10 e no LAB)
 var batalha = null
+# A fala de fuga do Lorax antigo já apareceu nesta partida (é uma vez só)
+var lorax_antigo_falou = false
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -67,6 +69,7 @@ func _ready():
 	$groupAlien.wave_boss_chegou.connect($spawner.parar_planeta)
 	$groupAlien.wave_boss_chegou.connect(_on_wave_boss_chegou)
 	$groupAlien.boss_pode_entrar.connect(_on_boss_pode_entrar)
+	$groupAlien.lorax_antigo_derrotado.connect(_on_lorax_antigo_derrotado)
 	$hud.coracao_boss_perdido.connect(_on_coracao_boss_perdido)
 	$hud.ultimo_coracao_boss.connect(_on_ultimo_coracao_boss)
 	$hud.coracoes_boss_reencheram.connect(_on_coracoes_boss_reencheram)
@@ -220,11 +223,44 @@ func _on_vida_perdida():
 	Momentos.tocar(&"coracao_player_perdido")
 
 # Última vida: player morre + tremor forte + hit-stop; o último coração do boss para de bater
-# e ele para de tremer de desespero
+# e ele para de tremer de desespero. Na luta o boss também para, as estrelas param e, quando
+# a explosão termina, o Lorax fala antes do game over
 func _on_morreu():
 	$hud.parar_pulso_boss()
 	if batalha != null:
 		batalha.parar_desespero()
+		batalha.parar_luta()
+		Momentos.tocar(&"player_morre_luta")
+		player.destruicao_terminou.connect(_on_player_destruido, CONNECT_ONE_SHOT)
 	player.morrer()
 	camera.tremer(21, 1.2)
 	TempoJogo.congelar(0.15)
+
+# A explosão do player terminou na luta: a fala de morte (a de entrada, se ainda estiver aberta,
+# fecha antes) e, quando ela fecha, o game over
+func _on_player_destruido():
+	if caixa_dialogo.aberta:
+		caixa_dialogo.fechar()
+	caixa_dialogo.terminou.connect(_on_fala_morte_terminou, CONNECT_ONE_SHOT)
+	caixa_dialogo.falar(&"player_morre_f12")
+
+# Fechou a fala de morte: game over
+func _on_fala_morte_terminou(_nome):
+	player.ir_para_game_over()
+
+# O Lorax antigo zerou a vida na wave 1: o jogo congela, ele diz a fala e, quando a caixa
+# fecha, o jogo volta e ele foge. Só na primeira vez da partida
+func _on_lorax_antigo_derrotado(bonus):
+	if lorax_antigo_falou:
+		bonus.fugir()
+		return
+	lorax_antigo_falou = true
+	TempoJogo.pedir(&"fala", 0.0)
+	caixa_dialogo.terminou.connect(_on_fala_lorax_antigo_terminou.bind(bonus), CONNECT_ONE_SHOT)
+	caixa_dialogo.falar(&"lorax_antigo_foge")
+
+# Fechou a fala do Lorax antigo: o jogo volta e ele foge
+func _on_fala_lorax_antigo_terminou(_nome, bonus):
+	TempoJogo.liberar(&"fala")
+	if is_instance_valid(bonus):
+		bonus.fugir()

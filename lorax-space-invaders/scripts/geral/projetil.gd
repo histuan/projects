@@ -42,9 +42,12 @@ func fora_da_tela():
 	return p.x < -margem_tela or p.x > LARGURA_TELA + margem_tela \
 		or p.y < -margem_tela or p.y > ALTURA_TELA + margem_tela
 
-# Ligado ao body_entered na cena de cada projétil
+# Ligado ao body_entered na cena de cada projétil. O player em i-frames é atravessado (o
+# projétil segue e não some); o boss invulnerável continua apagando o tiro
 func _on_body_entered(body):
 	if acertou:
+		return
+	if body.is_in_group("tanque") and body.invulneravel:
 		return
 	if eh_alvo(body):
 		acertou = true

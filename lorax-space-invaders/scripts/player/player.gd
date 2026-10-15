@@ -4,6 +4,8 @@ extends CharacterBody2D
 signal controle_mudou
 # mover_para() terminou
 signal chegou
+# A explosão da morte terminou (com ouvinte, quem ouve decide quando ir ao game over)
+signal destruicao_terminou
 
 @export var laser = preload("res://cenas/player/laser.tscn")
 
@@ -249,8 +251,16 @@ func morrer():
 func descida():
 	self.position.y += 4
 
-# Chamada no fim da animação destroy: vai para o game over
+# Chamada no fim da animação destroy: avisa quem ouve 'destruicao_terminou' (a luta mostra
+# uma fala antes) ou, sem ouvinte, vai direto para o game over
 func eliminado():
+	if destruicao_terminou.get_connections().is_empty():
+		ir_para_game_over()
+	else:
+		destruicao_terminou.emit()
+
+# Troca para a cena de game over
+func ir_para_game_over():
 	if !self.is_queued_for_deletion():
 		get_tree().change_scene_to_packed(GAME_OVER)
 

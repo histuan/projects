@@ -3,6 +3,8 @@
 extends Inimigo
 
 signal bonus_eliminado
+# Vida zerou: quem ouve (a main) decide quando ele foge (depois da fala); sem ouvinte, foge na hora
+signal derrotado
 
 var arvore = preload("res://cenas/alien/arvore.tscn")
 
@@ -76,15 +78,20 @@ func ao_ferir(fonte):
 	$AnimationPlayer.play("dano")
 	super(fonte)
 
-# Para de atacar, dá os pontos, treme a tela + hit-stop e foge pelo topo
+# Para de atacar, dá os pontos, treme a tela + hit-stop e fica na pose de dano; foge pelo
+# topo na hora ou, se alguém ouve 'derrotado', quando mandarem (fugir)
 func morrer(_fonte):
 	soltar_som(som_morte)
 	$TimerArremesso.stop()
 	dar_pontos(16)
 	var camera = get_viewport().get_camera_2d()
-	camera.tremer(8)
+	camera.tremer(8, 1.5)
 	TempoJogo.congelar(0.12)
-	fugir()
+	$AnimationPlayer.play("dano")
+	if derrotado.get_connections().is_empty():
+		fugir()
+	else:
+		derrotado.emit()
 
 # Recua um pouco, sobe até sair da tela e só então avisa o groupAlien e some
 func fugir():

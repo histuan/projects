@@ -86,7 +86,7 @@ const PAGINAS = [
 	["WAVE 10", [&"wave10_silencio", &"wave10_alarme", &"wave10_musica_entra"]],
 	["FASE 1", [&"descida", &"pouso", &"nome_do_boss", &"hit_comum", &"coracao_boss_perdido",
 		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
-	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido"]],
+	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido", &"player_morre_luta"]],
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arvore_explode", &"f2_respira", &"f2_desespero",
 		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",

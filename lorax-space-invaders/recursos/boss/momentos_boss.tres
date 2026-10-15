@@ -874,6 +874,16 @@ script = ExtResource("2_momento")
 titulo = "PLAYER LEVA HIT"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_hit_1"), SubResource("Passo_player_hit_2"), SubResource("Passo_player_hit_3"), SubResource("Passo_player_hit_4"), SubResource("Passo_player_hit_5")])
 
+[sub_resource type="Resource" id="Passo_player_morre_luta_1"]
+script = ExtResource("1_passo")
+tipo = 14
+duracao = 0.6
+
+[sub_resource type="Resource" id="Momento_player_morre_luta"]
+script = ExtResource("2_momento")
+titulo = "PLAYER MORRE NA LUTA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_morre_luta_1")])
+
 [sub_resource type="Resource" id="Passo_poupar_1"]
 script = ExtResource("1_passo")
 tipo = 24
@@ -1487,6 +1497,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"pico_do_pilar": SubResource("Momento_pico_do_pilar"),
 &"pico_estrelas": SubResource("Momento_pico_estrelas"),
 &"player_hit": SubResource("Momento_player_hit"),
+&"player_morre_luta": SubResource("Momento_player_morre_luta"),
 &"poupar": SubResource("Momento_poupar"),
 &"poupar_estrelas": SubResource("Momento_poupar_estrelas"),
 &"pouso": SubResource("Momento_pouso"),
