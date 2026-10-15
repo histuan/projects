@@ -1,6 +1,10 @@
 # Corações na tela (do player e do boss): cheio/vazio, efeitos de piscar, o coração que
-# acabou de esvaziar (cresce, treme e pisca) e a batida do último. Tudo pausa com o jogo.
+# acabou de esvaziar (cresce, treme e pisca), a batida do último e o encher um a um. Tudo
+# pausa com o jogo.
 extends Node2D
+
+# Terminou o encher_aos_poucos (todos cheios)
+signal encheu
 
 @export var cheio: Texture2D = preload("res://meus sprites/geral/coracao.png")
 @export var vazio: Texture2D = preload("res://meus sprites/geral/coracao_vazio.png")
@@ -13,6 +17,8 @@ var flashes = []
 var tweens_perdeu = []
 # Batida do último coração (null = parado)
 var tween_pulso: Tween = null
+# Enchendo um a um (null = não)
+var tween_encher: Tween = null
 
 # Junta os Sprite2D dos filhos (coracao1, coracao2...) na ordem da cena e dá a cada um
 # um FlashSprite (criado por código; a cor da fase continua só na textura)
@@ -86,6 +92,36 @@ func parar_pulso():
 # O último coração está batendo
 func pulsando():
 	return tween_pulso != null
+
+# Esvazia todos e enche do primeiro ao último, um a cada 'intervalo' s, tocando 'som' na escala
+# (uma nota mais aguda por coração); no fim emite 'encheu'. Fica "enchendo" desde a chamada
+func encher_aos_poucos(intervalo, som):
+	if intervalo <= 0:
+		push_error("Coracoes: coracoes_reenchem sem intervalo")
+		return
+	if tween_encher != null:
+		tween_encher.kill()
+	set_vidas(0)
+	tween_encher = create_tween()
+	for i in range(coracoes.size()):
+		tween_encher.tween_interval(intervalo)
+		tween_encher.tween_callback(encher_um.bind(i + 1, som))
+	tween_encher.tween_callback(terminar_de_encher)
+
+# Mais um coração cheio no encher_aos_poucos (n = quantos ficam cheios)
+func encher_um(n, som):
+	set_vidas(n)
+	if som != &"":
+		Sons.tocar_na_escala(som, n - 1)
+
+# Fim do encher_aos_poucos
+func terminar_de_encher():
+	tween_encher = null
+	encheu.emit()
+
+# O encher_aos_poucos está em andamento
+func enchendo():
+	return tween_encher != null
 
 # Troca a textura do coração cheio (cor da fase do boss) e redesenha
 func trocar_cheio(textura):

@@ -30,6 +30,7 @@ func _ready():
 	Partida.wave_mudou.connect(mostrar_wave)
 	# Os passos SINAL dos momentos que desenham na hud (coração que esvazia, batida do último)
 	Momentos.pedido.connect(_on_pedido)
+	$coracoesBoss.encheu.connect(_on_coracoes_boss_encheram)
 	# A wave 1 foi criada antes deste _ready (o groupAlien vem antes na árvore)
 	if Partida.wave > 0:
 		mostrar_wave(Partida.wave)
@@ -61,11 +62,15 @@ func mostrar_vida_boss():
 func parar_piscada_boss():
 	$coracoesBoss.parar_piscada()
 
-# Boss final: os corações cheios acompanham a proporção vida / vida_max
+# Boss final: os corações cheios acompanham a proporção vida / vida_max. Enchendo um a um (troca
+# de fase), só guarda o número: o desenho e o aviso vêm no fim do enchimento
 func mostrar_vida_boss_final(vida, vida_max):
 	var total = $coracoesBoss.coracoes.size()
 	var cheios = ceili(vida * float(total) / vida_max)
 	$coracoesBoss.show()
+	if $coracoesBoss.enchendo():
+		coracoes_boss_cheios = cheios
+		return
 	$coracoesBoss.set_vidas(cheios)
 	if cheios < coracoes_boss_cheios and cheios > 0:
 		coracao_boss_perdido.emit()
@@ -74,6 +79,11 @@ func mostrar_vida_boss_final(vida, vida_max):
 	elif cheios > coracoes_boss_cheios:
 		coracoes_boss_reencheram.emit()
 	coracoes_boss_cheios = cheios
+
+# Boss final: terminaram de encher um a um (troca de fase)
+func _on_coracoes_boss_encheram():
+	coracoes_boss_cheios = $coracoesBoss.cheios
+	coracoes_boss_reencheram.emit()
 
 # Boss final: o último coração para de bater (o player morreu, o R do LAB)
 func parar_pulso_boss():
@@ -92,7 +102,8 @@ func mostrar_coracoes_boss(cheios):
 	$coracoesBoss.set_vidas(coracoes_boss_cheios)
 
 # Pedidos dos momentos para a hud. coracao_da_hud: anima o coração que acabou de esvaziar
-# (o primeiro vazio) do boss ou do player; coracao_pulsa: o último coração do boss bate
+# (o primeiro vazio) do boss ou do player; coracao_pulsa: o último coração do boss bate;
+# coracoes_reenchem: os do boss esvaziam e enchem um a um
 func _on_pedido(nome, parametros, _alvo):
 	match nome:
 		&"coracao_da_hud":
@@ -103,6 +114,9 @@ func _on_pedido(nome, parametros, _alvo):
 		&"coracao_pulsa":
 			$coracoesBoss.pulsar_ultimo(parametros.get("escala", 1.0), parametros.get("periodo", 0.0),
 				parametros.get("batida", 0.0), parametros.get("som", &""))
+		&"coracoes_reenchem":
+			$coracoesBoss.show()
+			$coracoesBoss.encher_aos_poucos(parametros.get("intervalo", 0.0), parametros.get("som", &""))
 
 # Boss final: os corações cheios passam a usar a textura da fase (null = não muda)
 func trocar_coracoes_boss(textura):
