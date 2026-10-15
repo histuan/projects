@@ -150,8 +150,9 @@ func _process(_delta):
 	var agora = Time.get_ticks_msec()
 	var passado = (agora - ultimo_tick) / 1000.0
 	ultimo_tick = agora
-	# No hit-stop (tempo parado) o tremor fica na força máxima até o jogo voltar
-	if Engine.time_scale > 0:
+	# No hit-stop o tremor fica na força máxima até ele acabar; num congelamento longo (fala)
+	# ele cai em tempo real, como no jogo normal
+	if not TempoJogo.congelado_por_hit_stop():
 		forca_tremor = move_toward(forca_tremor, 0, queda_tremor * passado)
 	var forca = max(forca_tremor, forca_continua)
 	if Configuracoes.reduzir_efeitos:

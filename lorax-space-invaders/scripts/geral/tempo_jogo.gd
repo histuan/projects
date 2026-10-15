@@ -3,6 +3,9 @@
 # Nenhum outro script escreve o time_scale.
 extends Node
 
+# Começo do nome dos pedidos que se liberam sozinhos (hit-stop e câmera lenta, de segurar())
+const PREFIXO_TEMPORARIO = "temporario_"
+
 # Nome do pedido → escala pedida
 var pedidos = {}
 var contador = 0
@@ -34,10 +37,18 @@ func limpar():
 # O último true do create_timer faz ele ignorar o time_scale (senão nunca terminaria)
 func segurar(escala, duracao):
 	contador += 1
-	var nome = "temporario_%d" % contador
+	var nome = PREFIXO_TEMPORARIO + str(contador)
 	pedir(nome, escala)
 	await get_tree().create_timer(duracao, true, false, true).timeout
 	liberar(nome)
+
+# Há um hit-stop agora (pedido temporário com escala 0). Um congelamento longo pedido por nome
+# (ex.: a fala do Lorax antigo) não conta: o tremor da câmera cai normalmente nele
+func congelado_por_hit_stop():
+	for nome in pedidos:
+		if String(nome).begins_with(PREFIXO_TEMPORARIO) and pedidos[nome] == 0.0:
+			return true
+	return false
 
 # Está em câmera lenta: o jogo anda, mas na 'escala_maxima' ou mais devagar.
 # Hit-stop (escala 0) NÃO conta: o jogo está parado, não lento
