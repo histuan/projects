@@ -423,28 +423,64 @@ script = ExtResource("2_momento")
 titulo = "JOGO NORMAL"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_estrelas_normal_1")])
 
+[sub_resource type="Resource" id="Passo_f2_arremessa_1"]
+script = ExtResource("1_passo")
+tipo = 3
+duracao = 0.1
+
+[sub_resource type="Resource" id="Passo_f2_arremessa_2"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 3.0
+duracao = 0.15
+
+[sub_resource type="Resource" id="Passo_f2_arremessa_3"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_arremesso"
+
+[sub_resource type="Resource" id="Momento_f2_arremessa"]
+script = ExtResource("2_momento")
+titulo = "F2: ARREMESSO DAS ARVORES"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_arremessa_1"), SubResource("Passo_f2_arremessa_2"), SubResource("Passo_f2_arremessa_3")])
+
 [sub_resource type="Resource" id="Passo_f2_arvore_explode_1"]
 script = ExtResource("1_passo")
 tipo = 1
 forca = 6.0
 duracao = 0.8
 
+[sub_resource type="Resource" id="Passo_f2_arvore_explode_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"arvore_explode"
+
 [sub_resource type="Resource" id="Momento_f2_arvore_explode"]
 script = ExtResource("2_momento")
 titulo = "F2: ARVORE EXPLODE"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_arvore_explode_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_arvore_explode_1"), SubResource("Passo_f2_arvore_explode_2")])
+
+[sub_resource type="Resource" id="Passo_f2_arvore_explode_fora_1"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"arvore_explode"
+
+[sub_resource type="Resource" id="Momento_f2_arvore_explode_fora"]
+script = ExtResource("2_momento")
+titulo = "F2: ARVORE EXPLODE FORA DA TELA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_arvore_explode_fora_1")])
 
 [sub_resource type="Resource" id="Passo_f2_carga_1"]
 script = ExtResource("1_passo")
 tipo = 2
-pendente = "DURACAO SEM VALOR"
 de = 1.0
 ate = 2.0
+da_animacao = true
 
 [sub_resource type="Resource" id="Passo_f2_carga_2"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "DURACAO SEM VALOR"
+pendente = "NA F2c-b"
 nome = &"olhos_vermelhos"
 parametros = {
 "alfa": 0.5,
@@ -453,17 +489,14 @@ parametros = {
 
 [sub_resource type="Resource" id="Passo_f2_carga_3"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F2"
-nome = &"marcador"
-parametros = {
-"antecedencia": 0.6
-}
+tipo = 23
+nome = &"lorax2_carga"
 
 [sub_resource type="Resource" id="Momento_f2_carga"]
 script = ExtResource("2_momento")
 titulo = "F2: CARGA DAS ARVORES"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_carga_1"), SubResource("Passo_f2_carga_2"), SubResource("Passo_f2_carga_3")])
+seguinte = &"f2_arremessa"
 
 [sub_resource type="Resource" id="Passo_f2_desespero_1"]
 script = ExtResource("1_passo")
@@ -1511,7 +1544,9 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"dica_ws": SubResource("Momento_dica_ws"),
 &"esfera_estoura": SubResource("Momento_esfera_estoura"),
 &"estrelas_normal": SubResource("Momento_estrelas_normal"),
+&"f2_arremessa": SubResource("Momento_f2_arremessa"),
 &"f2_arvore_explode": SubResource("Momento_f2_arvore_explode"),
+&"f2_arvore_explode_fora": SubResource("Momento_f2_arvore_explode_fora"),
 &"f2_carga": SubResource("Momento_f2_carga"),
 &"f2_desespero": SubResource("Momento_f2_desespero"),
 &"f2_respira": SubResource("Momento_f2_respira"),

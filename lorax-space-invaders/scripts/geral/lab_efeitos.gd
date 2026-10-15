@@ -14,6 +14,7 @@ const CENA_CORPO = preload("res://cenas/boss/lorax_final.tscn")
 
 # O boneco fica onde o Lorax luta: altura e meio do vai e vem da fase 1
 const DADOS_FASE1 = preload("res://recursos/boss/classica1.tres")
+const DADOS_FASE2 = preload("res://recursos/boss/classica2.tres")
 # Se a luta corta o som da carga (CORTAR_SOM_CARGA) e o power-up da ferramenta TRÚFULA
 const FaseClassica = preload("res://scripts/boss/fase_classica.gd")
 const TRUFULA = preload("res://recursos/powerups/trufula.tres")
@@ -87,7 +88,7 @@ const PAGINAS = [
 	["FASE 1", [&"descida", &"pouso", &"nome_do_boss", &"hit_comum", &"coracao_boss_perdido",
 		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
 	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido", &"player_morre_luta"]],
-	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arvore_explode", &"f2_respira", &"f2_desespero",
+	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arremessa", &"f2_arvore_explode", &"f2_arvore_explode_fora", &"f2_respira", &"f2_desespero",
 		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
 		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
@@ -370,6 +371,8 @@ func usa_animacao(dados):
 func duracao_lab(nome):
 	if nome == DADOS_FASE1.momento_carga:
 		return duracao_carga()
+	if nome == DADOS_FASE2.momento_carga:
+		return DADOS_FASE2.duracao_carga()
 	var dados = Momentos.momento(nome)
 	if dados.duracao_animacao_lab > 0:
 		return dados.duracao_animacao_lab

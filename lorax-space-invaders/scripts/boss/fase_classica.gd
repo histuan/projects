@@ -20,6 +20,8 @@ const PULO_CORTE_SONS = 0.1
 var direcao := 1
 var andando := false
 var atacando := false
+# Do começo do ataque até o quadro de evento (a carga, com o tremor contínuo dela, se tiver)
+var carregando := false
 # Leques já soltos (escolhe a vez em 'quantidades')
 var ataques_feitos := 0
 # Inclinação progressiva do vai e vem (com inclinacao_graus); null = sem
@@ -206,6 +208,7 @@ func _process(delta):
 # marcado dela (_on_evento_animacao)
 func atacar():
 	atacando = true
+	carregando = true
 	if dados.momento_carga != &"":
 		Momentos.tocar(dados.momento_carga, ctx.corpo, dados.duracao_carga())
 	ctx.corpo.tocar("ataque")
@@ -218,6 +221,7 @@ func _on_evento_animacao(nome):
 	if nome == "entrada":
 		chegar_ao_pico()
 	elif nome == "ataque":
+		carregando = false
 		cortar_sons_da_carga(dados.duracao_depois_do_disparo())
 		tocar_momento(dados.momento_disparo)
 		var origem = ctx.corpo.global_position + dados.origem_tiro
@@ -236,6 +240,15 @@ func posicao_do_player():
 func cortar_sons_da_carga(fade):
 	if CORTAR_SOM_CARGA:
 		cortar_sons(dados.momento_carga, fade)
+
+# O tremor contínuo da carga some em 'fade' s (só se o momento da carga liga um: não corta o de outro dono)
+func parar_tremor_da_carga(fade):
+	if dados.momento_carga == &"":
+		return
+	for passo in Momentos.momento(dados.momento_carga).passos:
+		if passo.tipo == Passo.Tipo.TREMER_CONTINUO:
+			get_viewport().get_camera_2d().parar_tremor_continuo(fade)
+			return
 
 # Os sons (passos SOM) do momento 'nome' somem com fade de 'fade' s, em amplitude linear (em dB
 # a queda soa mais curta que o fade); vazio = nada
@@ -284,7 +297,8 @@ func _on_vida_acabou():
 			await get_tree().create_timer(espera, false, false, true).timeout
 	terminou.emit()
 
-# Para relógio e movimento (no meio de um ataque ou da transição, os sons dela somem rápido),
+# Para relógio e movimento (no meio de um ataque ou da transição, os sons dela somem rápido; no
+# meio da carga, o tremor contínuo dela também),
 # deixa o corpo parado e de pé (no meio da transição a animação termina sozinha, sem efeito),
 # solta a fala de entrada e deixa de ouvir os sinais dele. Chamar de novo não faz nada (boss e
 # player podem morrer no mesmo instante)
@@ -294,11 +308,14 @@ func parar():
 	parada = true
 	if atacando:
 		cortar_sons_da_carga(CARGA_CORTE_PARADA)
+	if carregando:
+		parar_tremor_da_carga(CARGA_CORTE_PARADA)
 	if transformando:
 		cortar_sons(dados.momento_transicao, CARGA_CORTE_PARADA)
 	inclinacao_vv = null
 	andando = false
 	atacando = false
+	carregando = false
 	$TimerAtaque.stop()
 	if ctx.dialogo != null and ctx.dialogo.terminou.is_connected(_on_fala_entrada_terminou):
 		ctx.dialogo.terminou.disconnect(_on_fala_entrada_terminou)

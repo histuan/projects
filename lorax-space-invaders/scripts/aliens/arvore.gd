@@ -16,12 +16,15 @@ func _init():
 	add_to_group("tiros_inimigos")
 
 func _ready():
-	# Mira no player no momento do lançamento
+	mirar_no_player()
+	$AnimationPlayer.play("lancamento")
+
+# Mira no player no momento do lançamento
+func mirar_no_player():
 	var player = get_tree().get_first_node_in_group("tanque")
 	if player != null:
 		direcao = (player.global_position - global_position).normalized()
-	$AnimationPlayer.play("lancamento")
-	
+
 # Depois do lançamento, passa para a animação de voo
 func _on_animation_player_animation_finished(anim):
 	if anim == "lancamento":

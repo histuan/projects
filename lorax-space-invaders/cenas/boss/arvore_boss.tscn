@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://k016ggmueh0e" path="res://cenas/alien/arvore.tscn" id="1_arvore"]
+[ext_resource type="Script" path="res://scripts/boss/arvore_boss.gd" id="2_script"]
+
+[node name="arvoreBoss" instance=ExtResource("1_arvore")]
+script = ExtResource("2_script")
+momento_explosao = &"f2_arvore_explode"
+momento_explosao_fora = &"f2_arvore_explode_fora"
