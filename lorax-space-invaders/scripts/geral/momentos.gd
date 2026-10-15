@@ -73,6 +73,11 @@ func parametros(nome: StringName, sinal: StringName):
 	push_error("Momentos: o momento '%s' não tem o sinal '%s'" % [nome, sinal])
 	return {}
 
+# Segundos do momento 'nome' do início ao fim do último passo (sem passos da animação)
+func duracao(nome: StringName):
+	var dados = momento(nome)
+	return duracao_total(dados, 0.0) if dados != null else 0.0
+
 # Nomes dos momentos que ainda têm passo para acontecer (painel de debug)
 func tocando_agora():
 	var agora = Time.get_ticks_msec()
@@ -167,9 +172,9 @@ func executar(passo, alvo, duracao_animacao):
 	var ponto = posicao(alvo)
 	match passo.tipo:
 		Passo.Tipo.TREMER:
-			camera.tremer(passo.forca, duracao)
+			camera.tremer(passo.forca, duracao, passo.eixo)
 		Passo.Tipo.TREMER_CONTINUO:
-			camera.tremer_continuo(passo.de, passo.ate, duracao)
+			camera.tremer_continuo(passo.de, passo.ate, duracao, passo.eixo)
 		Passo.Tipo.PARAR_TREMOR_CONTINUO:
 			camera.parar_tremor_continuo(duracao)
 		Passo.Tipo.ZOOM:

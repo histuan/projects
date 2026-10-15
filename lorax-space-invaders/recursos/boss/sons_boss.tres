@@ -66,20 +66,26 @@ volume_db = 24.0
 bus = &"Efeitos"
 loop = true
 
+[sub_resource type="Resource" id="Som_boss_coracao_enche"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/nota.wav"])
+bus = &"Efeitos"
+escala = Array[float]([1.0, 1.122, 1.26, 1.498, 1.682])
+
 [sub_resource type="Resource" id="Som_boss_coracao_perdido"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/stinger.wav"])
+bus = &"Efeitos"
+
+[sub_resource type="Resource" id="Som_boss_coracoes_reenchem"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav"])
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_boss_ultimo_hit"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/stinger.wav"])
 pitch = 0.8
-bus = &"Efeitos"
-
-[sub_resource type="Resource" id="Som_boss_coracoes_reenchem"]
-script = ExtResource("1_som")
-arquivos = Array[String](["res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav"])
 bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_cheat_abre"]
@@ -290,6 +296,12 @@ bus = &"Efeitos"
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/lorax_rosnado.wav"])
 bus = &"Voz"
+
+[sub_resource type="Resource" id="Som_lorax2_transforma"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/carga_energia.wav"])
+pitch = 0.7
+bus = &"Efeitos"
 
 [sub_resource type="Resource" id="Som_lorax_fuga"]
 script = ExtResource("1_som")
@@ -599,6 +611,7 @@ eventos = Dictionary[StringName, ExtResource("1_som")]({
 &"arvores_salvas_ruim": SubResource("Som_arvores_salvas_ruim"),
 &"aviso": SubResource("Som_aviso"),
 &"batimento_vida_baixa": SubResource("Som_batimento_vida_baixa"),
+&"boss_coracao_enche": SubResource("Som_boss_coracao_enche"),
 &"boss_coracao_perdido": SubResource("Som_boss_coracao_perdido"),
 &"boss_coracoes_reenchem": SubResource("Som_boss_coracoes_reenchem"),
 &"boss_ultimo_hit": SubResource("Som_boss_ultimo_hit"),
@@ -637,6 +650,7 @@ eventos = Dictionary[StringName, ExtResource("1_som")]({
 &"lorax2_invocar": SubResource("Som_lorax2_invocar"),
 &"lorax2_pouso": SubResource("Som_lorax2_pouso"),
 &"lorax2_raiva": SubResource("Som_lorax2_raiva"),
+&"lorax2_transforma": SubResource("Som_lorax2_transforma"),
 &"lorax_fuga": SubResource("Som_lorax_fuga"),
 &"lorax_fuga_fala": SubResource("Som_lorax_fuga_fala"),
 &"lorax_ui_dano": SubResource("Som_lorax_ui_dano"),

@@ -11,6 +11,9 @@ const QUEDA_PADRAO = 20.0
 # Tremor pontual: força atual e quanto ela diminui por segundo
 var forca_tremor = 0.0
 var queda_tremor = QUEDA_PADRAO
+# Em que eixos cada tremor mexe ((1, 1) = os dois; (1, 0) = só horizontal)
+var eixo_tremor = Vector2.ONE
+var eixo_continuo = Vector2.ONE
 # Tremor contínuo: força levada por tween até parar_tremor_continuo()
 var forca_continua = 0.0
 var tween_continuo: Tween = null
@@ -49,12 +52,13 @@ func _notification(what):
 	if what == NOTIFICATION_UNPAUSED:
 		ultimo_tick = Time.get_ticks_msec()
 
-# Começa um tremor. Um mais fraco não substitui um mais forte que ainda está rolando.
-# duracao > 0: zera em 'duracao' segundos; senão cai QUEDA_PADRAO por segundo
-func tremer(forca, duracao = 0.0):
+# Começa um tremor. Um mais fraco não substitui um mais forte que ainda está rolando (nem
+# o eixo dele). duracao > 0: zera em 'duracao' segundos; senão cai QUEDA_PADRAO por segundo
+func tremer(forca, duracao = 0.0, eixo = Vector2.ONE):
 	if forca < forca_tremor:
 		return
 	forca_tremor = forca
+	eixo_tremor = eixo
 	if duracao > 0:
 		queda_tremor = forca / duracao
 	else:
@@ -80,6 +84,8 @@ func restaurar():
 			tween.kill()
 	forca_tremor = 0.0
 	forca_continua = 0.0
+	eixo_tremor = Vector2.ONE
+	eixo_continuo = Vector2.ONE
 	zoom = Vector2.ONE
 	offset_base = Vector2.ZERO
 	zoom_alvo = Vector2.ONE
@@ -87,11 +93,13 @@ func restaurar():
 	for gamepad in Input.get_connected_joypads():
 		Input.stop_joy_vibration(gamepad)
 
-# Tremor que vai de 'de' até 'ate' em 'duracao' segundos e fica em 'ate' até ser parado
-func tremer_continuo(de, ate, duracao):
+# Tremor que vai de 'de' até 'ate' em 'duracao' segundos, nos eixos de 'eixo', e fica em
+# 'ate' até ser parado
+func tremer_continuo(de, ate, duracao, eixo = Vector2.ONE):
 	if tween_continuo != null:
 		tween_continuo.kill()
 	forca_continua = de
+	eixo_continuo = eixo
 	tween_continuo = create_tween().set_ignore_time_scale()
 	tween_continuo.tween_property(self, "forca_continua", ate, duracao)
 
@@ -154,9 +162,10 @@ func _process(_delta):
 	# ele cai em tempo real, como no jogo normal
 	if not TempoJogo.congelado_por_hit_stop():
 		forca_tremor = move_toward(forca_tremor, 0, queda_tremor * passado)
-	var forca = max(forca_tremor, forca_continua)
+	# Cada eixo treme com o mais forte dos dois tremores que pedem aquele eixo
+	var forca = (forca_tremor * eixo_tremor).max(forca_continua * eixo_continuo)
 	if Configuracoes.reduzir_efeitos:
 		forca *= fator_tremor_reduzido
-	var tremor = Vector2(randf_range(-forca, forca), randf_range(-forca, forca)).round()
+	var tremor = Vector2(randf_range(-forca.x, forca.x), randf_range(-forca.y, forca.y)).round()
 	offset = (offset_base + tremor).round()
 	tremeu.emit(tremor)

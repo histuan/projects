@@ -5,6 +5,8 @@ extends Resource
 
 # O que a inclinação faz da metade do trajeto até a outra borda
 enum DepoisDoMeio { MANTER, SINO }
+# Como a fase começa: descendo do alto, ou se transformando onde a fase anterior parou
+enum Entrada { DESCIDA, TRANSICAO }
 
 @export_group("Vida")
 ## Golpes que o boss aguenta nesta fase (a hud reparte isso nos corações)
@@ -53,6 +55,9 @@ enum DepoisDoMeio { MANTER, SINO }
 @export var animacoes: Array[AnimacaoDados] = []
 
 @export_group("Entrada")
+## DESCIDA: desce do alto, pousa e fala. TRANSICAO: toca a animação "entrada" (precisa de
+## quadro_evento = o pico) onde a fase anterior parou
+@export var entrada := Entrada.DESCIDA
 ## Fala (falas_boss.tres) depois do pouso; ele só ataca quando ela fecha (vazio = sem fala)
 @export var fala_entrada := &""
 ## Textura dos corações CHEIOS do boss nesta fase (vazio = a da hud)
@@ -62,6 +67,9 @@ enum DepoisDoMeio { MANTER, SINO }
 ## Momentos do momentos_boss.tres tocados no corpo (vazio = nada nesse ponto)
 ## No começo da descida
 @export var momento_descida := &""
+## No começo da transição (entrada TRANSICAO), até o quadro de evento da "entrada"; o 'seguinte'
+## dele é o pico, tocado nesse quadro
+@export var momento_transicao := &""
 ## No fim da descida
 @export var momento_pouso := &""
 ## Depois da fala de entrada (nome do boss)

@@ -20,6 +20,8 @@ const CORACOES_BOSS = 5
 
 var ctx: ContextoBatalha
 var indice_fase := -1
+# A luta parou (o player morreu): nenhuma fase nova começa
+var parada := false
 
 # Repassa os sinais do corpo e das fases para cima e ouve o 'terminou' de cada fase. A
 # limpeza do vida_acabou é ligada antes das fases: os projéteis somem no último hit, antes
@@ -50,8 +52,9 @@ func corpo():
 func parar_desespero():
 	$LoraxFinal.parar_desespero()
 
-# O player morreu: a fase da vez para (o boss para de andar e de atacar)
+# O player morreu: a fase da vez para (o boss para de andar e de atacar) e nenhuma outra começa
 func parar_luta():
+	parada = true
 	var fases = $Fases.get_children()
 	if indice_fase >= 0 and indice_fase < fases.size():
 		fases[indice_fase].parar()
@@ -73,9 +76,12 @@ func tirar_coracao():
 		corpo.receber_dano(dano, "debug")
 
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
-# nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria
+# nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria.
+# Com a luta parada (player morto), só limpa
 func proxima_fase():
 	limpar_projeteis()
+	if parada:
+		return
 	indice_fase += 1
 	var fases = $Fases.get_children()
 	if indice_fase >= fases.size():

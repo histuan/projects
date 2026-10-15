@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="FaseClassicaDados" format=3 uid="uid://doosoh2koab57"]
+
+[ext_resource type="Script" uid="uid://conbfdo68vx6j" path="res://scripts/boss/dados/fase_classica_dados.gd" id="1_fase"]
+[ext_resource type="Script" uid="uid://rfixlm2d1tix" path="res://scripts/boss/dados/animacao_dados.gd" id="2_anim"]
+[ext_resource type="PackedScene" uid="uid://cril6suuycagh" path="res://cenas/boss/folha_boss.tscn" id="3_folha"]
+[ext_resource type="Texture2D" uid="uid://bu53rl8vhv4lt" path="res://meus sprites/lorax boss battle/fase2/fase2 idle.png" id="4_idle"]
+[ext_resource type="Texture2D" uid="uid://q5h6u4ww0i17" path="res://meus sprites/lorax boss battle/fase2/fase2 dano.png" id="5_dano"]
+[ext_resource type="Texture2D" uid="uid://bvwj5cuwkf15h" path="res://meus sprites/lorax boss battle/fase2/fase2 ataque.png" id="6_ataque"]
+[ext_resource type="Texture2D" uid="uid://f74nyu78otod" path="res://meus sprites/lorax boss battle/fase1/fase1 transicao.png" id="7_transicao"]
+[ext_resource type="Texture2D" uid="uid://bkauokuwt5s7a" path="res://meus sprites/geral/coracao_boss_vermelho.png" id="8_coracao"]
+
+[sub_resource type="Resource" id="Resource_parado"]
+script = ExtResource("2_anim")
+nome = "parado"
+folha = ExtResource("4_idle")
+repetir = true
+
+[sub_resource type="Resource" id="Resource_dano"]
+script = ExtResource("2_anim")
+nome = "dano"
+folha = ExtResource("5_dano")
+
+[sub_resource type="Resource" id="Resource_ataque"]
+script = ExtResource("2_anim")
+nome = "ataque"
+folha = ExtResource("6_ataque")
+tempo_por_quadro = 0.1
+quadro_evento = 8
+
+[sub_resource type="Resource" id="Resource_entrada"]
+script = ExtResource("2_anim")
+nome = "entrada"
+folha = ExtResource("7_transicao")
+quadro_evento = 15
+
+[resource]
+script = ExtResource("1_fase")
+numero_fase = 2
+velocidade = 70.0
+inclinacao_graus = 6.0
+inclinacao_tempo = 0.15
+inclinacao_passo_graus = 1.0
+intervalo_ataque = 1.4
+intervalo_minimo = 0.9
+projetil = ExtResource("3_folha")
+quantidade = 5
+quantidades = Array[int]([5, 4])
+angulo_leque = 15.0
+mira_max_graus = 45.0
+animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque"), SubResource("Resource_entrada")])
+entrada = 1
+coracao_boss = ExtResource("8_coracao")
+momento_transicao = &"transicao_1_2"
+momento_estrelas = &"fase2_estrelas"
+momento_disparo = &"soltar_folhas"
+momento_hit = &"hit_comum"

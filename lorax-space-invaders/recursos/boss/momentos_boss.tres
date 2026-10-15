@@ -879,10 +879,23 @@ script = ExtResource("1_passo")
 tipo = 14
 duracao = 0.6
 
+[sub_resource type="Resource" id="Passo_player_morre_luta_2"]
+script = ExtResource("1_passo")
+tipo = 4
+rotulo = "ZOOM VOLTA (SE A TRANSICAO 1->2 PAROU NO MEIO)"
+fator = 1.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_player_morre_luta_3"]
+script = ExtResource("1_passo")
+tipo = 3
+rotulo = "TREMOR CONTINUO PARA (IDEM)"
+duracao = 0.3
+
 [sub_resource type="Resource" id="Momento_player_morre_luta"]
 script = ExtResource("2_momento")
 titulo = "PLAYER MORRE NA LUTA"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_morre_luta_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_player_morre_luta_1"), SubResource("Passo_player_morre_luta_2"), SubResource("Passo_player_morre_luta_3")])
 
 [sub_resource type="Resource" id="Passo_poupar_1"]
 script = ExtResource("1_passo")
@@ -1205,7 +1218,7 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_tonto_estrelas_1")])
 [sub_resource type="Resource" id="Passo_transicao_1_2_1"]
 script = ExtResource("1_passo")
 tipo = 4
-fator = 1.08
+fator = 1.14
 duracao = 0.8
 focar_alvo = true
 
@@ -1213,13 +1226,19 @@ focar_alvo = true
 script = ExtResource("1_passo")
 tipo = 2
 de = 2.0
-ate = 6.0
+ate = 8.0
+eixo = Vector2(1, 0.3)
 da_animacao = true
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_3"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_transforma"
 
 [sub_resource type="Resource" id="Momento_transicao_1_2"]
 script = ExtResource("2_momento")
 titulo = "TRANSICAO 1->2"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_1"), SubResource("Passo_transicao_1_2_2")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_1"), SubResource("Passo_transicao_1_2_2"), SubResource("Passo_transicao_1_2_3")])
 seguinte = &"transicao_1_2_pico"
 duracao_animacao_lab = 3.2
 
@@ -1230,7 +1249,7 @@ tipo = 3
 [sub_resource type="Resource" id="Passo_transicao_1_2_pico_2"]
 script = ExtResource("1_passo")
 tipo = 1
-forca = 14.0
+forca = 18.0
 duracao = 1.0
 
 [sub_resource type="Resource" id="Passo_transicao_1_2_pico_3"]
@@ -1254,33 +1273,44 @@ duracao = 0.4
 [sub_resource type="Resource" id="Passo_transicao_1_2_pico_6"]
 script = ExtResource("1_passo")
 tipo = 11
-pendente = "FORCA SEM VALOR"
 rotulo = "ONDA PEQUENA"
+forca = 0.02
 duracao = 0.5
 raio = 120.0
 
 [sub_resource type="Resource" id="Passo_transicao_1_2_pico_7"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "INTENSIDADE SEM VALOR"
+cor = 4
 nome = &"tom_vermelho"
 parametros = {
-"duracao": 1
+"alfa": 0.1,
+"duracao": 1.0
 }
 
 [sub_resource type="Resource" id="Passo_transicao_1_2_pico_8"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F2"
 nome = &"coracoes_reenchem"
 parametros = {
-"intervalo": 0.12
+"intervalo": 0.12,
+"som": &"boss_coracao_enche"
 }
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_9"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_raiva"
+
+[sub_resource type="Resource" id="Passo_transicao_1_2_pico_10"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"onda_choque"
 
 [sub_resource type="Resource" id="Momento_transicao_1_2_pico"]
 script = ExtResource("2_momento")
 titulo = "TRANSICAO 1->2: PICO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_pico_1"), SubResource("Passo_transicao_1_2_pico_2"), SubResource("Passo_transicao_1_2_pico_3"), SubResource("Passo_transicao_1_2_pico_4"), SubResource("Passo_transicao_1_2_pico_5"), SubResource("Passo_transicao_1_2_pico_6"), SubResource("Passo_transicao_1_2_pico_7"), SubResource("Passo_transicao_1_2_pico_8")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_pico_1"), SubResource("Passo_transicao_1_2_pico_2"), SubResource("Passo_transicao_1_2_pico_3"), SubResource("Passo_transicao_1_2_pico_4"), SubResource("Passo_transicao_1_2_pico_5"), SubResource("Passo_transicao_1_2_pico_6"), SubResource("Passo_transicao_1_2_pico_7"), SubResource("Passo_transicao_1_2_pico_8"), SubResource("Passo_transicao_1_2_pico_9"), SubResource("Passo_transicao_1_2_pico_10")])
 
 [sub_resource type="Resource" id="Passo_ultimo_coracao_1"]
 script = ExtResource("1_passo")

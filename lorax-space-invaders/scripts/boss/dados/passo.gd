@@ -20,8 +20,8 @@ enum Particula { NENHUMA, FAISCA, POEIRA_POUSO, POEIRA_BLOCO, FOLHINHAS, KI_HIT,
 const COMUNS = ["tempo", "tipo", "repetir", "repetir_a_cada", "pendente", "rotulo"]
 # Campos que cada tipo usa (os outros ficam escondidos no Inspector)
 const CAMPOS = {
-	Tipo.TREMER: ["forca", "duracao"],
-	Tipo.TREMER_CONTINUO: ["de", "ate", "duracao", "da_animacao", "fica_ligado"],
+	Tipo.TREMER: ["forca", "duracao", "eixo"],
+	Tipo.TREMER_CONTINUO: ["de", "ate", "duracao", "da_animacao", "fica_ligado", "eixo"],
 	Tipo.PARAR_TREMOR_CONTINUO: ["duracao"],
 	Tipo.ZOOM: ["fator", "duracao", "focar_alvo"],
 	Tipo.ZOOM_PUNCH: ["fator", "duracao"],
@@ -70,6 +70,8 @@ const CAMPOS = {
 @export var de := 0.0
 ## Tremor contínuo: força final (fica nela até ser parado)
 @export var ate := 0.0
+## Tremor e tremor contínuo: em que eixos treme ((1, 1) = os dois; (1, 0) = só horizontal)
+@export var eixo := Vector2.ONE
 ## Zoom e zoom punch: fator. Estrelas: multiplicador de velocidade, brilho (0 a 1) ou fator do risco
 @export var fator := 0.0
 ## Câmera lenta: escala do tempo do jogo

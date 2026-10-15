@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://s6nnxmmrfey2" path="res://cenas/boss/lorax_final.tscn" id="2_corpo"]
 [ext_resource type="Script" uid="uid://bwr07xmpmuohr" path="res://scripts/boss/fase_classica.gd" id="3_classica"]
 [ext_resource type="Resource" uid="uid://cksvvdbtwxak7" path="res://recursos/boss/classica1.tres" id="4_dados1"]
+[ext_resource type="Resource" uid="uid://doosoh2koab57" path="res://recursos/boss/classica2.tres" id="5_nl7px"]
 
 [node name="BatalhaFinal" type="Node" unique_id=1528611933]
 script = ExtResource("1_batalha")
@@ -18,6 +19,13 @@ script = ExtResource("3_classica")
 dados = ExtResource("4_dados1")
 
 [node name="TimerAtaque" type="Timer" parent="Fases/Classica1" unique_id=435118870]
+one_shot = true
+
+[node name="Classica2" type="Node" parent="Fases" unique_id=1053832006]
+script = ExtResource("3_classica")
+dados = ExtResource("5_nl7px")
+
+[node name="TimerAtaque" type="Timer" parent="Fases/Classica2" unique_id=59352639]
 one_shot = true
 
 [node name="Ataques" type="Node2D" parent="." unique_id=65780363]
