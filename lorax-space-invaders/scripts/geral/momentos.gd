@@ -63,13 +63,13 @@ func momento(nome: StringName):
 		push_error("Momentos: momento desconhecido '%s'" % nome)
 	return dados
 
-# Os parâmetros do passo SINAL 'sinal' do momento (vazio, com erro, se não houver)
+# Os parâmetros do passo SINAL 'sinal' do momento, com a "cor" (vazio, com erro, se não houver)
 func parametros(nome: StringName, sinal: StringName):
 	var dados = momento(nome)
 	if dados != null:
 		for passo in dados.passos:
 			if passo.tipo == Passo.Tipo.SINAL and passo.nome == sinal:
-				return passo.parametros
+				return numeros_do_sinal(passo)
 	push_error("Momentos: o momento '%s' não tem o sinal '%s'" % [nome, sinal])
 	return {}
 
@@ -233,10 +233,7 @@ func executar(passo, alvo, duracao_animacao):
 		Passo.Tipo.SOM:
 			Sons.tocar(passo.nome)
 		Passo.Tipo.SINAL:
-			var numeros = passo.parametros
-			if passo.cor != EfeitosDados.Cor.NENHUMA:
-				numeros = numeros.duplicate()
-				numeros["cor"] = cor
+			var numeros = numeros_do_sinal(passo)
 			var reacoes = achar(alvo, ReacoesCorpo)
 			if reacoes != null:
 				reacoes.reagir(passo.nome, numeros)
@@ -249,6 +246,14 @@ func executar(passo, alvo, duracao_animacao):
 			caixa.falar(passo.nome)
 		_:
 			push_error("Momentos: o passo %s ainda não faz nada" % Passo.Tipo.keys()[passo.tipo])
+
+# Os parâmetros do passo SINAL; com cor, eles ganham "cor" (a Color do efeitos_boss.tres)
+func numeros_do_sinal(passo):
+	if passo.cor == EfeitosDados.Cor.NENHUMA:
+		return passo.parametros
+	var numeros = passo.parametros.duplicate()
+	numeros["cor"] = efeitos.cor(passo.cor)
+	return numeros
 
 # Mostra o letreiro na hud; cada letra que entra toca o momento_por_letra do estilo no mesmo alvo
 func mostrar_letreiro(passo, alvo):

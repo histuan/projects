@@ -99,6 +99,8 @@ func _ready():
 		abrir_lab_sons()
 	elif Partida.etapa_inicial == Partida.Etapa.LAB_TEXTOS:
 		abrir_lab_textos()
+	elif Partida.etapa_inicial == Partida.Etapa.FASE_2:
+		comecar_fase2_direto()
 
 # LAB DE EFEITOS: painel que toca cada momento do momentos_boss.tres; o spawner para (nada
 # cai nem passa) e o boneco do Lorax fica no mundo (filho da main) para tremor e zoom valerem
@@ -120,6 +122,20 @@ func abrir_lab_textos():
 	var lab = LabTextos.new()
 	add_child(lab)
 	lab.preparar($hud, caixa_dialogo)
+
+# Cheat FASE 2: o mundo como a transição 1→2 deixa (wave do boss sem placar e sem planeta, música
+# da luta, tinta vermelha com os números do pico, que não toca) e a luta já na Classica2
+func comecar_fase2_direto():
+	$groupAlien.entrar_luta_direta()
+	$hud.esconder_placar()
+	$spawner.parar_planeta()
+	Partida.comecar_luta_boss()
+	atualizar_vida_baixa(Partida.vidas)
+	Musica.cortar()
+	Musica.tocar(&"musica_wave10", 0.0)
+	var tom = Momentos.parametros(&"transicao_1_2_pico", &"tom_vermelho")
+	tinta_fundo.tingir(tom.get("cor", Color.BLACK), tom.get("alfa", 0.0), 0.0)
+	comecar_batalha(&"Classica2")
 
 # Wave 10 começou: a música do jogo some, e ficar com 1 vida passa a ligar a vida baixa
 func _on_wave_boss_chegou():
@@ -170,8 +186,8 @@ func _on_boss_pode_entrar():
 
 # Cria a batalha final logo depois do groupAlien na árvore (desenha atrás do cenário e
 # da hud), liga os sinais dela à hud, à Partida (e ao painel de debug, se existir) e manda
-# começar com a caixa de diálogo
-func comecar_batalha():
+# começar com a caixa de diálogo (com 'nome_fase', já nessa fase, sem entrada)
+func comecar_batalha(nome_fase := &""):
 	batalha = BATALHA_FINAL.instantiate()
 	batalha.vida_boss_mudou.connect($hud.mostrar_vida_boss_final)
 	batalha.boss_invulneravel.connect($hud.piscar_vida_boss)
@@ -185,7 +201,10 @@ func comecar_batalha():
 	batalha.terminou.connect(_on_batalha_terminou)
 	add_child(batalha)
 	move_child(batalha, $groupAlien.get_index() + 1)
-	batalha.comecar(player, caixa_dialogo)
+	if nome_fase == &"":
+		batalha.comecar(player, caixa_dialogo)
+	else:
+		batalha.comecar_direto(player, caixa_dialogo, nome_fase)
 
 # Espera em tempo real que congela no Pause. O Timer é filho da main: se a cena trocar
 # no meio, ele some junto e a sequência simplesmente não continua

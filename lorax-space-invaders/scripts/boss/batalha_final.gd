@@ -37,12 +37,24 @@ func _ready():
 
 # Chamada pela main (depois de conectar os sinais): monta o contexto e começa a 1ª fase
 func comecar(player, dialogo):
+	montar_contexto(player, dialogo)
+	proxima_fase()
+
+# Cheat: começa já na fase 'nome_fase' (um filho de $Fases), sem a entrada dela
+func comecar_direto(player, dialogo, nome_fase: StringName):
+	montar_contexto(player, dialogo)
+	var fase = $Fases.get_node(NodePath(nome_fase))
+	indice_fase = fase.get_index()
+	fase_mudou.emit(fase.name, fase.numero_fase())
+	fase.comecar_direto(ctx)
+
+# O que as fases recebem: corpo, ataques, player e caixa de diálogo
+func montar_contexto(player, dialogo):
 	ctx = ContextoBatalha.new()
 	ctx.corpo = $LoraxFinal
 	ctx.ataques = $Ataques
 	ctx.player = player
 	ctx.dialogo = dialogo
-	proxima_fase()
 
 # O corpo do boss (alvo dos momentos que a main toca: coração perdido, último coração)
 func corpo():

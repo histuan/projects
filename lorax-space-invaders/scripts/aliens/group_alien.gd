@@ -40,8 +40,9 @@ var timer_tela_vazia: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
-	# Cheat "LAB DE EFEITOS" / "LAB DE SONS" / "LAB DE TEXTOS": nada de horda, Lorax antigo nem timers
-	if Partida.etapa_inicial in [Partida.Etapa.LAB_EFEITOS, Partida.Etapa.LAB_SONS, Partida.Etapa.LAB_TEXTOS]:
+	# Cheat "LAB DE EFEITOS" / "LAB DE SONS" / "LAB DE TEXTOS" / "FASE 2": nada de horda, Lorax antigo
+	# nem timers (na FASE 2 a main chama entrar_luta_direta)
+	if Partida.etapa_inicial in [Partida.Etapa.LAB_EFEITOS, Partida.Etapa.LAB_SONS, Partida.Etapa.LAB_TEXTOS, Partida.Etapa.FASE_2]:
 		for timer in $timers.get_children():
 			timer.stop()
 		return
@@ -219,6 +220,13 @@ func entrar_wave_boss():
 	timer_tela_vazia = null
 	Partida.avancar_wave()
 	comecar_wave_boss()
+
+# Cheat FASE 2: já na wave do boss, sem a espera da tela limpa (nem a sequência da main) e sem
+# o letreiro WAVE
+func entrar_luta_direta():
+	em_boss = true
+	parar_timers_de_wave()
+	Partida.definir_wave(WAVE_BOSS)
 
 # Nenhuma horda, sniper ou Lorax antigo novo
 func parar_timers_de_wave():
