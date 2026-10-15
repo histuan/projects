@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://d2err6leiie4s"]
+
+[ext_resource type="Script" uid="uid://cknqqibec8xxr" path="res://scripts/efeitos/particula.gd" id="1_particula"]
+
+[node name="gotas_sangue" type="CPUParticles2D" unique_id=1322254604]
+emitting = false
+amount = 5
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 160)
+initial_velocity_max = 15.0
+script = ExtResource("1_particula")

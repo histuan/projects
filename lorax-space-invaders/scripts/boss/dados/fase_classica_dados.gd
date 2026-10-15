@@ -111,3 +111,20 @@ func animacao(nome):
 			return dados
 	push_error("FaseClassicaDados: sem a animação '%s'" % nome)
 	return null
+
+# O que falta (ou se repete) nas animações que a fase_classica toca; vazio = tudo certo
+func problemas_animacoes():
+	var precisa = ["parado", "dano", "ataque"]
+	if entrada == Entrada.TRANSICAO:
+		precisa.append("entrada")
+	var problemas = []
+	var vistos = []
+	for dados in animacoes:
+		var nome = dados.nome if dados != null else ""
+		if nome in vistos:
+			problemas.append("%s: animação '%s' repetida" % [resource_path, nome])
+		vistos.append(nome)
+	for nome in precisa:
+		if not nome in vistos:
+			problemas.append("%s: falta a animação '%s'" % [resource_path, nome])
+	return problemas

@@ -13,6 +13,7 @@ const FAISCA = preload("res://cenas/efeitos/faisca.tscn")
 const POEIRA = preload("res://cenas/efeitos/poeira.tscn")
 const FOLHINHAS = preload("res://cenas/efeitos/folhinhas.tscn")
 const KI_SUBINDO = preload("res://cenas/efeitos/ki_subindo.tscn")
+const GOTAS_SANGUE = preload("res://cenas/efeitos/gotas_sangue.tscn")
 
 # O que só a fase sabe fazer (letreiros, coração da hud...): passo SINAL. As reações do corpo
 # (squash...) o ReacoesCorpo do alvo faz sozinho; o pedido sai do mesmo jeito
@@ -306,6 +307,10 @@ func soltar_particula(passo, alvo, ponto, duracao):
 		Passo.Particula.KI_SUBINDO:
 			soltar_ki(passo, alvo, ponto, duracao)
 			return
+		Passo.Particula.GOTAS_SANGUE:
+			cena = GOTAS_SANGUE
+			quantidade = efeitos.gotas_sangue.x
+			distancia = efeitos.gotas_sangue.y
 	var particula = cena.instantiate()
 	particula.position = ponto + passo.deslocamento
 	if passo.direcao != Vector2.ZERO:
@@ -319,6 +324,9 @@ func soltar_particula(passo, alvo, ponto, duracao):
 	if passo.particula == Passo.Particula.KI_HIT:
 		particula.lifetime = efeitos.ki_hit_vida
 		particula.color_initial_ramp = gradiente(efeitos.cores_ki)
+	if passo.particula == Passo.Particula.GOTAS_SANGUE:
+		particula.lifetime = efeitos.gotas_sangue_vida
+		particula.color_initial_ramp = gradiente(efeitos.cores_sangue)
 	particula.configurar(quantidade, distancia)
 	mundo.add_child(particula)
 

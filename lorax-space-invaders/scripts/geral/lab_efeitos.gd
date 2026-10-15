@@ -89,7 +89,7 @@ const PAGINAS = [
 		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
 	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido", &"player_morre_luta"]],
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arremessa", &"f2_arvore_explode", &"f2_arvore_explode_fora", &"f2_respira", &"f2_desespero",
-		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
+		&"hit_fase2", &"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
 		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
 	["FASE 3", [&"aviso", &"raio", &"cortina_todos", &"raio_direto_carga", &"pancada",
@@ -581,6 +581,8 @@ func texto_particula(passo):
 			texto = "KI %s, %s PX, VIDA %s S" % [n(e.ki_hit.x), n(e.ki_hit.y), n(e.ki_hit_vida)]
 		Passo.Particula.KI_SUBINDO:
 			texto = "KI SUBINDO %s/S%s" % [n(e.ki_subindo_por_segundo), quando(passo)]
+		Passo.Particula.GOTAS_SANGUE:
+			texto = "SANGUE %s, %s PX, VIDA %s S" % [n(e.gotas_sangue.x), n(e.gotas_sangue.y), n(e.gotas_sangue_vida)]
 	if passo.direcao.x < 0:
 		texto += " PARA A ESQUERDA"
 	elif passo.direcao.x > 0:

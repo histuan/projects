@@ -14,7 +14,7 @@ enum Tipo {
 	LETREIRO, FALA,
 }
 
-enum Particula { NENHUMA, FAISCA, POEIRA_POUSO, POEIRA_BLOCO, FOLHINHAS, KI_HIT, KI_SUBINDO }
+enum Particula { NENHUMA, FAISCA, POEIRA_POUSO, POEIRA_BLOCO, FOLHINHAS, KI_HIT, KI_SUBINDO, GOTAS_SANGUE }
 
 # Campos que todo passo tem (sempre visíveis no Inspector)
 const COMUNS = ["tempo", "tipo", "repetir", "repetir_a_cada", "pendente", "rotulo"]

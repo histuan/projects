@@ -1,4 +1,4 @@
-# Flash de cor num Sprite2D (flash de hit, brilho de carga, olhos vermelhos), pelo
+# Flash de cor num Sprite2D (flash de hit, brilho de carga), pelo
 # flash.gdshader. Fica como filho do sprite (ou aponte 'sprite' para ele). É o dono do
 # material do sprite: a inclinação (suavizar a borda do sprite girado) também passa por aqui.
 class_name FlashSprite

@@ -43,10 +43,12 @@ enum Cor {
 @export var cor_dano := Color()
 ## Brilho de carga do Lorax 2.0 (pelo amarelo)
 @export var cor_carga := Color()
-## Raiva / olhos da fase 2
+## Raiva da fase 2
 @export var cor_raiva := Color()
 ## Ki: afterimage, partículas, onda (do mais claro ao mais escuro)
 @export var cores_ki := PackedColorArray()
+## Gotas de sangue do hit na fase 2 (uma cor sorteada por gota)
+@export var cores_sangue := PackedColorArray()
 @export var cor_poeira := Color()
 ## Avisos da fase 3 (o alfa da cor é o alfa do aviso)
 @export var cor_aviso := Color()
@@ -101,6 +103,10 @@ enum Cor {
 @export var ki_hit := Vector2.ZERO
 ## Vida (s) do ki do hit (usa a cena da faísca, que vive menos)
 @export var ki_hit_vida := 0.0
+## Gotas de sangue do hit na fase 2: (quantidade, distância px)
+@export var gotas_sangue := Vector2.ZERO
+## Vida (s) das gotas de sangue
+@export var gotas_sangue_vida := 0.0
 ## Ki subindo do corpo (aura): partículas por segundo
 @export var ki_subindo_por_segundo := 0.0
 ## Faísca de cada projétil limpo na troca de fase: (quantidade, distância px)

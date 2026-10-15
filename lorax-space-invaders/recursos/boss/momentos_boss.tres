@@ -477,16 +477,6 @@ de = 1.0
 ate = 2.0
 da_animacao = true
 
-[sub_resource type="Resource" id="Passo_f2_carga_2"]
-script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F2c-b"
-nome = &"olhos_vermelhos"
-parametros = {
-"alfa": 0.5,
-"antecedencia": 0.15
-}
-
 [sub_resource type="Resource" id="Passo_f2_carga_3"]
 script = ExtResource("1_passo")
 tipo = 23
@@ -495,7 +485,7 @@ nome = &"lorax2_carga"
 [sub_resource type="Resource" id="Momento_f2_carga"]
 script = ExtResource("2_momento")
 titulo = "F2: CARGA DAS ARVORES"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_carga_1"), SubResource("Passo_f2_carga_2"), SubResource("Passo_f2_carga_3")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_carga_1"), SubResource("Passo_f2_carga_3")])
 seguinte = &"f2_arremessa"
 
 [sub_resource type="Resource" id="Passo_f2_desespero_1"]
@@ -702,6 +692,38 @@ nome = &"lorax2_dano"
 script = ExtResource("2_momento")
 titulo = "HIT COMUM"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_comum_1"), SubResource("Passo_hit_comum_2"), SubResource("Passo_hit_comum_3"), SubResource("Passo_hit_comum_4")])
+
+[sub_resource type="Resource" id="Passo_hit_fase2_1"]
+script = ExtResource("1_passo")
+tipo = 9
+duracao = 0.05
+cor = 1
+alfa = 1.0
+
+[sub_resource type="Resource" id="Passo_hit_fase2_2"]
+script = ExtResource("1_passo")
+tipo = 21
+particula = 7
+deslocamento = Vector2(0, 12)
+
+[sub_resource type="Resource" id="Passo_hit_fase2_3"]
+script = ExtResource("1_passo")
+tipo = 24
+nome = &"recuo"
+parametros = {
+"px": 2,
+"tempos": Vector2(0.04, 0.08)
+}
+
+[sub_resource type="Resource" id="Passo_hit_fase2_4"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_dano"
+
+[sub_resource type="Resource" id="Momento_hit_fase2"]
+script = ExtResource("2_momento")
+titulo = "HIT FASE 2"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_hit_fase2_1"), SubResource("Passo_hit_fase2_2"), SubResource("Passo_hit_fase2_3"), SubResource("Passo_hit_fase2_4")])
 
 [sub_resource type="Resource" id="Passo_hit_lorax_ui_1"]
 script = ExtResource("1_passo")
@@ -1559,6 +1581,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"folhas_anulam": SubResource("Momento_folhas_anulam"),
 &"golpe_final": SubResource("Momento_golpe_final"),
 &"hit_comum": SubResource("Momento_hit_comum"),
+&"hit_fase2": SubResource("Momento_hit_fase2"),
 &"hit_lorax_ui": SubResource("Momento_hit_lorax_ui"),
 &"janela_abre": SubResource("Momento_janela_abre"),
 &"nave_chega": SubResource("Momento_nave_chega"),

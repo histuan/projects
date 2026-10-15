@@ -139,6 +139,8 @@ func preparar(contexto: ContextoBatalha):
 		inclinacao_vv = InclinacaoVaiEVem.new(dados)
 	if dados.coracao_boss != null:
 		trocar_coracoes.emit(dados.coracao_boss)
+	for problema in dados.problemas_animacoes():
+		push_error("FaseClassica: " + problema)
 	var corpo = ctx.corpo
 	corpo.carregar_animacoes(dados.animacoes)
 	corpo.tocar("parado")
