@@ -44,6 +44,8 @@ enum Entrada { DESCIDA, TRANSICAO }
 @export var quantidades: Array[int] = []
 ## Graus entre dois projéteis vizinhos (só importa com quantidade > 1)
 @export var angulo_leque := 0.0
+## Px entre dois projéteis vizinhos no nascimento, de lado em relação à mira (0 = todos no mesmo ponto)
+@export var espaco_leque := 0.0
 ## De onde o projétil sai, em relação ao centro do boss
 @export var origem_tiro := Vector2(0, 12)
 @export var para_ao_atacar := true

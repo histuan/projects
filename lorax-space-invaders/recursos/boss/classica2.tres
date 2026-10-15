@@ -26,6 +26,7 @@ nome = "ataque"
 folha = ExtResource("6_ataque")
 tempo_por_quadro = 0.1
 quadro_evento = 8
+tempos = Array[float]([0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
 
 [sub_resource type="Resource" id="Resource_entrada"]
 script = ExtResource("2_anim")
@@ -45,6 +46,7 @@ intervalo_minimo = 0.9
 projetil = ExtResource("3_arvore")
 quantidade = 3
 angulo_leque = 12.0
+espaco_leque = 22.0
 mira_max_graus = 45.0
 animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque"), SubResource("Resource_entrada")])
 entrada = 1

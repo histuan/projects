@@ -226,7 +226,7 @@ func _on_evento_animacao(nome):
 		tocar_momento(dados.momento_disparo)
 		var origem = ctx.corpo.global_position + dados.origem_tiro
 		Projetil.criar_leque(dados.projetil, quantidade_do_leque(), dados.angulo_leque,
-				origem, ctx.ataques, dados.angulo_da_mira(origem, posicao_do_player()))
+				origem, ctx.ataques, dados.angulo_da_mira(origem, posicao_do_player()), dados.espaco_leque)
 		ataques_feitos += 1
 
 # Onde o player está, para a mira (null sem player vivo na cena: o leque sai reto para baixo)
