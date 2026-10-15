@@ -1,0 +1,99 @@
+[gd_scene format=4 uid="uid://b4sceedwrcucm"]
+
+[ext_resource type="Texture2D" uid="uid://bh2i2pbd72n30" path="res://Assets Super Mario Bros/Assets Super Mario Bros/Sprites/GroundBlock.png" id="1_b30p5"]
+[ext_resource type="Texture2D" uid="uid://8as4lix1a8pr" path="res://Assets Super Mario Bros/Assets Super Mario Bros/Sprites/HardBlock.png" id="2_5wwvk"]
+[ext_resource type="Texture2D" uid="uid://dbhkvad8kmca" path="res://Assets Super Mario Bros/Assets Super Mario Bros/Sprites/UndergroundBlock.png" id="3_bhvw8"]
+[ext_resource type="Texture2D" uid="uid://dtkrgfs1x5qrr" path="res://Assets Super Mario Bros/Assets Super Mario Bros/Sprites/UndergroundBrick.png" id="4_l8342"]
+[ext_resource type="PackedScene" uid="uid://cjcad33463ldt" path="res://cenas/player.tscn" id="5_5wwvk"]
+[ext_resource type="PackedScene" uid="uid://csfp5qbxu0nak" path="res://cenas/Koopa.tscn" id="6_l8342"]
+[ext_resource type="PackedScene" uid="uid://msngaj8oolwc" path="res://cenas/Goomba.tscn" id="7_v1d1r"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v1d1r"]
+texture = ExtResource("1_b30p5")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1yycb"]
+texture = ExtResource("2_5wwvk")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jdavq"]
+texture = ExtResource("3_bhvw8")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vhipe"]
+texture = ExtResource("4_l8342")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_ksdio"]
+physics_layer_0/collision_layer = 18
+physics_layer_0/collision_mask = 18
+sources/1 = SubResource("TileSetAtlasSource_v1d1r")
+sources/2 = SubResource("TileSetAtlasSource_1yycb")
+sources/3 = SubResource("TileSetAtlasSource_jdavq")
+sources/4 = SubResource("TileSetAtlasSource_vhipe")
+
+[node name="main" type="Node" unique_id=1101589033]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=814513528]
+zoom = Vector2(2.75, 2.75)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1049284120]
+tile_map_data = PackedByteArray("AAD+/wUAAQAAAAAAAAD+/wQAAQAAAAAAAAD+/wYAAQAAAAAAAAD+/wcAAQAAAAAAAAD9/wcAAQAAAAAAAAD//wcAAQAAAAAAAAD8/wcAAQAAAAAAAAD8/wYAAQAAAAAAAAD8/wUAAQAAAAAAAAD8/wQAAQAAAAAAAAD9/wQAAQAAAAAAAAD9/wUAAQAAAAAAAAD9/wYAAQAAAAAAAAD//wQAAQAAAAAAAAD//wUAAQAAAAAAAAD//wYAAQAAAAAAAADy/wQAAQAAAAAAAADy/wUAAQAAAAAAAADy/wYAAQAAAAAAAADy/wcAAQAAAAAAAADz/wcAAQAAAAAAAAD0/wcAAQAAAAAAAAD1/wcAAQAAAAAAAAD2/wcAAQAAAAAAAAD3/wcAAQAAAAAAAAD4/wcAAQAAAAAAAAD5/wcAAQAAAAAAAAD6/wcAAQAAAAAAAAD7/wcAAQAAAAAAAADz/wQAAQAAAAAAAAD0/wQAAQAAAAAAAAD1/wQAAQAAAAAAAAD2/wQAAQAAAAAAAAD3/wQAAQAAAAAAAAD4/wQAAQAAAAAAAAD5/wQAAQAAAAAAAAD6/wQAAQAAAAAAAAD7/wQAAQAAAAAAAAD7/wUAAQAAAAAAAAD6/wUAAQAAAAAAAAD5/wUAAQAAAAAAAAD4/wUAAQAAAAAAAAD3/wUAAQAAAAAAAAD2/wUAAQAAAAAAAAD1/wUAAQAAAAAAAAD0/wUAAQAAAAAAAADz/wUAAQAAAAAAAADz/wYAAQAAAAAAAAD0/wYAAQAAAAAAAAD1/wYAAQAAAAAAAAD2/wYAAQAAAAAAAAD3/wYAAQAAAAAAAAD4/wYAAQAAAAAAAAD5/wYAAQAAAAAAAAD6/wYAAQAAAAAAAAD7/wYAAQAAAAAAAAAAAAQAAQAAAAAAAAABAAQAAQAAAAAAAAACAAQAAQAAAAAAAAADAAQAAQAAAAAAAAAEAAQAAQAAAAAAAAAFAAQAAQAAAAAAAAAGAAQAAQAAAAAAAAAHAAQAAQAAAAAAAAAIAAQAAQAAAAAAAAAJAAQAAQAAAAAAAAAKAAQAAQAAAAAAAAALAAQAAQAAAAAAAAAMAAQAAQAAAAAAAAANAAQAAQAAAAAAAAANAAUAAQAAAAAAAAANAAYAAQAAAAAAAAANAAcAAQAAAAAAAAAMAAcAAQAAAAAAAAALAAcAAQAAAAAAAAAKAAcAAQAAAAAAAAAJAAcAAQAAAAAAAAAIAAcAAQAAAAAAAAAHAAcAAQAAAAAAAAAGAAcAAQAAAAAAAAAFAAcAAQAAAAAAAAAEAAcAAQAAAAAAAAADAAcAAQAAAAAAAAACAAcAAQAAAAAAAAABAAcAAQAAAAAAAAAAAAcAAQAAAAAAAAAAAAYAAQAAAAAAAAAAAAUAAQAAAAAAAAACAAUAAQAAAAAAAAADAAUAAQAAAAAAAAAEAAUAAQAAAAAAAAAFAAUAAQAAAAAAAAAGAAUAAQAAAAAAAAAHAAUAAQAAAAAAAAAIAAUAAQAAAAAAAAAJAAUAAQAAAAAAAAAKAAUAAQAAAAAAAAALAAUAAQAAAAAAAAAMAAUAAQAAAAAAAAABAAUAAQAAAAAAAAABAAYAAQAAAAAAAAACAAYAAQAAAAAAAAADAAYAAQAAAAAAAAAEAAYAAQAAAAAAAAAFAAYAAQAAAAAAAAAGAAYAAQAAAAAAAAAJAAYAAQAAAAAAAAAKAAYAAQAAAAAAAAALAAYAAQAAAAAAAAAMAAYAAQAAAAAAAAAIAAYAAQAAAAAAAAAHAAYAAQAAAAAAAADy/wMAAQAAAAAAAADy/wIAAQAAAAAAAADy/wEAAQAAAAAAAAANAAMAAQAAAAAAAAANAAIAAQAAAAAAAAANAAEAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_ksdio")
+
+[node name="player" parent="." unique_id=2126500586 instance=ExtResource("5_5wwvk")]
+position = Vector2(-190, 38)
+
+[node name="enemies" type="Node" parent="." unique_id=461563813]
+
+[node name="koopa" parent="enemies" unique_id=1762443798 instance=ExtResource("6_l8342")]
+position = Vector2(-34, 26)
+
+[node name="koopa2" parent="enemies" unique_id=1057650752 instance=ExtResource("6_l8342")]
+position = Vector2(8, 26)
+
+[node name="koopa3" parent="enemies" unique_id=234802879 instance=ExtResource("6_l8342")]
+position = Vector2(-76, 26)
+
+[node name="koopa4" parent="enemies" unique_id=92097894 instance=ExtResource("6_l8342")]
+position = Vector2(-118, 26)
+
+[node name="koopa5" parent="enemies" unique_id=87048336 instance=ExtResource("6_l8342")]
+position = Vector2(-13, 26)
+
+[node name="koopa6" parent="enemies" unique_id=1196416323 instance=ExtResource("6_l8342")]
+position = Vector2(-55, 26)
+
+[node name="koopa7" parent="enemies" unique_id=413468006 instance=ExtResource("6_l8342")]
+position = Vector2(29, 26)
+
+[node name="koopa8" parent="enemies" unique_id=1518257675 instance=ExtResource("6_l8342")]
+position = Vector2(-97, 26)
+
+[node name="Goomba" parent="enemies" unique_id=1003746970 instance=ExtResource("7_v1d1r")]
+position = Vector2(71, 25)
+
+[node name="Goomba2" parent="enemies" unique_id=68868048 instance=ExtResource("7_v1d1r")]
+position = Vector2(155, 25)
+
+[node name="Goomba3" parent="enemies" unique_id=1870465400 instance=ExtResource("7_v1d1r")]
+position = Vector2(176, 25)
+
+[node name="Goomba4" parent="enemies" unique_id=1560118097 instance=ExtResource("7_v1d1r")]
+position = Vector2(134, 25)
+
+[node name="Goomba5" parent="enemies" unique_id=1912828282 instance=ExtResource("7_v1d1r")]
+position = Vector2(197, 25)
+
+[node name="Goomba6" parent="enemies" unique_id=240535837 instance=ExtResource("7_v1d1r")]
+position = Vector2(113, 25)
+
+[node name="Goomba7" parent="enemies" unique_id=98773812 instance=ExtResource("7_v1d1r")]
+position = Vector2(50, 25)
+
+[node name="Goomba8" parent="enemies" unique_id=647318904 instance=ExtResource("7_v1d1r")]
+position = Vector2(92, 25)

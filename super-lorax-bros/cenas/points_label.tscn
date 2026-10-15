@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ctitl350a78kg"]
+
+[ext_resource type="FontFile" uid="uid://dm3ch1vmt4ixr" path="res://Assets Super Mario Bros/Assets Super Mario Bros/Fonts/font.ttf" id="1_4f10h"]
+[ext_resource type="Script" uid="uid://djinqublii7s5" path="res://scripts/points_label.gd" id="2_rwenu"]
+
+[node name="PointsLabel" type="Label" unique_id=802408194]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("1_4f10h")
+theme_override_font_sizes/font_size = 10
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_rwenu")
