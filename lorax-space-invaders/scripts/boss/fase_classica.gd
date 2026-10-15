@@ -18,8 +18,6 @@ var andando := false
 var atacando := false
 # Leques já soltos (escolhe a vez em 'quantidades')
 var ataques_feitos := 0
-# Lado para onde o corpo está deslocado agora (-1, 0, 1); só usado pelo deslocar
-var postura := 0
 # Inclinação progressiva do vai e vem (com inclinacao_graus); null = sem
 var inclinacao_vv: InclinacaoVaiEVem = null
 # parar() já rodou (a fase acabou ou o player morreu): nada da entrada nem da luta continua
@@ -132,7 +130,6 @@ func _process(delta):
 	if parada:
 		return
 	var parado = not andando or (atacando and dados.para_ao_atacar)
-	atualizar_postura(0 if parado else direcao)
 	if inclinacao_vv != null:
 		ctx.corpo.definir_inclinacao(inclinacao_vv.atualizar(ctx.corpo.position.x, 0 if parado else direcao, delta))
 	if parado:
@@ -143,15 +140,6 @@ func _process(delta):
 		direcao = 1
 	elif corpo.position.x >= dados.limite_dir:
 		direcao = -1
-
-# Deslocamento para 'lado' só quando ele muda; com inclinacao_px em 0 no .tres, nada acontece.
-# A rotação é progressiva: inclinacao_vv, no _process
-func atualizar_postura(lado):
-	if lado == postura:
-		return
-	postura = lado
-	if dados.inclinacao_px != 0:
-		ctx.corpo.deslocar(lado * dados.inclinacao_px, dados.inclinacao_tempo)
 
 # Toca a animação e a carga (que dura até o quadro de evento); os projéteis saem no quadro
 # marcado dela (_on_evento_animacao)

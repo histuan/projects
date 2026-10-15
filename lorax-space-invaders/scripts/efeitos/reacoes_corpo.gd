@@ -1,6 +1,6 @@
-# Reações do corpo do boss pedidas pelos momentos (passo SINAL) e pela fase (inclinar,
-# deslocar): mexem só no Sprite2D, nunca na colisão. O Momentos acha este nó no alvo, como
-# faz com FlashSprite e Afterimage. Fica como filho do corpo (ou aponte 'sprite' para o Sprite2D).
+# Reações do corpo do boss pedidas pelos momentos (passo SINAL) e pela fase (inclinar):
+# mexem só no Sprite2D, nunca na colisão. O Momentos acha este nó no alvo, como faz com
+# FlashSprite e Afterimage. Fica como filho do corpo (ou aponte 'sprite' para o Sprite2D).
 # PIVÔ NOS PÉS: no _ready o sprite passa a ter offset (0, -pes) e o nó dele desce para a linha
 # dos pés (o desenho não muda de lugar); assim escala (squash) e rotação giram em torno do pé.
 # Inclinar = girar o sprite (o shader do FlashSprite suaviza a borda dos texels).
@@ -18,7 +18,6 @@ var posicao_base := Vector2.ZERO
 var escala := Vector2.ONE
 var graus := 0.0
 var recuo := 0.0
-var lado := 0.0
 # Desespero (último coração): px do pulo atual (alterna o lado a cada tique) e os números do passo
 var tremor := 0.0
 var desespero := {}
@@ -26,7 +25,6 @@ var relogio_desespero: Timer
 var tween_squash: Tween = null
 var tween_recuo: Tween = null
 var tween_inclinar: Tween = null
-var tween_lado: Tween = null
 
 # Põe o pivô do sprite nos pés (sem mudar o desenho de lugar) e guarda onde ele fica parado
 func _ready():
@@ -119,13 +117,6 @@ func definir_inclinacao(novos_graus):
 	if novos_graus != graus:
 		definir_graus(novos_graus)
 
-# Alternativa à inclinação: desloca 'px' para o lado em 'tempo' s (0 = no lugar)
-func deslocar(px, tempo):
-	if tween_lado != null:
-		tween_lado.kill()
-	tween_lado = create_tween()
-	tween_lado.tween_method(definir_lado, lado, px, maxf(tempo, 0.001))
-
 # Escala do squash (o tween chama a cada quadro)
 func definir_escala(valor):
 	escala = valor
@@ -151,27 +142,21 @@ func flash_do_sprite():
 			return filho
 	return null
 
-# Px do deslocamento para o lado
-func definir_lado(valor):
-	lado = valor
-	aplicar()
-
-# Escala, rotação e posição do sprite (o pivô já está nos pés); recuo, lado e tremor somam em px inteiros
+# Escala, rotação e posição do sprite (o pivô já está nos pés); recuo e tremor somam em px inteiros
 func aplicar():
 	alvo.scale = escala
 	alvo.rotation = deg_to_rad(graus)
-	alvo.position = posicao_base + Vector2(lado + tremor, recuo).round()
+	alvo.position = posicao_base + Vector2(tremor, recuo).round()
 
 # Corta qualquer reação e devolve o sprite ao normal
 func parar():
-	for tween in [tween_squash, tween_recuo, tween_inclinar, tween_lado]:
+	for tween in [tween_squash, tween_recuo, tween_inclinar]:
 		if tween != null:
 			tween.kill()
 	parar_desespero()
 	escala = Vector2.ONE
 	graus = 0.0
 	recuo = 0.0
-	lado = 0.0
 	if alvo != null:
 		aplicar()
 	var flash = flash_do_sprite() if alvo != null else null

@@ -53,10 +53,6 @@ func inclinar(graus, tempo):
 func definir_inclinacao(graus):
 	reacoes.definir_inclinacao(graus)
 
-# Desloca o sprite 'px' para o lado em 'tempo' s (alternativa à inclinação)
-func deslocar(px, tempo):
-	reacoes.deslocar(px, tempo)
-
 # Para o tremor do último coração (as outras reações continuam)
 func parar_desespero():
 	reacoes.parar_desespero()

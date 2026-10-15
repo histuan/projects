@@ -668,8 +668,8 @@ func limpar_teste():
 # Ferramentas da página FASE 1 (2): o ataque inteiro, o vai e vem e a Trúfula do player
 func linhas_combate_fase1():
 	var leque = "LEQUES %s ALTERNANDO, %s GRAUS, COM RASTRO" % [str(DADOS_FASE1.quantidades), n(DADOS_FASE1.angulo_leque)]
-	var postura = "CLASSICA1: ROTACAO %s GRAUS / DESLOCA %s PX EM %s S" % [
-		n(DADOS_FASE1.inclinacao_graus), n(DADOS_FASE1.inclinacao_px), n(DADOS_FASE1.inclinacao_tempo)]
+	var postura = "CLASSICA1: ROTACAO %s GRAUS EM %s S" % [
+		n(DADOS_FASE1.inclinacao_graus), n(DADOS_FASE1.inclinacao_tempo)]
 	return [
 		linha("ATAQUE", ["CARGA %s S; NO DISPARO O SOM SOME EM %s S (AMPLITUDE LINEAR, ATE O FIM DO ATAQUE)" % [n(duracao_carga()), n(DADOS_FASE1.duracao_depois_do_disparo())], leque + "; MIRA NO PLAYER ATE %s GRAUS" % n(DADOS_FASE1.mira_max_graus)], atacar_lab),
 		linha("VAI E VEM LIGA/DESLIGA", ["VELOCIDADE %s, LIMITES %s A %s" % [n(DADOS_FASE1.velocidade), n(DADOS_FASE1.limite_esq), n(DADOS_FASE1.limite_dir)], postura], alternar_vaivem),
@@ -758,13 +758,11 @@ func trocar_angulo_lab():
 	aviso = "ANGULO: %s GRAUS" % n(angulo_lab)
 	mostrar()
 
-# Inclina e/ou desloca o boneco para 'lado', como a luta faz. Andando, quem gira é a conta
+# Inclina o boneco para 'lado', como a luta faz. Andando, quem gira é a conta
 # progressiva (_process); 'fixo' mostra o ângulo parado
 func inclinar_boneco(lado, fixo = false):
 	if lado == 0 or fixo:
 		reacoes_boneco.inclinar(lado * angulo_lab, DADOS_FASE1.inclinacao_tempo)
-	if DADOS_FASE1.inclinacao_px != 0:
-		reacoes_boneco.deslocar(lado * DADOS_FASE1.inclinacao_px, DADOS_FASE1.inclinacao_tempo)
 
 # O primeiro passo do tipo dado no momento (erro se não houver)
 func primeiro_passo(nome, tipo):

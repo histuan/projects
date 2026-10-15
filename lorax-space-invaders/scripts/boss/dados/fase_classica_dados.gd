@@ -23,9 +23,7 @@ enum DepoisDoMeio { MANTER, SINO }
 ## Graus que ele gira para o lado do movimento no vai e vem, em torno dos pés, com a borda dos
 ## texels suavizada (0 = não gira)
 @export var inclinacao_graus := 0.0
-## Px que ele se desloca para o lado do movimento, em vez de inclinar (0 = não desloca)
-@export var inclinacao_px := 0.0
-## Segundos para chegar à inclinação (ou ao deslocamento) e para voltar
+## Segundos para chegar à inclinação e para voltar
 @export var inclinacao_tempo := 0.0
 ## A inclinação cresce de 0 (na borda) a inclinacao_graus (no meio do trajeto); depois
 ## do meio MANTER segura o máximo e SINO volta a 0 até a outra borda
