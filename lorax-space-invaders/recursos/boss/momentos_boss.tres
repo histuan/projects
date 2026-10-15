@@ -495,24 +495,55 @@ cor = 2
 alfa = 0.08
 ligar = true
 
+[sub_resource type="Resource" id="Passo_f2_desespero_2"]
+script = ExtResource("1_passo")
+tipo = 3
+
+[sub_resource type="Resource" id="Passo_f2_desespero_3"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 6.0
+duracao = 0.4
+
+[sub_resource type="Resource" id="Passo_f2_desespero_4"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_raiva"
+
 [sub_resource type="Resource" id="Momento_f2_desespero"]
 script = ExtResource("2_momento")
-titulo = "F2: DESESPERO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_1")])
+titulo = "F2: DESESPERO (PICO)"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_2"), SubResource("Passo_f2_desespero_3"), SubResource("Passo_f2_desespero_4"), SubResource("Passo_f2_desespero_1")])
 
-[sub_resource type="Resource" id="Passo_f2_respira_1"]
+[sub_resource type="Resource" id="Passo_f2_desespero_fim_1"]
 script = ExtResource("1_passo")
-tipo = 24
-pendente = "NA F2"
-nome = &"respira"
-parametros = {
-"segundos": 0.5
-}
+tipo = 13
+cor = 2
 
-[sub_resource type="Resource" id="Momento_f2_respira"]
+[sub_resource type="Resource" id="Momento_f2_desespero_fim"]
 script = ExtResource("2_momento")
-titulo = "F2: RESPIRA"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_respira_1")])
+titulo = "F2: DESESPERO (FIM)"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_fim_1")])
+
+[sub_resource type="Resource" id="Passo_f2_desespero_transforma_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 1.0
+ate = 3.0
+eixo = Vector2(1, 0.3)
+da_animacao = true
+
+[sub_resource type="Resource" id="Passo_f2_desespero_transforma_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_transforma"
+
+[sub_resource type="Resource" id="Momento_f2_desespero_transforma"]
+script = ExtResource("2_momento")
+titulo = "F2: DESESPERO (TRANSFORMA)"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_transforma_1"), SubResource("Passo_f2_desespero_transforma_2")])
+seguinte = &"f2_desespero"
+duracao_animacao_lab = 3.0
 
 [sub_resource type="Resource" id="Passo_fase1_estrelas_1"]
 script = ExtResource("1_passo")
@@ -1395,6 +1426,22 @@ script = ExtResource("2_momento")
 titulo = "ULTIMO CORACAO"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_coracao_1"), SubResource("Passo_ultimo_coracao_2")])
 
+[sub_resource type="Resource" id="Passo_ultimo_coracao_f2_1"]
+script = ExtResource("1_passo")
+tipo = 24
+nome = &"coracao_pulsa"
+parametros = {
+"batida": 0.2,
+"escala": 1.15,
+"periodo": 0.6,
+"som": &"ultimo_coracao_pulso"
+}
+
+[sub_resource type="Resource" id="Momento_ultimo_coracao_f2"]
+script = ExtResource("2_momento")
+titulo = "ULTIMO CORACAO (FASE 2)"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_coracao_f2_1")])
+
 [sub_resource type="Resource" id="Passo_ultimo_hit_f1_1"]
 script = ExtResource("1_passo")
 tipo = 8
@@ -1571,7 +1618,8 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"f2_arvore_explode_fora": SubResource("Momento_f2_arvore_explode_fora"),
 &"f2_carga": SubResource("Momento_f2_carga"),
 &"f2_desespero": SubResource("Momento_f2_desespero"),
-&"f2_respira": SubResource("Momento_f2_respira"),
+&"f2_desespero_fim": SubResource("Momento_f2_desespero_fim"),
+&"f2_desespero_transforma": SubResource("Momento_f2_desespero_transforma"),
 &"fase1_estrelas": SubResource("Momento_fase1_estrelas"),
 &"fase2_estrelas": SubResource("Momento_fase2_estrelas"),
 &"final_ruim_estrelas": SubResource("Momento_final_ruim_estrelas"),
@@ -1612,6 +1660,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"transicao_1_2": SubResource("Momento_transicao_1_2"),
 &"transicao_1_2_pico": SubResource("Momento_transicao_1_2_pico"),
 &"ultimo_coracao": SubResource("Momento_ultimo_coracao"),
+&"ultimo_coracao_f2": SubResource("Momento_ultimo_coracao_f2"),
 &"ultimo_hit_f1": SubResource("Momento_ultimo_hit_f1"),
 &"virada": SubResource("Momento_virada"),
 &"virada_estrelas": SubResource("Momento_virada_estrelas"),

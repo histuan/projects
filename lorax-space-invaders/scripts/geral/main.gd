@@ -231,9 +231,11 @@ func _on_batalha_terminou():
 func _on_coracao_boss_perdido():
 	Momentos.tocar(&"coracao_boss_perdido", corpo_do_boss())
 
-# Sobrou 1 coração do boss: ele bate na hud e o boss treme de desespero
+# Sobrou 1 coração do boss: a fase da vez decide a reação (o coração da hud bate; na fase 1 o
+# boss treme, na fase 2 ele entra em desespero)
 func _on_ultimo_coracao_boss():
-	Momentos.tocar(&"ultimo_coracao", corpo_do_boss())
+	if batalha != null:
+		batalha.ultimo_coracao()
 
 # Debug (tecla K do painel): o boss perde um coração, como se levasse os tiros
 func _on_debug_tirar_coracao():

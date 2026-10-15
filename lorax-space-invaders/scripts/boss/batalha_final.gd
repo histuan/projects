@@ -64,6 +64,14 @@ func corpo():
 func parar_desespero():
 	$LoraxFinal.parar_desespero()
 
+# Sobrou o último coração do boss: a fase da vez reage (com a luta parada, nada)
+func ultimo_coracao():
+	if parada:
+		return
+	var fases = $Fases.get_children()
+	if indice_fase >= 0 and indice_fase < fases.size():
+		fases[indice_fase].ultimo_coracao()
+
 # O player morreu: a fase da vez para (o boss para de andar e de atacar) e nenhuma outra começa
 func parar_luta():
 	parada = true

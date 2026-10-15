@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bvwj5cuwkf15h" path="res://meus sprites/lorax boss battle/fase2/fase2 ataque.png" id="6_ataque"]
 [ext_resource type="Texture2D" uid="uid://f74nyu78otod" path="res://meus sprites/lorax boss battle/fase1/fase1 transicao.png" id="7_transicao"]
 [ext_resource type="Texture2D" uid="uid://bkauokuwt5s7a" path="res://meus sprites/geral/coracao_boss_vermelho.png" id="8_coracao"]
+[ext_resource type="Texture2D" path="res://meus sprites/lorax boss battle/fase2/fase2 desespero.png" id="9_desespero"]
 
 [sub_resource type="Resource" id="Resource_parado"]
 script = ExtResource("2_anim")
@@ -34,6 +35,18 @@ nome = "entrada"
 folha = ExtResource("7_transicao")
 quadro_evento = 15
 
+[sub_resource type="Resource" id="Resource_desespero_entrada"]
+script = ExtResource("2_anim")
+nome = "desespero_entrada"
+folha = ExtResource("7_transicao")
+quadro_evento = 15
+
+[sub_resource type="Resource" id="Resource_parado_desespero"]
+script = ExtResource("2_anim")
+nome = "parado"
+folha = ExtResource("9_desespero")
+repetir = true
+
 [resource]
 script = ExtResource("1_fase")
 numero_fase = 2
@@ -48,7 +61,7 @@ quantidade = 3
 angulo_leque = 12.0
 espaco_leque = 22.0
 mira_max_graus = 45.0
-animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque"), SubResource("Resource_entrada")])
+animacoes = Array[ExtResource("2_anim")]([SubResource("Resource_parado"), SubResource("Resource_dano"), SubResource("Resource_ataque"), SubResource("Resource_entrada"), SubResource("Resource_desespero_entrada")])
 entrada = 1
 coracao_boss = ExtResource("8_coracao")
 momento_transicao = &"transicao_1_2"
@@ -56,3 +69,13 @@ momento_estrelas = &"fase2_estrelas"
 momento_carga = &"f2_carga"
 momento_disparo = &"f2_arremessa"
 momento_hit = &"hit_fase2"
+momento_ultimo_coracao = &"ultimo_coracao_f2"
+momento_desespero = &"f2_desespero_transforma"
+momento_desespero_fim = &"f2_desespero_fim"
+animacoes_desespero = Array[ExtResource("2_anim")]([SubResource("Resource_parado_desespero")])
+desespero_espera = 0.5
+desespero_velocidade = 100.0
+desespero_distancia_min = 40.0
+desespero_intervalo_ataque = 1.1
+desespero_intervalo_minimo = 0.8
+desespero_quantidades = Array[int]([3, 5])

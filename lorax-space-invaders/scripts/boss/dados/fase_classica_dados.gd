@@ -86,6 +86,29 @@ enum Entrada { DESCIDA, TRANSICAO }
 @export var momento_hit := &""
 ## Quando a vida acaba (o último hit da fase)
 @export var momento_derrota := &""
+## Quando sobra o último coração (o coração da hud bate)
+@export var momento_ultimo_coracao := &""
+
+@export_group("Desespero")
+## No último coração ele toca "desespero_entrada" com este momento até o quadro de evento; o
+## 'seguinte' dele é o pico, tocado nesse quadro (vazio = sem desespero)
+@export var momento_desespero := &""
+## Quando a fase para com o desespero já ligado (desliga o que o pico deixou ligado)
+@export var momento_desespero_fim := &""
+## Animações que, no desespero, substituem as de mesmo nome de 'animacoes' (ex.: só o "parado")
+@export var animacoes_desespero: Array[AnimacaoDados] = []
+## Segundos parado (já com as animações novas) antes de voltar a lutar (-1 = nada)
+@export var desespero_espera := -1.0
+## Velocidade da andada errática (-1 = a 'velocidade' normal)
+@export var desespero_velocidade := -1.0
+## Px mínimos entre ele e cada ponto sorteado da andada errática (-1 = nenhum)
+@export var desespero_distancia_min := -1.0
+## Intervalo entre ataques no começo do desespero (-1 = os intervalos normais)
+@export var desespero_intervalo_ataque := -1.0
+## O mesmo intervalo quando resta 1 de vida (no meio, proporcional)
+@export var desespero_intervalo_minimo := -1.0
+## Projéteis de cada leque no desespero, alternando (vazio = as 'quantidades' normais)
+@export var desespero_quantidades: Array[int] = []
 
 # Rotação (radianos) do leque que sai de 'origem' com o meio apontado para 'alvo' (null = reto para
 # baixo), limitada a ±mira_max_graus
@@ -117,6 +140,8 @@ func problemas_animacoes():
 	var precisa = ["parado", "dano", "ataque"]
 	if entrada == Entrada.TRANSICAO:
 		precisa.append("entrada")
+	if momento_desespero != &"":
+		precisa.append("desespero_entrada")
 	var problemas = []
 	var vistos = []
 	for dados in animacoes:
@@ -127,4 +152,22 @@ func problemas_animacoes():
 	for nome in precisa:
 		if not nome in vistos:
 			problemas.append("%s: falta a animação '%s'" % [resource_path, nome])
+	for nome in ["entrada", "desespero_entrada"]:
+		if nome in precisa and nome in vistos and animacao(nome).quadro_evento < 0:
+			problemas.append("%s: a animação '%s' precisa de quadro_evento" % [resource_path, nome])
+	for dados in animacoes_desespero:
+		var nome = dados.nome if dados != null else ""
+		if not nome in vistos:
+			problemas.append("%s: '%s' de animacoes_desespero não substitui nenhuma animação" % [resource_path, nome])
 	return problemas
+
+# As animações do desespero: 'animacoes' com as de 'animacoes_desespero' no lugar das de mesmo nome
+func animacoes_no_desespero():
+	var lista = []
+	for dados in animacoes:
+		var nova = dados
+		for troca in animacoes_desespero:
+			if troca != null and troca.nome == dados.nome:
+				nova = troca
+		lista.append(nova)
+	return lista

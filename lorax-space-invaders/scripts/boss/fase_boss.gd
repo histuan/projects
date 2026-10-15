@@ -23,6 +23,10 @@ func comecar_direto(contexto: ContextoBatalha):
 func parar():
 	pass
 
+# Sobrou o último coração do boss (fase sem reação a isso: nada)
+func ultimo_coracao():
+	pass
+
 # Debug (tecla J): pula a entrada e já luta (fase sem entrada: nada)
 func pular_intro():
 	pass
