@@ -50,6 +50,10 @@ var ultima_voz = -100000
 var espera_boca = 0.0
 var boca_aberta = false
 var tween_seta: Tween = null
+# Proteção da abertura: o Espaço/Enter só vale depois de 'liberada_em' (ms reais) e com a tecla
+# que estava apertada na abertura já solta (o tiro que matou o Lorax não pula a fala)
+var liberada_em = 0
+var esperando_soltar = false
 var seta_y = 0.0
 
 # Monta a caixa (escondida) colada no fim da tela
@@ -93,6 +97,8 @@ func falar(nome: StringName):
 	if fala == null:
 		return
 	if not aberta:
+		liberada_em = Time.get_ticks_msec() + DADOS.protecao_entrada * 1000.0
+		esperando_soltar = tecla_de_avancar_apertada()
 		Sons.tocar(&"fala_caixa_abre")
 		Musica.pedir_abaixar(PEDIDO_MUSICA, DADOS.musica_abaixa_db, DADOS.musica_abaixa_entrada)
 		abriu.emit()
@@ -195,6 +201,8 @@ func _notification(what):
 
 # Máquina de escrever em tempo real: solta as letras que já deviam ter aparecido
 func _process(_delta):
+	if esperando_soltar and not tecla_de_avancar_apertada():
+		esperando_soltar = false
 	if not digitando:
 		return
 	var agora = Time.get_ticks_msec()
@@ -316,11 +324,17 @@ func definir_altura_seta(altura):
 func _unhandled_input(event):
 	if not aberta or so_mostrando or not (event.is_action_pressed("shoot") or event.is_action_pressed("ui_accept")):
 		return
+	if esperando_soltar or Time.get_ticks_msec() < liberada_em:
+		return
 	if digitando:
 		parar_voz()
 		terminar_texto()
 	else:
 		avancar()
+
+# Espaço (shoot) ou Enter (ui_accept) apertado agora
+func tecla_de_avancar_apertada():
+	return Input.is_action_pressed("shoot") or Input.is_action_pressed("ui_accept")
 
 # Próxima fala da conversa, ou fecha e avisa
 func avancar():

@@ -11,6 +11,9 @@ extends Resource
 @export var pausa_ponto := 0.0
 ## Segundos entre abrir e fechar a boca do retrato enquanto o texto aparece
 @export var boca_intervalo := 0.0
+## Segundos depois de a caixa abrir em que Espaço/Enter não fazem nada (e a tecla que estava
+## apertada na abertura precisa ser solta antes); 0 = sem proteção
+@export var protecao_entrada := 0.0
 
 @export_group("Ritmo (estilo Undertale)")
 ## Pausa (s) a mais depois de cada espaço (separa as palavras)

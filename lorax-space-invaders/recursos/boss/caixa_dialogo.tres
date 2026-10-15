@@ -11,6 +11,7 @@ script = ExtResource("1_caixa")
 letras_por_segundo = 30.0
 pausa_ponto = 0.2
 boca_intervalo = 0.2
+protecao_entrada = 1.0
 pausa_espaco = 0.02
 pausa_virgula = 0.12
 pausa_frase = 0.2

@@ -38,6 +38,7 @@ texto = "Isso ainda não acabou."
 personagem = 1
 expressao = 1
 voz = &"lorax_fuga_fala"
+letras_por_segundo = 12.0
 
 [sub_resource type="Resource" id="Fala_morte_fase3_1"]
 script = ExtResource("1_fala")
