@@ -95,6 +95,8 @@ enum Cor {
 @export var poeira_bloco := Vector2.ZERO
 ## Folhinhas ao perder coração: (mínimo, máximo) de partículas
 @export var folhinhas_quantidade := Vector2.ZERO
+## Folhinhas "balançando de leve": aceleração para os lados (px/s², sorteada entre −valor e +valor; 0 = caem retas)
+@export var folhinhas_balanco := 0.0
 ## Ki do hit no Lorax da fase 3: (quantidade, distância px)
 @export var ki_hit := Vector2.ZERO
 ## Vida (s) do ki do hit (usa a cena da faísca, que vive menos)

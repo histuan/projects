@@ -228,10 +228,14 @@ func executar(passo, alvo, duracao_animacao):
 		Passo.Tipo.SOM:
 			Sons.tocar(passo.nome)
 		Passo.Tipo.SINAL:
+			var numeros = passo.parametros
+			if passo.cor != EfeitosDados.Cor.NENHUMA:
+				numeros = numeros.duplicate()
+				numeros["cor"] = cor
 			var reacoes = achar(alvo, ReacoesCorpo)
 			if reacoes != null:
-				reacoes.reagir(passo.nome, passo.parametros)
-			pedido.emit(passo.nome, passo.parametros, alvo)
+				reacoes.reagir(passo.nome, numeros)
+			pedido.emit(passo.nome, numeros, alvo)
 		Passo.Tipo.MOMENTO:
 			tocar(passo.nome, alvo, duracao_animacao)
 		Passo.Tipo.LETREIRO:
@@ -298,6 +302,10 @@ func soltar_particula(passo, alvo, ponto, duracao):
 		particula.direction = passo.direcao
 	if passo.espalhar > 0:
 		particula.spread = passo.espalhar
+	if passo.particula == Passo.Particula.FOLHINHAS:
+		# Cada folhinha sorteia uma curva para um lado: caem "balançando"
+		particula.tangential_accel_min = -efeitos.folhinhas_balanco
+		particula.tangential_accel_max = efeitos.folhinhas_balanco
 	if passo.particula == Passo.Particula.KI_HIT:
 		particula.lifetime = efeitos.ki_hit_vida
 		particula.color_initial_ramp = gradiente(efeitos.cores_ki)

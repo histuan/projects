@@ -43,7 +43,7 @@ const CAMPOS = {
 	Tipo.PARTICULA: ["particula", "deslocamento", "direcao", "espalhar", "duracao", "da_animacao"],
 	Tipo.AFTERIMAGE: ["copias", "intervalo", "vida", "cor", "alfa"],
 	Tipo.SOM: ["nome"],
-	Tipo.SINAL: ["nome", "parametros"],
+	Tipo.SINAL: ["nome", "cor", "parametros"],
 	Tipo.MOMENTO: ["nome"],
 	Tipo.LETREIRO: ["letreiro", "texto", "subtitulo", "duracao"],
 	Tipo.FALA: ["nome"],
@@ -82,7 +82,7 @@ const CAMPOS = {
 @export var fica_ligado := false
 ## Zoom: aproxima no alvo (sem isso, no meio da tela)
 @export var focar_alvo := false
-## A cor mora no efeitos_boss.tres
+## A cor mora no efeitos_boss.tres. Sinal: chega a quem ouve como parametros.cor (Color)
 @export var cor := EfeitosDados.Cor.NENHUMA
 @export var alfa := 0.0
 ## Flash no corpo: segundos de cada pulso (0 = flash único; pulsa por 'duracao', ou pela animação,

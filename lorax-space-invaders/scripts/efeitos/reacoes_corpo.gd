@@ -19,6 +19,10 @@ var escala := Vector2.ONE
 var graus := 0.0
 var recuo := 0.0
 var lado := 0.0
+# Desespero (último coração): px do pulo atual (alterna o lado a cada tique) e os números do passo
+var tremor := 0.0
+var desespero := {}
+var relogio_desespero: Timer
 var tween_squash: Tween = null
 var tween_recuo: Tween = null
 var tween_inclinar: Tween = null
@@ -30,6 +34,10 @@ func _ready():
 	alvo.offset += Vector2(0, -pes)
 	alvo.position += Vector2(0, pes)
 	posicao_base = alvo.position
+	# Pausável (Pause e hit-stop param o tique, como o resto do corpo)
+	relogio_desespero = Timer.new()
+	relogio_desespero.timeout.connect(tique_desespero)
+	add_child(relogio_desespero)
 
 # Faz a reação 'nome' com os números do passo; os outros nomes são de outros ouvintes (hud...)
 func reagir(nome, parametros):
@@ -38,6 +46,8 @@ func reagir(nome, parametros):
 			squash(parametros.get("escala", Vector2.ONE), parametros.get("duracao", 0.0))
 		&"recuo":
 			recuar(parametros.get("px", 0.0), parametros.get("tempos", Vector2.ZERO))
+		&"desespero_corpo":
+			comecar_desespero(parametros)
 
 # Achata na hora e volta a (1, 1) em 'duracao' s com um repique, presos pelos pés
 func squash(nova_escala, duracao):
@@ -59,6 +69,38 @@ func recuar(px, tempos):
 	tween_recuo = create_tween()
 	tween_recuo.tween_method(definir_recuo, 0.0, -px, tempos.x)
 	tween_recuo.tween_method(definir_recuo, -px, 0.0, tempos.y)
+
+# Último coração: a cada 'periodo' s o sprite pula 'px' (alternando o lado) e pisca 'cor' em 'alfa'
+# por 'duracao_flash' s. Fica ligado até parar_desespero() ou parar()
+func comecar_desespero(parametros):
+	var periodo = parametros.get("periodo", 0.0)
+	if periodo <= 0 or parametros.get("px", 0.0) <= 0:
+		push_error("ReacoesCorpo: desespero_corpo sem periodo ou px")
+		return
+	desespero = parametros
+	relogio_desespero.start(periodo)
+
+# Um tique do desespero: pula para o outro lado e pisca (pulado se o flash já está em uso,
+# para não cortar o brilho da carga nem o flash do hit)
+func tique_desespero():
+	tremor = desespero.px if tremor <= 0 else -desespero.px
+	aplicar()
+	var flash = flash_do_sprite()
+	if flash != null and not flash.ocupado():
+		flash.flash(desespero.get("cor", Color.RED), desespero.get("alfa", 0.0), desespero.get("duracao_flash", 0.0))
+
+# Desliga o desespero (o sprite volta para o meio); as outras reações continuam
+func parar_desespero():
+	if relogio_desespero != null:
+		relogio_desespero.stop()
+	desespero = {}
+	tremor = 0.0
+	if alvo != null:
+		aplicar()
+
+# Está tremendo de desespero agora
+func em_desespero():
+	return relogio_desespero != null and not relogio_desespero.is_stopped()
 
 # Gira até 'novos_graus' (negativo = esquerda; 0 = de pé) em 'tempo' s, em torno dos pés; com
 # o sprite girado o shader suaviza a borda dos texels
@@ -114,17 +156,18 @@ func definir_lado(valor):
 	lado = valor
 	aplicar()
 
-# Escala, rotação e posição do sprite (o pivô já está nos pés); recuo e lado somam em px inteiros
+# Escala, rotação e posição do sprite (o pivô já está nos pés); recuo, lado e tremor somam em px inteiros
 func aplicar():
 	alvo.scale = escala
 	alvo.rotation = deg_to_rad(graus)
-	alvo.position = posicao_base + Vector2(lado, recuo).round()
+	alvo.position = posicao_base + Vector2(lado + tremor, recuo).round()
 
 # Corta qualquer reação e devolve o sprite ao normal
 func parar():
 	for tween in [tween_squash, tween_recuo, tween_inclinar, tween_lado]:
 		if tween != null:
 			tween.kill()
+	parar_desespero()
 	escala = Vector2.ONE
 	graus = 0.0
 	recuo = 0.0

@@ -59,6 +59,10 @@ func definir_onda(t, maximo, periodo):
 	var fase = fmod(t, periodo) / periodo
 	definir_intensidade(maximo * (1.0 - absf(2.0 * fase - 1.0)))
 
+# Há um flash ou um pulso acontecendo (quem pisca por cima, como o desespero, espera a vez)
+func ocupado():
+	return pulso != null or (tween != null and tween.is_running())
+
 # Desliga na hora (e esquece o pulso)
 func parar():
 	pulso = null

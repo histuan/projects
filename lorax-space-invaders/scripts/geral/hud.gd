@@ -9,6 +9,8 @@ var pontos_visiveis = true
 
 # Boss final: um coração cheio esvaziou (a main reage com a câmera)
 signal coracao_boss_perdido
+# Boss final: sobrou só 1 coração cheio (a main toca o momento do último coração)
+signal ultimo_coracao_boss
 # Boss final: o número de corações cheios subiu (entrada da fase, troca de fase)
 signal coracoes_boss_reencheram
 var coracoes_boss_cheios = 0
@@ -26,6 +28,8 @@ func _ready():
 	Partida.pontos_ganhos.connect(mostrar_pontos)
 	Partida.vidas_mudaram.connect(mostrar_vidas)
 	Partida.wave_mudou.connect(mostrar_wave)
+	# Os passos SINAL dos momentos que desenham na hud (coração que esvazia, batida do último)
+	Momentos.pedido.connect(_on_pedido)
 	# A wave 1 foi criada antes deste _ready (o groupAlien vem antes na árvore)
 	if Partida.wave > 0:
 		mostrar_wave(Partida.wave)
@@ -65,9 +69,40 @@ func mostrar_vida_boss_final(vida, vida_max):
 	$coracoesBoss.set_vidas(cheios)
 	if cheios < coracoes_boss_cheios and cheios > 0:
 		coracao_boss_perdido.emit()
+		if cheios == 1:
+			ultimo_coracao_boss.emit()
 	elif cheios > coracoes_boss_cheios:
 		coracoes_boss_reencheram.emit()
 	coracoes_boss_cheios = cheios
+
+# Boss final: o último coração para de bater (o player morreu, o R do LAB)
+func parar_pulso_boss():
+	$coracoesBoss.parar_pulso()
+
+# O último coração do boss está batendo (status do LAB)
+func pulso_boss_ligado():
+	return $coracoesBoss.pulsando()
+
+# LAB: mostra os corações do boss com 'cheios' cheios (−1 = todos) SEM emitir os sinais (quem
+# toca o momento é o próprio LAB)
+func mostrar_coracoes_boss(cheios):
+	var total = $coracoesBoss.coracoes.size()
+	coracoes_boss_cheios = total if cheios < 0 else clampi(cheios, 0, total)
+	$coracoesBoss.show()
+	$coracoesBoss.set_vidas(coracoes_boss_cheios)
+
+# Pedidos dos momentos para a hud. coracao_da_hud: anima o coração que acabou de esvaziar
+# (o primeiro vazio) do boss ou do player; coracao_pulsa: o último coração do boss bate
+func _on_pedido(nome, parametros, _alvo):
+	match nome:
+		&"coracao_da_hud":
+			var qual = $coracoes if parametros.get("coracoes", "boss") == "player" else $coracoesBoss
+			qual.perdeu(qual.cheios, parametros.get("escala", 1.0), parametros.get("duracao", 0.0),
+				parametros.get("tremor_px", 0), parametros.get("tremor_duracao", 0.0),
+				parametros.get("cor", Color.WHITE), parametros.get("alfa", 0.0), parametros.get("duracao_flash", 0.0))
+		&"coracao_pulsa":
+			$coracoesBoss.pulsar_ultimo(parametros.get("escala", 1.0), parametros.get("periodo", 0.0),
+				parametros.get("batida", 0.0), parametros.get("som", &""))
 
 # Boss final: os corações cheios passam a usar a textura da fase (null = não muda)
 func trocar_coracoes_boss(textura):

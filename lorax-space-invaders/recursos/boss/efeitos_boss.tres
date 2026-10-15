@@ -42,6 +42,7 @@ faisca_hit = Vector2(5, 4)
 poeira_pouso = Vector2(4, 6)
 poeira_bloco = Vector2(4, 3)
 folhinhas_quantidade = Vector2(6, 8)
+folhinhas_balanco = 20.0
 ki_hit = Vector2(4, 3)
 ki_hit_vida = 0.5
 ki_subindo_por_segundo = 20.0

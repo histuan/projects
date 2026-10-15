@@ -86,7 +86,7 @@ const PAGINAS = [
 	["WAVE 10", [&"wave10_silencio", &"wave10_alarme", &"wave10_musica_entra"]],
 	["FASE 1", [&"descida", &"pouso", &"nome_do_boss", &"hit_comum", &"coracao_boss_perdido",
 		&"ultimo_coracao", &"carga_ataque", &"soltar_folhas", &"folha_acerta_bloco"]],
-	[PAGINA_FASE1_COMBATE, [&"folhas_anulam"]],
+	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido"]],
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arvore_explode", &"f2_respira", &"f2_desespero",
 		&"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
@@ -110,6 +110,8 @@ var flash_boneco: FlashSprite
 var reacoes_boneco: ReacoesCorpo
 var rastro: Afterimage
 var tween_boneco: Tween = null
+# Os corações do boss já apareceram (os momentos de coração do LAB os mostram)
+var coracoes_boss_lab = false
 # VAI E VEM ligado (o boneco anda entre os limites da fase 1) e leques já soltos pelo ATAQUE
 var tween_vaivem: Tween = null
 var leques_lab = 0
@@ -245,6 +247,10 @@ func estado_ligado():
 		itens.append("KI")
 	if hud.letreiros_na_tela() > 0:
 		itens.append("LETREIRO")
+	if hud.pulso_boss_ligado():
+		itens.append("CORACAO BATENDO")
+	if reacoes_boneco != null and reacoes_boneco.em_desespero():
+		itens.append("DESESPERO")
 	if player.em_arena:
 		itens.append("ARENA")
 	if player.travado:
@@ -276,6 +282,9 @@ func ao_resetar():
 	flash_boneco.parar()
 	reacoes_boneco.parar()
 	rastro.parar()
+	hud.parar_pulso_boss()
+	if coracoes_boss_lab:
+		hud.mostrar_coracoes_boss(-1)
 	for particula in get_tree().get_nodes_in_group(Particula.GRUPO):
 		particula.queue_free()
 	if tween_boneco != null:
@@ -389,6 +398,10 @@ func detalhes_do(nome):
 # Toca o momento no boneco (ou no ponto de demonstração) e, no fim da animação fingida,
 # o seguinte. Momento com afterimage: o boneco desliza para as cópias aparecerem
 func tocar_momento(nome):
+	if nome == &"coracao_player_perdido":
+		perder_vida_lab()
+		return
+	preparar_coracoes_boss(nome)
 	var dados = Momentos.momento(nome)
 	var duracao = duracao_lab(nome)
 	Momentos.tocar(nome, alvo_demo(nome), duracao)
@@ -397,6 +410,31 @@ func tocar_momento(nome):
 			deslizar_boneco(passo)
 	if dados.seguinte != &"" and await esperar(duracao):
 		tocar_momento(dados.seguinte)
+
+# Momentos dos corações do boss: o LAB esvazia os corações de verdade antes (o efeito anima
+# o primeiro vazio). PERDEU UM CORAÇÃO tira um (cheios de novo ao chegar a 1); ÚLTIMO deixa 1
+func preparar_coracoes_boss(nome):
+	if nome != &"coracao_boss_perdido" and nome != &"ultimo_coracao":
+		return
+	if not coracoes_boss_lab:
+		coracoes_boss_lab = true
+		hud.trocar_coracoes_boss(DADOS_FASE1.coracao_boss)
+		hud.mostrar_coracoes_boss(-1)
+	if nome == &"ultimo_coracao":
+		hud.mostrar_coracoes_boss(1)
+		return
+	if hud.coracoes_boss_cheios <= 1:
+		hud.mostrar_coracoes_boss(-1)
+	hud.mostrar_coracoes_boss(hud.coracoes_boss_cheios - 1)
+
+# Coração do player: perde uma vida de verdade pela Partida (a main toca o momento, como no
+# jogo); com 1 vida ganha uma antes (o LAB não deixa morrer)
+func perder_vida_lab():
+	if Partida.vidas <= 1:
+		Partida.ganhar_vida()
+	Partida.perder_vida()
+	aviso = "VIDAS: %d" % Partida.vidas
+	mostrar()
 
 # O boneco, ou o ponto de demonstração do momento
 func alvo_demo(nome):
@@ -551,10 +589,14 @@ func texto_particula(passo):
 # Pedido para a fase: o nome e os números dele
 func texto_sinal(passo):
 	var texto = maiusculo(passo.nome)
+	if passo.cor != EfeitosDados.Cor.NENHUMA:
+		texto += " COR " + nome_da_cor(passo.cor)
 	for chave in passo.parametros:
 		var valor = passo.parametros[chave]
 		if valor is Vector2:
 			texto += " %s (%s;%s)" % [maiusculo(chave), n(valor.x), n(valor.y)]
+		elif valor is String or valor is StringName:
+			texto += " %s %s" % [maiusculo(chave), maiusculo(valor)]
 		else:
 			texto += " %s %s" % [maiusculo(chave), n(valor)]
 	return texto

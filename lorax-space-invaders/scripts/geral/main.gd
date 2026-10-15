@@ -31,6 +31,8 @@ var relogio_fade: Timer = null
 # Painel de debug (F3); só existe em build de debug
 var painel_debug = null
 var caixa_dialogo: CaixaDialogo
+# A batalha final (null antes da wave 10 e no LAB)
+var batalha = null
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -66,6 +68,7 @@ func _ready():
 	$groupAlien.wave_boss_chegou.connect(_on_wave_boss_chegou)
 	$groupAlien.boss_pode_entrar.connect(_on_boss_pode_entrar)
 	$hud.coracao_boss_perdido.connect(_on_coracao_boss_perdido)
+	$hud.ultimo_coracao_boss.connect(_on_ultimo_coracao_boss)
 	$hud.coracoes_boss_reencheram.connect(_on_coracoes_boss_reencheram)
 	if EFEITOS.hud_treme:
 		camera.tremeu.connect($hud.acompanhar_tremor)
@@ -140,7 +143,7 @@ func _on_boss_pode_entrar():
 # da hud), liga os sinais dela à hud, à Partida (e ao painel de debug, se existir) e manda
 # começar com a caixa de diálogo
 func comecar_batalha():
-	var batalha = BATALHA_FINAL.instantiate()
+	batalha = BATALHA_FINAL.instantiate()
 	batalha.vida_boss_mudou.connect($hud.mostrar_vida_boss_final)
 	batalha.boss_invulneravel.connect($hud.piscar_vida_boss)
 	batalha.coracoes_boss_trocados.connect($hud.trocar_coracoes_boss)
@@ -175,10 +178,18 @@ func _on_fase_mudou(_nome, numero):
 func _on_batalha_terminou():
 	print("FASE 2 ENTRARIA AQUI")
 
-# Um coração do boss esvaziou (não vale para o último): o momento tem o stinger, o tremor
-# leve e o hit-stop curto (sem alvo por enquanto: as folhinhas entram quando a F1 passar o corpo)
+# Um coração do boss esvaziou (não vale para o último): stinger, tremor leve, hit-stop curto,
+# folhinhas saindo do corpo e o coração da hud quebrando
 func _on_coracao_boss_perdido():
-	Momentos.tocar(&"coracao_boss_perdido")
+	Momentos.tocar(&"coracao_boss_perdido", corpo_do_boss())
+
+# Sobrou 1 coração do boss: ele bate na hud e o boss treme de desespero
+func _on_ultimo_coracao_boss():
+	Momentos.tocar(&"ultimo_coracao", corpo_do_boss())
+
+# O corpo do boss para os momentos (null fora da luta: os passos que precisam dele não acontecem)
+func corpo_do_boss():
+	return batalha.corpo() if batalha != null else null
 
 # Os corações do boss encheram (entrada da fase)
 func _on_coracoes_boss_reencheram():
@@ -200,15 +211,20 @@ func atualizar_vida_baixa(vidas):
 	vida_baixa_ligada = deve_ligar
 
 # Qualquer vida perdida: na arena, o momento do hit (tremor, hit-stop, bordas e som);
-# fora dela, tremor leve
+# fora dela, tremor leve. Em qualquer wave o coração da hud quebra (mesmo efeito do boss)
 func _on_vida_perdida():
 	if player.em_arena:
 		Momentos.tocar(&"player_hit", player)
 	else:
 		camera.tremer(4)
+	Momentos.tocar(&"coracao_player_perdido")
 
-# Última vida: player morre + tremor forte + hit-stop
+# Última vida: player morre + tremor forte + hit-stop; o último coração do boss para de bater
+# e ele para de tremer de desespero
 func _on_morreu():
+	$hud.parar_pulso_boss()
+	if batalha != null:
+		batalha.parar_desespero()
 	player.morrer()
 	camera.tremer(21, 1.2)
 	TempoJogo.congelar(0.15)

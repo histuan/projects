@@ -36,6 +36,14 @@ func comecar(player, dialogo):
 	ctx.dialogo = dialogo
 	proxima_fase()
 
+# O corpo do boss (alvo dos momentos que a main toca: coração perdido, último coração)
+func corpo():
+	return $LoraxFinal
+
+# O boss para de tremer de desespero (o player morreu com ele no último coração)
+func parar_desespero():
+	$LoraxFinal.parar_desespero()
+
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
 # nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria
 func proxima_fase():

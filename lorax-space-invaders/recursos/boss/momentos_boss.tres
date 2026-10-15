@@ -182,11 +182,15 @@ particula = 4
 [sub_resource type="Resource" id="Passo_coracao_boss_perdido_5"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F1 (FLASH SEM VALOR)"
+cor = 2
 nome = &"coracao_da_hud"
 parametros = {
+"alfa": 0.8,
+"coracoes": "boss",
 "duracao": 0.2,
-"escala": Vector2(1.4, 1),
+"duracao_flash": 0.2,
+"escala": 1.4,
+"tremor_duracao": 0.2,
 "tremor_px": 2
 }
 
@@ -194,6 +198,26 @@ parametros = {
 script = ExtResource("2_momento")
 titulo = "PERDEU UM CORACAO"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_coracao_boss_perdido_1"), SubResource("Passo_coracao_boss_perdido_2"), SubResource("Passo_coracao_boss_perdido_3"), SubResource("Passo_coracao_boss_perdido_4"), SubResource("Passo_coracao_boss_perdido_5")])
+
+[sub_resource type="Resource" id="Passo_coracao_player_perdido_1"]
+script = ExtResource("1_passo")
+tipo = 24
+cor = 2
+nome = &"coracao_da_hud"
+parametros = {
+"alfa": 0.8,
+"coracoes": "player",
+"duracao": 0.2,
+"duracao_flash": 0.2,
+"escala": 1.4,
+"tremor_duracao": 0.2,
+"tremor_px": 2
+}
+
+[sub_resource type="Resource" id="Momento_coracao_player_perdido"]
+script = ExtResource("2_momento")
+titulo = "CORACAO DO PLAYER"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_coracao_player_perdido_1")])
 
 [sub_resource type="Resource" id="Passo_cortina_todos_1"]
 script = ExtResource("1_passo")
@@ -1251,17 +1275,30 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_transicao_1_2_pico_1"
 [sub_resource type="Resource" id="Passo_ultimo_coracao_1"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F1"
 nome = &"coracao_pulsa"
 parametros = {
-"escala": Vector2(1, 1.15),
-"periodo": 0.6
+"batida": 0.2,
+"escala": 1.15,
+"periodo": 0.6,
+"som": &"ultimo_coracao_pulso"
+}
+
+[sub_resource type="Resource" id="Passo_ultimo_coracao_2"]
+script = ExtResource("1_passo")
+tipo = 24
+cor = 4
+nome = &"desespero_corpo"
+parametros = {
+"alfa": 0.5,
+"duracao_flash": 0.15,
+"periodo": 0.5,
+"px": 1
 }
 
 [sub_resource type="Resource" id="Momento_ultimo_coracao"]
 script = ExtResource("2_momento")
 titulo = "ULTIMO CORACAO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_coracao_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_coracao_1"), SubResource("Passo_ultimo_coracao_2")])
 
 [sub_resource type="Resource" id="Passo_ultimo_hit_f1_1"]
 script = ExtResource("1_passo")
@@ -1417,6 +1454,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"chapeu": SubResource("Momento_chapeu"),
 &"contagem": SubResource("Momento_contagem"),
 &"coracao_boss_perdido": SubResource("Momento_coracao_boss_perdido"),
+&"coracao_player_perdido": SubResource("Momento_coracao_player_perdido"),
 &"cortina_todos": SubResource("Momento_cortina_todos"),
 &"derrota_f2": SubResource("Momento_derrota_f2"),
 &"derrota_f2_estrelas": SubResource("Momento_derrota_f2_estrelas"),

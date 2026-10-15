@@ -57,6 +57,10 @@ func definir_inclinacao(graus):
 func deslocar(px, tempo):
 	reacoes.deslocar(px, tempo)
 
+# Para o tremor do último coração (as outras reações continuam)
+func parar_desespero():
+	reacoes.parar_desespero()
+
 # Troca o conjunto de animações (lista de AnimacaoDados) pelo da fase atual
 func carregar_animacoes(lista):
 	var anim = $AnimationPlayer
