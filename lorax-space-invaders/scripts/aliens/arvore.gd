@@ -1,7 +1,9 @@
-# Árvore arremessada pelo boss: vai na direção do player e explode em área.
+# Árvore arremessada pelo boss: vai na direção do player; fere quem acerta e explode
+# danificando os blocos em volta.
 extends Projetil
 
 @export var sheet_explosao: Texture2D
+## Raio do dano em área nos BLOCOS (o player só leva dano no contato)
 @export var raio = 26.0
 
 # Alvos: blocos e player. Margem pequena: explode logo depois de passar do fim da tela
@@ -25,7 +27,7 @@ func _on_animation_player_animation_finished(anim):
 	if anim == "lancamento":
 		$AnimationPlayer.play("voando")
 		
-# Acertou um bloco ou o player: explode em área (o atingido é ferido mesmo fora do raio)
+# Acertou um bloco ou o player: fere o player só se foi ele o atingido; os blocos do raio levam dano
 func ao_acertar(body):
 	estourar(body)
 
@@ -34,17 +36,15 @@ func ao_sair_da_tela():
 	acertou = true
 	estourar()
 
-# Explosão: danifica os blocos no raio e fere o player se foi atingido ou está no raio
+# Explosão: danifica os blocos no raio; o player só é ferido se foi o atingido (contato)
 func estourar(atingido = null):
 	velocidade = 0
 	var centro = global_position
 	for bloco in get_tree().get_nodes_in_group("blocos"):
 		if bloco.global_position.distance_to(centro) <= raio:
 			bloco.receber_dano()
-	var player = get_tree().get_first_node_in_group("tanque")
-	
-	if player != null and (player == atingido or player.global_position.distance_to(centro) <= raio):
-		player.receber_dano()
+	if atingido != null and atingido.is_in_group("tanque"):
+		atingido.receber_dano(dano, fonte)
 		
 	# Sem colisão: fogo por 0,1 s → troca para a spritesheet da explosão → some
 	$CollisionShape2D.set_deferred("disabled", true)
