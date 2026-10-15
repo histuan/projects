@@ -3,6 +3,9 @@
 # no jogo exportado ele não existe. Fica acima de tudo (até do Pause) e funciona pausado.
 extends CanvasLayer
 
+# Tecla K: a main tira um coração do boss (atalho de teste)
+signal pediu_tirar_coracao
+
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 # Acima do Pause (10) e do letterbox (7)
 const LAYER_DEBUG = 11
@@ -40,10 +43,16 @@ func _ready():
 	add_child(texto)
 	visible = false
 
-# F3 mostra/esconde (no _input: vale com o Pause aberto e antes do LAB e do player)
+# F3 mostra/esconde (no _input: vale com o Pause aberto e antes do LAB e do player).
+# K pede para tirar um coração do boss (não com o jogo pausado)
 func _input(event):
-	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F3:
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	if event.physical_keycode == KEY_F3:
 		visible = not visible
+		get_viewport().set_input_as_handled()
+	elif event.physical_keycode == KEY_K and not get_tree().paused:
+		pediu_tirar_coracao.emit()
 		get_viewport().set_input_as_handled()
 
 # Fase da batalha que começou (a main liga no fase_mudou da BatalhaFinal)

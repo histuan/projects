@@ -195,8 +195,11 @@ func _on_ferido():
 	if not atacando:
 		ctx.corpo.tocar("dano")
 
-# Vida no zero: a fase para e avisa a BatalhaFinal
+# Vida no zero (os projéteis já foram limpos pela BatalhaFinal): fica invulnerável, toca o
+# último hit da fase, para e avisa a BatalhaFinal
 func _on_vida_acabou():
+	ctx.corpo.ficar_invulneravel(true)
+	tocar_momento(dados.momento_derrota)
 	parar()
 	terminou.emit()
 

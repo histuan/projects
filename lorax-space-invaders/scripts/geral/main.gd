@@ -78,6 +78,7 @@ func _ready():
 	if OS.is_debug_build():
 		painel_debug = PainelDebug.new()
 		add_child(painel_debug)
+		painel_debug.pediu_tirar_coracao.connect(_on_debug_tirar_coracao)
 	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
 		abrir_lab()
 	elif Partida.etapa_inicial == Partida.Etapa.LAB_SONS:
@@ -189,6 +190,11 @@ func _on_coracao_boss_perdido():
 # Sobrou 1 coração do boss: ele bate na hud e o boss treme de desespero
 func _on_ultimo_coracao_boss():
 	Momentos.tocar(&"ultimo_coracao", corpo_do_boss())
+
+# Debug (tecla K do painel): o boss perde um coração, como se levasse os tiros
+func _on_debug_tirar_coracao():
+	if batalha != null:
+		batalha.tirar_coracao()
 
 # O corpo do boss para os momentos (null fora da luta: os passos que precisam dele não acontecem)
 func corpo_do_boss():

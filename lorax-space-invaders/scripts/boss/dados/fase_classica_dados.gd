@@ -74,6 +74,8 @@ enum DepoisDoMeio { MANTER, SINO }
 @export var momento_disparo := &""
 ## A cada golpe que tira vida
 @export var momento_hit := &""
+## Quando a vida acaba (o último hit da fase)
+@export var momento_derrota := &""
 
 # Rotação (radianos) do leque que sai de 'origem' com o meio apontado para 'alvo' (null = reto para
 # baixo), limitada a ±mira_max_graus

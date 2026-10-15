@@ -1335,10 +1335,15 @@ tipo = 7
 escala = 0.3
 duracao = 0.6
 
+[sub_resource type="Resource" id="Passo_ultimo_hit_f1_5"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"boss_ultimo_hit"
+
 [sub_resource type="Resource" id="Momento_ultimo_hit_f1"]
 script = ExtResource("2_momento")
 titulo = "ULTIMO HIT DA FASE 1"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_hit_f1_1"), SubResource("Passo_ultimo_hit_f1_2"), SubResource("Passo_ultimo_hit_f1_3"), SubResource("Passo_ultimo_hit_f1_4")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_ultimo_hit_f1_1"), SubResource("Passo_ultimo_hit_f1_2"), SubResource("Passo_ultimo_hit_f1_3"), SubResource("Passo_ultimo_hit_f1_4"), SubResource("Passo_ultimo_hit_f1_5")])
 
 [sub_resource type="Resource" id="Passo_virada_1"]
 script = ExtResource("1_passo")

@@ -15,13 +15,19 @@ signal boss_entrou
 # A fase pediu outra textura de coração cheio (repassado para a hud)
 signal coracoes_boss_trocados(textura)
 
+# Corações do boss na hud (só para a tecla K de debug saber quanto é um coração)
+const CORACOES_BOSS = 5
+
 var ctx: ContextoBatalha
 var indice_fase := -1
 
-# Repassa os sinais do corpo e das fases para cima e ouve o 'terminou' de cada fase
+# Repassa os sinais do corpo e das fases para cima e ouve o 'terminou' de cada fase. A
+# limpeza do vida_acabou é ligada antes das fases: os projéteis somem no último hit, antes
+# de a fase reagir
 func _ready():
 	$LoraxFinal.vida_mudou.connect(vida_boss_mudou.emit)
 	$LoraxFinal.invulneravel_mudou.connect(boss_invulneravel.emit)
+	$LoraxFinal.vida_acabou.connect(limpar_projeteis)
 	for fase in $Fases.get_children():
 		fase.terminou.connect(proxima_fase)
 		fase.entrou.connect(boss_entrou.emit)
@@ -50,10 +56,26 @@ func parar_luta():
 	if indice_fase >= 0 and indice_fase < fases.size():
 		fases[indice_fase].parar()
 
+# Os projéteis do boss viram faísca (último hit de uma fase e troca de fase)
+func limpar_projeteis():
+	LimpezaProjeteis.limpar($Ataques, self)
+
+# Debug (tecla K): tira a vida até o limiar do coração de baixo, como tiros de verdade (a
+# mesma conta de corações da hud; invulnerável, nada acontece)
+func tirar_coracao():
+	var corpo = $LoraxFinal
+	if not corpo.vivo:
+		return
+	var por_coracao = corpo.vida_max / float(CORACOES_BOSS)
+	var cheios = ceili(corpo.vidas * float(CORACOES_BOSS) / corpo.vida_max)
+	var dano = corpo.vidas - roundi((cheios - 1) * por_coracao)
+	if dano > 0:
+		corpo.receber_dano(dano, "debug")
+
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
 # nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria
 func proxima_fase():
-	LimpezaProjeteis.limpar($Ataques, self)
+	limpar_projeteis()
 	indice_fase += 1
 	var fases = $Fases.get_children()
 	if indice_fase >= fases.size():

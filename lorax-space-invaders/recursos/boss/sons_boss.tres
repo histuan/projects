@@ -71,6 +71,12 @@ script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/stinger.wav"])
 bus = &"Efeitos"
 
+[sub_resource type="Resource" id="Som_boss_ultimo_hit"]
+script = ExtResource("1_som")
+arquivos = Array[String](["res://efeitos sonoros reais/boss/stinger.wav"])
+pitch = 0.8
+bus = &"Efeitos"
+
 [sub_resource type="Resource" id="Som_boss_coracoes_reenchem"]
 script = ExtResource("1_som")
 arquivos = Array[String](["res://efeitos sonoros reais/boss/recuperar_vida_lorax.wav"])
@@ -595,6 +601,7 @@ eventos = Dictionary[StringName, ExtResource("1_som")]({
 &"batimento_vida_baixa": SubResource("Som_batimento_vida_baixa"),
 &"boss_coracao_perdido": SubResource("Som_boss_coracao_perdido"),
 &"boss_coracoes_reenchem": SubResource("Som_boss_coracoes_reenchem"),
+&"boss_ultimo_hit": SubResource("Som_boss_ultimo_hit"),
 &"cheat_abre": SubResource("Som_cheat_abre"),
 &"constelacao": SubResource("Som_constelacao"),
 &"desespero": SubResource("Som_desespero"),
