@@ -2,8 +2,20 @@
 
 [ext_resource type="PackedScene" uid="uid://k016ggmueh0e" path="res://cenas/alien/arvore.tscn" id="1_arvore"]
 [ext_resource type="Script" path="res://scripts/boss/arvore_boss.gd" id="2_script"]
+[ext_resource type="Shader" path="res://shaders/flash.gdshader" id="3_flash"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_inclinada"]
+shader = ExtResource("3_flash")
+shader_parameter/suavizar_borda = true
+shader_parameter/margem_px = Vector2(1, 1)
 
 [node name="arvoreBoss" instance=ExtResource("1_arvore")]
 script = ExtResource("2_script")
 momento_explosao = &"f2_arvore_explode"
 momento_explosao_fora = &"f2_arvore_explode_fora"
+inclinacao_max_graus = 30.0
+inclinacao_passo_graus = 1.0
+base_aponta_para_o_alvo = true
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_inclinada")
