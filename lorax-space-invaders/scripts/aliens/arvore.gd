@@ -10,6 +10,8 @@ func _init():
 	direcao = Vector2.DOWN
 	grupos_alvo = ["blocos", "tanque"]
 	margem_tela = 4.0
+	# Tiro inimigo no ar: a wave 10 espera ele sumir
+	add_to_group("tiros_inimigos")
 
 func _ready():
 	# Mira no player no momento do lançamento

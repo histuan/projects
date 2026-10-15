@@ -8,3 +8,5 @@ func _init():
 	grupos_alvo = ["tanque", "blocos"]
 	# Folga maior: a AreaGameOver, logo abaixo do chão, precisa pegá-lo antes dele sumir
 	margem_tela = 40.0
+	# Tiro inimigo no ar: a wave 10 espera ele sumir
+	add_to_group("tiros_inimigos")

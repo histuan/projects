@@ -75,6 +75,14 @@ func tirar_coracao():
 	if dano > 0:
 		corpo.receber_dano(dano, "debug")
 
+# Debug (tecla J): a fase da vez pula a entrada e já luta (com a luta parada, nada)
+func pular_intro():
+	if parada:
+		return
+	var fases = $Fases.get_children()
+	if indice_fase >= 0 and indice_fase < fases.size():
+		fases[indice_fase].pular_intro()
+
 # Limpa os projéteis que sobraram e começa o próximo filho de $Fases; se não há mais
 # nenhum, avisa a main. A limpeza vem antes de tudo: não apaga o que a nova fase cria.
 # Com a luta parada (player morto), só limpa

@@ -5,6 +5,8 @@ extends CanvasLayer
 
 # Tecla K: a main tira um coração do boss (atalho de teste)
 signal pediu_tirar_coracao
+# Tecla J: a main pula a intro da wave 10 (o boss já entra lutando)
+signal pediu_pular_intro
 
 const FONTE = preload("res://fonts/atari-classic-font/AtariClassic-gry3.ttf")
 # Acima do Pause (10) e do letterbox (7)
@@ -44,7 +46,7 @@ func _ready():
 	visible = false
 
 # F3 mostra/esconde (no _input: vale com o Pause aberto e antes do LAB e do player).
-# K pede para tirar um coração do boss (não com o jogo pausado)
+# K pede para tirar um coração do boss e J para pular a intro da wave 10 (não com o jogo pausado)
 func _input(event):
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
@@ -53,6 +55,9 @@ func _input(event):
 		get_viewport().set_input_as_handled()
 	elif event.physical_keycode == KEY_K and not get_tree().paused:
 		pediu_tirar_coracao.emit()
+		get_viewport().set_input_as_handled()
+	elif event.physical_keycode == KEY_J and not get_tree().paused:
+		pediu_pular_intro.emit()
 		get_viewport().set_input_as_handled()
 
 # Fase da batalha que começou (a main liga no fase_mudou da BatalhaFinal)

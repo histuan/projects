@@ -12,6 +12,8 @@ const CORTAR_SOM_CARGA = true
 const CARGA_CORTE_PARADA = 0.15
 # Fade (s) dos sons da transição quando ela chega ao pico (valor de teste)
 const TRANSICAO_CORTE_PICO = 0.1
+# Debug (tecla J): fade (s) dos sons da descida e do pouso ao pular a entrada (valor de teste)
+const PULO_CORTE_SONS = 0.1
 
 @export var dados: FaseClassicaDados
 
@@ -26,6 +28,12 @@ var inclinacao_vv: InclinacaoVaiEVem = null
 var parada := false
 # A animação "entrada" (transição de fase) está tocando
 var transformando := false
+# Entrada pela descida em andamento (do comecar até o lutar): a tecla J pode pular
+var na_intro := false
+# A descida chegou ao pouso
+var pousou := false
+var tween_descida: Tween = null
+var tween_tremor: Tween = null
 
 # O relógio do ataque é da própria fase
 func _ready():
@@ -40,12 +48,13 @@ func comecar(contexto: ContextoBatalha):
 	if dados.entrada == FaseClassicaDados.Entrada.TRANSICAO:
 		entrar_transformando()
 		return
+	na_intro = true
 	corpo.definir_vida(dados.vida)
 	tocar_momento(dados.momento_descida)
 	var tempo = abs(dados.altura - corpo.position.y) / dados.vel_entrada
-	var tween = create_tween()
-	tween.tween_property(corpo, "position:y", dados.altura, tempo)
-	tween.tween_callback(pousar)
+	tween_descida = create_tween()
+	tween_descida.tween_property(corpo, "position:y", dados.altura, tempo)
+	tween_descida.tween_callback(pousar)
 	agendar_fim_do_tremor(tempo)
 
 # O tremor contínuo da descida cai a 0 em POUSO_TC_SOME s e chega a 0 POUSO_TC_ANTES s antes
@@ -53,15 +62,16 @@ func comecar(contexto: ContextoBatalha):
 func agendar_fim_do_tremor(tempo_descida):
 	var fim = maxf(tempo_descida - POUSO_TC_ANTES, 0.0)
 	var some = minf(POUSO_TC_SOME, fim)
-	var tween = create_tween()
-	tween.tween_interval(fim - some)
-	tween.tween_callback(func(): get_viewport().get_camera_2d().parar_tremor_continuo(some, true))
+	tween_tremor = create_tween()
+	tween_tremor.tween_interval(fim - some)
+	tween_tremor.tween_callback(func(): get_viewport().get_camera_2d().parar_tremor_continuo(some, true))
 
 # Fim da descida: o pouso (tremor, poeira, squash, som) e a fala de entrada; sem fala, a
 # apresentação vem na hora
 func pousar():
 	if parada:
 		return
+	pousou = true
 	tocar_momento(dados.momento_pouso)
 	entrou.emit()
 	if dados.fala_entrada == &"":
@@ -135,10 +145,34 @@ func preparar(contexto: ContextoBatalha):
 	corpo.evento_animacao.connect(_on_evento_animacao)
 	corpo.animacao_terminou.connect(_on_animacao_terminou)
 
+# Debug (tecla J): da descida, do pouso ou da fala, o boss já fica na altura e luta, sem o nome.
+# Matar a descida cancela o pouso (só ela chama pousar); a fala fecha sem 'terminou', com a voz
+# cortada; os sons da entrada somem e a câmera volta ao normal
+func pular_intro():
+	if not na_intro or parada:
+		return
+	for tween in [tween_descida, tween_tremor]:
+		if tween != null:
+			tween.kill()
+	ctx.corpo.position.y = dados.altura
+	if ctx.dialogo != null:
+		if ctx.dialogo.terminou.is_connected(_on_fala_entrada_terminou):
+			ctx.dialogo.terminou.disconnect(_on_fala_entrada_terminou)
+		if ctx.dialogo.aberta:
+			ctx.dialogo.fechar()
+	cortar_sons(dados.momento_descida, PULO_CORTE_SONS)
+	cortar_sons(dados.momento_pouso, PULO_CORTE_SONS)
+	get_viewport().get_camera_2d().restaurar()
+	if not pousou:
+		entrou.emit()
+	tocar_momento(dados.momento_estrelas)
+	lutar()
+
 # Começa o vai e vem e a contagem do primeiro ataque
 func lutar():
 	if parada:
 		return
+	na_intro = false
 	ctx.corpo.ficar_invulneravel(false)
 	andando = true
 	$TimerAtaque.start(intervalo_atual())

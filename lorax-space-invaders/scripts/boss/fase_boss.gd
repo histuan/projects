@@ -23,6 +23,10 @@ func comecar_direto(contexto: ContextoBatalha):
 func parar():
 	pass
 
+# Debug (tecla J): pula a entrada e já luta (fase sem entrada: nada)
+func pular_intro():
+	pass
+
 # Qual fase da luta esta é (1, 2 ou 3; 0 = não informada). Cada fase devolve a dela
 func numero_fase():
 	return 0

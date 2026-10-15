@@ -23,6 +23,8 @@ const SILENCIO_ESTRELAS_TEMPO = 1.5
 const SILENCIO_FRACAO = 0.7
 const SILENCIO_ESTRELAS_FATOR = 0.2
 const SILENCIO_VOLTA_TEMPO = 0.0
+# Debug (tecla J): fade (s) do alarme cortado ao pular a intro
+const PULO_CORTE_ALARME = 0.1
 
 # 1 vida na luta: batimento, música abafada e bordas vermelhas ligados
 var vida_baixa_ligada = false
@@ -37,6 +39,12 @@ var tinta_fundo: TintaFundo
 var batalha = null
 # A fala de fuga do Lorax antigo já apareceu nesta partida (é uma vez só)
 var lorax_antigo_falou = false
+# Debug (tecla J): a intro da wave 10 foi pulada (a sequência de _on_boss_pode_entrar para no
+# próximo await) e a sequência já tinha começado
+var intro_pulada = false
+var sequencia_wave10 = false
+# O FINAL WAVE na tela (null fora do alarme)
+var letreiro_final_wave = null
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -84,6 +92,7 @@ func _ready():
 		painel_debug = PainelDebug.new()
 		add_child(painel_debug)
 		painel_debug.pediu_tirar_coracao.connect(_on_debug_tirar_coracao)
+		painel_debug.pediu_pular_intro.connect(_on_debug_pular_intro)
 	if Partida.etapa_inicial == Partida.Etapa.LAB_EFEITOS:
 		abrir_lab()
 	elif Partida.etapa_inicial == Partida.Etapa.LAB_SONS:
@@ -126,15 +135,23 @@ func _on_wave_boss_chegou():
 # Tela limpa na wave do boss: espera a música do jogo terminar de sumir (se ainda não
 # sumiu), silêncio com as estrelas quase paradas, alarme (bordas, tremor) com FINAL WAVE
 # piscando e, quando o letreiro some, a música do Lorax 2.0 entra junto com a descida dele
-# e as estrelas aceleram. Tudo pausa com o jogo
+# e as estrelas aceleram. Tudo pausa com o jogo. Pulada (tecla J), cada await sai na volta
 func _on_boss_pode_entrar():
+	if intro_pulada:
+		pular_sequencia_wave10()
+		return
+	sequencia_wave10 = true
 	if relogio_fade != null and relogio_fade.time_left > 0:
 		await esperar(relogio_fade.time_left)
+		if intro_pulada:
+			return
 	var silencio = Sons.BIBLIOTECA.wave10_silencio
 	var desacelera = silencio * SILENCIO_FRACAO if silencio < SILENCIO_ESTRELAS_TEMPO else SILENCIO_ESTRELAS_TEMPO
 	$fundo/estrelas.mudar_velocidade(SILENCIO_ESTRELAS_FATOR, desacelera, true)
 	Momentos.tocar(&"wave10_silencio")
 	await esperar(silencio)
+	if intro_pulada:
+		return
 	$fundo/estrelas.mudar_velocidade(1.0, SILENCIO_VOLTA_TEMPO, true)
 	Momentos.tocar(&"wave10_alarme")
 	var alarme = Sons.tocar(&"wave_boss_alarme")
@@ -142,8 +159,11 @@ func _on_boss_pode_entrar():
 	if alarme != null:
 		duracao_alarme = alarme.stream.get_length() / alarme.pitch_scale
 	$hud.esconder_letreiro_wave()
-	var letreiro = $hud.mostrar_letreiro(LETREIRO_FINAL_WAVE, "", "", duracao_alarme)
-	await letreiro.sumiu
+	letreiro_final_wave = $hud.mostrar_letreiro(LETREIRO_FINAL_WAVE, "", "", duracao_alarme)
+	await letreiro_final_wave.sumiu
+	letreiro_final_wave = null
+	if intro_pulada:
+		return
 	Musica.tocar(&"musica_wave10")
 	Momentos.tocar(&"wave10_musica_entra")
 	comecar_batalha()
@@ -200,6 +220,59 @@ func _on_ultimo_coracao_boss():
 func _on_debug_tirar_coracao():
 	if batalha != null:
 		batalha.tirar_coracao()
+
+# Debug (tecla J do painel): da espera da wave 10 em diante, o boss vai direto para a luta. Com a
+# batalha criada, quem pula é ela; com a sequência da main andando, ela é cortada; com a tela suja
+# (na espera ou já na wave 10), a tela é limpa, a espera acaba na hora e a sequência é pulada
+# quando o groupAlien avisar (uma vez só)
+func _on_debug_pular_intro():
+	if batalha != null:
+		batalha.pular_intro()
+		return
+	if intro_pulada:
+		return
+	if $groupAlien.esperando_boss:
+		fechar_fala_pendente()
+		$groupAlien.limpar_tela_debug()
+		intro_pulada = true
+		$groupAlien.entrar_wave_boss()
+		return
+	if not Partida.em_luta_boss:
+		return
+	intro_pulada = true
+	fechar_fala_pendente()
+	if sequencia_wave10:
+		pular_sequencia_wave10()
+	else:
+		$groupAlien.limpar_tela_debug()
+
+# O mundo fica como se a sequência da wave 10 tivesse sido esperada: alarme e bordas dele
+# cortados, FINAL WAVE fora, estrelas e música da luta já no lugar; a batalha começa e pula a
+# entrada do boss
+func pular_sequencia_wave10():
+	if relogio_fade != null:
+		relogio_fade.stop()
+	Sons.cortar(&"wave_boss_alarme", PULO_CORTE_ALARME)
+	if letreiro_final_wave != null:
+		letreiro_final_wave.esconder(0.0)
+	$hud.esconder_letreiro_wave()
+	$EfeitosTela.voltar_para_bordas_fixas()
+	$fundo/estrelas.mudar_velocidade(1.0)
+	Musica.cortar()
+	Musica.tocar(&"musica_wave10", 0.0)
+	comecar_batalha()
+	batalha.pular_intro()
+
+# A fala do Lorax antigo, se ainda estiver aberta (ele morreu no mesmo quadro em que a wave 10
+# chegou), fecha com a voz cortada e solta o congelamento dela: sem isso o groupAlien nunca veria
+# a tela limpa. Ele não foge: some com a limpeza da tela
+func fechar_fala_pendente():
+	for conexao in caixa_dialogo.terminou.get_connections():
+		if conexao.callable.get_method() == &"_on_fala_lorax_antigo_terminou":
+			caixa_dialogo.terminou.disconnect(conexao.callable)
+	TempoJogo.liberar(&"fala")
+	if caixa_dialogo.aberta:
+		caixa_dialogo.fechar()
 
 # O corpo do boss para os momentos (null fora da luta: os passos que precisam dele não acontecem)
 func corpo_do_boss():

@@ -30,6 +30,13 @@ signal lorax_antigo_derrotado(bonus)
 var em_boss = false
 var lorax_antigo = null
 var timer_boss_limpo: Timer
+# Passagem 9→10: a wave 10 só começa com a tela vazia (aliens, snipers, Lorax antigo e tiros
+# inimigos) por ESPERA_TELA_VAZIA s seguidos (valor TESTE); a vigia confere a cada ESPERA_VIGIA s
+const ESPERA_TELA_VAZIA = 3.0
+const ESPERA_VIGIA = 0.5
+var esperando_boss = false
+var timer_espera_vigia: Timer
+var timer_tela_vazia: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
@@ -43,7 +50,7 @@ func _ready():
 	if Partida.etapa_inicial == Partida.Etapa.WAVE_BOSS:
 		await get_parent().ready
 		Partida.definir_wave(WAVE_BOSS - 1)
-		criar_horda()
+		entrar_wave_boss()
 		return
 	$timers/TimerBonus.wait_time = randf_range(5.0, 10.0)
 	$timers/TimerBonus.one_shot = true
@@ -80,10 +87,10 @@ func _on_timer_dificuldade_timeout():
 
 # Cria uma horda 4x8; as filas de cima viram aliens fortes conforme a wave
 func criar_horda():
-	var wave = Partida.avancar_wave()
-	if wave >= WAVE_BOSS:
-		comecar_wave_boss()
+	if Partida.wave + 1 >= WAVE_BOSS:
+		comecar_espera_boss()
 		return
+	var wave = Partida.avancar_wave()
 	var linhas_fortes = mini(floori(wave / float(WAVES_FORTE)), 4)
 	for i in range(4):
 		var fila = []
@@ -159,7 +166,7 @@ func _on_timer_bonus_timeout():
 
 # Adianta a wave só depois que o boss morreu E a horda foi toda destruída
 func checar_proxima_wave():
-	if em_boss:
+	if em_boss or esperando_boss:
 		return
 	if boss_morto and horda_vazia() and $timers/TimerProximaWave.is_stopped():
 		$timers/TimerProximaWave.start()
@@ -168,16 +175,62 @@ func _on_boss_morreu():
 	boss_morto = true
 	checar_proxima_wave()
 	
-# Wave do boss: para de criar hordas e snipers, tira o Lorax antigo de cena e
-# começa a vigiar a tela até ela ficar limpa
-func comecar_wave_boss():
-	em_boss = true
+# A wave 9 acabou: nada novo nasce (horda, sniper, Lorax antigo) e a vigia espera a tela vazia.
+# Os aliens que sobraram continuam descendo e atirando
+func comecar_espera_boss():
+	if esperando_boss or em_boss:
+		return
+	esperando_boss = true
+	parar_timers_de_wave()
+	timer_tela_vazia = Timer.new()
+	timer_tela_vazia.one_shot = true
+	timer_tela_vazia.wait_time = ESPERA_TELA_VAZIA
+	timer_tela_vazia.timeout.connect(_on_timer_tela_vazia_timeout)
+	add_child(timer_tela_vazia)
+	timer_espera_vigia = Timer.new()
+	timer_espera_vigia.wait_time = ESPERA_VIGIA
+	timer_espera_vigia.timeout.connect(_on_timer_espera_vigia_timeout)
+	add_child(timer_espera_vigia)
+	timer_espera_vigia.start()
+
+# Tela vazia: a contagem corre; apareceu algo: a contagem volta do zero
+func _on_timer_espera_vigia_timeout():
+	if not esperando_boss:
+		return
+	if tela_vazia():
+		if timer_tela_vazia.is_stopped():
+			timer_tela_vazia.start()
+	else:
+		timer_tela_vazia.stop()
+
+# A tela ficou vazia o tempo todo: a wave 10 começa
+func _on_timer_tela_vazia_timeout():
+	if tela_vazia():
+		entrar_wave_boss()
+
+# Avança para a wave 10 e começa a wave do boss (fim da espera, cheat WAVE DO BOSS e tecla J)
+func entrar_wave_boss():
+	esperando_boss = false
+	for timer in [timer_espera_vigia, timer_tela_vazia]:
+		if timer != null:
+			timer.stop()
+			timer.queue_free()
+	timer_espera_vigia = null
+	timer_tela_vazia = null
+	Partida.avancar_wave()
+	comecar_wave_boss()
+
+# Nenhuma horda, sniper ou Lorax antigo novo
+func parar_timers_de_wave():
 	$timers/TimerWave.stop()
 	$timers/TimerProximaWave.stop()
 	$timers/TimerSniper.stop()
 	$timers/TimerBonus.stop()
-	if is_instance_valid(lorax_antigo) and lorax_antigo.vivo:
-		lorax_antigo.retirar()
+
+# Wave do boss: para de criar hordas e snipers e começa a vigiar a tela até ela ficar limpa
+func comecar_wave_boss():
+	em_boss = true
+	parar_timers_de_wave()
 	wave_boss_chegou.emit()
 	timer_boss_limpo = Timer.new()
 	timer_boss_limpo.wait_time = 0.5
@@ -191,9 +244,23 @@ func _on_timer_boss_limpo_timeout():
 		timer_boss_limpo.stop()
 		boss_pode_entrar.emit()
 
+# Debug (tecla J): apaga aliens, snipers, Lorax antigo e tiros inimigos sem pontos nem sons; o
+# timer_boss_limpo vê a tela limpa e avisa a main normalmente
+func limpar_tela_debug():
+	for fila in lista_aliens:
+		fila.clear()
+	for grupo in ["aliens", "misseis", "tiros_inimigos"]:
+		for no in get_tree().get_nodes_in_group(grupo):
+			no.remove_from_group(grupo)
+			no.queue_free()
+
 # true sem nenhum alien, sniper ou Lorax antigo na tela
 func tela_limpa():
 	return horda_vazia() and get_tree().get_nodes_in_group("aliens").is_empty()
+
+# tela_limpa e também sem tiro inimigo no ar (míssil, tiro de sniper, árvore do Lorax antigo)
+func tela_vazia():
+	return tela_limpa() and get_tree().get_nodes_in_group("tiros_inimigos").is_empty()
 
 # Wave por tempo: inverte a direção e cria outra horda (a anterior continua em jogo)
 func _on_timer_wave_timeout():
@@ -202,15 +269,16 @@ func _on_timer_wave_timeout():
 	
 # Wave adiantada: cria a horda e reinicia a contagem do TimerWave
 func _on_timer_proxima_wave_timeout():
-	if em_boss:
+	if em_boss or esperando_boss:
 		return
 	if horda_vazia():
 		_on_timer_wave_timeout()
-		$timers/TimerWave.start()
+		if not esperando_boss:
+			$timers/TimerWave.start()
 		
 # Cria UM sniper por wave no primeiro canto livre (esquerda antes da direita).
 func _on_timer_sniper_timeout():
-	if em_boss:
+	if em_boss or esperando_boss:
 		return
 	for slot in SLOTS_SNIPER:
 		if slot_livre(slot):

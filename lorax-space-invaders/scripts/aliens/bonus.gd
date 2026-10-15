@@ -109,13 +109,6 @@ func fugir():
 		emit_signal("bonus_eliminado")
 		queue_free())
 
-# Tira o Lorax vivo de cena (wave do boss): para de atacar, some os corações e foge
-func retirar():
-	vivo = false
-	$TimerArremesso.stop()
-	boss_dano.emit(0)
-	fugir()
-
 func _on_timer_arremesso_timeout():
 	arremessar()
 
