@@ -88,6 +88,9 @@ enum Entrada { DESCIDA, TRANSICAO }
 @export var momento_derrota := &""
 ## Quando sobra o último coração (o coração da hud bate)
 @export var momento_ultimo_coracao := &""
+## Depois do momento da derrota, desliza ao centro horizontal (média dos limites) em tantos s e
+## fica parado esperando (0 = não desliza)
+@export var derrota_deslize := 0.0
 
 @export_group("Desespero")
 ## No último coração ele toca "desespero_entrada" com este momento até o quadro de evento; o

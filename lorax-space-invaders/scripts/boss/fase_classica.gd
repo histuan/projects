@@ -54,6 +54,8 @@ var alvo_x := 0.0
 var graus_erratico := 0.0
 var tween_trava: Tween = null
 var tween_espera: Tween = null
+# Espera do momento da derrota + deslize ao centro; o player morrer no meio (parar) corta e o terminou não sai
+var tween_derrota: Tween = null
 
 # O relógio do ataque é da própria fase
 func _ready():
@@ -441,17 +443,25 @@ func _on_ferido():
 		ctx.corpo.tocar("dano")
 
 # Vida no zero (os projéteis já foram limpos pela BatalhaFinal): fica invulnerável, toca o
-# último hit da fase, para e só avisa a BatalhaFinal quando o momento acaba (em tempo real,
-# pausando com o Pause), para a próxima fase não atropelar o golpe
+# último hit da fase, para e só avisa a BatalhaFinal quando o momento acaba e o deslize ao centro
+# (se a fase tem) termina (em tempo real, pausando com o Pause), para a próxima fase não atropelar
+# o golpe. Sem momento e sem deslize, avisa na hora
 func _on_vida_acabou():
 	ctx.corpo.ficar_invulneravel(true)
 	tocar_momento(dados.momento_derrota)
 	parar()
-	if dados.momento_derrota != &"":
-		var espera = Momentos.duracao(dados.momento_derrota)
-		if espera > 0:
-			await get_tree().create_timer(espera, false, false, true).timeout
-	terminou.emit()
+	var espera = Momentos.duracao(dados.momento_derrota) if dados.momento_derrota != &"" else 0.0
+	if espera <= 0 and dados.derrota_deslize <= 0:
+		terminou.emit()
+		return
+	tween_derrota = create_tween().set_ignore_time_scale()
+	if espera > 0:
+		tween_derrota.tween_interval(espera)
+	if dados.derrota_deslize > 0:
+		var centro = (dados.limite_esq + dados.limite_dir) / 2.0
+		tween_derrota.tween_property(ctx.corpo, "position:x", centro, dados.derrota_deslize) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween_derrota.tween_callback(terminou.emit)
 
 # Para relógio e movimento (no meio de um ataque ou de uma transformação, os sons dela somem rápido;
 # no meio da carga ou de uma transformação, o tremor contínuo também; com o pico do desespero já
@@ -461,6 +471,8 @@ func _on_vida_acabou():
 # player podem morrer no mesmo instante)
 func parar():
 	if parada:
+		if tween_derrota != null:
+			tween_derrota.kill()
 		return
 	parada = true
 	if atacando:

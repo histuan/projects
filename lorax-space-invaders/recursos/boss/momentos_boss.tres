@@ -255,10 +255,25 @@ tipo = 7
 escala = 0.25
 duracao = 1.0
 
+[sub_resource type="Resource" id="Passo_derrota_f2_5"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"lorax2_derrota"
+
+[sub_resource type="Resource" id="Passo_derrota_f2_6"]
+script = ExtResource("1_passo")
+tipo = 12
+px = 2.0
+
+[sub_resource type="Resource" id="Passo_derrota_f2_7"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"derrota_f2_estrelas"
+
 [sub_resource type="Resource" id="Momento_derrota_f2"]
 script = ExtResource("2_momento")
 titulo = "DERROTA DA FASE 2"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_derrota_f2_1"), SubResource("Passo_derrota_f2_2"), SubResource("Passo_derrota_f2_3"), SubResource("Passo_derrota_f2_4")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_derrota_f2_1"), SubResource("Passo_derrota_f2_2"), SubResource("Passo_derrota_f2_3"), SubResource("Passo_derrota_f2_4"), SubResource("Passo_derrota_f2_5"), SubResource("Passo_derrota_f2_6"), SubResource("Passo_derrota_f2_7")])
 
 [sub_resource type="Resource" id="Passo_derrota_f2_estrelas_1"]
 script = ExtResource("1_passo")
