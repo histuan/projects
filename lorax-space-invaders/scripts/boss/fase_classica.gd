@@ -16,6 +16,8 @@ const TRANSICAO_CORTE_PICO = 0.1
 const PULO_CORTE_SONS = 0.1
 # Segundos que o desespero espera o fim do golpe (dano ou ataque) antes de começar mesmo assim
 const DESESPERO_TRAVA = 2.0
+# Segundos que o zoom da transformação do desespero leva para voltar a 1,0 (fim dos braços ou parar)
+const DESESPERO_ZOOM_VOLTA = 0.4
 
 # Desespero (último coração): esperando o fim do golpe, se transformando, parado com as animações
 # novas, lutando
@@ -416,6 +418,7 @@ func _on_animacao_terminou(nome):
 	if parada:
 		return
 	if nome == "desespero_entrada":
+		get_viewport().get_camera_2d().zoom_para(1.0, DESESPERO_ZOOM_VOLTA)
 		respirar_desesperado.call_deferred()
 		return
 	if desespero == Desespero.PENDENTE and (nome == "dano" or nome == "ataque"):
@@ -468,6 +471,8 @@ func parar():
 		var momento = dados.momento_desespero if desespero == Desespero.TRANSFORMANDO else dados.momento_transicao
 		cortar_sons(momento, CARGA_CORTE_PARADA)
 		get_viewport().get_camera_2d().parar_tremor_continuo(CARGA_CORTE_PARADA)
+		if desespero == Desespero.TRANSFORMANDO:
+			get_viewport().get_camera_2d().zoom_para(1.0, DESESPERO_ZOOM_VOLTA)
 	if pico_desespero:
 		tocar_momento(dados.momento_desespero_fim)
 		pico_desespero = false

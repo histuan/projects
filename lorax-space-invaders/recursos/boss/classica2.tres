@@ -40,6 +40,7 @@ script = ExtResource("2_anim")
 nome = "desespero_entrada"
 folha = ExtResource("7_transicao")
 quadro_evento = 15
+tempos = Array[float]([0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.9])
 
 [sub_resource type="Resource" id="Resource_parado_desespero"]
 script = ExtResource("2_anim")

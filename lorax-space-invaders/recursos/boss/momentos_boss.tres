@@ -502,8 +502,8 @@ tipo = 3
 [sub_resource type="Resource" id="Passo_f2_desespero_3"]
 script = ExtResource("1_passo")
 tipo = 1
-forca = 6.0
-duracao = 0.4
+forca = 10.0
+duracao = 0.9
 
 [sub_resource type="Resource" id="Passo_f2_desespero_4"]
 script = ExtResource("1_passo")
@@ -528,8 +528,8 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_fim_1")]
 [sub_resource type="Resource" id="Passo_f2_desespero_transforma_1"]
 script = ExtResource("1_passo")
 tipo = 2
-de = 1.0
-ate = 3.0
+de = 2.0
+ate = 5.0
 eixo = Vector2(1, 0.3)
 da_animacao = true
 
@@ -538,10 +538,17 @@ script = ExtResource("1_passo")
 tipo = 23
 nome = &"lorax2_transforma"
 
+[sub_resource type="Resource" id="Passo_f2_desespero_transforma_3"]
+script = ExtResource("1_passo")
+tipo = 4
+fator = 1.02
+duracao = 1.0
+focar_alvo = true
+
 [sub_resource type="Resource" id="Momento_f2_desespero_transforma"]
 script = ExtResource("2_momento")
 titulo = "F2: DESESPERO (TRANSFORMA)"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_transforma_1"), SubResource("Passo_f2_desespero_transforma_2")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_transforma_1"), SubResource("Passo_f2_desespero_transforma_2"), SubResource("Passo_f2_desespero_transforma_3")])
 seguinte = &"f2_desespero"
 duracao_animacao_lab = 3.0
 
