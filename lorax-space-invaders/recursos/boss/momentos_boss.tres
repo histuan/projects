@@ -87,8 +87,8 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_ataque_grande_estrela
 [sub_resource type="Resource" id="Passo_aura_1"]
 script = ExtResource("1_passo")
 tipo = 2
-de = 5.0
-ate = 8.0
+de = 3.0
+ate = 5.0
 da_animacao = true
 
 [sub_resource type="Resource" id="Passo_aura_2"]
@@ -97,11 +97,16 @@ tipo = 21
 da_animacao = true
 particula = 6
 
+[sub_resource type="Resource" id="Passo_aura_3"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_aura_pilar"
+
 [sub_resource type="Resource" id="Momento_aura"]
 script = ExtResource("2_momento")
 titulo = "AURA"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_aura_1"), SubResource("Passo_aura_2")])
-duracao_animacao_lab = 3.2
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_aura_1"), SubResource("Passo_aura_2"), SubResource("Passo_aura_3")])
+duracao_animacao_lab = 2.11
 
 [sub_resource type="Resource" id="Passo_aviso_1"]
 script = ExtResource("1_passo")
@@ -346,8 +351,8 @@ focar_alvo = true
 [sub_resource type="Resource" id="Passo_despertar_2"]
 script = ExtResource("1_passo")
 tipo = 2
-de = 2.0
-ate = 5.0
+de = 1.5
+ate = 3.0
 da_animacao = true
 
 [sub_resource type="Resource" id="Passo_despertar_3"]
@@ -358,25 +363,43 @@ nome = &"despertar_estrelas"
 [sub_resource type="Resource" id="Passo_despertar_4"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F3"
-nome = &"escurecer"
+rotulo = "ESCURO 20 -> 50% (3,267 s)"
+nome = &"escurecer_fundo"
 parametros = {
-"ate": 0.35,
-"de": 0
+"alfa": 0.5,
+"duracao": 3.267
 }
 
 [sub_resource type="Resource" id="Passo_despertar_5"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F3"
-rotulo = "LOW-PASS"
+rotulo = "LOW-PASS 600 Hz (2 s)"
 nome = &"abafar_musica"
+parametros = {
+"duracao": 2.0,
+"hz": 600
+}
+
+[sub_resource type="Resource" id="Passo_despertar_6"]
+script = ExtResource("1_passo")
+tempo = 2.0
+tipo = 24
+rotulo = "MUSICA SOME (fade 1 s)"
+nome = &"musica_some"
+parametros = {
+"fade": 1.0
+}
+
+[sub_resource type="Resource" id="Passo_despertar_7"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_despertar"
 
 [sub_resource type="Resource" id="Momento_despertar"]
 script = ExtResource("2_momento")
 titulo = "DESPERTAR"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_despertar_1"), SubResource("Passo_despertar_2"), SubResource("Passo_despertar_3"), SubResource("Passo_despertar_4"), SubResource("Passo_despertar_5")])
-duracao_animacao_lab = 5.4
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_despertar_1"), SubResource("Passo_despertar_2"), SubResource("Passo_despertar_3"), SubResource("Passo_despertar_4"), SubResource("Passo_despertar_5"), SubResource("Passo_despertar_6"), SubResource("Passo_despertar_7")])
+duracao_animacao_lab = 3.27
 
 [sub_resource type="Resource" id="Passo_despertar_estrelas_1"]
 script = ExtResource("1_passo")
@@ -1191,8 +1214,8 @@ ligar = true
 [sub_resource type="Resource" id="Passo_raiva_2"]
 script = ExtResource("1_passo")
 tipo = 2
-de = 1.0
-ate = 3.0
+de = 0.5
+ate = 1.5
 da_animacao = true
 
 [sub_resource type="Resource" id="Passo_raiva_0"]

@@ -15,12 +15,20 @@ extends Resource
 @export var momento_raiva_pulso := &""
 ## Quadro de evento da derrota_raiva (a respiração antes do despertar)
 @export var momento_raiva_respira := &""
+## Despertar: tocado no 1º quadro do despertar, com a duração dele
+@export var momento_despertar := &""
+## Aura: tocado no 1º quadro da aura, com a duração dela
+@export var momento_aura := &""
 
 @export_group("Música")
 ## Quanto a música abaixa (dB, negativo) quando a cutscene começa; 0 = não abaixa
 @export var musica_abaixar_db := 0.0
 ## Em quantos segundos ela abaixa
 @export var musica_abaixar_tempo := 0.0
+
+@export_group("Sons")
+## Fade (s) que corta a cauda da respiração quando o despertar começa
+@export var respira_fade := 0.0
 
 @export_group("Cheat")
 ## Onde o boss aparece quando a transformação começa direto (onde a fase 2 o deixa)
