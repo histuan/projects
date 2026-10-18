@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bvwj5cuwkf15h" path="res://meus sprites/lorax boss battle/fase2/fase2 ataque.png" id="6_ataque"]
 [ext_resource type="Texture2D" uid="uid://f74nyu78otod" path="res://meus sprites/lorax boss battle/fase1/fase1 transicao.png" id="7_transicao"]
 [ext_resource type="Texture2D" uid="uid://bkauokuwt5s7a" path="res://meus sprites/geral/coracao_boss_vermelho.png" id="8_coracao"]
-[ext_resource type="Texture2D" path="res://meus sprites/lorax boss battle/fase2/fase2 desespero.png" id="9_desespero"]
+[ext_resource type="Texture2D" uid="uid://51x76lh8xy5s" path="res://meus sprites/lorax boss battle/fase2/fase2 desespero.png" id="9_desespero"]
 
 [sub_resource type="Resource" id="Resource_parado"]
 script = ExtResource("2_anim")

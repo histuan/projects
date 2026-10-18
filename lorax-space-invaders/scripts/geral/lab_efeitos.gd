@@ -8,6 +8,9 @@
 # trocadas com as setas cima/baixo.
 extends PainelLab
 
+# O R voltou tudo ao normal (a main limpa o que é dela: as tintas do fundo)
+signal resetou
+
 const IDLE_LORAX = preload("res://meus sprites/lorax boss battle/fase1/fase1 idle.png")
 const Particula = preload("res://scripts/efeitos/particula.gd")
 const CENA_CORPO = preload("res://cenas/boss/lorax_final.tscn")
@@ -302,6 +305,7 @@ func ao_resetar():
 		folha.queue_free()
 	resetar_player()
 	parar_animacoes_lab()
+	resetou.emit()
 
 # Um flash de tela foi barrado pela regra de segurança: avisa no detalhe
 func _on_flash_barrado():

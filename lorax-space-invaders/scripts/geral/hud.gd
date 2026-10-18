@@ -85,6 +85,10 @@ func _on_coracoes_boss_encheram():
 	coracoes_boss_cheios = $coracoesBoss.cheios
 	coracoes_boss_reencheram.emit()
 
+# A barra do power-up some com fade em 'duracao' s; devolve o tween (quem pede espera o fim dele)
+func sumir_barra_power(duracao):
+	return $barraPower.sumir(duracao)
+
 # Boss final: o último coração para de bater (o player morreu, o R do LAB)
 func parar_pulso_boss():
 	$coracoesBoss.parar_pulso()

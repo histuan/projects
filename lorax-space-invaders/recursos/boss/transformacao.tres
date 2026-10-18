@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TransformacaoDados" format=3 uid="uid://tcrf0i4uphjl"]
+
+[ext_resource type="Script" uid="uid://bn64ejw37rfv3" path="res://scripts/boss/dados/transformacao_dados.gd" id="1_dados"]
+[ext_resource type="Resource" uid="uid://c40xm2n4u2iss" path="res://recursos/boss/animacoes/cutscene.tres" id="2_cutscene"]
+[ext_resource type="Texture2D" uid="uid://bkauokuwt5s7a" path="res://meus sprites/geral/coracao_boss_vermelho.png" id="3_coracao"]
+
+[resource]
+script = ExtResource("1_dados")
+numero_fase = 2
+animacoes = ExtResource("2_cutscene")
+momento_raiva = &"raiva"
+momento_raiva_pulso = &"raiva_pulso"
+momento_raiva_respira = &"raiva_respira"
+musica_abaixar_db = -9.0
+musica_abaixar_tempo = 2.0
+posicao_direta = Vector2(127, 48)
+coracao_boss = ExtResource("3_coracao")

@@ -21,6 +21,9 @@ extends Resource
 ## Velocidade de toda a animação: 1 = tempos como escritos, 1.5 = 50% mais rápida, 0.5 = metade.
 ## Divide todos os tempos (tempo_por_quadro e tempos), então o evento acompanha
 @export var velocidade := 1.0
+## Posições (como quadro_evento) em que o corpo emite pulso_animacao (ex.: as batidas do símbolo de
+## raiva). Vazio = sem pulsos
+@export var quadros_pulso: Array[int] = []
 
 # Quantos quadros cabem na folha
 func total_quadros():
@@ -66,11 +69,21 @@ func criar_animacao() -> Animation:
 	criar_faixa(animacao, "Sprite2D:hframes", [total_quadros()], [0.0])
 	criar_faixa(animacao, "Sprite2D:frame", lista, instantes)
 	if quadro_evento >= 0 and quadro_evento < lista.size():
-		var faixa = animacao.add_track(Animation.TYPE_METHOD)
-		animacao.track_set_path(faixa, NodePath("."))
-		animacao.track_insert_key(faixa, instantes[quadro_evento],
-				{"method": &"avisar_evento", "args": []})
+		criar_faixa_metodo(animacao, &"avisar_evento", [instantes[quadro_evento]])
+	var pulsos = []
+	for posicao in quadros_pulso:
+		if posicao >= 0 and posicao < lista.size():
+			pulsos.append(instantes[posicao])
+	if not pulsos.is_empty():
+		criar_faixa_metodo(animacao, &"avisar_pulso", pulsos)
 	return animacao
+
+# Faixa que chama 'metodo' do corpo (sem argumentos) em cada um dos 'instantes'
+func criar_faixa_metodo(animacao: Animation, metodo: StringName, instantes: Array):
+	var faixa = animacao.add_track(Animation.TYPE_METHOD)
+	animacao.track_set_path(faixa, NodePath("."))
+	for instante in instantes:
+		animacao.track_insert_key(faixa, instante, {"method": metodo, "args": []})
 
 # Erros de dado com o nome da animação: tempos que não batem com os quadros, quadro fora
 # da folha, evento fora da animação (nunca inventa tempo: anima só os quadros que têm tempo)
@@ -86,6 +99,9 @@ func conferir():
 			push_error("Animação '%s': quadro %d fora da folha (%d quadros)" % [nome, indice, total])
 	if quadro_evento >= quadros_tocados().size():
 		push_error("Animação '%s': quadro_evento %d fora da animação" % [nome, quadro_evento])
+	for posicao in quadros_pulso:
+		if posicao < 0 or posicao >= quadros_tocados().size():
+			push_error("Animação '%s': quadro de pulso %d fora da animação" % [nome, posicao])
 
 # Faixa de valor sem interpolação (troca seca): valores[i] no instante instantes[i]
 func criar_faixa(animacao: Animation, caminho: String, valores: Array, instantes: Array):

@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://bwr07xmpmuohr" path="res://scripts/boss/fase_classica.gd" id="3_classica"]
 [ext_resource type="Resource" uid="uid://cksvvdbtwxak7" path="res://recursos/boss/classica1.tres" id="4_dados1"]
 [ext_resource type="Resource" uid="uid://doosoh2koab57" path="res://recursos/boss/classica2.tres" id="5_nl7px"]
+[ext_resource type="Script" path="res://scripts/boss/fase_transformacao.gd" id="6_transf"]
+[ext_resource type="Resource" path="res://recursos/boss/transformacao.tres" id="7_transf"]
 
 [node name="BatalhaFinal" type="Node" unique_id=1528611933]
 script = ExtResource("1_batalha")
@@ -27,5 +29,9 @@ dados = ExtResource("5_nl7px")
 
 [node name="TimerAtaque" type="Timer" parent="Fases/Classica2" unique_id=59352639]
 one_shot = true
+
+[node name="Transformacao" type="Node" parent="Fases"]
+script = ExtResource("6_transf")
+dados = ExtResource("7_transf")
 
 [node name="Ataques" type="Node2D" parent="." unique_id=65780363]

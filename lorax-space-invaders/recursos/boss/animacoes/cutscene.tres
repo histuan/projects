@@ -17,43 +17,45 @@
 script = ExtResource("1_kwgba")
 nome = "derrota_raiva"
 folha = ExtResource("2_o3imw")
+quadro_evento = 17
+tempos = Array[float]([0.5, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.4, 0.5, 0.5, 0.4, 0.6, 3.825, 0.9])
 velocidade = 1.5
-tempos = Array[float]([0.5, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.4, 0.5, 0.5, 0.4, 0.6, 0.5, 0.6])
+quadros_pulso = Array[int]([1, 3, 5, 7, 9, 11, 13])
 
 [sub_resource type="Resource" id="Resource_0gfx5"]
 script = ExtResource("1_kwgba")
 nome = "despertar"
 folha = ExtResource("3_tog2m")
-velocidade = 1.5
 tempos = Array[float]([0.5, 0.5, 0.5, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.3, 0.25, 0.25, 0.25, 0.35])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_etmh2"]
 script = ExtResource("1_kwgba")
 nome = "aura"
 folha = ExtResource("4_8bcyv")
-velocidade = 1.5
 tempos = Array[float]([0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.28, 0.22, 0.22, 0.22, 0.22, 0.25])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_o8tiw"]
 script = ExtResource("1_kwgba")
 nome = "pilar"
 folha = ExtResource("5_kk60u")
-velocidade = 1.5
 tempos = Array[float]([0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_t1nf3"]
 script = ExtResource("1_kwgba")
 nome = "reparo"
 folha = ExtResource("6_fnr1y")
-velocidade = 1.5
 tempos = Array[float]([0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.6])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_hodip"]
 script = ExtResource("1_kwgba")
 nome = "chapeu"
 folha = ExtResource("7_8wvp6")
-velocidade = 1.5
 tempos = Array[float]([0.22, 0.22, 0.25, 0.22, 0.22, 0.22, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_jhlxw"]
 script = ExtResource("1_kwgba")
@@ -66,24 +68,24 @@ tempos = Array[float]([0.5, 0.5])
 script = ExtResource("1_kwgba")
 nome = "piscada"
 folha = ExtResource("9_6fege")
-velocidade = 1.5
 tempos = Array[float]([0.16, 0.2, 0.16])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_2lhty"]
 script = ExtResource("1_kwgba")
 nome = "invocar_jaula"
 folha = ExtResource("10_t1dvn")
-velocidade = 1.5
 largura_quadro = 40
 tempos = Array[float]([0.2, 0.2, 0.2, 0.2, 0.3, 0.3, 0.375])
+velocidade = 1.5
 
 [sub_resource type="Resource" id="Resource_f7q45"]
 script = ExtResource("1_kwgba")
 nome = "puxao"
 folha = ExtResource("11_wqraf")
-velocidade = 1.5
 largura_quadro = 40
 tempos = Array[float]([0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.27, 0.375, 0.375])
+velocidade = 1.5
 
 [resource]
 script = ExtResource("12_683wl")

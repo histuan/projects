@@ -503,13 +503,6 @@ titulo = "F2: CARGA DAS ARVORES"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_carga_1"), SubResource("Passo_f2_carga_3")])
 seguinte = &"f2_arremessa"
 
-[sub_resource type="Resource" id="Passo_f2_desespero_1"]
-script = ExtResource("1_passo")
-tipo = 13
-cor = 2
-alfa = 0.08
-ligar = true
-
 [sub_resource type="Resource" id="Passo_f2_desespero_2"]
 script = ExtResource("1_passo")
 tipo = 3
@@ -525,10 +518,28 @@ script = ExtResource("1_passo")
 tipo = 23
 nome = &"lorax2_raiva"
 
+[sub_resource type="Resource" id="Passo_f2_desespero_1"]
+script = ExtResource("1_passo")
+tipo = 13
+cor = 2
+alfa = 0.08
+ligar = true
+
+[sub_resource type="Resource" id="Passo_f2_desespero_5"]
+script = ExtResource("1_passo")
+tipo = 24
+rotulo = "TINTA VERMELHA 10% -> 20% (DESESPERO)"
+cor = 4
+nome = &"tom_vermelho"
+parametros = {
+"alfa": 0.2,
+"duracao": 1.0
+}
+
 [sub_resource type="Resource" id="Momento_f2_desespero"]
 script = ExtResource("2_momento")
 titulo = "F2: DESESPERO (PICO)"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_2"), SubResource("Passo_f2_desespero_3"), SubResource("Passo_f2_desespero_4"), SubResource("Passo_f2_desespero_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_f2_desespero_2"), SubResource("Passo_f2_desespero_3"), SubResource("Passo_f2_desespero_4"), SubResource("Passo_f2_desespero_1"), SubResource("Passo_f2_desespero_5")])
 
 [sub_resource type="Resource" id="Passo_f2_desespero_fim_1"]
 script = ExtResource("1_passo")
@@ -1184,22 +1195,87 @@ de = 1.0
 ate = 3.0
 da_animacao = true
 
+[sub_resource type="Resource" id="Passo_raiva_0"]
+script = ExtResource("1_passo")
+tipo = 24
+rotulo = "TINTA VERMELHA SOBE 20% -> 30%"
+cor = 4
+nome = &"tom_vermelho"
+parametros = {
+"alfa": 0.3,
+"duracao": 0.8
+}
+
+[sub_resource type="Resource" id="Passo_raiva_3"]
+script = ExtResource("1_passo")
+tempo = 1.0
+tipo = 24
+rotulo = "TINTA VERMELHA DISSOLVE (5 s)"
+cor = 4
+nome = &"tom_vermelho"
+parametros = {
+"alfa": 0.0,
+"duracao": 5.0
+}
+
+[sub_resource type="Resource" id="Passo_raiva_4"]
+script = ExtResource("1_passo")
+tempo = 1.0
+tipo = 24
+rotulo = "ESCURO 0 -> 20% (5 s)"
+nome = &"escurecer_fundo"
+parametros = {
+"alfa": 0.2,
+"duracao": 5.0
+}
+
+[sub_resource type="Resource" id="Passo_raiva_5"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"raiva_estrelas"
+
 [sub_resource type="Resource" id="Momento_raiva"]
 script = ExtResource("2_momento")
 titulo = "DERROTA COM RAIVA"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_1"), SubResource("Passo_raiva_2")])
-duracao_animacao_lab = 5.9
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_1"), SubResource("Passo_raiva_2"), SubResource("Passo_raiva_0"), SubResource("Passo_raiva_3"), SubResource("Passo_raiva_4"), SubResource("Passo_raiva_5")])
+duracao_animacao_lab = 7.16
 
 [sub_resource type="Resource" id="Passo_raiva_estrelas_1"]
 script = ExtResource("1_passo")
 tipo = 14
-pendente = "DEVAGAR, A PARTIR DE x0: DURACAO SEM VALOR"
 fator = 0.3
+da_animacao = true
 
 [sub_resource type="Resource" id="Momento_raiva_estrelas"]
 script = ExtResource("2_momento")
 titulo = "DERROTA COM RAIVA"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_estrelas_1")])
+
+[sub_resource type="Resource" id="Passo_raiva_pulso_1"]
+script = ExtResource("1_passo")
+tipo = 1
+forca = 4.0
+duracao = 0.15
+
+[sub_resource type="Resource" id="Passo_raiva_pulso_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_raiva_pulso"
+
+[sub_resource type="Resource" id="Momento_raiva_pulso"]
+script = ExtResource("2_momento")
+titulo = "DERROTA COM RAIVA: PULSO"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_pulso_1"), SubResource("Passo_raiva_pulso_2")])
+
+[sub_resource type="Resource" id="Passo_raiva_respira_1"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_respira"
+
+[sub_resource type="Resource" id="Momento_raiva_respira"]
+script = ExtResource("2_momento")
+titulo = "DERROTA COM RAIVA: RESPIRA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_respira_1")])
 
 [sub_resource type="Resource" id="Passo_reparo_1"]
 script = ExtResource("1_passo")
@@ -1671,6 +1747,8 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"raio_direto_disparo": SubResource("Momento_raio_direto_disparo"),
 &"raiva": SubResource("Momento_raiva"),
 &"raiva_estrelas": SubResource("Momento_raiva_estrelas"),
+&"raiva_pulso": SubResource("Momento_raiva_pulso"),
+&"raiva_respira": SubResource("Momento_raiva_respira"),
 &"reparo": SubResource("Momento_reparo"),
 &"reparo_estrelas": SubResource("Momento_reparo_estrelas"),
 &"respirando": SubResource("Momento_respirando"),

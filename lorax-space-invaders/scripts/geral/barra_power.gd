@@ -16,6 +16,12 @@ func _process(_delta):
 		modulate.a = 1.0
 	queue_redraw()
 
+# Some com fade em 'duracao' s (self_modulate: o modulate é da piscada) e não volta; devolve o tween
+func sumir(duracao):
+	var tween = create_tween()
+	tween.tween_property(self, "self_modulate:a", 0.0, duracao)
+	return tween
+
 # Desenha o 1º quadro do sprite como ícone e, ao lado, a barra proporcional ao tempo
 func _draw():
 	var pu = player.powerup_ativo

@@ -276,6 +276,11 @@ func ativar_powerup(pu):
 
 # Fim do tempo: desliga o power-up (a barra some sozinha)
 func _on_timer_power_up_timeout():
+	encerrar_powerup()
+
+# Desliga o power-up ativo antes do tempo (ou no fim dele); sem power-up, nada
+func encerrar_powerup():
+	timer_power.stop()
 	if powerup_ativo == null:
 		return
 	powerup_ativo.ao_acabar(self)

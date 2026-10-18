@@ -71,3 +71,11 @@ func ao_acertar(body):
 # Padrão: some sem fazer nada
 func ao_sair_da_tela():
 	queue_free()
+
+# Some com fade em 'duracao' s sem acertar mais nada (segue andando enquanto some)
+func sumir(duracao):
+	acertou = true
+	set_deferred("monitoring", false)
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, duracao)
+	tween.tween_callback(queue_free)

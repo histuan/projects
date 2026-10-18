@@ -25,6 +25,11 @@ const SILENCIO_ESTRELAS_FATOR = 0.2
 const SILENCIO_VOLTA_TEMPO = 0.0
 # Debug (tecla J): fade (s) do alarme cortado ao pular a intro
 const PULO_CORTE_ALARME = 0.1
+# Transformação: fade (s) dos itens soltos, dos tiros do player e da barra do power-up que somem
+# (valor de teste; o planeta usa o fade_saida dele)
+const LIMPEZA_FADE = 0.3
+# Dono do travamento do player durante a transformação
+const DONO_TRANSFORMACAO = &"transformacao"
 
 # 1 vida na luta: batimento, música abafada e bordas vermelhas ligados
 var vida_baixa_ligada = false
@@ -35,6 +40,8 @@ var painel_debug = null
 var caixa_dialogo: CaixaDialogo
 # Tinta sobre o fundo (tom vermelho da fase 2), logo depois do nó 'fundo'
 var tinta_fundo: TintaFundo
+# Segunda tinta, por cima da vermelha: o escuro da transformação (pedido escurecer_fundo)
+var escurecedor: TintaFundo
 # A batalha final (null antes da wave 10 e no LAB)
 var batalha = null
 # A fala de fuga do Lorax antigo já apareceu nesta partida (é uma vez só)
@@ -70,6 +77,10 @@ func _ready():
 	tinta_fundo = TintaFundo.new()
 	add_child(tinta_fundo)
 	move_child(tinta_fundo, $fundo.get_index() + 1)
+	escurecedor = TintaFundo.new()
+	escurecedor.pedido = &"escurecer_fundo"
+	add_child(escurecedor)
+	move_child(escurecedor, tinta_fundo.get_index() + 1)
 	Momentos.registrar(camera, $EfeitosTela, $fundo/estrelas, self, EFEITOS, $hud, caixa_dialogo)
 	caixa_dialogo.abriu.connect(player.bloquear_tiro.bind(&"caixa"))
 	# Diferido: o Espaço que fecha a caixa não pode virar tiro no mesmo quadro
@@ -101,6 +112,8 @@ func _ready():
 		abrir_lab_textos()
 	elif Partida.etapa_inicial == Partida.Etapa.FASE_2:
 		comecar_fase2_direto()
+	elif Partida.etapa_inicial == Partida.Etapa.TRANSFORMACAO:
+		comecar_transformacao_direto()
 
 # LAB DE EFEITOS: painel que toca cada momento do momentos_boss.tres; o spawner para (nada
 # cai nem passa) e o boneco do Lorax fica no mundo (filho da main) para tremor e zoom valerem
@@ -109,6 +122,12 @@ func abrir_lab():
 	var lab = LabEfeitos.new()
 	add_child(lab)
 	lab.preparar(camera, $EfeitosTela, $fundo/estrelas, EFEITOS, self, $hud, player, $cenario)
+	lab.resetou.connect(limpar_tintas)
+
+# As duas tintas do fundo (vermelha e escurecedor) voltam a ficar transparentes (o R do LAB)
+func limpar_tintas():
+	tinta_fundo.limpar()
+	escurecedor.limpar()
 
 # LAB DE SONS: toca cada evento do sons_boss.tres (a música do jogo segue tocando,
 # para dar para ouvir os crossfades a partir dela)
@@ -133,9 +152,29 @@ func comecar_fase2_direto():
 	atualizar_vida_baixa(Partida.vidas)
 	Musica.cortar()
 	Musica.tocar(&"musica_wave10", 0.0)
-	var tom = Momentos.parametros(&"transicao_1_2_pico", &"tom_vermelho")
-	tinta_fundo.tingir(tom.get("cor", Color.BLACK), tom.get("alfa", 0.0), 0.0)
+	pintar_tom_vermelho()
 	comecar_batalha(&"Classica2")
+
+# Cheat TRANSFORMAÇÃO: o mundo como a derrota da fase 2 deixa (wave do boss sem placar e sem planeta,
+# música da luta, tinta vermelha, estrelas da fase 2 paradas) e a transformação já começando
+func comecar_transformacao_direto():
+	$groupAlien.entrar_luta_direta()
+	$hud.esconder_placar()
+	$spawner.parar_planeta()
+	Partida.comecar_luta_boss()
+	atualizar_vida_baixa(Partida.vidas)
+	Musica.cortar()
+	Musica.tocar(&"musica_wave10", 0.0)
+	pintar_tom_vermelho(&"f2_desespero")
+	Momentos.tocar(&"fase2_estrelas")
+	Momentos.tocar(&"derrota_f2_estrelas")
+	comecar_batalha(&"Transformacao")
+
+# A tinta vermelha na hora, com os números do 'tom_vermelho' do momento pedido (os cheats): por
+# padrão o pico da transição 1→2 (fase 2); o da TRANSFORMAÇÃO pede o pico do desespero
+func pintar_tom_vermelho(momento = &"transicao_1_2_pico"):
+	var tom = Momentos.parametros(momento, &"tom_vermelho")
+	tinta_fundo.tingir(tom.get("cor", Color.BLACK), tom.get("alfa", 0.0), 0.0)
 
 # Wave 10 começou: a música do jogo some, e ficar com 1 vida passa a ligar a vida baixa
 func _on_wave_boss_chegou():
@@ -198,6 +237,8 @@ func comecar_batalha(nome_fase := &""):
 		batalha.vida_boss_mudou.connect(painel_debug.mostrar_vida_boss)
 		batalha.boss_invulneravel.connect(painel_debug.mostrar_invulneravel)
 	batalha.fase_mudou.connect(_on_fase_mudou)
+	batalha.player_travado.connect(_on_player_travado)
+	batalha.tela_limpa_pedida.connect(limpar_tela_transformacao)
 	batalha.terminou.connect(_on_batalha_terminou)
 	add_child(batalha)
 	move_child(batalha, $groupAlien.get_index() + 1)
@@ -221,6 +262,24 @@ func esperar(segundos):
 func _on_fase_mudou(_nome, numero):
 	if numero > 0:
 		Partida.definir_fase_luta(numero)
+
+# A batalha pediu o player travado (não anda nem atira) ou solto
+func _on_player_travado(ligado):
+	if ligado:
+		player.travar(DONO_TRANSFORMACAO)
+		player.bloquear_tiro(DONO_TRANSFORMACAO)
+	else:
+		player.destravar(DONO_TRANSFORMACAO)
+		player.liberar_tiro(DONO_TRANSFORMACAO)
+
+# A batalha pediu a tela limpa: nada novo cai nem passa, o planeta, os itens soltos e os tiros do
+# player somem com fade, e a barra do power-up some antes de o power-up acabar
+func limpar_tela_transformacao():
+	$spawner.parar_tudo()
+	get_tree().call_group(&"itens_soltos", &"sumir", LIMPEZA_FADE)
+	get_tree().call_group(&"tiros_player", &"sumir", LIMPEZA_FADE)
+	await $hud.sumir_barra_power(LIMPEZA_FADE).finished
+	player.encerrar_powerup()
 
 # Acabaram as fases que existem (por enquanto só imprime)
 func _on_batalha_terminou():

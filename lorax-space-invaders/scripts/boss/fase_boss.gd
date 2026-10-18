@@ -8,6 +8,10 @@ signal terminou
 signal entrou
 # Os corações do boss passam a usar esta textura de "cheio"
 signal trocar_coracoes(textura)
+# O player para de andar e de atirar (true) ou volta a jogar (false)
+signal travar_player(ligado)
+# Tudo que não é player, boss ou cenário some da tela e nada novo cai
+signal limpar_tela
 
 var ctx: ContextoBatalha
 

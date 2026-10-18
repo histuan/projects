@@ -14,6 +14,10 @@ signal terminou
 signal boss_entrou
 # A fase pediu outra textura de coração cheio (repassado para a hud)
 signal coracoes_boss_trocados(textura)
+# A fase pediu o player travado (true) ou solto (false) (repassado para a main)
+signal player_travado(ligado)
+# A fase pediu a tela limpa: itens, tiros do player e planeta somem, nada novo cai (para a main)
+signal tela_limpa_pedida
 
 # Corações do boss na hud (só para a tecla K de debug saber quanto é um coração)
 const CORACOES_BOSS = 5
@@ -34,6 +38,8 @@ func _ready():
 		fase.terminou.connect(proxima_fase)
 		fase.entrou.connect(boss_entrou.emit)
 		fase.trocar_coracoes.connect(coracoes_boss_trocados.emit)
+		fase.travar_player.connect(player_travado.emit)
+		fase.limpar_tela.connect(tela_limpa_pedida.emit)
 
 # Chamada pela main (depois de conectar os sinais): monta o contexto e começa a 1ª fase
 func comecar(player, dialogo):

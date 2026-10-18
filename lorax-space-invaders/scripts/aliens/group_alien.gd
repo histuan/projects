@@ -40,9 +40,9 @@ var timer_tela_vazia: Timer
 
 # O boss aparece uma única vez, entre 5 e 10 s depois do início
 func _ready():
-	# Cheat "LAB DE EFEITOS" / "LAB DE SONS" / "LAB DE TEXTOS" / "FASE 2": nada de horda, Lorax antigo
-	# nem timers (na FASE 2 a main chama entrar_luta_direta)
-	if Partida.etapa_inicial in [Partida.Etapa.LAB_EFEITOS, Partida.Etapa.LAB_SONS, Partida.Etapa.LAB_TEXTOS, Partida.Etapa.FASE_2]:
+	# Cheat "LAB DE EFEITOS" / "LAB DE SONS" / "LAB DE TEXTOS" / "FASE 2" / "TRANSFORMAÇÃO": nada de
+	# horda, Lorax antigo nem timers (na FASE 2 e na TRANSFORMAÇÃO a main chama entrar_luta_direta)
+	if Partida.etapa_inicial in [Partida.Etapa.LAB_EFEITOS, Partida.Etapa.LAB_SONS, Partida.Etapa.LAB_TEXTOS, Partida.Etapa.FASE_2, Partida.Etapa.TRANSFORMACAO]:
 		for timer in $timers.get_children():
 			timer.stop()
 		return

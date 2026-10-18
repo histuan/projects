@@ -9,6 +9,7 @@ func _init():
 	margem_tela = 20.0
 
 func _ready():
+	add_to_group(&"tiros_player")
 	$AnimationPlayer.play("moto")
 
 # Em vez de ferir só o alvo: dano em área em todo inimigo no raio

@@ -8,6 +8,8 @@ signal ferido
 signal vida_acabou
 # Quadro marcado (quadro_evento) da animação 'nome'
 signal evento_animacao(nome)
+# Um dos quadros_pulso da animação 'nome'
+signal pulso_animacao(nome)
 signal animacao_terminou(nome)
 
 var vida_max := 1
@@ -39,6 +41,12 @@ func definir_vida(valor):
 	vidas = valor
 	vivo = true
 	vida_mudou.emit(vidas, vida_max)
+
+# Fica sem vida, como no fim de uma fase (cheat: a hud mostra os corações vazios)
+func zerar_vida():
+	vidas = 0
+	vivo = false
+	vida_mudou.emit(0, vida_max)
 
 # Invulnerável: os tiros batem e somem sem tirar vida
 func ficar_invulneravel(ligado):
@@ -75,6 +83,10 @@ func tocar(nome):
 # Chamada pela faixa de método das animações que têm quadro_evento
 func avisar_evento():
 	evento_animacao.emit($AnimationPlayer.current_animation)
+
+# Chamada pela faixa de método das animações que têm quadros_pulso
+func avisar_pulso():
+	pulso_animacao.emit($AnimationPlayer.current_animation)
 
 # Repassa o fim de uma animação sem loop para a fase
 func _on_animacao_terminou(nome):

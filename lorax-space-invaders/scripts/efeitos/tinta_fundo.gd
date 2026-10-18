@@ -6,6 +6,8 @@ extends ColorRect
 
 const SOBRA = 32
 
+# Nome do passo SINAL que esta tinta ouve (a main troca para a segunda tinta, o escurecedor)
+var pedido := &"tom_vermelho"
 var tween: Tween = null
 
 # Cobre a tela com sobra, transparente, sem pegar o mouse, e ouve os pedidos dos momentos
@@ -17,9 +19,9 @@ func _ready():
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	Momentos.pedido.connect(_on_pedido)
 
-# tom_vermelho: vai para 'cor' com 'alfa' em 'duracao' s
+# O pedido desta tinta: vai para 'cor' (sem cor, preto) com 'alfa' em 'duracao' s
 func _on_pedido(nome, parametros, _alvo):
-	if nome == &"tom_vermelho":
+	if nome == pedido:
 		tingir(parametros.get("cor", Color.BLACK), parametros.get("alfa", 0.0), parametros.get("duracao", 0.0))
 
 # Muda a tinta para 'cor' com 'alfa' em 'duracao' s (0 = na hora)
