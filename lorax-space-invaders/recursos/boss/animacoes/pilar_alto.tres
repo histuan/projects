@@ -8,9 +8,9 @@
 script = ExtResource("1_678aw")
 nome = "pilar_alto"
 folha = ExtResource("2_15slq")
-velocidade = 1.5
 largura_quadro = 64
 tempos = Array[float]([0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.25, 0.25, 0.25, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.25, 0.25, 0.22, 0.22])
+velocidade = 1.5
 
 [resource]
 script = ExtResource("3_6w6cm")

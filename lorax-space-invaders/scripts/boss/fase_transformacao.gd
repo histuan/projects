@@ -1,7 +1,8 @@
 # Transformação do boss (entre a fase 2 e a fase 3): começa onde a fase 2 o deixou, invulnerável e
 # sem vida. O player trava e a tela fica limpa (pedidos que a BatalhaFinal repassa para a main), e o
 # boss toca a derrota com raiva, o despertar, a aura e o pilar (com o pilar alto atrás do corpo e o PICO
-# no quadro de evento: o cenário some e a fase da luta passa a 3). Termina parado no último quadro do pilar.
+# no quadro de evento: o cenário some e a fase da luta passa a 3), o reparo, o chapéu, o parado e a
+# piscada. Termina parada no último quadro da piscada.
 extends FaseBoss
 
 # Fade (s) do tremor contínuo se a transformação parar no meio (valor de teste)
@@ -42,7 +43,7 @@ func comecar_direto(contexto: ContextoBatalha):
 	contexto.corpo.zerar_vida()
 	comecar(contexto)
 
-# Quadros marcados: a respiração antes do despertar (derrota com raiva) e o pico do pilar
+# Quadros marcados: a respiração antes do despertar (derrota com raiva), o pico do pilar e o chapéu saindo
 func _on_evento_animacao(nome):
 	if parada:
 		return
@@ -50,6 +51,8 @@ func _on_evento_animacao(nome):
 		Momentos.tocar(dados.momento_raiva_respira, ctx.corpo)
 	elif nome == "pilar":
 		chegar_ao_pico()
+	elif nome == "chapeu":
+		Momentos.tocar(dados.momento_chapeu, ctx.corpo)
 
 # Batida do símbolo de raiva
 func _on_pulso_animacao(nome):
@@ -58,7 +61,8 @@ func _on_pulso_animacao(nome):
 	if nome == "derrota_raiva":
 		Momentos.tocar(dados.momento_raiva_pulso, ctx.corpo)
 
-# Encadeia as animações: derrota com raiva → despertar → aura → pilar (o pilar fica no último quadro)
+# Encadeia as animações: derrota com raiva → despertar → aura → pilar → reparo → chapéu → parado →
+# piscada (a piscada fica no último quadro)
 func _on_animacao_terminou(nome):
 	if parada:
 		return
@@ -68,6 +72,14 @@ func _on_animacao_terminou(nome):
 		comecar_aura()
 	elif nome == "aura":
 		comecar_pilar()
+	elif nome == "pilar":
+		comecar_reparo()
+	elif nome == "reparo":
+		ctx.corpo.tocar("chapeu")
+	elif nome == "chapeu":
+		ctx.corpo.tocar("parado")
+	elif nome == "parado":
+		comecar_piscada()
 
 # Corta a cauda da respiração e toca o despertar com o momento dele
 func comecar_despertar():
@@ -95,7 +107,22 @@ func chegar_ao_pico():
 		fase_luta_mudou.emit(dados.numero_fase_pico)
 	Momentos.tocar(dados.momento_pico, ctx.corpo, pilar.duracao() - pilar.instante_do_quadro(pilar.quadro_evento))
 
-# Sinais dos momentos que só esta fase sabe fazer: abafar a música, fazê-la sumir e tirar o cenário
+# Toca o reparo com o momento dele e as estrelas, que voltam a ×1 até o fim da piscada
+func comecar_reparo():
+	var conjunto = dados.animacoes
+	ctx.corpo.tocar("reparo")
+	Momentos.tocar(dados.momento_reparo, ctx.corpo, conjunto.dados("reparo").duracao())
+	var ate_o_fim = 0.0
+	for nome in ["reparo", "chapeu", "parado", "piscada"]:
+		ate_o_fim += conjunto.dados(nome).duracao()
+	Momentos.tocar(dados.momento_reparo_estrelas, ctx.corpo, ate_o_fim)
+
+# Toca a piscada com o momento dela
+func comecar_piscada():
+	ctx.corpo.tocar("piscada")
+	Momentos.tocar(dados.momento_piscada, ctx.corpo, dados.animacoes.dados("piscada").duracao())
+
+# Sinais dos momentos que só esta fase sabe fazer: abafar a música, fazê-la entrar e sumir e tirar o cenário
 func _on_pedido(nome, parametros, _alvo):
 	if parada:
 		return
@@ -103,6 +130,8 @@ func _on_pedido(nome, parametros, _alvo):
 		limpar_cenario.emit()
 	elif nome == &"abafar_musica":
 		Musica.pedir_abafar(PEDIDO_ABAFAR, parametros["hz"], parametros["duracao"])
+	elif nome == &"musica_entra":
+		Musica.tocar(&"musica_transformacao", parametros["fade"])
 	elif nome == &"musica_some":
 		Musica.fade_out(parametros["fade"])
 		await get_tree().create_timer(parametros["fade"], false, false, true).timeout

@@ -94,7 +94,7 @@ const PAGINAS = [
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arremessa", &"f2_arvore_explode", &"f2_arvore_explode_fora", &"f2_desespero_transforma", &"f2_desespero", &"f2_desespero_fim",
 		&"hit_fase2", &"ultimo_coracao_f2", &"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
 	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pilar_sobe", &"pico_do_pilar", &"resto_do_pilar",
-		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
+		&"reparo", &"reparo_estrelas", &"chapeu", &"piscada", &"puxao", &"nave_chega", &"arena_nasce"]],
 	["FASE 3", [&"aviso", &"raio", &"cortina_todos", &"raio_direto_carga", &"pancada",
 		&"esfera_estoura", &"teleporte", &"hit_lorax_ui", &"player_hit", &"virada"]],
 	["FASE 3 (2)", [&"desespero", &"janela_abre", &"respirando", &"titulo_fase3", &"dica_ws"]],

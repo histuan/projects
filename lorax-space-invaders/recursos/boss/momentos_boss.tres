@@ -146,10 +146,16 @@ tipo = 1
 forca = 3.0
 duracao = 0.2
 
+[sub_resource type="Resource" id="Passo_chapeu_2"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_chapeu"
+
 [sub_resource type="Resource" id="Momento_chapeu"]
 script = ExtResource("2_momento")
 titulo = "CHAPEU JOGADO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_chapeu_1")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_chapeu_1"), SubResource("Passo_chapeu_2")])
+duracao_animacao_lab = 1.73
 
 [sub_resource type="Resource" id="Passo_contagem_1"]
 script = ExtResource("1_passo")
@@ -907,19 +913,6 @@ script = ExtResource("2_momento")
 titulo = "PANCADA"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_pancada_1"), SubResource("Passo_pancada_2")])
 
-[sub_resource type="Resource" id="Passo_pilar_sobe_1"]
-script = ExtResource("1_passo")
-tipo = 2
-de = 5.0
-ate = 8.0
-da_animacao = true
-
-[sub_resource type="Resource" id="Momento_pilar_sobe"]
-script = ExtResource("2_momento")
-titulo = "PILAR SOBE"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_pilar_sobe_1")])
-duracao_animacao_lab = 1.83
-
 [sub_resource type="Resource" id="Passo_pico_do_pilar_1"]
 script = ExtResource("1_passo")
 tipo = 6
@@ -956,11 +949,6 @@ tipo = 12
 rotulo = "ABERRACAO DO PICO"
 px = 3.0
 
-[sub_resource type="Resource" id="Passo_pico_do_pilar_7"]
-script = ExtResource("1_passo")
-tipo = 24
-nome = &"bases_somem"
-
 [sub_resource type="Resource" id="Passo_pico_do_pilar_8"]
 script = ExtResource("1_passo")
 tipo = 25
@@ -969,7 +957,7 @@ nome = &"resto_do_pilar"
 [sub_resource type="Resource" id="Momento_pico_do_pilar"]
 script = ExtResource("2_momento")
 titulo = "PICO DO PILAR"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_do_pilar_1"), SubResource("Passo_pico_do_pilar_2"), SubResource("Passo_pico_do_pilar_3"), SubResource("Passo_pico_do_pilar_4"), SubResource("Passo_pico_do_pilar_5"), SubResource("Passo_pico_do_pilar_6"), SubResource("Passo_pico_do_pilar_7"), SubResource("Passo_pico_do_pilar_8")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_do_pilar_1"), SubResource("Passo_pico_do_pilar_2"), SubResource("Passo_pico_do_pilar_3"), SubResource("Passo_pico_do_pilar_4"), SubResource("Passo_pico_do_pilar_5"), SubResource("Passo_pico_do_pilar_6"), SubResource("Passo_pico_do_pilar_8")])
 duracao_animacao_lab = 3.3
 
 [sub_resource type="Resource" id="Passo_pico_estrelas_1"]
@@ -994,6 +982,39 @@ rotulo = "EMPURRAR"
 script = ExtResource("2_momento")
 titulo = "PICO DO PILAR"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_estrelas_1"), SubResource("Passo_pico_estrelas_3"), SubResource("Passo_pico_estrelas_4")])
+
+[sub_resource type="Resource" id="Passo_pilar_sobe_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 5.0
+ate = 8.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Momento_pilar_sobe"]
+script = ExtResource("2_momento")
+titulo = "PILAR SOBE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pilar_sobe_1")])
+duracao_animacao_lab = 1.83
+
+[sub_resource type="Resource" id="Passo_piscada_1"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_piscada"
+
+[sub_resource type="Resource" id="Passo_piscada_2"]
+script = ExtResource("1_passo")
+tipo = 24
+rotulo = "MUSICA SOME (fade 0,5 s)"
+nome = &"musica_some"
+parametros = {
+"fade": 0.5
+}
+
+[sub_resource type="Resource" id="Momento_piscada"]
+script = ExtResource("2_momento")
+titulo = "PISCADA"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_piscada_1"), SubResource("Passo_piscada_2")])
+duracao_animacao_lab = 0.35
 
 [sub_resource type="Resource" id="Passo_player_hit_1"]
 script = ExtResource("1_passo")
@@ -1315,8 +1336,8 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_raiva_respira_1")])
 [sub_resource type="Resource" id="Passo_reparo_1"]
 script = ExtResource("1_passo")
 tipo = 2
-pendente = "DURACAO SEM VALOR"
 de = 3.0
+da_animacao = true
 
 [sub_resource type="Resource" id="Passo_reparo_2"]
 script = ExtResource("1_passo")
@@ -1324,21 +1345,37 @@ tipo = 4
 fator = 1.0
 duracao = 1.5
 
+[sub_resource type="Resource" id="Passo_reparo_3"]
+script = ExtResource("1_passo")
+tipo = 23
+nome = &"transf_reparo"
+
+[sub_resource type="Resource" id="Passo_reparo_4"]
+script = ExtResource("1_passo")
+tipo = 24
+rotulo = "MUSICA ENTRA (fade 1 s)"
+nome = &"musica_entra"
+parametros = {
+"fade": 1.0
+}
+
 [sub_resource type="Resource" id="Momento_reparo"]
 script = ExtResource("2_momento")
 titulo = "REPARO"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_reparo_1"), SubResource("Passo_reparo_2")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_reparo_1"), SubResource("Passo_reparo_2"), SubResource("Passo_reparo_3"), SubResource("Passo_reparo_4")])
+duracao_animacao_lab = 2.45
 
 [sub_resource type="Resource" id="Passo_reparo_estrelas_1"]
 script = ExtResource("1_passo")
 tipo = 14
-pendente = "DEVAGAR, A PARTIR DE x3: DURACAO SEM VALOR"
 fator = 1.0
+da_animacao = true
 
 [sub_resource type="Resource" id="Momento_reparo_estrelas"]
 script = ExtResource("2_momento")
-titulo = "REPARO"
+titulo = "REPARO: ESTRELAS"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_reparo_estrelas_1")])
+duracao_animacao_lab = 5.53
 
 [sub_resource type="Resource" id="Passo_respirando_1"]
 script = ExtResource("1_passo")
@@ -1773,6 +1810,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"pico_do_pilar": SubResource("Momento_pico_do_pilar"),
 &"pico_estrelas": SubResource("Momento_pico_estrelas"),
 &"pilar_sobe": SubResource("Momento_pilar_sobe"),
+&"piscada": SubResource("Momento_piscada"),
 &"player_hit": SubResource("Momento_player_hit"),
 &"player_morre_luta": SubResource("Momento_player_morre_luta"),
 &"poupar": SubResource("Momento_poupar"),

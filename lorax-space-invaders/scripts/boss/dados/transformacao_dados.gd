@@ -27,6 +27,14 @@ extends Resource
 @export var momento_pilar_sobe := &""
 ## Pico do pilar: tocado no quadro de evento do pilar, com o que resta dele
 @export var momento_pico := &""
+## Reparo: tocado no 1º quadro do reparo, com a duração dele
+@export var momento_reparo := &""
+## Estrelas do reparo: tocado no 1º quadro do reparo, com a duração do reparo até o fim da piscada
+@export var momento_reparo_estrelas := &""
+## Chapéu jogado: tocado no quadro de evento do chapeu
+@export var momento_chapeu := &""
+## Piscada: tocado no 1º quadro da piscada, com a duração dela
+@export var momento_piscada := &""
 
 @export_group("Música")
 ## Quanto a música abaixa (dB, negativo) quando a cutscene começa; 0 = não abaixa
