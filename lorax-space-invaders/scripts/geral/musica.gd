@@ -93,6 +93,15 @@ func cortar():
 	atual = null
 	evento_atual = &""
 
+# A música adotada (a do jogo) volta a tocar do começo, se não estiver tocando (o R do LAB
+# depois de um corte seco)
+func voltar_adotado():
+	if not valido(adotado) or adotado.playing:
+		return
+	adotado.play()
+	atual = adotado
+	evento_atual = &""
+
 # Nome do que está tocando (para o LAB DE SONS): o evento, "JOGO" (a adotada) ou ""
 func nome_atual():
 	if not valido(atual) or not atual.playing:

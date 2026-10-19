@@ -807,9 +807,13 @@ func quatro_flashes(passo):
 # Ferramentas do player: modo arena, hits e i-frames, 1 vida, travar, tiro e mover_para
 func pagina_player():
 	var d = player.DADOS
-	var arena = "ARENA DE TESTE %dx%d, BASE EM Y %d (PROVISORIO); VELOCIDADE %s; HURTBOX %dx%d; PONTINHO %d PX; SPRITE %dx%d DENTRO" % [
+	var arena = "ARENA DE TESTE %dx%d, BASE EM Y %d (PROVISORIO); VELOCIDADE %s; HURTBOX %dx%d; NAVE PEQUENA %dx%d DENTRO" % [
 		ARENA_TESTE_LARGURA, ARENA_TESTE_ALTURA, ARENA_TESTE_BASE_Y, n(d.velocidade_arena), d.hurtbox.x, d.hurtbox.y,
-		d.pontinho_px, d.caixa_sprite.size.x, d.caixa_sprite.size.y]
+		d.caixa_sprite.size.x, d.caixa_sprite.size.y]
+	var m = MorteArena.DADOS
+	var morte = "PARTE EM %s S, ESTOURA EM %s S; CACOS %s A %s PX/S, ESPALHAR %s GRAUS, GIRO ATE %s, GRAVIDADE %s, %s S (FADE %s)" % [
+		n(m.tempo_partir), n(m.tempo_estourar), n(m.velocidade_min), n(m.velocidade_max), n(m.espalhar_graus),
+		n(m.giro_max), n(m.gravidade), n(m.duracao_cacos), n(m.fade_cacos)]
 	var iframes = "I-FRAMES %s S, PISCA %s S ATE ALFA %s" % [n(d.iframes_duracao), n(d.iframes_pisca), n(d.iframes_alfa)]
 	var vida_baixa = "LOW-PASS %s HZ EM %s S; BORDAS ALFA %s PULSANDO %s S; BATIMENTO" % [
 		n(e.vida_baixa_abafar_hz), n(e.vida_baixa_abafar_duracao), n(e.vida_baixa_bordas_alfa), n(e.vida_baixa_bordas_pulsar)]
@@ -821,6 +825,7 @@ func pagina_player():
 		linha("TRAVADO LIGA/DESLIGA", ["NAO ANDA NEM ATIRA (DONO LAB)"], alternar_travado),
 		linha("TIRO LIGA/DESLIGA", ["ANDA MAS NAO ATIRA (DONO LAB)"], alternar_tiro),
 		linha("MOVER PARA", ["VAI AO CENTRO DA ARENA DE TESTE E VOLTA, %s S (PROVISORIO)" % n(MOVER_TESTE_TEMPO)], mover_player),
+		linha("MORTE NA ARENA", ["SO COM O MODO ARENA: 1 VIDA E O HIT FATAL; ATAQUES SOMEM, TUDO PRETO, SO A NAVE", morte], morrer_na_arena_lab),
 	])
 
 # A arena de teste, montada pelas constantes do topo
@@ -907,13 +912,45 @@ func mover_player():
 		player.mover_para(arena_teste().get_center(), MOVER_TESTE_TEMPO)
 	player_no_centro = not player_no_centro
 
+# Com o modo arena ligado: as folhas do teste somem secas, o player fica com 1 vida e leva o hit
+# fatal (a main esconde o mundo e a nave parte e estoura). No fim só o log, sem game over
+func morrer_na_arena_lab():
+	if not player.em_arena or not player.vivo:
+		aviso = "LIGUE O MODO ARENA PRIMEIRO" if player.vivo else "A NAVE JA MORREU: R RESTAURA"
+		mostrar()
+		return
+	for folha in ataques_teste.get_children():
+		folha.queue_free()
+	# Descer a 1 vida toca o player_hit de cada vida perdida: cortado aqui, só o hit fatal conta
+	while Partida.vidas > 1:
+		Partida.perder_vida()
+	Momentos.parar_tudo()
+	TempoJogo.limpar()
+	Sons.cortar(&"player_hit_arena")
+	player.terminar_iframes()
+	player.destruicao_terminou.connect(_on_morte_arena_terminou, CONNECT_ONE_SHOT)
+	player.receber_dano()
+
+# Os cacos acabaram (na luta viria a fala e o game over)
+func _on_morte_arena_terminou():
+	print("LAB: destruicao_terminou (morte na arena)")
+	aviso = "MORTE NA ARENA TERMINOU (R RESTAURA)"
+	mostrar()
+
 # Contorno de 1 px da arena de teste
 func _desenhar_contorno_arena():
 	contorno_arena.draw_rect(arena_teste().grow(-0.5), e.cor_branco, false, 1.0)
 
 # O R: para o mover_para, sai da arena, o cenário volta, o player volta na hora para onde
-# estava, solta os pedidos do LAB, corta os i-frames e volta ao máximo de vidas
+# estava, solta os pedidos do LAB, corta os i-frames e volta ao máximo de vidas. Se a nave morreu
+# na arena, ela revive (a main desfaz o preto e volta a música no 'resetou')
 func resetar_player():
+	if player.destruicao_terminou.is_connected(_on_morte_arena_terminou):
+		player.destruicao_terminou.disconnect(_on_morte_arena_terminou)
+	if not player.vivo:
+		player.reviver()
+	if Partida.vidas <= 0:
+		Partida.restaurar_vidas()
 	if player.chegou.is_connected(_on_player_chegou_na_arena):
 		player.chegou.disconnect(_on_player_chegou_na_arena)
 	player.parar_movimento()

@@ -1,5 +1,5 @@
 # Números do player que o jogo ajusta pelo Inspector (recursos/player/player_dados.tres):
-# i-frames, modo arena e o pontinho da hurtbox.
+# i-frames e modo arena.
 # Os padrões daqui são neutros e não mudam: os valores moram no .tres.
 class_name PlayerDados
 extends Resource
@@ -17,9 +17,8 @@ extends Resource
 @export var velocidade_arena := 0.0
 ## Tamanho (px) da área que leva dano na arena
 @export var hurtbox := Vector2.ZERO
-## O sprite em relação à origem do player (medido nos PNG, os dois sprites juntos): na arena,
+## A nave pequena em relação à origem do player (medida no player-mini.png): na arena,
 ## esta caixa inteira fica dentro do limite
 @export var caixa_sprite := Rect2()
-## Lado (px) do pontinho que mostra a hurtbox
-@export var pontinho_px := 0
-@export var pontinho_cor := Color.WHITE
+## Segundos de cada quadro da chama da nave pequena
+@export var mini_tempo_quadro := 0.0

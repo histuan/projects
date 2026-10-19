@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://dxsviltypxbw4" path="res://efeitos sonoros reais/wav/coletar-powerup.wav" id="5_l50kp"]
 [ext_resource type="AudioStream" uid="uid://ereood1bvklm" path="res://efeitos sonoros reais/wav/player dano.wav" id="7_wneci"]
 [ext_resource type="AudioStream" uid="uid://dko5xb1ve2uls" path="res://efeitos sonoros reais/wav/player-morte.wav" id="8_wneci"]
+[ext_resource type="Texture2D" uid="uid://buoqbw4a8n5qv" path="res://meus sprites/player/player-mini.png" id="9_mini"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cdpwx"]
 size = Vector2(20, 29)
@@ -156,6 +157,13 @@ hframes = 12
 [node name="Sprite2Dmov" type="Sprite2D" parent="." unique_id=822907421]
 texture = ExtResource("3_bmch6")
 hframes = 12
+
+[node name="Sprite2Dmini" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("9_mini")
+centered = false
+offset = Vector2(-4, -7)
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=303334896]
 position = Vector2(0, -1.5)

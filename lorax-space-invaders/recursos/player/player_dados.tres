@@ -9,5 +9,5 @@ iframes_pisca = 0.08
 iframes_alfa = 0.2
 velocidade_arena = 150.0
 hurtbox = Vector2(6, 6)
-caixa_sprite = Rect2(-11, -17, 22, 33)
-pontinho_px = 2
+caixa_sprite = Rect2(-4, -7, 9, 11)
+mini_tempo_quadro = 0.2

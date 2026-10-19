@@ -98,6 +98,11 @@ func parar_luta():
 func limpar_projeteis():
 	LimpezaProjeteis.limpar($Ataques, self)
 
+# Todos os ataques somem na hora, sem faísca e sem som (a nave morreu na arena)
+func remover_ataques():
+	for ataque in $Ataques.get_children():
+		ataque.queue_free()
+
 # Debug (tecla K): tira a vida até o limiar do coração de baixo, como tiros de verdade (a
 # mesma conta de corações da hud; invulnerável, nada acontece)
 func tirar_coracao():

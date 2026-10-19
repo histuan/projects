@@ -30,6 +30,10 @@ const PULO_CORTE_ALARME = 0.1
 const LIMPEZA_FADE = 0.3
 # Dono do travamento do player durante a transformação
 const DONO_TRANSFORMACAO = &"transformacao"
+# Morte da nave na arena: os números dela (o corte da música mora lá) e o z do véu preto que cobre
+# o mundo inteiro (a nave fica 1 acima dele)
+const MORTE_ARENA = preload("res://recursos/player/morte_arena.tres")
+const VEU_MORTE_Z = 100
 
 # 1 vida na luta: batimento, música abafada e bordas vermelhas ligados
 var vida_baixa_ligada = false
@@ -52,6 +56,11 @@ var intro_pulada = false
 var sequencia_wave10 = false
 # O FINAL WAVE na tela (null fora do alarme)
 var letreiro_final_wave = null
+# Véu preto por cima de todo o mundo (a nave morrendo na arena fica sozinha no preto)
+var veu_morte: TintaFundo
+# A nave morreu na arena e o mundo está escondido (o R do LAB desfaz)
+var morte_arena_ligada = false
+var z_player_antes = 0
 
 # _enter_tree roda ANTES do _ready de qualquer filho
 func _enter_tree():
@@ -81,6 +90,10 @@ func _ready():
 	escurecedor.pedido = &"escurecer_fundo"
 	add_child(escurecedor)
 	move_child(escurecedor, tinta_fundo.get_index() + 1)
+	veu_morte = TintaFundo.new()
+	veu_morte.pedido = &""
+	veu_morte.z_index = VEU_MORTE_Z
+	add_child(veu_morte)
 	Momentos.registrar(camera, $EfeitosTela, $fundo/estrelas, self, EFEITOS, $hud, caixa_dialogo)
 	caixa_dialogo.abriu.connect(player.bloquear_tiro.bind(&"caixa"))
 	# Diferido: o Espaço que fecha a caixa não pode virar tiro no mesmo quadro
@@ -122,9 +135,14 @@ func abrir_lab():
 	var lab = LabEfeitos.new()
 	add_child(lab)
 	lab.preparar(camera, $EfeitosTela, $fundo/estrelas, EFEITOS, self, $hud, player, $cenario)
-	lab.resetou.connect(limpar_tintas)
+	lab.resetou.connect(_on_lab_resetou)
 
-# As duas tintas do fundo (vermelha e escurecedor) voltam a ficar transparentes (o R do LAB)
+# O R do LAB: as tintas do fundo ficam transparentes e o mundo escondido pela morte na arena volta
+func _on_lab_resetou():
+	limpar_tintas()
+	desfazer_morte_arena()
+
+# As duas tintas do fundo (vermelha e escurecedor) voltam a ficar transparentes
 func limpar_tintas():
 	tinta_fundo.limpar()
 	escurecedor.limpar()
@@ -379,8 +397,11 @@ func atualizar_vida_baixa(vidas):
 	vida_baixa_ligada = deve_ligar
 
 # Qualquer vida perdida: na arena, o momento do hit (tremor, hit-stop, bordas e som);
-# fora dela, tremor leve. Em qualquer wave o coração da hud quebra (mesmo efeito do boss)
+# fora dela, tremor leve. Em qualquer wave o coração da hud quebra (mesmo efeito do boss).
+# O hit que mata na arena não toca nada: a morte na arena assume
 func _on_vida_perdida():
+	if player.em_arena and Partida.vidas <= 0:
+		return
 	if player.em_arena:
 		Momentos.tocar(&"player_hit", player)
 	else:
@@ -389,8 +410,11 @@ func _on_vida_perdida():
 
 # Última vida: player morre + tremor forte + hit-stop; o último coração do boss para de bater
 # e ele para de tremer de desespero. Na luta o boss também para, as estrelas param e, quando
-# a explosão termina, o Lorax fala antes do game over
+# a explosão termina, o Lorax fala antes do game over. Na arena é a morte da nave pequena
 func _on_morreu():
+	if player.em_arena:
+		morrer_na_arena()
+		return
 	$hud.parar_pulso_boss()
 	if batalha != null:
 		batalha.parar_desespero()
@@ -400,6 +424,45 @@ func _on_morreu():
 	player.morrer()
 	camera.tremer(21, 1.2)
 	TempoJogo.congelar(0.15)
+
+# A nave morreu na arena: o boss para, os ataques somem secos, o mundo fica preto (só a nave por
+# cima), a música corta seco (se o morte_arena.tres pedir) e a nave parte e estoura. Sem o tremor e
+# o hit-stop da morte normal. Na luta, quando os cacos acabam, segue o fluxo de sempre (fala e game over)
+func morrer_na_arena():
+	$hud.parar_pulso_boss()
+	if batalha != null:
+		batalha.parar_desespero()
+		batalha.parar_luta()
+		batalha.remover_ataques()
+		Momentos.tocar(&"player_morre_luta")
+		player.destruicao_terminou.connect(_on_player_destruido, CONNECT_ONE_SHOT)
+	esconder_mundo()
+	if MORTE_ARENA.cortar_musica:
+		Musica.cortar()
+	player.morrer()
+
+# Tudo some menos a nave: o véu preto cobre o mundo e as camadas acima dele (hud, efeitos de tela,
+# caixa de diálogo) somem
+func esconder_mundo():
+	morte_arena_ligada = true
+	veu_morte.tingir(Color.BLACK, 1.0, 0.0)
+	z_player_antes = player.z_index
+	player.z_index = VEU_MORTE_Z + 1
+	$hud.visible = false
+	$EfeitosTela.limpar()
+	if caixa_dialogo.aberta:
+		caixa_dialogo.fechar()
+
+# Desfaz o esconder_mundo (o R do LAB): véu fora, hud de volta, a nave no z de antes e a música
+# do jogo de novo (do começo), se foi cortada
+func desfazer_morte_arena():
+	if not morte_arena_ligada:
+		return
+	morte_arena_ligada = false
+	veu_morte.limpar()
+	player.z_index = z_player_antes
+	$hud.visible = true
+	Musica.voltar_adotado()
 
 # A explosão do player terminou na luta: a fala de morte (a de entrada, se ainda estiver aberta,
 # fecha antes) e, quando ela fecha, o game over

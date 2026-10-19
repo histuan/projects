@@ -91,6 +91,11 @@ func ganhar_vida():
 	vidas_mudaram.emit(vidas)
 	vida_ganha.emit()
 
+# Vidas de volta ao máximo, mesmo com 0 (só o R do LAB, depois de o player morrer)
+func restaurar_vidas():
+	vidas = MAX_VIDAS
+	vidas_mudaram.emit(vidas)
+
 # Só vale ganhar vida com o player vivo e abaixo do máximo
 func pode_ganhar_vida():
 	return vidas > 0 and vidas < MAX_VIDAS

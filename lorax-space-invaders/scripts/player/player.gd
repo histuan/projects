@@ -15,7 +15,7 @@ signal destruicao_terminou
 @onready var timer_power = $timers/TimerPowerUp
 
 const GAME_OVER = preload("res://cenas/geral/game_over.tscn")
-# i-frames, modo arena e pontinho da hurtbox (afinados no Inspector)
+# i-frames e modo arena (afinados no Inspector)
 const DADOS = preload("res://recursos/player/player_dados.tres")
 
 const SPEED = 100.0
@@ -44,24 +44,28 @@ var pode_atirar: bool:
 var movendo := false
 var tween_mover: Tween = null
 
-# Modo arena: 8 direções, preso no limite, hurtbox pequena com pontinho, sem sensorAlien
+# Modo arena: 8 direções, preso no limite, hurtbox pequena, nave pequena, sem sensorAlien
 var em_arena := false
 var limite_arena := Rect2()
 var forma_normal: Shape2D
-var pontinho: Node2D
+# Troca os quadros da chama da nave pequena
+var relogio_chama: Timer
+# A morte na arena (a nave parte e estoura em cacos)
+var morte_arena: MorteArena
 
-# Relógio dos i-frames e o pontinho da hurtbox (escondido fora da arena)
+# Relógios dos i-frames e da chama da nave pequena, e a morte na arena
 func _ready():
 	relogio_iframes = Timer.new()
 	relogio_iframes.one_shot = true
 	relogio_iframes.timeout.connect(terminar_iframes)
 	add_child(relogio_iframes)
-	pontinho = Node2D.new()
-	pontinho.z_index = 1
-	pontinho.position = $CollisionShape2D.position
-	pontinho.visible = false
-	pontinho.draw.connect(_desenhar_pontinho)
-	add_child(pontinho)
+	relogio_chama = Timer.new()
+	relogio_chama.timeout.connect(_on_relogio_chama)
+	add_child(relogio_chama)
+	morte_arena = MorteArena.new()
+	morte_arena.partiu.connect($Sprite2Dmini.hide)
+	morte_arena.terminou.connect(eliminado)
+	add_child(morte_arena)
 
 # Movimento, animação e tiro, a cada frame de física
 func _physics_process(_delta):
@@ -88,9 +92,14 @@ func _physics_process(_delta):
 	if em_arena:
 		global_position = preso_na_arena(global_position)
 
-# Troca entre o sprite parado e o de movimento e escolhe a animação pelo lado
+# Troca entre o sprite parado e o de movimento e escolhe a animação pelo lado; na arena,
+# só a nave pequena (sem inclinar)
 func animar(lado):
-	if lado < 0:
+	if em_arena:
+		$Sprite2Didle.hide()
+		$Sprite2Dmov.hide()
+		$Sprite2Dmini.show()
+	elif lado < 0:
 		$Sprite2Didle.hide()
 		$Sprite2Dmov.show()
 		anim.play("mov_esq")
@@ -198,8 +207,8 @@ func _on_chegou():
 	movendo = false
 	chegou.emit()
 
-# Modo arena: anda em 8 direções preso em 'limite' (coordenadas do mundo), hurtbox pequena
-# com o pontinho e sensorAlien desligado. Chamar de novo só troca o limite
+# Modo arena: anda em 8 direções preso em 'limite' (coordenadas do mundo), hurtbox pequena,
+# nave pequena com a chama animada e sensorAlien desligado. Chamar de novo só troca o limite
 func entrar_arena(limite: Rect2):
 	limite_arena = limite
 	if not em_arena:
@@ -209,12 +218,12 @@ func entrar_arena(limite: Rect2):
 		$CollisionShape2D.set_deferred("shape", forma)
 		$sensorAlien.set_deferred("monitoring", false)
 		motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+		relogio_chama.start(DADOS.mini_tempo_quadro)
 	em_arena = true
-	pontinho.visible = true
-	pontinho.queue_redraw()
+	animar(0)
 	global_position = preso_na_arena(global_position)
 
-# Volta ao jogo normal: hurtbox e sensorAlien de antes, só o eixo X
+# Volta ao jogo normal: hurtbox, sprites e sensorAlien de antes, só o eixo X
 func sair_arena():
 	if not em_arena:
 		return
@@ -223,22 +232,29 @@ func sair_arena():
 	$sensorAlien.set_deferred("monitoring", true)
 	motion_mode = CharacterBody2D.MOTION_MODE_GROUNDED
 	velocity = Vector2.ZERO
-	pontinho.visible = false
+	relogio_chama.stop()
+	$Sprite2Dmini.hide()
+	animar(0)
+
+# Próximo quadro da chama da nave pequena
+func _on_relogio_chama():
+	var mini = $Sprite2Dmini
+	mini.frame = (mini.frame + 1) % mini.hframes
 
 # 'pos' ajustada para o sprite inteiro (caixa_sprite) ficar dentro do limite da arena
 func preso_na_arena(pos):
 	var caixa = DADOS.caixa_sprite
 	return pos.clamp(limite_arena.position - caixa.position, limite_arena.end - caixa.end)
 
-# Quadrado do pontinho no centro da hurtbox
-func _desenhar_pontinho():
-	var lado = DADOS.pontinho_px
-	pontinho.draw_rect(Rect2(Vector2(-lado / 2.0, -lado / 2.0), Vector2(lado, lado)), DADOS.pontinho_cor)
-
-# Trava os controles e toca "destroy" (que chama descida() e, no fim, eliminado())
+# Trava os controles e toca "destroy" (que chama descida() e, no fim, eliminado()); na arena,
+# a nave parte e estoura em cacos (MorteArena, que chama eliminado() no fim)
 func morrer():
 	vivo = false
 	terminar_iframes()
+	if em_arena:
+		relogio_chama.stop()
+		morte_arena.comecar()
+		return
 	$Sprite2Dmov.hide()
 	$Sprite2Didle.show()
 	anim.play("destroy")
@@ -258,6 +274,14 @@ func eliminado():
 		ir_para_game_over()
 	else:
 		destruicao_terminou.emit()
+
+# Volta a viver no lugar (só o R do LAB): a morte na arena é interrompida e a nave reaparece
+func reviver():
+	morte_arena.cancelar()
+	vivo = true
+	if em_arena:
+		relogio_chama.start(DADOS.mini_tempo_quadro)
+	animar(0)
 
 # Troca para a cena de game over
 func ir_para_game_over():
