@@ -3,16 +3,21 @@
 [ext_resource type="Script" uid="uid://bn64ejw37rfv3" path="res://scripts/boss/dados/transformacao_dados.gd" id="1_dados"]
 [ext_resource type="Resource" uid="uid://c40xm2n4u2iss" path="res://recursos/boss/animacoes/cutscene.tres" id="2_cutscene"]
 [ext_resource type="Texture2D" uid="uid://bkauokuwt5s7a" path="res://meus sprites/geral/coracao_boss_vermelho.png" id="3_coracao"]
+[ext_resource type="Resource" uid="uid://dvb3wf61x5bff" path="res://recursos/boss/animacoes/pilar_alto.tres" id="4_pilar_alto"]
 
 [resource]
 script = ExtResource("1_dados")
 numero_fase = 2
+numero_fase_pico = 3
 animacoes = ExtResource("2_cutscene")
+pilar_alto = ExtResource("4_pilar_alto")
 momento_raiva = &"raiva"
 momento_raiva_pulso = &"raiva_pulso"
 momento_raiva_respira = &"raiva_respira"
 momento_despertar = &"despertar"
 momento_aura = &"aura"
+momento_pilar_sobe = &"pilar_sobe"
+momento_pico = &"pico_do_pilar"
 respira_fade = 0.5
 musica_abaixar_db = -9.0
 musica_abaixar_tempo = 2.0

@@ -54,6 +54,13 @@ func instante_do_quadro(i):
 func duracao():
 	return instante_do_quadro(quadros_tocados().size())
 
+# Biblioteca de animações (a padrão, "") com uma Animation por AnimacaoDados da lista
+static func criar_biblioteca(lista) -> AnimationLibrary:
+	var biblioteca = AnimationLibrary.new()
+	for dados in lista:
+		biblioteca.add_animation(dados.nome, dados.criar_animacao())
+	return biblioteca
+
 # Monta a Animation: troca a folha e o hframes no instante 0 (cada animação vem de um
 # PNG diferente) e põe cada quadro no instante acumulado dos tempos
 func criar_animacao() -> Animation:

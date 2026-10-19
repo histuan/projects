@@ -12,6 +12,10 @@ signal trocar_coracoes(textura)
 signal travar_player(ligado)
 # Tudo que não é player, boss ou cenário some da tela e nada novo cai
 signal limpar_tela
+# Bases, chão e paredes somem (pico do pilar)
+signal limpar_cenario
+# A fase da luta passa a ser 'numero' no meio da fase (ex.: 3 no pico do pilar)
+signal fase_luta_mudou(numero)
 
 var ctx: ContextoBatalha
 

@@ -239,6 +239,7 @@ func comecar_batalha(nome_fase := &""):
 	batalha.fase_mudou.connect(_on_fase_mudou)
 	batalha.player_travado.connect(_on_player_travado)
 	batalha.tela_limpa_pedida.connect(limpar_tela_transformacao)
+	batalha.cenario_limpo_pedido.connect($cenario.sumir_sob_flash)
 	batalha.terminou.connect(_on_batalha_terminou)
 	add_child(batalha)
 	move_child(batalha, $groupAlien.get_index() + 1)

@@ -7,9 +7,18 @@
 [ext_resource type="Resource" uid="uid://doosoh2koab57" path="res://recursos/boss/classica2.tres" id="5_nl7px"]
 [ext_resource type="Script" path="res://scripts/boss/fase_transformacao.gd" id="6_transf"]
 [ext_resource type="Resource" path="res://recursos/boss/transformacao.tres" id="7_transf"]
+[ext_resource type="Script" path="res://scripts/boss/pilar_alto.gd" id="8_pilar_alto"]
 
 [node name="BatalhaFinal" type="Node" unique_id=1528611933]
 script = ExtResource("1_batalha")
+
+[node name="PilarAlto" type="Node2D" parent="."]
+script = ExtResource("8_pilar_alto")
+pes = 44.0
+
+[node name="Sprite2D" type="Sprite2D" parent="PilarAlto"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PilarAlto"]
 
 [node name="LoraxFinal" parent="." unique_id=1084612692 instance=ExtResource("2_corpo")]
 position = Vector2(127, -20)

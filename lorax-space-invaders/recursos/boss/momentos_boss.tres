@@ -907,6 +907,19 @@ script = ExtResource("2_momento")
 titulo = "PANCADA"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_pancada_1"), SubResource("Passo_pancada_2")])
 
+[sub_resource type="Resource" id="Passo_pilar_sobe_1"]
+script = ExtResource("1_passo")
+tipo = 2
+de = 5.0
+ate = 8.0
+da_animacao = true
+
+[sub_resource type="Resource" id="Momento_pilar_sobe"]
+script = ExtResource("2_momento")
+titulo = "PILAR SOBE"
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pilar_sobe_1")])
+duracao_animacao_lab = 1.83
+
 [sub_resource type="Resource" id="Passo_pico_do_pilar_1"]
 script = ExtResource("1_passo")
 tipo = 6
@@ -940,30 +953,29 @@ nome = &"pico_estrelas"
 [sub_resource type="Resource" id="Passo_pico_do_pilar_6"]
 script = ExtResource("1_passo")
 tipo = 12
-pendente = "SEM VALOR"
 rotulo = "ABERRACAO DO PICO"
+px = 3.0
 
 [sub_resource type="Resource" id="Passo_pico_do_pilar_7"]
 script = ExtResource("1_passo")
 tipo = 24
-pendente = "NA F3"
 nome = &"bases_somem"
+
+[sub_resource type="Resource" id="Passo_pico_do_pilar_8"]
+script = ExtResource("1_passo")
+tipo = 25
+nome = &"resto_do_pilar"
 
 [sub_resource type="Resource" id="Momento_pico_do_pilar"]
 script = ExtResource("2_momento")
 titulo = "PICO DO PILAR"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_do_pilar_1"), SubResource("Passo_pico_do_pilar_2"), SubResource("Passo_pico_do_pilar_3"), SubResource("Passo_pico_do_pilar_4"), SubResource("Passo_pico_do_pilar_5"), SubResource("Passo_pico_do_pilar_6"), SubResource("Passo_pico_do_pilar_7")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_do_pilar_1"), SubResource("Passo_pico_do_pilar_2"), SubResource("Passo_pico_do_pilar_3"), SubResource("Passo_pico_do_pilar_4"), SubResource("Passo_pico_do_pilar_5"), SubResource("Passo_pico_do_pilar_6"), SubResource("Passo_pico_do_pilar_7"), SubResource("Passo_pico_do_pilar_8")])
+duracao_animacao_lab = 3.3
 
 [sub_resource type="Resource" id="Passo_pico_estrelas_1"]
 script = ExtResource("1_passo")
 tipo = 14
 fator = 6.0
-
-[sub_resource type="Resource" id="Passo_pico_estrelas_2"]
-script = ExtResource("1_passo")
-tempo = 0.5
-tipo = 25
-nome = &"resto_do_pilar"
 
 [sub_resource type="Resource" id="Passo_pico_estrelas_3"]
 script = ExtResource("1_passo")
@@ -981,7 +993,7 @@ rotulo = "EMPURRAR"
 [sub_resource type="Resource" id="Momento_pico_estrelas"]
 script = ExtResource("2_momento")
 titulo = "PICO DO PILAR"
-passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_estrelas_1"), SubResource("Passo_pico_estrelas_2"), SubResource("Passo_pico_estrelas_3"), SubResource("Passo_pico_estrelas_4")])
+passos = Array[ExtResource("1_passo")]([SubResource("Passo_pico_estrelas_1"), SubResource("Passo_pico_estrelas_3"), SubResource("Passo_pico_estrelas_4")])
 
 [sub_resource type="Resource" id="Passo_player_hit_1"]
 script = ExtResource("1_passo")
@@ -1346,12 +1358,13 @@ passos = Array[ExtResource("1_passo")]([SubResource("Passo_respirando_1")])
 [sub_resource type="Resource" id="Passo_resto_do_pilar_1"]
 script = ExtResource("1_passo")
 tipo = 2
-pendente = "DURACAO SEM VALOR"
 de = 8.0
 ate = 3.0
+da_animacao = true
 
 [sub_resource type="Resource" id="Passo_resto_do_pilar_2"]
 script = ExtResource("1_passo")
+tempo = 0.5
 tipo = 14
 fator = 3.0
 duracao = 1.0
@@ -1360,6 +1373,7 @@ duracao = 1.0
 script = ExtResource("2_momento")
 titulo = "RESTO DO PILAR"
 passos = Array[ExtResource("1_passo")]([SubResource("Passo_resto_do_pilar_1"), SubResource("Passo_resto_do_pilar_2")])
+duracao_animacao_lab = 3.3
 
 [sub_resource type="Resource" id="Passo_soltar_folhas_1"]
 script = ExtResource("1_passo")
@@ -1758,6 +1772,7 @@ momentos = Dictionary[StringName, ExtResource("2_momento")]({
 &"pancada": SubResource("Momento_pancada"),
 &"pico_do_pilar": SubResource("Momento_pico_do_pilar"),
 &"pico_estrelas": SubResource("Momento_pico_estrelas"),
+&"pilar_sobe": SubResource("Momento_pilar_sobe"),
 &"player_hit": SubResource("Momento_player_hit"),
 &"player_morre_luta": SubResource("Momento_player_morre_luta"),
 &"poupar": SubResource("Momento_poupar"),

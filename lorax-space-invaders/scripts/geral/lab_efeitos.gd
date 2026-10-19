@@ -93,7 +93,7 @@ const PAGINAS = [
 	[PAGINA_FASE1_COMBATE, [&"folhas_anulam", &"coracao_player_perdido", &"player_morre_luta"]],
 	["FASE 2 E TROCAS", [&"f2_carga", &"f2_arremessa", &"f2_arvore_explode", &"f2_arvore_explode_fora", &"f2_desespero_transforma", &"f2_desespero", &"f2_desespero_fim",
 		&"hit_fase2", &"ultimo_coracao_f2", &"ultimo_hit_f1", &"transicao_1_2", &"derrota_f2"]],
-	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pico_do_pilar", &"resto_do_pilar",
+	["TRANSFORMACAO", [&"raiva", &"despertar", &"aura", &"pilar_sobe", &"pico_do_pilar", &"resto_do_pilar",
 		&"reparo", &"chapeu", &"puxao", &"nave_chega", &"arena_nasce"]],
 	["FASE 3", [&"aviso", &"raio", &"cortina_todos", &"raio_direto_carga", &"pancada",
 		&"esfera_estoura", &"teleporte", &"hit_lorax_ui", &"player_hit", &"virada"]],
@@ -169,6 +169,7 @@ func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco, nova_hud,
 	dica = "APERTE 1-0 PARA DISPARAR UM EFEITO"
 	posicao_boneco = Vector2((DADOS_FASE1.limite_esq + DADOS_FASE1.limite_dir) / 2.0, DADOS_FASE1.altura)
 	tela.flash_barrado.connect(_on_flash_barrado)
+	Momentos.pedido.connect(_on_pedido)
 	Momentos.validar_todos()
 	iniciar()
 	criar_boneco()
@@ -178,6 +179,11 @@ func preparar(cam, efeitos_tela, campo_estrelas, dados, pai_do_boneco, nova_hud,
 	contorno_arena.visible = false
 	contorno_arena.draw.connect(_desenhar_contorno_arena)
 	mundo.add_child(contorno_arena)
+
+# O pico do pilar tocado aqui some com o cenário, como na luta (o R traz de volta)
+func _on_pedido(nome, _parametros, _alvo):
+	if nome == &"bases_somem":
+		cenario.sumir_sob_flash()
 
 # As páginas de PAGINAS, depois OUTROS (momentos do arquivo que nenhuma linha alcança)
 # e, por último, as FERRAMENTAS
@@ -829,13 +835,13 @@ func alternar_arena():
 		if player.chegou.is_connected(_on_player_chegou_na_arena):
 			player.chegou.disconnect(_on_player_chegou_na_arena)
 		player.sair_arena()
-		mostrar_cenario(true)
+		cenario.mostrar(true)
 		contorno_arena.visible = false
 		player.mover_para(posicao_original, MOVER_TESTE_TEMPO)
 		player_no_centro = false
 		return
 	guardar_posicao_original()
-	mostrar_cenario(false)
+	cenario.mostrar(false)
 	contorno_arena.visible = true
 	contorno_arena.queue_redraw()
 	player.chegou.connect(_on_player_chegou_na_arena, CONNECT_ONE_SHOT)
@@ -849,16 +855,6 @@ func _on_player_chegou_na_arena():
 func guardar_posicao_original():
 	if posicao_original == null:
 		posicao_original = player.global_position
-
-# Esconde (ou mostra) bases, chão e paredes; escondidos, ficam sem colisão
-# (process_mode DISABLED tira os corpos do espaço físico). A AreaGameOver fica
-func mostrar_cenario(ligado):
-	for nome in [&"bases", &"chao", &"paredes"]:
-		var grupo = cenario.get_node(NodePath(nome))
-		grupo.process_mode = Node.PROCESS_MODE_INHERIT if ligado else Node.PROCESS_MODE_DISABLED
-		for filho in grupo.get_children():
-			if filho is CanvasItem:
-				filho.visible = ligado
 
 # Um hit no player; com 1 vida, ganha uma antes (o LAB não deixa morrer)
 func levar_hit():
@@ -922,7 +918,7 @@ func resetar_player():
 		player.chegou.disconnect(_on_player_chegou_na_arena)
 	player.parar_movimento()
 	player.sair_arena()
-	mostrar_cenario(true)
+	cenario.mostrar(true)
 	contorno_arena.visible = false
 	if posicao_original != null:
 		player.global_position = posicao_original

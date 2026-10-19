@@ -10,3 +10,5 @@ var ataques: Node
 var player
 # A caixa de diálogo da main (falas da luta)
 var dialogo: CaixaDialogo
+# O pilar de luz alto atrás do corpo (pilar_alto.gd)
+var pilar_alto

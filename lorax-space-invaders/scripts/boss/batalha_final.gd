@@ -18,6 +18,8 @@ signal coracoes_boss_trocados(textura)
 signal player_travado(ligado)
 # A fase pediu a tela limpa: itens, tiros do player e planeta somem, nada novo cai (para a main)
 signal tela_limpa_pedida
+# A fase pediu o cenário fora: bases, chão e paredes somem (para a main)
+signal cenario_limpo_pedido
 
 # Corações do boss na hud (só para a tecla K de debug saber quanto é um coração)
 const CORACOES_BOSS = 5
@@ -40,6 +42,8 @@ func _ready():
 		fase.trocar_coracoes.connect(coracoes_boss_trocados.emit)
 		fase.travar_player.connect(player_travado.emit)
 		fase.limpar_tela.connect(tela_limpa_pedida.emit)
+		fase.limpar_cenario.connect(cenario_limpo_pedido.emit)
+		fase.fase_luta_mudou.connect(repassar_fase_luta.bind(fase))
 
 # Chamada pela main (depois de conectar os sinais): monta o contexto e começa a 1ª fase
 func comecar(player, dialogo):
@@ -54,10 +58,15 @@ func comecar_direto(player, dialogo, nome_fase: StringName):
 	fase_mudou.emit(fase.name, fase.numero_fase())
 	fase.comecar_direto(ctx)
 
-# O que as fases recebem: corpo, ataques, player e caixa de diálogo
+# A fase da luta mudou no meio de uma fase: avisa como uma troca de fase (mesmo sinal que a main ouve)
+func repassar_fase_luta(numero, fase):
+	fase_mudou.emit(fase.name, numero)
+
+# O que as fases recebem: corpo, pilar alto, ataques, player e caixa de diálogo
 func montar_contexto(player, dialogo):
 	ctx = ContextoBatalha.new()
 	ctx.corpo = $LoraxFinal
+	ctx.pilar_alto = $PilarAlto
 	ctx.ataques = $Ataques
 	ctx.player = player
 	ctx.dialogo = dialogo

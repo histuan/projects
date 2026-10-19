@@ -71,10 +71,11 @@ func carregar_animacoes(lista):
 	anim.stop()
 	if anim.has_animation_library(""):
 		anim.remove_animation_library("")
-	var biblioteca = AnimationLibrary.new()
-	for dados in lista:
-		biblioteca.add_animation(dados.nome, dados.criar_animacao())
-	anim.add_animation_library("", biblioteca)
+	anim.add_animation_library("", AnimacaoDados.criar_biblioteca(lista))
+
+# Ponto dos pés do corpo na tela (onde o pilar alto se apoia)
+func pes_globais():
+	return global_position + Vector2(0, reacoes.pes)
 
 # Toca uma animação do conjunto carregado (pedir a que já está tocando não reinicia)
 func tocar(nome):

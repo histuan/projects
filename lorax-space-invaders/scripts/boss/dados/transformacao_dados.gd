@@ -5,8 +5,12 @@ extends Resource
 
 ## Fase da luta enquanto a transformação toca (2 até o pico do pilar; decide o retrato das falas)
 @export var numero_fase := 0
+## Fase da luta a partir do pico do pilar (decide o retrato das falas); 0 = não muda
+@export var numero_fase_pico := 0
 ## Animações da cutscene (cutscene.tres)
 @export var animacoes: ConjuntoAnimacoes
+## Animação do pilar alto que sobe atrás do corpo junto com o pilar (pilar_alto.tres)
+@export var pilar_alto: ConjuntoAnimacoes
 
 @export_group("Momentos")
 ## Derrota com raiva: tocado no 1º quadro da derrota_raiva, com a duração dela
@@ -19,6 +23,10 @@ extends Resource
 @export var momento_despertar := &""
 ## Aura: tocado no 1º quadro da aura, com a duração dela
 @export var momento_aura := &""
+## Subida do pilar: tocado no 1º quadro do pilar, com a duração até o quadro de evento
+@export var momento_pilar_sobe := &""
+## Pico do pilar: tocado no quadro de evento do pilar, com o que resta dele
+@export var momento_pico := &""
 
 @export_group("Música")
 ## Quanto a música abaixa (dB, negativo) quando a cutscene começa; 0 = não abaixa

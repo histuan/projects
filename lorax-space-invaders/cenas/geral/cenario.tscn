@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://d2uoxjeyd1qjq" path="res://cenas/geral/base.tscn" id="1_f7ix0"]
 [ext_resource type="Script" uid="uid://bec0lr8nt3j8g" path="res://scripts/geral/chao.gd" id="3_hc3j3"]
 [ext_resource type="Script" uid="uid://55ewa8tqyb0" path="res://scripts/geral/area_game_over.gd" id="4_pd42p"]
+[ext_resource type="Script" path="res://scripts/geral/cenario.gd" id="5_cenario"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ksdio"]
 size = Vector2(20, 256)
@@ -11,6 +12,7 @@ size = Vector2(20, 256)
 size = Vector2(254, 20)
 
 [node name="cenario" type="Node" unique_id=776526308]
+script = ExtResource("5_cenario")
 
 [node name="bases" type="Node" parent="." unique_id=1255455807]
 
