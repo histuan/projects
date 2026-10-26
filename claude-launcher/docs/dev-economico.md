@@ -1,4 +1,4 @@
-<!-- Cópia da skill dev-economico do Thiago (out/2026), para sessões na nuvem que não a tenham. A original fica em ~/.claude/skills; se ela mudar, atualizar esta cópia. -->
+<!-- Faithful copy of Thiago's personal dev-economico skill (Oct 2026), kept in Portuguese on purpose, for cloud sessions that do not have the skill. If the original in ~/.claude/skills changes, update this copy. -->
 
 ---
 name: "dev-economico"
