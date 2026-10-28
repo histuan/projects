@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="istyleCustomError.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Young+Serif&display=swap" rel="stylesheet">
+  <title>sign-up</title>
+</head>
+  <body>
+    <section class="text">
+      <h1>Learn to code by watching others</h1>
+      <p>See how experienced developers solve problems in real-time. Watching scripted tutorials is great, 
+      but understanding how developers think is invaluable.</p>
+    </section>
+
+    <main>
+      <section class="free-trial">
+        <p> <span class="try">Try it free 7 days</span> then $20/mo. thereafter</p>
+      </section>
+
+      <form class="user-info" novalidate>
+      <div class="input-wrapper">  
+        <input class="name" type="text" placeholder="First Name" required>
+        <span class="error">Invalid name.</span>
+        <span class="error">You must enter your first name.</span>
+      </div>
+
+        <div class="input-wrapper">
+          <input class="name" type="text" placeholder="Last Name" required>
+          <span class="error">Invalid surname.</span>
+          <span class="error">You must enter your last name.</span>
+        </div>
+
+        <div class="input-wrapper">
+          <input class="email" type="email" placeholder="Email Adress" required>
+          <span class="error">Invalid email.</span>
+          <span class="error">You must enter your email.</span>
+        </div>
+
+        <div class="input-wrapper">
+          <input class="password" type="password" placeholder="Password" minlength="6" required>
+          <span class="error">Length error.</span>
+          <span class="error">You must enter your password.</span>
+        </div>
+
+        <button class="claim" type="submit">CLAIM YOUR FREE TRIAL</button>
+        <p class="fineprint"> By clicking the button, you are agreeing to our <span class="terms">Terms and Services</span ></p>
+      </form>
+     </main>
+     <script src="iscriptCustomError.js"></script>
+  </body>
+</html>
