@@ -1,0 +1,163 @@
+p,h1{
+  font-family: Poppins;
+  color: white;
+}
+:root{
+  --Red400: hsl(0, 100%, 74%); 
+  --Green400: hsl(154, 59%, 51%);
+  --Purple700: hsl(248, 32%, 49%);
+  --Gray900: hsl(249, 10%, 26%);
+  --Purple350: hsl(246, 25%, 77%);
+}
+body{
+  background-color: var(--Red400);
+  background-image: url(images/bg-intro-mobile.png);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin: 140px 20px 120px;
+  height: 100dvh;
+}
+.text{
+  text-align: center;
+  h1{
+    line-height: 1.3;
+    font-size: 1.7rem;
+    margin-bottom: 30px;
+  }
+  p{
+    word-spacing: 2px;
+    line-height: 1.5;
+  }
+}
+main{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.free-trial{
+  background-color: var(--Purple700);
+  padding: 5px 60px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  box-shadow: 0px 8px 1px rgba(0,0,0,0.15);
+  .try{
+    font-weight: 600;
+  }
+}
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: white;
+  input{
+    font-family: poppins;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    width: 100%;
+    &::placeholder{
+      color: var(--Gray900);
+      font-size: 0.7rem;
+      font-weight: 600;
+      filter:brightness(1.8)
+    }
+    &:focus{
+      outline-color: var(--Purple700);
+    }
+    &:user-invalid{
+      border-color: var(--Red400);
+      &:focus{
+        outline-color: var(--Red400);
+      }
+    }
+  }
+  button{
+    background-color: var(--Green400);
+    border: none;
+    color: white;
+    width: 100%;
+    font-weight: 600;
+    padding: 20px;
+    border-radius: 6px;
+    letter-spacing: 1.2px;
+    box-shadow: inset 0px -4px 1px rgba(0,0,0,0.15);
+    transition: all 0.1s;
+    cursor:pointer;
+    &:hover{
+      filter: brightness(0.95);
+    }
+    &:active{
+      transform:translateY(1px);
+      box-shadow: none;
+    }
+  }
+  .fineprint{
+    margin: 0;
+    color: var(--Purple350);
+    font-size: 0.7rem;
+    font-weight: 600;
+    max-width: 250px;
+    .terms{
+      transition:all 0.15s;
+      display: inline-block;
+      color: var(--Red400);
+      cursor:pointer;
+      &:hover{
+        filter:brightness(1.3);
+      }
+      &:active{
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+@media(min-width:768px){
+  body{
+    flex-direction:row;
+    margin: 0;
+    gap: 20px;
+  }
+  .text{
+    text-align:start;
+    max-width: 40%;
+
+    h1{
+      font-size: 2.8rem;
+      line-height: 1.2;
+    }
+    p{
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+  }
+  main{
+    width: 36%;
+  }
+  .free-trial{
+    p{
+      margin: 10px;
+    }
+  }
+  form{
+    border-radius: 8px;
+    padding: 30px;
+    gap:18px;
+    input{
+      font-size: 0.8rem;
+      padding-left: 25px;
+    }
+    .fineprint{
+      max-width: 100%;
+      font-size: 0.6rem;
+    }
+  }
+}
