@@ -1,8 +1,11 @@
-# YouTube Clone
+# MyTube Clone
 
-Copy of the YouTube home page made with plain HTML and CSS, no frameworks.
+Clone of the YouTube home page, made with plain HTML and CSS, no frameworks. It is rebranded as **MyTube**
+with an original logo.
 
-Live version: https://histuan.github.io/projects/web-development/youtube-clone/
+> Student project for learning HTML and CSS. Not affiliated with YouTube or Google.
+
+Live version: https://histuan.github.io/projects/web-development/mytube-clone/
 
 ## Features
 
@@ -14,10 +17,10 @@ Live version: https://histuan.github.io/projects/web-development/youtube-clone/
 ## Structure
 
 ```
-youtube-clone/
+mytube-clone/
 ├── index.html
 ├── styles/            # CSS, one file per part of the page
-├── icons/             # SVG icons
+├── icons/             # SVG icons (including the MyTube logo)
 ├── thumbnails/        # video thumbnails
 └── channel-pictures/  # channel pictures
 ```
